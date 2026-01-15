@@ -34,7 +34,7 @@ export default function App() {
     buyItem, nextDay, chooseOption
   } = useGameStore();
 
-  //验证 const [viewState, setViewState] = useState<'TITLE'|'GAME'>('TITLE');
+  //const [viewState, setViewState] = useState<'TITLE'|'GAME'>('TITLE');
   
   const [viewState, setViewState] = useState<'TITLE'|'GAME'>('GAME');
 

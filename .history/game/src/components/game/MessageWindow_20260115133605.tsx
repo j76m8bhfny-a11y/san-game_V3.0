@@ -1,21 +1,14 @@
 import React from 'react';
 import { GameEvent } from '@/types/schema';
-import { useGameStore } from '@/store/useGameStore';
+
+interface Option {
+  id: string;
+  label: string;
+  type: 'normal' | 'locked' | 'awakened';
+  onClick: () => void;
+}
 
 export const MessageWindow: React.FC<{ event: GameEvent; onOptionSelect: (optionId: string) => void }> = ({ event, onOptionSelect }) => {
-  const san = useGameStore(s => s.san);
-  
-  // 根据 SAN 值选择文本
-  const displayText = san < 50 ? event.text.lowSan : event.text.highSan;
-  
-  // 将 options 对象转换为数组
-  const options = [
-    { id: 'A', ...event.options.A, type: 'normal' as const },
-    { id: 'B', ...event.options.B, type: 'normal' as const },
-    { id: 'C', ...event.options.C, type: 'normal' as const },
-    { id: 'D', ...event.options.D, type: 'awakened' as const },
-  ];
-
   return (
     <div className="absolute bottom-0 w-full h-[40vh] z-10 p-2 md:p-4">
       {/* 容器背景: 点阵纹理 + 边框 */}
@@ -27,14 +20,14 @@ export const MessageWindow: React.FC<{ event: GameEvent; onOptionSelect: (option
         
         {/* 1. 文本区 (打字机效果) */}
         <div className="flex-1 font-pixel text-cyan-50 text-base md:text-lg leading-relaxed mb-4 overflow-y-auto custom-scrollbar">
-          <span className="text-cyan-600 mr-2 font-bold">{'>'}</span>
-          {displayText}
+          <span className="text-cyan-600 mr-2 font-bold">></span>
+          {event.text}
           <span className="animate-blink inline-block w-2 h-4 bg-cyan-500 ml-1 align-middle"/>
         </div>
 
         {/* 2. 按钮网格 */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {options.map((opt, idx) => {
+          {event.options.map((opt, idx) => {
              // 动态样式逻辑
              let btnStyle = "border-cyan-500/40 text-cyan-100 hover:bg-cyan-500 hover:text-black"; // Normal
              if (opt.type === 'locked') btnStyle = "border-gray-700 text-gray-600 cursor-not-allowed border-dashed";
@@ -49,7 +42,7 @@ export const MessageWindow: React.FC<{ event: GameEvent; onOptionSelect: (option
               >
                 <span className="relative z-10 flex justify-between items-center">
                   <span>{idx + 1}. {opt.label}</span>
-                  {opt.type === 'normal' && <span className="opacity-0 group-hover:opacity-100">{'<<'}</span>}
+                  {opt.type === 'normal' && <span className="opacity-0 group-hover:opacity-100"><<</span>}
                 </span>
                 {/* 扫光特效 */}
                 {opt.type === 'normal' && <div className="absolute inset-0 bg-white/10 -translate-x-full group-hover:animate-shine" />}

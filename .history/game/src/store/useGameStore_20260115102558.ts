@@ -77,24 +77,7 @@ export const useGameStore = create<GameStore>()(
         dailySummary: null,
 
         nextDay: () => {
-          const state = get();
-          const newDay = state.day + 1;
-          const newHp = Math.max(0, state.hp - 1); // 自然衰减，不低于 0
-          
-          // 保存每日结算数据
-          const summary = {
-            revenue: 0,
-            expenses: 0,
-            event: 'sleep'
-          };
-          
-          set({
-            day: newDay,
-            hp: newHp,
-            dailySummary: summary
-          });
-          
-          console.log('[System] Next Day:', newDay, 'HP:', newHp);
+          console.log('[System] Next Day Triggered (Placeholder)');
         },
 
         chooseOption: (optId) => {

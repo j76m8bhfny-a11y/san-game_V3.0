@@ -27,7 +27,7 @@ export const MessageWindow: React.FC<{ event: GameEvent; onOptionSelect: (option
         
         {/* 1. 文本区 (打字机效果) */}
         <div className="flex-1 font-pixel text-cyan-50 text-base md:text-lg leading-relaxed mb-4 overflow-y-auto custom-scrollbar">
-          <span className="text-cyan-600 mr-2 font-bold">{'>'}</span>
+          <span className="text-cyan-600 mr-2 font-bold">></span>
           {displayText}
           <span className="animate-blink inline-block w-2 h-4 bg-cyan-500 ml-1 align-middle"/>
         </div>
@@ -49,7 +49,7 @@ export const MessageWindow: React.FC<{ event: GameEvent; onOptionSelect: (option
               >
                 <span className="relative z-10 flex justify-between items-center">
                   <span>{idx + 1}. {opt.label}</span>
-                  {opt.type === 'normal' && <span className="opacity-0 group-hover:opacity-100">{'<<'}</span>}
+                  {opt.type === 'normal' && <span className="opacity-0 group-hover:opacity-100"><<</span>}
                 </span>
                 {/* 扫光特效 */}
                 {opt.type === 'normal' && <div className="absolute inset-0 bg-white/10 -translate-x-full group-hover:animate-shine" />}

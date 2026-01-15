@@ -7,12 +7,11 @@ module.exports = {
         // ... (保留之前的颜色配置 colors.delusion, colors.reality 等)
       },
       fontFamily: {
-        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
-        serif: ['Space Mono', 'ui-serif', 'Georgia'],
-        mono: ['VT323', 'monospace'], // Pixel Terminal Font
-        pixel: ['Press Start 2P', 'cursive'], // Retro Gaming
-        creepster: ['Creepster', 'cursive'], // Horror/Madness
-        glitch: ['Rubik Glitch', 'cursive'], // Glitch Effect
+        // [New] 新增像素字体，配合 MessageWindow
+        pixel: ['"Press Start 2P"', '"VT323"', 'monospace'], 
+        sans: ['Inter', 'sans-serif'],
+        mono: ['"Space Mono"', 'monospace'],
+        creepster: ['Creepster', 'cursive'],
       },
       animation: {
         'glitch': 'glitch 0.4s cubic-bezier(.25, .46, .45, .94) both infinite',

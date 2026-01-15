@@ -1,0 +1,26 @@
+/* 🚨 关键修正：必须放在文件最顶部 */
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Inter:wght@400;700&family=Rubik+Glitch&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=VT323&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 可选：全局样式微调，确保背景色在加载前不会闪烁 */
+body {
+  @apply bg-neutral-900 text-neutral-100;
+  overscroll-behavior: none; /* 防止移动端下拉刷新 */
+}
+
+/* 自定义滚动条样式 (适配赛博朋克风格) */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #1a1a1a; 
+}
+::-webkit-scrollbar-thumb {
+  background: #444; 
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #666; 
+}

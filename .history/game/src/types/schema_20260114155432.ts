@@ -139,9 +139,6 @@ export interface GameState {
     old: number;
   };
 
-  // UI 状态
-  isShopOpen: boolean;
-
   // System
   _hasHydrated: boolean; // Hydration Gate
 }

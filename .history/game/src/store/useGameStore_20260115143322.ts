@@ -89,7 +89,7 @@ export const useGameStore = create<GameStore>()(
         isShopOpen: false, // 商店开关状态
 
         // --- 占位 Actions ---
-        shopItems: ITEMS as any,
+        shopItems: ITEMS,
         dailySummary: null,
 
         nextDay: () => {

@@ -22,7 +22,6 @@ import CLASSES from '@/assets/data/classes.json';
 import BILLS from '@/assets/data/bills.json';
 
 // 导入物品数据
-// @ts-ignore - JSON 类型不匹配，使用 any 绕过
 import ITEMS from '@/assets/data/items.json';
 
 // 1. 定义 Actions 接口
@@ -71,9 +70,7 @@ const INITIAL_STATE: Omit<GameState, '_hasHydrated'> = {
     hasCryptoKey: false
   },
   
-  points: { red: 0, wolf: 0, old: 0 },
-  
-  isShopOpen: false
+  points: { red: 0, wolf: 0, old: 0 }
 };
 
 // 3. 版本控制 (Ω-Optimized)
@@ -89,7 +86,7 @@ export const useGameStore = create<GameStore>()(
         isShopOpen: false, // 商店开关状态
 
         // --- 占位 Actions ---
-        shopItems: ITEMS as any,
+        shopItems: ITEMS,
         dailySummary: null,
 
         nextDay: () => {

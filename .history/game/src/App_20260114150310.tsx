@@ -42,13 +42,13 @@ export default function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [showDaily, setShowDaily] = useState(false);
 
-  // 🚨 [Strict Hydration Gate]
+  // 🚨 [Strict Hydration Gate] 
   // 必须阻断渲染直到 Zustand 从磁盘恢复数据，防止 SAN 值滤镜闪烁
   if (!_hasHydrated) {
     return (
       <div className="fixed inset-0 bg-black flex items-center justify-center z-[99999]">
-        <div className="text-white font-mono animate-pulse tracking-widest">
-          LOADING REALITY...
+        <div className="text-neutral-500 font-mono animate-pulse tracking-widest">
+          INITIALIZING REALITY...
         </div>
       </div>
     );

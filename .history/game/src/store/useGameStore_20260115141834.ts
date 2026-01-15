@@ -119,7 +119,7 @@ export const useGameStore = create<GameStore>()(
           };
           
           // g. 账单触发
-          const bill = triggerBill(newGold, newClass, BILLS as any);
+          const bill = triggerBill(newGold, newClass, BILLS);
           
           set({
             day: newDay,
@@ -173,7 +173,7 @@ export const useGameStore = create<GameStore>()(
                 }
               } else {
                 // 移除物品
-                let removeCount = Math.abs(item.count);
+                const removeCount = Math.abs(item.count);
                 for (let i = newInventory.length - 1; i >= 0 && removeCount > 0; i--) {
                   if (newInventory[i] === item.itemId) {
                     newInventory.splice(i, 1);
@@ -181,7 +181,7 @@ export const useGameStore = create<GameStore>()(
                   }
                 }
               }
-            });
+            }
           }
           
           // 记录历史

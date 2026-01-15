@@ -18,9 +18,6 @@ import { checkClassUpdate, calcSalary, triggerBill, humanDismantlementCheck } fr
 // 导入职业配置数据
 import CLASSES from '@/assets/data/classes.json';
 
-// 导入账单数据
-import BILLS from '@/assets/data/bills.json';
-
 // 1. 定义 Actions 接口
 interface GameActions {
   // 核心循环 Actions
@@ -118,94 +115,19 @@ export const useGameStore = create<GameStore>()(
             className: classConfig.name
           };
           
-          // g. 账单触发
-          const bill = triggerBill(newGold, newClass, BILLS as any);
-          
           set({
             day: newDay,
             hp: newHp,
             gold: newGold,
             currentClass: newClass,
-            dailySummary: summary,
-            activeBill: bill || null
+            dailySummary: summary
           });
           
-          console.log('[System] Next Day:', newDay, 'HP:', newHp, 'Gold:', newGold, 'Class:', newClass, 'Bill:', bill?.id || 'none');
+          console.log('[System] Next Day:', newDay, 'HP:', newHp, 'Gold:', newGold, 'Class:', newClass);
         },
 
-        chooseOption: (optionId) => {
-          const state = get();
-          
-          // 验证当前事件存在
-          if (!state.currentEvent) {
-            console.warn('[System] No active event to choose option');
-            return;
-          }
-          
-          // 查找选中的选项配置
-          const option = state.currentEvent.options[optionId as keyof typeof state.currentEvent.options];
-          if (!option) {
-            console.error('[System] Option not found:', optionId);
-            return;
-          }
-          
-          // 应用效果
-          const effects = option.effects;
-          const newHp = Math.max(0, Math.min(state.maxHp, state.hp + (effects.hp || 0)));
-          const newSan = Math.max(0, Math.min(100, state.san + (effects.san || 0)));
-          const newGold = state.gold + (effects.gold || 0);
-          
-          // 处理积分
-          const newPoints = {
-            red: state.points.red + (effects.points?.red || 0),
-            wolf: state.points.wolf + (effects.points?.wolf || 0),
-            old: state.points.old + (effects.points?.old || 0)
-          };
-          
-          // 处理物品
-          const newInventory = [...state.inventory];
-          if (effects.items) {
-            effects.items.forEach(item => {
-              if (item.count > 0) {
-                // 添加物品
-                for (let i = 0; i < item.count; i++) {
-                  newInventory.push(item.itemId);
-                }
-              } else {
-                // 移除物品
-                let removeCount = Math.abs(item.count);
-                for (let i = newInventory.length - 1; i >= 0 && removeCount > 0; i--) {
-                  if (newInventory[i] === item.itemId) {
-                    newInventory.splice(i, 1);
-                    removeCount--;
-                  }
-                }
-              }
-            });
-          }
-          
-          // 记录历史
-          const newHistory = [...state.history, `Day ${state.day}: ${option.label}`];
-          
-          // 解锁档案
-          const newArchives = [...state.unlockedArchives];
-          if (option.archiveId && !newArchives.includes(option.archiveId)) {
-            newArchives.push(option.archiveId);
-          }
-          
-          // 关闭事件
-          set({
-            hp: newHp,
-            san: newSan,
-            gold: newGold,
-            points: newPoints,
-            inventory: newInventory,
-            history: newHistory,
-            unlockedArchives: newArchives,
-            currentEvent: null
-          });
-          
-          console.log('[System] Option Chosen:', optionId, 'Effects:', effects);
+        chooseOption: (optId) => {
+          console.log('[System] Option Chosen:', optId);
         },
 
         buyItem: (itemId) => {

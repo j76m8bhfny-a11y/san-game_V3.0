@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+// ✅ 修正后的引入
 import { persist, createJSONStorage, devtools } from 'zustand/middleware';
 
 import {
@@ -9,7 +10,7 @@ import {
   GameEvent
 } from '@/types/schema';
 
-// 引入逻辑库
+// 引入逻辑库 (包含了 pickEvent 和 humanDismantlementCheck)
 import { checkClassUpdate, calcSalary, triggerBill, pickEvent, humanDismantlementCheck } from '@/logic/core';
 import { resolveEnding } from '@/logic/endings';
 
@@ -19,13 +20,12 @@ import BILLS from '@/assets/data/bills.json';
 // @ts-ignore
 import ITEMS from '@/assets/data/items.json';
 // @ts-ignore
-import EVENTS from '@/assets/data/events.json';
+import EVENTS from '@/assets/data/events.json'; // ✅ 引入事件库
 
 interface GameActions {
   nextDay: () => void;
   chooseOption: (optionId: string) => void;
   buyItem: (itemId: string) => void;
-  resolveBill: () => void; // ✅ 新增: 结算账单 Action
   
   // UI 状态
   isShopOpen: boolean;
@@ -74,7 +74,7 @@ const INITIAL_STATE: Omit<GameState, '_hasHydrated'> = {
   isArchiveOpen: false
 };
 
-const STORE_VERSION = 3;
+const STORE_VERSION = 3; // 🚨 升级版本号以应用新逻辑
 
 export const useGameStore = create<GameStore>()(
   devtools(
@@ -90,59 +90,71 @@ export const useGameStore = create<GameStore>()(
         setMenuOpen: (isOpen) => set({ isMenuOpen: isOpen }),
         setArchiveOpen: (isOpen) => set({ isArchiveOpen: isOpen }),
 
-        // --- 核心循环 ---
+        // --- 核心循环 (Core Loop) ---
         nextDay: () => {
           const state = get();
           
+          // 1. 职业与经济计算
           const newClass = checkClassUpdate(state.gold);
           const classConfig = CLASSES.find(c => c.id === newClass) || CLASSES[1];
 
+          // 随机薪资 & SAN值效率影响
           const baseIncome = Math.floor(Math.random() * (classConfig.salaryBaseMax - classConfig.salaryBaseMin + 1)) + classConfig.salaryBaseMin;
           const actualIncome = calcSalary(baseIncome, state.san);
           const dailyCost = classConfig.dailyCost;
 
+          // 2. 基础数值结算
           const newDay = state.day + 1;
-          const newHp = Math.max(0, state.hp - 1); 
+          const newHp = Math.max(0, state.hp - 1); // 每日自然衰减
           let newGold = state.gold + actualIncome - dailyCost;
 
+          // 3. 债务计数器更新 (Critical Logic)
           let newDebtDays = state.flags.debtDays;
           if (newGold < 0) {
-            newDebtDays += 1;
+            newDebtDays += 1; // 负债天数 +1
           } else {
-            newDebtDays = 0;
+            newDebtDays = 0; // 一旦还清，计数重置
           }
 
+          // 4. 人体拆解检测 (Dismantlement Check)
           let finalMaxHp = state.maxHp;
           let historyLog = '';
           const dismantle = humanDismantlementCheck(newClass, newDebtDays, newGold);
           
           if (dismantle?.triggered) {
-            newGold = dismantle.changes.goldSetTo;
-            finalMaxHp = Math.floor(state.maxHp * dismantle.changes.maxHpMultiplier); 
+            newGold = dismantle.changes.goldSetTo; // 强制债务清零
+            finalMaxHp = Math.floor(state.maxHp * dismantle.changes.maxHpMultiplier); // 最大生命减半
             newDebtDays = 0;
             historyLog = `[SYSTEM] 欠债逾期。执行强制器官回收协议。债务已重置。`;
+            console.warn("⚠️ DISMANTLEMENT TRIGGERED");
           }
 
+          // 5. 账单触发 (Bill)
+          // 只有在没被拆解的情况下才触发新账单，不然太残忍了
           let bill = null;
           if (!dismantle?.triggered) {
             bill = triggerBill(newGold, newClass, BILLS as Bill[]);
           }
 
+          // 6. 随机事件触发 (Event)
+          // 优先级: 拆解 > 账单 > 随机事件
           let event = null;
           if (!dismantle?.triggered && !bill) {
             event = pickEvent(newClass, state.san, EVENTS as GameEvent[], state.inventory);
           }
 
+          // 7. 结局判定
           const tempState = { 
             ...state, 
             day: newDay, 
-            hp: Math.min(newHp, finalMaxHp), 
+            hp: Math.min(newHp, finalMaxHp), // 确保 HP 不超过新上限
             gold: newGold, 
             currentClass: newClass,
             flags: { ...state.flags, debtDays: newDebtDays }
           };
           const endingId = resolveEnding(tempState as GameState);
 
+          // 8. 应用所有变更
           set({
             day: newDay,
             hp: Math.min(newHp, finalMaxHp),
@@ -170,23 +182,7 @@ export const useGameStore = create<GameStore>()(
           });
         },
 
-        // --- 账单结算实现 (✅ Step 2 Core) ---
-        resolveBill: () => {
-          const state = get();
-          const bill = state.activeBill;
-          
-          if (!bill) return;
-
-          // 扣钱 (amount 为负数时即扣钱)
-          const newGold = state.gold + bill.amount;
-          
-          set({
-            gold: newGold,
-            activeBill: null, // 关闭弹窗
-            history: [...state.history, `[Bill] ${bill.name}: ${bill.amount > 0 ? '+' : ''}${bill.amount}`]
-          });
-        },
-
+        // --- 选项交互 ---
         chooseOption: (optId) => {
           const state = get();
           if (!state.currentEvent) return;
@@ -228,7 +224,7 @@ export const useGameStore = create<GameStore>()(
             gold: newGold,
             inventory: newInventory,
             unlockedArchives: newArchives,
-            ending: endingId || prev.ending, // 立即结算结局
+            ending: endingId || prev.ending,
             currentEvent: null,
             history: [...prev.history, `[Day ${prev.day}] ${option.label}`]
           }));
@@ -261,7 +257,7 @@ export const useGameStore = create<GameStore>()(
       {
         name: 'american-insight-storage',
         version: STORE_VERSION,
-        storage: createJSONStorage(() => localStorage), // ✅ 确保这里有 createJSONStorage
+        storage: createJSONStorage(() => localStorage),
         onRehydrateStorage: () => (state) => state?.setHydrated()
       }
     ),

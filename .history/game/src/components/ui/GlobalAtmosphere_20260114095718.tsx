@@ -2,8 +2,9 @@ import React, { useMemo } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// --- 子组件：注视的眼睛 ---
+// --- 子组件：注视的眼睛 (已修复 Hydration Mismatch) ---
 const EyeElement = ({ index }: { index: number }) => {
+  // 🔒 使用 useMemo 锁定随机值，防止客户端与服务端渲染不一致
   const styleConfig = useMemo(() => {
     return {
       top: Math.floor(Math.random() * 80) + 10 + '%',
@@ -35,19 +36,18 @@ const EyeElement = ({ index }: { index: number }) => {
 export const GlobalAtmosphere: React.FC = () => {
   const san = useGameStore((state) => state.san);
   const isMadness = san > 70; // 疯癫状态
-  // const isDelusion = san < 30; // 蓝药丸状态 (暂不通过背景色表现，交给滤镜)
+  const isDelusion = san < 30; // 蓝药丸幻觉状态
 
   return (
-    // ⬇️ 关键修改：z-index 降为 5 (位于场景之上，HUD 之下)，防止遮挡 UI
-    <div className="fixed inset-0 pointer-events-none z-[5] overflow-hidden w-screen h-screen">
+    <div className="fixed inset-0 pointer-events-none z-[100] overflow-hidden w-screen h-screen">
       
-      {/* 🚨 已移除：导致全黑的 solid background div */}
+      {/* 1. 动态背景层 (根据 SAN 值变色/蠕动) */}
+      <div className={`absolute inset-0 transition-colors duration-1000 ${isMadness ? 'bg-neutral-900' : isDelusion ? 'bg-blue-50' : 'bg-neutral-800'}`} />
       
-      {/* 1. 疯癫时的背景动态光晕 (半透明) */}
       <motion.div
-        animate={{ scale: [1, 1.2, 1], rotate: [0, 10, -10, 0], opacity: isMadness ? 0.3 : 0 }}
+        animate={{ scale: [1, 1.2, 1], rotate: [0, 10, -10, 0], opacity: isMadness ? 0.3 : 0.1 }}
         transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
-        className={`absolute -top-1/2 -left-1/2 w-[200vw] h-[200vw] rounded-[40%] blur-[100px] bg-red-900 mix-blend-overlay`}
+        className={`absolute -top-1/2 -left-1/2 w-[200vw] h-[200vw] rounded-[40%] blur-[100px] ${isMadness ? 'bg-red-900' : isDelusion ? 'bg-blue-200' : 'bg-neutral-700'}`}
       />
 
       {/* 2. 精神污染层 (眼球) */}
@@ -59,14 +59,23 @@ export const GlobalAtmosphere: React.FC = () => {
         )}
       </AnimatePresence>
 
-      {/* 3. CRT 滤镜层 */}
+      {/* 3. CRT 滤镜层 (始终存在) */}
       {/* 扫描线 */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_4px,3px_100%] pointer-events-none" />
+      <div className="absolute inset-0 bg-scanlines bg-[length:100%_4px] animate-scanline opacity-20" />
       {/* 暗角 */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_50%,rgba(0,0,0,0.6)_100%)] pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_50%,rgba(0,0,0,0.8)_100%)]" />
+      {/* RGB 色差边缘 */}
+      <div className="absolute inset-0 opacity-20 mix-blend-screen shadow-[inset_0_0_20px_rgba(255,0,0,0.5),inset_2px_0_5px_rgba(0,0,255,0.5)]" />
       
-      {/* 4. 噪点 (使用 CSS 动画) */}
-      <div className="absolute inset-0 opacity-[0.05] animate-grain bg-[url('/assets/textures/noise.svg')] pointer-events-none" />
+      {/* 4. 噪点 (SVG Filter 性能优化版) */}
+      <div className="absolute inset-0 opacity-[0.04]">
+        <svg className="h-full w-full">
+          <filter id="noise">
+            <feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch" />
+          </filter>
+          <rect width="100%" height="100%" filter="url(#noise)" />
+        </svg>
+      </div>
 
     </div>
   );

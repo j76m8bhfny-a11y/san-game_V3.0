@@ -74,7 +74,7 @@ export default function App() {
       )}
 
       {/* --- L2: 弹窗层 --- */}
-      {/* 每日结算 */}
+      {/* 每日结算 (修复: 点击只关闭弹窗，不重复触发下一天) */}
       {dailySummary && (
         <DailySettlement 
           data={dailySummary} 
@@ -97,33 +97,24 @@ export default function App() {
         onRestart={resetGame} 
       />
 
-      {/* --- L1: HUD & 控制台 & 交互层 --- */}
-      {/* ✅ 修复：添加 absolute inset-0 h-screen w-screen pointer-events-none 撑开容器 */}
-      <div className={`absolute inset-0 z-10 h-screen w-screen pointer-events-none flex flex-col justify-between transition-all duration-500 ${isShopOpen || isArchiveOpen || isMenuOpen ? 'blur-sm scale-[0.98] opacity-60' : ''}`}>
-        
-        {/* HUD (内部自带 pointer-events 处理) */}
+      {/* --- L1: HUD & 控制台 --- */}
+      <div className={`relative z-10 transition-all duration-500 ${isShopOpen || isArchiveOpen || isMenuOpen ? 'blur-sm scale-[0.98] opacity-60' : ''}`}>
         <MiniHUD />
         
-        {/* 中间留白区 (用于透视背景) */}
-        <div className="flex-1" />
+        {/* 情况 A: 有事件，显示终端 */}
+        {!activeBill && currentEvent && <MessageWindow event={currentEvent} />}
 
-        {/* 底部交互区 */}
-        <div className="pointer-events-auto">
-          {/* 情况 A: 有事件，显示终端 */}
-          {!activeBill && currentEvent && <MessageWindow event={currentEvent} />}
-
-          {/* 情况 B: 待机状态 (无事件且无账单)，显示推进按钮 (✅ 修复: pointer-events-auto) */}
-          {!activeBill && !currentEvent && (
-             <div className="w-full flex justify-center pb-12 animate-pulse">
-               <button 
-                 onClick={nextDay}
-                 className="bg-cyan-900/80 border-2 border-cyan-500 text-cyan-100 px-12 py-4 font-pixel text-xl hover:bg-cyan-700 hover:scale-105 transition-all shadow-[0_0_20px_rgba(0,255,255,0.3)] pointer-events-auto"
-               >
-                 [ ENTER_SLEEP_MODE ]
-               </button>
-             </div>
-          )}
-        </div>
+        {/* 情况 B: 待机状态 (无事件且无账单)，显示推进按钮 (✅ New) */}
+        {!activeBill && !currentEvent && (
+           <div className="absolute bottom-10 left-0 right-0 flex justify-center pb-8 animate-pulse">
+             <button 
+               onClick={nextDay}
+               className="bg-cyan-900/80 border-2 border-cyan-500 text-cyan-100 px-12 py-4 font-pixel text-xl hover:bg-cyan-700 hover:scale-105 transition-all shadow-[0_0_20px_rgba(0,255,255,0.3)]"
+             >
+               [ ENTER_SLEEP_MODE ]
+             </button>
+           </div>
+        )}
       </div>
 
       {/* --- L0: 背景 --- */}

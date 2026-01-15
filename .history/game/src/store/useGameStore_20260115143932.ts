@@ -2,35 +2,33 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage, devtools } from 'zustand/middleware';
 
-import {
-  GameState,
-  PlayerClass,
-  Item,
-  Bill,
-  GameEvent
+import { 
+  GameState, 
+  PlayerClass, 
+  Item, 
+  Bill, 
+  GameEvent 
 } from '@/types/schema';
 
-// 引入逻辑库
 import { checkClassUpdate, calcSalary, triggerBill } from '@/logic/core';
-import { resolveEnding } from '@/logic/endings'; // ✅ 结局逻辑已连接
+import { resolveEnding } from '@/logic/endings'; // 引入结局逻辑
 
-// 引入数据源
+// 1. 引入所有数据源
 import CLASSES from '@/assets/data/classes.json';
 import BILLS from '@/assets/data/bills.json';
-// @ts-ignore - 忽略 JSON 类型检查
-import ITEMS from '@/assets/data/items.json';
+import ITEMS from '@/assets/data/items.json'; // ✅ 新增：商品数据
 
-// 1. Actions 接口
 interface GameActions {
   nextDay: () => void;
   chooseOption: (optionId: string) => void;
   buyItem: (itemId: string) => void;
   
-  shopItems: Item[];       
-  dailySummary: any | null; 
-  
+  // UI 状态
   isShopOpen: boolean;
   setShopOpen: (isOpen: boolean) => void;
+
+  shopItems: Item[];       
+  dailySummary: any | null; 
   
   setHydrated: () => void;
   resetGame: () => void;
@@ -38,7 +36,6 @@ interface GameActions {
 
 type GameStore = GameState & GameActions;
 
-// 2. 初始状态
 const INITIAL_STATE: Omit<GameState, '_hasHydrated'> = {
   day: 1,
   hp: 100,
@@ -62,13 +59,10 @@ const INITIAL_STATE: Omit<GameState, '_hasHydrated'> = {
     hasCryptoKey: false
   },
   
-  points: { red: 0, wolf: 0, old: 0 },
-  
-  isShopOpen: false
+  points: { red: 0, wolf: 0, old: 0 }
 };
 
-// 🚨 升级版本号，强制重置旧缓存
-const STORE_VERSION = 2;
+const STORE_VERSION = 1;
 
 export const useGameStore = create<GameStore>()(
   devtools(
@@ -76,10 +70,14 @@ export const useGameStore = create<GameStore>()(
       (set, get) => ({
         ...INITIAL_STATE,
         _hasHydrated: false,
-        shopItems: ITEMS as Item[], // ✅ 确保商店数据加载
+        
+        // ✅ 修正：初始化时加载商品数据
+        shopItems: ITEMS as Item[], 
         dailySummary: null,
+        isShopOpen: false,
 
-        // --- 核心循环 ---
+        setShopOpen: (isOpen) => set({ isShopOpen: isOpen }),
+
         nextDay: () => {
           const state = get();
           
@@ -92,18 +90,18 @@ export const useGameStore = create<GameStore>()(
           const actualIncome = calcSalary(baseIncome, state.san);
           const dailyCost = classConfig.dailyCost;
 
-          // 3. 数值结算
+          // 3. 基础数值变化
           const newDay = state.day + 1;
-          const newHp = Math.max(0, state.hp - 1); 
+          const newHp = state.hp - 1; 
           const newGold = state.gold + actualIncome - dailyCost;
 
           // 4. 触发账单
           const bill = triggerBill(newGold, newClass, BILLS as Bill[]);
 
-          // 5. 结局判定 (Ω-Logic)
-          // 构造临时状态进行检查
+          // 5. 结局预判 (Node 4.3 逻辑)
+          // 构造一个临时状态用于检查结局
           const tempState = { ...state, day: newDay, hp: newHp, gold: newGold, currentClass: newClass };
-          const endingId = resolveEnding(tempState as GameState);
+          const endingId = resolveEnding(tempState);
 
           set({
             day: newDay,
@@ -111,7 +109,7 @@ export const useGameStore = create<GameStore>()(
             gold: newGold,
             currentClass: newClass,
             activeBill: bill || null,
-            ending: endingId || null, // ✅ 写入结局
+            ending: endingId || null, // 如果触发结局，直接设置
             dailySummary: {
               income: actualIncome,
               expense: dailyCost,
@@ -120,7 +118,6 @@ export const useGameStore = create<GameStore>()(
           });
         },
 
-        // --- 选项交互 ---
         chooseOption: (optId) => {
           const state = get();
           if (!state.currentEvent) return;
@@ -130,24 +127,12 @@ export const useGameStore = create<GameStore>()(
 
           const effects = option.effects || {};
           
-          // 计算新数值
-          const newHp = Math.max(0, state.hp + (effects.hp || 0));
-          const newSan = Math.max(0, Math.min(100, state.san + (effects.san || 0)));
-          const newGold = state.gold + (effects.gold || 0);
-
-          // 立即检查是否导致死亡 (如: 袭警)
-          let endingId = null;
-          if (effects.deathReason || newHp <= 0) {
-             const tempState = { ...state, hp: newHp, san: newSan, gold: newGold };
-             endingId = resolveEnding(tempState as GameState, effects.deathReason);
-          }
-          
-          // 物品处理
+          // 处理物品获取/失去
           let newInventory = [...state.inventory];
           if (effects.items) {
              effects.items.forEach(i => {
                 if (i.count > 0) newInventory.push(i.itemId);
-                else { // 移除物品
+                else {
                    const idx = newInventory.indexOf(i.itemId);
                    if (idx > -1) newInventory.splice(idx, 1);
                 }
@@ -155,24 +140,27 @@ export const useGameStore = create<GameStore>()(
           }
 
           set((prev) => ({
-            hp: newHp,
-            san: newSan,
-            gold: newGold,
+            hp: prev.hp + (effects.hp || 0),
+            san: prev.san + (effects.san || 0),
+            gold: prev.gold + (effects.gold || 0),
             inventory: newInventory,
-            ending: endingId || prev.ending, // ✅ 如果触发结局，立即结算
             currentEvent: null,
-            history: [...prev.history, `[Day ${prev.day}] ${option.label}`]
+            history: [...prev.history, `[Day ${prev.day}] ${state.currentEvent?.title}: ${option.label}`]
           }));
         },
 
-        // --- 购买逻辑 ---
+        // ✅ 修正：实现购买逻辑
         buyItem: (itemId) => {
           const state = get();
           const item = state.shopItems.find(i => i.id === itemId);
           
           if (!item) return;
-          if (state.gold < item.price) return; // 钱不够
+          if (state.gold < item.price) {
+            console.log("Not enough cash!"); // 这里未来可以加 Feedback
+            return; 
+          }
 
+          // 扣钱 & 加属性
           const effects = item.effects;
           
           set(prev => ({
@@ -185,24 +173,19 @@ export const useGameStore = create<GameStore>()(
           }));
         },
 
-        setShopOpen: (isOpen) => set({ isShopOpen: isOpen }),
         setHydrated: () => set({ _hasHydrated: true }),
-        
         resetGame: () => {
           localStorage.removeItem('american-insight-storage');
-          set({ ...INITIAL_STATE, shopItems: ITEMS as Item[], _hasHydrated: true });
+          set({ ...INITIAL_STATE, shopItems: ITEMS as Item[], _hasHydrated: true }); // Reset时也要记得重置shopItems
           window.location.reload(); 
         }
       }),
       {
         name: 'american-insight-storage',
-        version: STORE_VERSION, // ✅ 版本控制
+        version: STORE_VERSION,
         storage: createJSONStorage(() => localStorage),
         migrate: (persistedState: any, version) => {
-          if (version !== STORE_VERSION) {
-             // 版本不匹配时重置，防止旧数据污染
-             return INITIAL_STATE as any;
-          }
+          if (version !== STORE_VERSION) return INITIAL_STATE as any;
           return persistedState as GameStore;
         },
         onRehydrateStorage: () => (state) => {
@@ -213,6 +196,4 @@ export const useGameStore = create<GameStore>()(
     { name: 'GameStore' }
   )
 );
-
-// 上帝模式挂载
 (window as any).game = useGameStore;

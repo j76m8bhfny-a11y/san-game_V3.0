@@ -27,7 +27,7 @@ export const GameEnding: React.FC<GameEndingProps> = ({ endingId, onRestart }) =
     if (isDeath) {
       playSfx('sfx_glitch');
     } else {
-      // 可以在这里播放胜利 BGM
+      // 可以在这里播放胜利/结局BGM
     }
   }, [isDeath, stopBgm, playSfx]);
 
@@ -60,7 +60,6 @@ export const GameEnding: React.FC<GameEndingProps> = ({ endingId, onRestart }) =
 
         {/* 描述文本框 */}
         <div className="bg-[#111] border border-gray-800 p-6 md:p-10 rounded-sm mb-12 shadow-2xl relative group">
-          {/* 四角装饰 */}
           <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-gray-500" />
           <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-gray-500" />
           <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-gray-500" />

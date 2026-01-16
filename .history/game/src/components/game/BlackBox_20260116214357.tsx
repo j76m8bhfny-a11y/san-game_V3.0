@@ -9,7 +9,7 @@ interface BlackBoxProps {
 
 export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
   const unlockedIds = useGameStore(s => s.unlockedArchives);
-  const viewingId = useGameStore(s => s.viewingArchive); // 获取刚解锁的档案 ID
+  const viewingId = useGameStore(s => s.viewingArchive); // 自动打开刚解锁的
   const [selectedId, setSelectedId] = useState<string | null>(viewingId || null);
   const { playSfx } = useAudioStore();
 
@@ -80,14 +80,14 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
 
         {/* 右侧：阅读区 */}
         <div className="flex-1 bg-[#dcdcdc] relative overflow-hidden flex flex-col h-2/3 md:h-full">
-          {/* 屏幕效果：噪点 + 扫描线 + 阴影 */}
+          {/* 屏幕效果 */}
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_40%,rgba(0,0,0,0.3)_100%)] pointer-events-none z-20" />
           <div className="absolute inset-0 bg-[url('/assets/textures/noise.svg')] opacity-15 pointer-events-none z-10 mix-blend-multiply" />
           <div className="absolute top-0 left-0 w-full h-1 bg-cyan-500/20 animate-[scan_4s_linear_infinite] pointer-events-none z-10" />
           
           {currentDoc ? (
             <div className="flex-1 overflow-y-auto p-8 md:p-16 relative z-0 text-black font-serif animate-in zoom-in-95 duration-500">
-              {/* 文档头部 */}
+              {/* Header */}
               <div className="border-b-2 border-black pb-4 mb-6 flex justify-between items-end">
                 <div>
                   <h1 className="text-2xl md:text-4xl font-black uppercase tracking-tight leading-none">{currentDoc.title}</h1>
@@ -97,14 +97,14 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
                 </div>
               </div>
 
-              {/* 正文 */}
+              {/* Body */}
               <div className="text-base md:text-xl leading-relaxed text-justify space-y-6 max-w-2xl font-medium">
                 <p>{currentDoc.flavorText}</p>
-                {/* 装饰：涂抹痕迹 */}
+                {/* 模拟涂抹痕迹 */}
                 <p className="bg-black text-black select-none w-1/2 opacity-20 transform -rotate-1">REDACTED CONTENT</p>
               </div>
 
-              {/* 盖章 */}
+              {/* Stamp */}
               <div className="mt-12 opacity-70 rotate-[-12deg] border-4 border-red-700 text-red-700 inline-block px-4 py-1 font-black text-2xl tracking-widest mix-blend-multiply select-none">
                 TRUTH VERIFIED
               </div>

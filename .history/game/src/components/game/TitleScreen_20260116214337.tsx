@@ -29,13 +29,13 @@ const MenuCard: React.FC<MenuCardProps> = ({
       whileHover={{ y: -30, rotate: 0, scale: 1.1, zIndex: 50, transition: { type: "spring", stiffness: 300 } }}
       onClick={() => {
         if (!disabled) {
-          playSfx('sfx_click');
+          playSfx('sfx_click'); // 点击音效
           onClick();
         }
       }}
       onMouseEnter={() => {
         if (!disabled) {
-          playSfx('sfx_hover');
+          playSfx('sfx_hover'); // 悬停音效
           onHover(label);
         }
       }}
@@ -79,7 +79,6 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
   useEffect(() => {
     playBgm('bgm_title');
     const interval = setInterval(() => {
-      // 随机触发红色故障闪烁
       if (Math.random() > 0.8) {
         setGlitchTrigger(true);
         setTimeout(() => setGlitchTrigger(false), 150);
@@ -142,7 +141,7 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
       {/* L2: Menu Cards */}
       <div className="relative z-30 flex items-center justify-center gap-4 md:gap-12 perspective-[1000px]">
         
-        {/* New Game Card */}
+        {/* New Game */}
         <MenuCard 
           label="NEW GAME" subLabel="RESIDENT ALIEN" color="bg-[#E0F7FA]" rotate={-3}
           onClick={() => handleStart('NEW')} onHover={setHoverItem} delay={0.2}
@@ -155,21 +154,20 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
           </div>
         </MenuCard>
 
-        {/* Continue Card */}
+        {/* Continue */}
         <MenuCard 
           label="CONTINUE" subLabel={`DAY ${day}`} color="bg-white" rotate={2} disabled={!hasSave}
           onClick={() => handleStart('CONTINUE')} onHover={setHoverItem} delay={0.4}
         >
           <div className="w-full h-full border-t-8 border-blue-800 flex flex-col items-center pt-2">
-             <div className="w-14 h-14 bg-gray-200 rounded overflow-hidden mb-2 relative flex items-center justify-center bg-gray-300">
+             <div className="w-14 h-14 bg-gray-200 rounded overflow-hidden mb-2 relative">
                <img 
                  src="/assets/scenes/player_back.png" 
                  alt="User" 
                  className="w-full h-full object-cover grayscale opacity-60"
-                 onError={(e) => e.currentTarget.style.display = 'none'} 
+                 onError={(e) => e.currentTarget.style.display = 'none'} // Fallback: 保持灰色背景
                />
-               {/* 这里的 div 是 img 加载失败后的兜底显示 */}
-               <div className="absolute inset-0 flex items-center justify-center text-gray-500 font-bold text-xs opacity-50 z-0">IMG</div>
+               <div className="absolute inset-0 flex items-center justify-center text-gray-400 font-bold text-xs opacity-50 z-[-1]">IMG</div>
              </div>
              <div className="text-[6px] font-mono w-full px-2 text-center text-gray-500 leading-tight">
                 EMPLOYEE ID: 8940<br/>CLEARANCE: LOW
@@ -177,7 +175,7 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
           </div>
         </MenuCard>
 
-        {/* Settings Card */}
+        {/* Settings */}
         <MenuCard 
           label="SYSTEM" subLabel="CONFIG" color="bg-gray-900" textColor="text-gray-200" rotate={5}
           onClick={() => alert("SYSTEM LOCKED BY ADMIN")} onHover={setHoverItem} delay={0.6}

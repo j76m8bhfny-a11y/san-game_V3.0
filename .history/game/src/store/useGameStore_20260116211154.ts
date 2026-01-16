@@ -5,6 +5,7 @@ import {
   GameState,
   PlayerClass,
   Item,
+  Bill,
   GameEvent,
   GameNotification
 } from '@/types/schema';
@@ -69,8 +70,6 @@ const INITIAL_STATE: Omit<GameState, '_hasHydrated'> = {
   isShopOpen: false,
   isMenuOpen: false,
   isArchiveOpen: false,
-  isInventoryOpen: false, // ✅ Added
-  viewingArchive: null,   // ✅ Added
 
   lastAction: { type: 'NONE', id: 0 },
   currentRoast: null

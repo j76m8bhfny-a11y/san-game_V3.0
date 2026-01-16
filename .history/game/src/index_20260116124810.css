@@ -1,0 +1,46 @@
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Inter:wght@400;500;700;900&family=Playfair+Display:ital,wght@0,700;1,700&family=Press+Start+2P&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Phase 1: 蓝药丸 (Ins/Apple 风) */
+  .theme-blue-pill {
+    --bg-color: #F2F2F7;
+    --text-color: #1C1C1E;
+    --accent-color: #007AFF;
+    --panel-bg: rgba(255, 255, 255, 0.85); /* 毛玻璃 */
+    --border-color: rgba(0, 0, 0, 0.1);
+    --shadow-color: rgba(0, 0, 0, 0.1);
+  }
+
+  /* Phase 2: 裂痕 (工业/锈迹 风) */
+  .theme-cracks {
+    --bg-color: #2C2C2C;
+    --text-color: #E0E0E0;
+    --accent-color: #C0B283; /* 枯金 */
+    --panel-bg: #1A1A1A;
+    --border-color: #5A5A5A;
+    --shadow-color: #000000;
+  }
+
+  /* Phase 3: 古神 (故障/赛博 风) */
+  .theme-old-ruler {
+    --bg-color: #000000;
+    --text-color: #00FF41;
+    --accent-color: #FF00FF;
+    --panel-bg: rgba(0, 20, 0, 0.9);
+    --border-color: #00FF41;
+    --shadow-color: #00FF41;
+  }
+
+  body {
+    @apply transition-colors duration-1000 ease-in-out bg-black;
+  }
+}
+
+/* 实用类 */
+.glass-panel {
+  @apply backdrop-blur-xl border bg-[var(--panel-bg)] border-[var(--border-color)] shadow-xl;
+}

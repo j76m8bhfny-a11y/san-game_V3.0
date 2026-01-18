@@ -1,3 +1,4 @@
+// src/types/schema.ts
 import { z } from 'zod';
 
 export enum PlayerClass {
@@ -5,6 +6,13 @@ export enum PlayerClass {
   Worker = 'WORKER',
   Middle = 'MIDDLE',
   Capitalist = 'CAPITALIST'
+}
+
+// [新增] 缩放模式枚举：决定选项金钱的计算方式
+export enum ScalingMode {
+  FIXED = 'FIXED',           // 固定数值 (B选项：羊群效应)
+  CLASS_LEVERAGE = 'LEVERAGE', // 阶级杠杆 (A选项：公知/卖命)
+  INCOME_RATIO = 'INCOME',     // 收入比例 (C/D选项：买命/觉醒)
 }
 
 // --- Zod Schemas ---
@@ -16,7 +24,11 @@ export const ItemSchema = z.object({
   effects: z.object({
     hp: z.number(),
     san: z.number(),
-    maxHp: z.number().optional(),
+    gold: z.number().optional(), // [新增] 卖血/彩票获得的钱
+    maxHp: z.number().optional(), // [新增] 扣除血上限
+    debtClear: z.boolean().optional(), // [新增] 清空债务
+    lotteryWinRate: z.number().optional(), // [新增] 彩票中奖率
+    lotteryWinAmount: z.number().optional(), // [新增] 彩票奖金
   }),
   tags: z.array(z.enum(['CONSUMER', 'AWAKENING', 'DARK_WEB', 'WEAPON', 'TICKET'])),
   requiredClass: z.nativeEnum(PlayerClass).optional(),
@@ -48,8 +60,10 @@ export const EventOptionSchema = z.object({
   label: z.string(),
   effects: z.object({
     hp: z.number().optional(),
-    gold: z.number().optional(),
+    gold: z.number().optional(), // 这里填基础值或比例系数 (如 300 或 -0.2)
     san: z.number().optional(),
+    // [新增] 缩放模式，默认为固定数值
+    scaling: z.nativeEnum(ScalingMode).default(ScalingMode.FIXED),
     points: z.object({
       red: z.number().optional(),
       wolf: z.number().optional(),
@@ -97,91 +111,35 @@ export const EndingSchema = z.object({
 });
 
 // --- Type Inferences ---
-
 export type Item = z.infer<typeof ItemSchema>;
 export type Archive = z.infer<typeof ArchiveSchema>;
 export type Bill = z.infer<typeof BillSchema>;
 export type GameEvent = z.infer<typeof EventSchema>;
 export type Ending = z.infer<typeof EndingSchema>;
 
-// --- Game State Definition ---
-
-// 统一 Notification 定义，支持 UI Toast 和飘字反馈
-export interface GameNotification {
-  id: string;
-  message: string;
-  // 扩展类型定义以兼容所有使用场景
-  type: 'success' | 'warning' | 'error' | 'info' | 'GOLD' | 'HP' | 'SAN';
-  value?: number; // 可选数值，用于飘字
-}
-
 export interface GameState {
-  // 基础数值
   day: number;
   hp: number;
   maxHp: number;
   san: number;
   gold: number;
   currentClass: PlayerClass;
-  
-  // 动态数据
   currentEvent: GameEvent | null;
   activeBill: Bill | null;
   ending: string | null;
-  
-  // 每日结算数据 (修复 dailySummary 类型)
-  dailySummary: {
-    revenue: number;
-    expenses: number;
-    notes: string[];
-  } | null;
-
-  // 库存与记录
   inventory: string[];
   history: string[];
   unlockedArchives: string[];
-
-  // 核心逻辑标记
   flags: {
     isHomeless: boolean;
     debtDays: number;
     hasRedBook: boolean;
     hasCryptoKey: boolean;
-    [key: string]: any; // 允许索引访问
   };
-
-  // 觉醒积分
   points: {
     red: number;
     wolf: number;
     old: number;
   };
-
-  // UI 状态
-  isShopOpen: boolean;
-  isInventoryOpen: boolean;
-  isArchiveOpen: boolean;
-  isMenuOpen: boolean;
-  currentRoast: string | null;
-  notifications: GameNotification[];
-
-  // System
-  _hasHydrated: boolean;
-}
-export interface GameState {
-  // ... (基础数值、动态数据、库存记录等保持不变)
-
-  // --- UI 状态 ---
-  isShopOpen: boolean;
-  isInventoryOpen: boolean;
-  isArchiveOpen: boolean;
-  isMenuOpen: boolean;
-  currentRoast: string | null;
-  notifications: GameNotification[];
-  
-  // 🚨 [新增] 当前需要高亮显示的档案 ID (用于从事件跳转到档案界面)
-  viewingArchive: string | null; 
-
-  // System
   _hasHydrated: boolean;
 }

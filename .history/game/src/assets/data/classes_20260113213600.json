@@ -1,0 +1,42 @@
+[
+  {
+    "id": "HOMELESS",
+    "name": "流浪汉",
+    "thresholdMin": -999999999,
+    "thresholdMax": 499,
+    "dailyCost": 10,
+    "salaryBaseMin": 15,
+    "salaryBaseMax": 30,
+    "description": "净收益极低。处于“人体拆解”边缘。"
+  },
+  {
+    "id": "WORKER",
+    "name": "底层工人",
+    "thresholdMin": 500,
+    "thresholdMax": 4999,
+    "dailyCost": 50,
+    "salaryBaseMin": 80,
+    "salaryBaseMax": 120,
+    "description": "ED-06 高发区。一旦生病/罚款，立即跌回流浪汉。"
+  },
+  {
+    "id": "MIDDLE",
+    "name": "中产阶级",
+    "thresholdMin": 5000,
+    "thresholdMax": 49999,
+    "dailyCost": 200,
+    "salaryBaseMin": 300,
+    "salaryBaseMax": 500,
+    "description": "看似光鲜实则脆弱。停工即破产。"
+  },
+  {
+    "id": "CAPITALIST",
+    "name": "资本家",
+    "thresholdMin": 50000,
+    "thresholdMax": 999999999,
+    "dailyCost": 1000,
+    "salaryBaseMin": 2000,
+    "salaryBaseMax": 5000,
+    "description": "唯一安全区，但易触发高额查税。"
+  }
+]

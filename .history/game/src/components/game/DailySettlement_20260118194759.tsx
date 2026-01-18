@@ -2,17 +2,16 @@ import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { motion, AnimatePresence } from 'framer-motion';
 
-// 确保 Props 定义与 App.tsx 中的调用匹配
+// 🚨 修正 Props 接口，使其匹配 App.tsx 的调用
 interface DailySettlementProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
 export const DailySettlement: React.FC<DailySettlementProps> = ({ isOpen, onClose }) => {
-  // 从 Store 获取 v12.0 结算数据
+  // 直接从 Store 获取数据
   const { day, gold, hp, san, dailySummary } = useGameStore();
 
-  // 兜底默认值，防止 dailySummary 为空时报错
   const summary = dailySummary || { revenue: 0, expenses: 0, notes: [] };
 
   return (
@@ -51,8 +50,7 @@ export const DailySettlement: React.FC<DailySettlementProps> = ({ isOpen, onClos
                   <div className="pt-2">
                     <div className="text-xs text-gray-500 mb-1">NOTIFICATIONS:</div>
                     {summary.notes.map((note, idx) => (
-                      /* 修复：使用 &gt; 转义大于号，避免 JSX 解析错误 */
-                      <div key={idx} className="text-xs text-yellow-600 mb-1">&gt; {note}</div>
+                      <div key={idx} className="text-xs text-yellow-600 mb-1">> {note}</div>
                     ))}
                   </div>
                 )}

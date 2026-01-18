@@ -1,0 +1,49 @@
+[
+  {
+    "id": "EVT_HOA_LAWN",
+    "title": "枯黄的草坪",
+    "text": {
+      "lowSan": "社区经理指着你家微黄的草坪，眼神充满了鄙视。",
+      "highSan": "在干旱的沙漠里维持英式草坪的绿色幻觉，这是权力的傲慢。"
+    },
+    "conditions": { "requiredClass": ["WORKER", "MIDDLE", "CAPITALIST"] },
+    "options": {
+      "A": {
+        "label": "重铺并道歉",
+        "effects": {
+          "gold": 300, 
+          "scaling": "LEVERAGE", 
+          "hp": -3,
+          "san": -4
+        }
+      },
+      "B": {
+        "label": "偷偷多浇点水",
+        "effects": {
+          "gold": 50, 
+          "scaling": "FIXED", 
+          "hp": 2,
+          "san": -2
+        }
+      },
+      "C": {
+        "label": "购买喷漆服务",
+        "effects": {
+          "gold": -0.2, 
+          "scaling": "INCOME", 
+          "hp": 8,
+          "san": 2
+        }
+      },
+      "D": {
+        "label": "插牌抗议",
+        "effects": {
+          "gold": -0.4, 
+          "scaling": "INCOME", 
+          "hp": -8,
+          "san": 10
+        }
+      }
+    }
+  }
+]

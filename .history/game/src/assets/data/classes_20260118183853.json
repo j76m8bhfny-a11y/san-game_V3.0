@@ -1,0 +1,42 @@
+[
+  {
+    "id": "HOMELESS",
+    "name": "流浪汉",
+    "thresholdMin": -999999999,
+    "thresholdMax": 499,
+    "dailyCost": 0,
+    "salaryBaseMin": 40,
+    "salaryBaseMax": 60,
+    "description": "每月被动 HP-10 (寒冬)。A+I01 是唯一的生存循环。"
+  },
+  {
+    "id": "WORKER",
+    "name": "蓝领工人",
+    "thresholdMin": 500,
+    "thresholdMax": 24999,
+    "dailyCost": 2400,
+    "salaryBaseMin": 3000,
+    "salaryBaseMax": 3400,
+    "description": "月光族。每3个月必须买药。一旦生病，储蓄归零。"
+  },
+  {
+    "id": "MIDDLE",
+    "name": "中产阶级",
+    "thresholdMin": 25000,
+    "thresholdMax": 499999,
+    "dailyCost": 7500,
+    "salaryBaseMin": 11000,
+    "salaryBaseMax": 13000,
+    "description": "泡沫阶级。C选项价格翻倍。一次股市熔断就能让你跌回蓝领。"
+  },
+  {
+    "id": "CAPITALIST",
+    "name": "资本家",
+    "thresholdMin": 500000,
+    "thresholdMax": 999999999,
+    "dailyCost": 16000,
+    "salaryBaseMin": 70000,
+    "salaryBaseMax": 90000,
+    "description": "虚无阶级。钱只是数字。选D会导致SAN爆炸。"
+  }
+]

@@ -1,5 +1,5 @@
 [
-  { "id": "I01", "name": "临期罐头", "price": 10, "effects": { "hp": 10, "san": -5 }, "tags": ["CONSUMER"], "flavorText": "流浪汉的神器。抵消严寒(-10HP)。" },
+  { "id": "I01", "name": "临期罐头", "price": 10, "effects": { "hp": 10, "san": -5 }, "tags": ["CONSUMER"], "flavorText": "流浪汉的神器。虽然过期了，但热量是真实的。" },
   { "id": "I02", "name": "廉价酒精", "price": 40, "effects": { "hp": 5, "san": -15 }, "tags": ["CONSUMER"], "flavorText": "工人的止痛药。喝醉了，A选项的剥削就不疼了。" },
   { "id": "I03", "name": "处方镇静剂", "price": 150, "effects": { "hp": 5, "san": -40 }, "tags": ["CONSUMER"], "flavorText": "中产阶级重置药。一键回归社畜模式。" },
   { "id": "I04", "name": "强效抗生素", "price": 400, "effects": { "hp": 40, "san": 0 }, "tags": ["CONSUMER"], "flavorText": "阶级过滤器。买了它你就存不下钱，但不买你会死。" },

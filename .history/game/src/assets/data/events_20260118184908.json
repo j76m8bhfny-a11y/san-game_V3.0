@@ -1,0 +1,437 @@
+[
+  {
+    "id": "EVT_WORKER_01",
+    "title": "小费罐",
+    "text": {
+      "lowSan": "顾客微笑着离开了，虽然没给小费，但经理提醒你：服务的本质是传递快乐，这份尊严是无价的。",
+      "highSan": "顾客留下了5美元。经理立刻拿走并以此抵扣了所谓的“信用卡终端磨损费”。这就是薪资盗窃，比银行抢劫案涉案金额高得多的商业模式。"
+    },
+    "conditions": {
+      "requiredClass": [
+        "WORKER"
+      ]
+    },
+    "options": {
+      "A": {
+        "label": "微笑点头",
+        "effects": {
+          "hp": -5,
+          "gold": 0,
+          "san": -5
+        }
+      },
+      "B": {
+        "label": "私下抱怨",
+        "effects": {
+          "hp": 0,
+          "san": 5
+        }
+      },
+      "C": {
+        "label": "偷吃剩菜",
+        "effects": {
+          "hp": 15,
+          "gold": 0,
+          "san": 5
+        },
+        "items": [
+          {
+            "itemId": "I03",
+            "count": 1
+          }
+        ]
+      },
+      "D": {
+        "label": "引用劳动法",
+        "sanLock": 70,
+        "isGlitched": true,
+        "archiveId": "No.42",
+        "effects": {
+          "san": 20,
+          "hp": -10
+        }
+      }
+    }
+  },
+  {
+    "id": "EVT_WORKER_02",
+    "title": "工伤事故",
+    "text": {
+      "lowSan": "你在流水线上滑倒了。HR 握着你的手说：“我们可以私下解决，毕竟公司就是你的第二个家，家丑不可外扬。”",
+      "highSan": "为了将生产效率提高 2%，主管擅自关闭了红外安全光栅。你的手指被切断不是意外，而是季度财报里必要的耗材成本。"
+    },
+    "conditions": {
+      "requiredClass": [
+        "WORKER"
+      ]
+    },
+    "options": {
+      "A": {
+        "label": "含泪忍受",
+        "effects": {
+          "hp": -20,
+          "gold": 50,
+          "san": -10
+        }
+      },
+      "B": {
+        "label": "申请工伤",
+        "effects": {
+          "hp": -5,
+          "gold": -100,
+          "san": 10
+        }
+      },
+      "C": {
+        "label": "用胶布缠上",
+        "effects": {
+          "hp": -10,
+          "gold": 0,
+          "san": 0
+        }
+      },
+      "D": {
+        "label": "计算耗材率",
+        "sanLock": 70,
+        "isGlitched": true,
+        "archiveId": "No.50",
+        "effects": {
+          "san": 25,
+          "hp": -5
+        }
+      }
+    }
+  },
+  {
+    "id": "EVT_MIDDLE_01",
+    "title": "HOA 草坪警察",
+    "text": {
+      "lowSan": "社区委员会发来温馨提示：为了维护咱们高尚社区的整体形象和房产增值，请务必修剪那多出来的0.5英寸草坪。",
+      "highSan": "一个退休牙医正拿着游标卡尺测量你家草坪。这是一个微型的法西斯政权，由于没有真正的权力，他们只能通过折磨邻居来获得高潮。"
+    },
+    "conditions": {
+      "requiredClass": [
+        "MIDDLE"
+      ]
+    },
+    "options": {
+      "A": {
+        "label": "缴纳罚款",
+        "effects": {
+          "hp": 0,
+          "gold": -200,
+          "san": -5
+        }
+      },
+      "B": {
+        "label": "据理力争",
+        "effects": {
+          "hp": -5,
+          "gold": 0,
+          "san": 5
+        }
+      },
+      "C": {
+        "label": "雇佣童工",
+        "effects": {
+          "hp": 0,
+          "gold": -50,
+          "san": -2
+        }
+      },
+      "D": {
+        "label": "拆穿监控狂",
+        "sanLock": 75,
+        "isGlitched": true,
+        "archiveId": "No.12",
+        "effects": {
+          "san": 20,
+          "hp": -5
+        }
+      }
+    }
+  },
+  {
+    "id": "EVT_MIDDLE_02",
+    "title": "学校募捐",
+    "text": {
+      "lowSan": "校长发来邮件，邀请您为新图书馆建设“自愿”捐款。一切都是为了孩子们更光明的未来，不是吗？",
+      "highSan": "这是保护费。如果你不交这笔钱，你的孩子就会被老师“随机”安排到霸凌多发区，直到他们的精神崩溃或你掏钱为止。"
+    },
+    "conditions": {
+      "requiredClass": [
+        "MIDDLE"
+      ]
+    },
+    "options": {
+      "A": {
+        "label": "慷慨解囊",
+        "effects": {
+          "hp": 0,
+          "gold": -500,
+          "san": -10
+        }
+      },
+      "B": {
+        "label": "礼貌拒绝",
+        "effects": {
+          "hp": -20,
+          "gold": 0,
+          "san": 10
+        }
+      },
+      "C": {
+        "label": "做义工抵扣",
+        "effects": {
+          "hp": -15,
+          "gold": 0,
+          "san": 5
+        }
+      },
+      "D": {
+        "label": "调查回扣链",
+        "sanLock": 80,
+        "isGlitched": true,
+        "archiveId": "No.33",
+        "effects": {
+          "san": 30,
+          "gold": -100
+        }
+      }
+    }
+  },
+  {
+    "id": "EVT_HOMELESS_01",
+    "title": "市政庇护",
+    "text": {
+      "lowSan": "一位和蔼的社工给了你一张去往阳光州的免费长途巴士票。城市正在通过这种方式，帮助无家可归者寻找温暖的新起点。",
+      "highSan": "这叫“灰狗疗法”。他们给你一张单程票把你扔到外地，只是为了让本地的贫困统计数据好看一点。你会死在另一座城市的街头，但那就不归他们管了。"
+    },
+    "conditions": {
+      "requiredClass": [
+        "HOMELESS"
+      ]
+    },
+    "options": {
+      "A": {
+        "label": "接受车票",
+        "effects": {
+          "hp": 10,
+          "gold": 0,
+          "san": -15
+        }
+      },
+      "B": {
+        "label": "拒绝离开",
+        "effects": {
+          "hp": -15,
+          "gold": 0,
+          "san": 10
+        }
+      },
+      "C": {
+        "label": "索要零钱",
+        "effects": {
+          "hp": -5,
+          "gold": 20,
+          "san": -5
+        }
+      },
+      "D": {
+        "label": "回忆塔斯基吉",
+        "sanLock": 70,
+        "isGlitched": true,
+        "archiveId": "No.01",
+        "effects": {
+          "san": 25,
+          "hp": -10
+        }
+      }
+    }
+  },
+  {
+    "id": "EVT_HOMELESS_02",
+    "title": "敌对建筑",
+    "text": {
+      "lowSan": "公园的长椅换新了，中间加装了漂亮的金属扶手。市政厅说这是为了帮助老年人更方便地起身。",
+      "highSan": "加装扶手是为了确保你无法躺下。还在桥洞下铺了尖刺。在这个城市，穷人不仅不配拥有住房，连睡觉的姿势都是违法的。"
+    },
+    "conditions": {
+      "requiredClass": [
+        "HOMELESS"
+      ]
+    },
+    "options": {
+      "A": {
+        "label": "睡水泥地",
+        "effects": {
+          "hp": -20,
+          "gold": 0,
+          "san": -5
+        }
+      },
+      "B": {
+        "label": "破坏扶手",
+        "effects": {
+          "hp": -10,
+          "gold": 0,
+          "san": 15
+        }
+      },
+      "C": {
+        "label": "翻找猫粮",
+        "effects": {
+          "hp": 8,
+          "gold": 0,
+          "san": -5
+        },
+        "items": [
+          {
+            "itemId": "I14",
+            "count": 1
+          }
+        ]
+      },
+      "D": {
+        "label": "研究橙剂逻辑",
+        "sanLock": 75,
+        "isGlitched": true,
+        "archiveId": "No.24",
+        "effects": {
+          "san": 20,
+          "hp": -5
+        }
+      }
+    }
+  },
+  {
+    "id": "EVT_CAPITALIST_01",
+    "title": "做空报告",
+    "text": {
+      "lowSan": "市场存在低效，你的做空报告只是为了帮助投资者发现真相，从而让资本流动到更有效率的地方。",
+      "highSan": "你正在往一家摇摇欲坠的公司上泼汽油。如果你点火烧掉它，你不仅能拿到保险金，还能通过做空股票赚双份。毁灭比创造赚钱多了。"
+    },
+    "conditions": {
+      "requiredClass": [
+        "CAPITALIST"
+      ]
+    },
+    "options": {
+      "A": {
+        "label": "发布报告",
+        "effects": {
+          "hp": 0,
+          "gold": 5000,
+          "san": -15
+        }
+      },
+      "B": {
+        "label": "对冲风险",
+        "effects": {
+          "hp": 0,
+          "gold": 1000,
+          "san": -5
+        }
+      },
+      "C": {
+        "label": "雇佣水军",
+        "effects": {
+          "hp": 0,
+          "gold": 3000,
+          "san": -20
+        }
+      },
+      "D": {
+        "label": "复刻普渡模式",
+        "sanLock": 85,
+        "isGlitched": true,
+        "archiveId": "No.05",
+        "effects": {
+          "san": 40,
+          "gold": 10000
+        }
+      }
+    }
+  },
+  {
+      "id": "EVT_SPECIAL_GUN",
+      "title": "深夜敲门声",
+      "text": {
+        "lowSan": "有人在敲门。你握紧了手里的 AR-15。门外的人说他是送披萨的，但你没点披萨。你的手指在扳机上颤抖。",
+        "highSan": "警察接到了噪音投诉上门查看。通过猫眼，你看到了他们手按在枪套上。你手里的武器现在成了你的催命符。"
+      },
+      "conditions": {
+        "hasItem": "I10"
+      },
+      "options": {
+        "A": {
+          "label": "开门投降",
+          "effects": { "san": -10, "items": [{"itemId": "I10", "count": -1}] }
+        },
+        "B": {
+          "label": "开枪",
+          "effects": { "hp": -999,"deathReason": "COP"},
+          "archiveId": "ED-04"
+        },
+        "C": {
+          "label": "从后窗逃跑",
+          "effects": { "hp": -30, "san": 10 }
+        },
+        "D": {
+          "label": "宪法第二修正案",
+          "sanLock": 10,
+          "isGlitched": true,
+          "effects": { "san": -50 }
+        }
+      }
+    },
+  {
+    "id": "EVT_CAPITALIST_02",
+    "title": "FDA 审批",
+    "text": {
+      "lowSan": "我们需要加速新药的审批流程。虽然临床数据还不完美，但为了让患者早日摆脱痛苦，这是必要的权宜之计。",
+      "highSan": "只要修改几个致死率数据，就能让股价翻倍。在集体诉讼和死者家属找上门之前，我们有足够的时间在高点套现离场。"
+    },
+    "conditions": {
+      "requiredClass": [
+        "CAPITALIST"
+      ]
+    },
+    "options": {
+      "A": {
+        "label": "强行获批",
+        "effects": {
+          "hp": 0,
+          "gold": 8000,
+          "san": -30
+        }
+      },
+      "B": {
+        "label": "补充实验",
+        "effects": {
+          "hp": 0,
+          "gold": -2000,
+          "san": 10
+        }
+      },
+      "C": {
+        "label": "游说官员",
+        "effects": {
+          "hp": 0,
+          "gold": -5000,
+          "san": -10
+        }
+      },
+      "D": {
+        "label": "制造瘾君子",
+        "sanLock": 90,
+        "isGlitched": true,
+        "archiveId": "No.05",
+        "effects": {
+          "san": 50,
+          "gold": 15000
+        }
+      }
+    }
+  }
+]

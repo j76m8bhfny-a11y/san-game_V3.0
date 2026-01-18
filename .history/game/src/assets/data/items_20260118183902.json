@@ -1,0 +1,93 @@
+[
+  {
+    "id": "I01",
+    "name": "临期罐头",
+    "price": 10,
+    "effects": { "hp": 10, "san": -5 },
+    "tags": ["CONSUMER"],
+    "flavorText": "【生存基石】流浪汉的救命稻草。刚好抵消寒夜的冻伤，顺便让你变得迟钝一点。"
+  },
+  {
+    "id": "I02",
+    "name": "廉价酒精",
+    "price": 40,
+    "effects": { "hp": 5, "san": -15 },
+    "tags": ["CONSUMER"],
+    "flavorText": "【蓝领快乐水】当你觉得生活太清醒、太痛苦时，喝这个。快速降低 SAN 值以保住工作。"
+  },
+  {
+    "id": "I03",
+    "name": "处方镇静剂",
+    "price": 150,
+    "effects": { "hp": 5, "san": -40 },
+    "tags": ["CONSUMER"],
+    "flavorText": "【中产重置药】一键清空多余的想法。回归那个为了 120% 奖金而微笑的社畜。"
+  },
+  {
+    "id": "I04",
+    "name": "抗生素",
+    "price": 400,
+    "effects": { "hp": 40, "san": 0 },
+    "tags": ["CONSUMER"],
+    "flavorText": "【阶级过滤器】工人的保命符。定价刚好是你月结余的一半。买了它，你就很难爬进中产。"
+  },
+  {
+    "id": "I05",
+    "name": "全效维生舱",
+    "price": 3000,
+    "effects": { "hp": 100, "san": 0 },
+    "tags": ["CONSUMER"],
+    "flavorText": "【富人特权】一次回满。穷人只能看着生命值慢慢流干。"
+  },
+  {
+    "id": "I06",
+    "name": "地下出版物",
+    "price": 120,
+    "effects": { "hp": -10, "san": 15 },
+    "tags": ["AWAKENING"],
+    "flavorText": "【流浪汉陷阱】虽然加 SAN 便宜，但会扣血。身体虚弱的人看了会直接暴毙。"
+  },
+  {
+    "id": "I07",
+    "name": "赎罪券 (NFT)",
+    "price": 1000,
+    "effects": { "hp": 0, "san": 5 },
+    "tags": ["CONSUMER"],
+    "flavorText": "【优雅觉醒】唯一不扣血的觉醒方式。资本家专属的赛博忏悔。"
+  },
+  {
+    "id": "D01",
+    "name": "地下卖血",
+    "price": 0,
+    "effects": { "gold": 40, "hp": -15, "san": 0 },
+    "tags": ["DARK_WEB"],
+    "unlockCondition": "gold < 0",
+    "flavorText": "针头很粗，卫生堪忧。但那 40 美元是现结的。"
+  },
+  {
+    "id": "D03",
+    "name": "临床试药 (一期)",
+    "price": 0,
+    "effects": { "gold": 500, "hp": 0, "maxHp": -10, "san": 0 },
+    "tags": ["DARK_WEB"],
+    "unlockCondition": "gold < 0",
+    "flavorText": "签了免责协议。这药还在实验阶段，主要副作用是...让你的生命上限永久缩短。"
+  },
+  {
+    "id": "D05",
+    "name": "左肾摘除手术",
+    "price": 0,
+    "effects": { "gold": 500, "hp": -30, "maxHp": -30, "debtClear": true },
+    "tags": ["DARK_WEB"],
+    "unlockCondition": "gold < -2000",
+    "flavorText": "你醒来时，背上的巨额债务和肚子里的肾都不见了。人生重启。"
+  },
+  {
+    "id": "I13",
+    "name": "强力球彩票",
+    "price": 10,
+    "effects": { "hp": 0, "san": 1, "lotteryWinRate": 0.01, "lotteryWinAmount": 5000 },
+    "tags": ["TICKET"],
+    "flavorText": "穷人税。1% 的几率获得 $5,000。你买的不是概率，是那一瞬间的幻想。"
+  }
+]

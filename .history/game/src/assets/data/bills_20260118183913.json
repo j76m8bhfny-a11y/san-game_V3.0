@@ -1,0 +1,66 @@
+[
+  {
+    "id": "RNG_POLAR_VORTEX",
+    "name": "极地涡旋",
+    "amount": 0,
+    "type": "JUMP_SCARE",
+    "triggerCondition": { "requiredClass": ["HOMELESS"] },
+    "flavorText": "HP -25。百年一遇的寒潮。没有暖气的人只能祈祷。(系统已自动扣除HP)"
+  },
+  {
+    "id": "RNG_CITY_SWEEP",
+    "name": "城市清理",
+    "amount": -50,
+    "type": "SURPRISE",
+    "triggerCondition": { "requiredClass": ["HOMELESS"] },
+    "flavorText": "警察没收了你的帐篷。没钱交罚款？那就挨顿打吧 (-5 HP)。"
+  },
+  {
+    "id": "RNG_CAR_BREAKDOWN",
+    "name": "变速箱报废",
+    "amount": -1200,
+    "type": "JUMP_SCARE",
+    "triggerCondition": { "requiredClass": ["WORKER"] },
+    "flavorText": "修车厂老板说这已经是良心价了。你的储蓄瞬间清空。"
+  },
+  {
+    "id": "RNG_TOOTHACHE",
+    "name": "急性牙髓炎",
+    "amount": -1500,
+    "type": "JUMP_SCARE",
+    "triggerCondition": { "requiredClass": ["WORKER", "MIDDLE"] },
+    "flavorText": "医保不包牙科。要么交钱，要么忍受 HP-30 的剧痛。"
+  },
+  {
+    "id": "RNG_MARKET_CRASH",
+    "name": "黑色星期一",
+    "amount": -10000,
+    "type": "JUMP_SCARE",
+    "triggerCondition": { "requiredClass": ["MIDDLE"] },
+    "flavorText": "华尔街打了个喷嚏，你的养老金进了 ICU。资产大幅缩水。"
+  },
+  {
+    "id": "LUCK_WINDFALL_HUGE",
+    "name": "加密钱包找回",
+    "amount": 60000,
+    "type": "SURPRISE",
+    "triggerCondition": { "requiredClass": ["WORKER", "MIDDLE"] },
+    "flavorText": "你在旧硬盘里发现了 10 年前的私钥。一夜之间，你跨越了阶级。"
+  },
+  {
+    "id": "LUCK_WINDFALL_MID",
+    "name": "远房遗产",
+    "amount": 10000,
+    "type": "SURPRISE",
+    "triggerCondition": { "requiredClass": ["HOMELESS", "WORKER"] },
+    "flavorText": "一个你从未见过的姑妈去世了。这笔钱足以让你搬出贫民窟。"
+  },
+  {
+    "id": "LUCK_SCRATCH_OFF",
+    "name": "刮刮乐中奖",
+    "amount": 500,
+    "type": "SURPRISE",
+    "triggerCondition": {},
+    "flavorText": "运气不错。这笔钱刚好够抵消下个月的账单。"
+  }
+]

@@ -1,0 +1,138 @@
+[
+  {
+    "id": "B01",
+    "name": "呼叫救护车",
+    "amount": -1500,
+    "type": "JUMP_SCARE",
+    "triggerCondition": {},
+    "flavorText": "你只是晕倒了，但救护车账单让你想再晕一次。"
+  },
+  {
+    "id": "B02",
+    "name": "牙科根管治疗",
+    "amount": -800,
+    "type": "JUMP_SCARE",
+    "triggerCondition": {},
+    "flavorText": "牙医说这颗牙价值 $800，或者你可以选择老虎钳（免费）。"
+  },
+  {
+    "id": "B03",
+    "name": "IRS 税务审计",
+    "amount": -2000,
+    "type": "JUMP_SCARE",
+    "triggerCondition": {
+      "minGold": 2000
+    },
+    "flavorText": "这是一个劫富也劫贫的机构。他们连小丑的化妆费都要查税。"
+  },
+  {
+    "id": "B04",
+    "name": "HOA 草坪罚款",
+    "amount": -200,
+    "type": "JUMP_SCARE",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE", "CAPITALIST"]
+    },
+    "flavorText": "你的草坪比社区标准高了 0.5 英寸。邻居举报了你。"
+  },
+  {
+    "id": "B05",
+    "name": "信用卡滞纳金",
+    "amount": -150,
+    "type": "JUMP_SCARE",
+    "triggerCondition": {
+      "isDebtOnly": true
+    },
+    "flavorText": "因为你没钱，所以你要付更多的钱。逻辑闭环。"
+  },
+  {
+    "id": "B06",
+    "name": "强制小费",
+    "amount": -50,
+    "type": "JUMP_SCARE",
+    "triggerCondition": {
+      "requiredClass": ["WORKER", "MIDDLE"]
+    },
+    "flavorText": "iPad屏幕转了过来，最低选项是 25%。服务员正盯着你。"
+  },
+  {
+    "id": "B07",
+    "name": "教科书费/学贷",
+    "amount": -300,
+    "type": "JUMP_SCARE",
+    "triggerCondition": {
+      "requiredClass": ["WORKER", "MIDDLE"]
+    },
+    "flavorText": "一本薄薄的书卖 $300，大概是用金箔印的吧。"
+  },
+  {
+    "id": "B08",
+    "name": "车窗被砸",
+    "amount": -400,
+    "type": "JUMP_SCARE",
+    "triggerCondition": {
+      "requiredClass": ["WORKER", "MIDDLE", "CAPITALIST"]
+    },
+    "flavorText": "旧金山特产。警察给了你一张报案回执，仅此而已。"
+  },
+  {
+    "id": "B09",
+    "name": "离婚赡养费",
+    "amount": -5000,
+    "type": "JUMP_SCARE",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE", "CAPITALIST"]
+    },
+    "flavorText": "爱情是无价的，但离开爱情是有标价的。"
+  },
+  {
+    "id": "B10",
+    "name": "非法摆摊罚单",
+    "amount": -100,
+    "type": "JUMP_SCARE",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS", "WORKER"]
+    },
+    "flavorText": "哪怕是卖柠檬水，没有执照也是重罪。"
+  },
+  {
+    "id": "S01",
+    "name": "刮刮乐中奖",
+    "amount": 200,
+    "type": "SURPRISE",
+    "triggerCondition": {},
+    "flavorText": "你的多巴胺和钱包同时得到了一点小小的补偿。"
+  },
+  {
+    "id": "S02",
+    "name": "集体诉讼赔偿",
+    "amount": 12.5,
+    "type": "SURPRISE",
+    "triggerCondition": {},
+    "flavorText": "某大厂泄露了你的隐私，这是你分到的“封口费”。"
+  },
+  {
+    "id": "S03",
+    "name": "捡到现金",
+    "amount": 50,
+    "type": "SURPRISE",
+    "triggerCondition": {},
+    "flavorText": "也许是某个倒霉鬼掉的救命钱。现在归你了。"
+  },
+  {
+    "id": "S04",
+    "name": "税务退税",
+    "amount": 800,
+    "type": "SURPRISE",
+    "triggerCondition": {},
+    "flavorText": "政府把无息借用你一年的钱还给你了，你居然很感激。"
+  },
+  {
+    "id": "S05",
+    "name": "富豪的怜悯",
+    "amount": 5000,
+    "type": "SURPRISE",
+    "triggerCondition": {},
+    "flavorText": "一个Youtuber为了拍视频给了你一叠钱。记得要在镜头前哭出来。"
+  }
+]

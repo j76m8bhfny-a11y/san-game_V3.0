@@ -1,0 +1,282 @@
+[
+  {
+    "id": "I01",
+    "name": "Temu 砍一刀",
+    "price": 0,
+    "effects": {
+      "hp": 5,
+      "san": -5
+    },
+    "tags": ["CONSUMER"],
+    "flavorText": "消耗社交信用。你骚扰了所有亲友，终于领到了免费的垃圾袋。"
+  },
+  {
+    "id": "I02",
+    "name": "高果糖玉米糖浆",
+    "price": 5,
+    "effects": {
+      "hp": 10,
+      "san": -2
+    },
+    "tags": ["CONSUMER"],
+    "flavorText": "也就是廉价汽水。比水还便宜，喝完感觉血管里流淌着胰岛素。"
+  },
+  {
+    "id": "I03",
+    "name": "1美元炸鸡",
+    "price": 1,
+    "effects": {
+      "hp": 15,
+      "san": -5
+    },
+    "tags": ["CONSUMER"],
+    "flavorText": "甚至不需要咀嚼。这是工业化养殖对人类的恩赐。"
+  },
+  {
+    "id": "I04",
+    "name": "抗抑郁药 (SSRI)",
+    "price": 50,
+    "effects": {
+      "hp": 30,
+      "san": -999
+    },
+    "tags": ["CONSUMER"],
+    "flavorText": "强制归零。世界突然变得柔和、模糊且可以忍受了。"
+  },
+  {
+    "id": "I05",
+    "name": "OnlyFans 订阅",
+    "price": 25,
+    "effects": {
+      "hp": 5,
+      "san": -10
+    },
+    "tags": ["CONSUMER"],
+    "flavorText": "对着屏幕这种发光的玻璃板寻求慰藉。这叫“准社会关系”。"
+  },
+  {
+    "id": "I06",
+    "name": "大麻软糖",
+    "price": 30,
+    "effects": {
+      "hp": 10,
+      "san": -15
+    },
+    "tags": ["CONSUMER"],
+    "flavorText": "加州特产。时间变慢了，焦虑消失了，智商也暂时离家出走了。"
+  },
+  {
+    "id": "I07",
+    "name": "Netflix 会员",
+    "price": 15,
+    "effects": {
+      "hp": 5,
+      "san": -5
+    },
+    "tags": ["CONSUMER"],
+    "flavorText": "只要一直自动播放，你就不用去思考明天怎么过。"
+  },
+  {
+    "id": "I08",
+    "name": "星巴克冰美式",
+    "price": 8,
+    "effects": {
+      "hp": -2,
+      "san": 2
+    },
+    "tags": ["CONSUMER"],
+    "flavorText": "中产阶级的燃料。让你在焦虑中保持清醒。"
+  },
+  {
+    "id": "I09",
+    "name": "有机全食沙拉",
+    "price": 40,
+    "effects": {
+      "hp": 20,
+      "san": 1
+    },
+    "tags": ["CONSUMER"],
+    "flavorText": "只有中产阶级才吃得起的草。吃完感觉自己道德高尚。"
+  },
+  {
+    "id": "I10",
+    "name": "枪 (AR-15)",
+    "price": 800,
+    "effects": {
+      "hp": 0,
+      "san": -20
+    },
+    "tags": ["CONSUMER", "WEAPON"],
+    "flavorText": "特殊：持有可触发特殊事件，但也可能导致误杀 (ED-04前置)。"
+  },
+  {
+    "id": "I11",
+    "name": "赎罪券 (NFT)",
+    "price": 200,
+    "effects": {
+      "hp": -5,
+      "san": -10
+    },
+    "tags": ["CONSUMER"],
+    "flavorText": "买个猴子头像。虽然亏了钱，但你觉得自己属于“未来”。"
+  },
+  {
+    "id": "I12",
+    "name": "健身房年卡",
+    "price": 500,
+    "effects": {
+      "hp": 50,
+      "san": 5
+    },
+    "tags": ["CONSUMER"],
+    "flavorText": "你买的不是健康，是“我还没放弃自己”的幻觉。"
+  },
+  {
+    "id": "I13",
+    "name": "彩票 (PowerBall)",
+    "price": 10,
+    "effects": {
+      "hp": 0,
+      "san": -1
+    },
+    "tags": ["CONSUMER", "TICKET"],
+    "flavorText": "穷人的智商税，绝望者的希望税。"
+  },
+  {
+    "id": "I14",
+    "name": "猫粮 (人类食用)",
+    "price": 3,
+    "effects": {
+      "hp": 8,
+      "san": -10
+    },
+    "tags": ["CONSUMER"],
+    "flavorText": "成分和人类罐头差不多，但便宜多了。口感有点像吞拿鱼。"
+  },
+  {
+    "id": "I15",
+    "name": "二手帐篷",
+    "price": 40,
+    "effects": {
+      "hp": 0,
+      "san": 0
+    },
+    "tags": ["CONSUMER"],
+    "requiredClass": "HOMELESS",
+    "flavorText": "流浪汉神器。减少流浪汉阶级的每日 HP 自然损耗。"
+  },
+  {
+    "id": "K01",
+    "name": "VPN 节点",
+    "price": 20,
+    "effects": {
+      "hp": 0,
+      "san": 10
+    },
+    "tags": ["AWAKENING"],
+    "flavorText": "看看墙外...或者看看墙里。真相总是藏在404里。"
+  },
+  {
+    "id": "K02",
+    "name": "红色书籍",
+    "price": 150,
+    "effects": {
+      "hp": -10,
+      "san": 30
+    },
+    "tags": ["AWAKENING"],
+    "flavorText": "革命信物。Point_Red +1。阅读它会让你愤怒，愤怒伤肝。"
+  },
+  {
+    "id": "K03",
+    "name": "加密冷钱包",
+    "price": 10000,
+    "effects": {
+      "hp": 0,
+      "san": 5
+    },
+    "tags": ["AWAKENING"],
+    "requiredClass": "CAPITALIST",
+    "flavorText": "资本信物。Point_Wolf +1。由于太贵，只有资本家买得起。"
+  },
+  {
+    "id": "K04",
+    "name": "盖伊·福克斯面具",
+    "price": 50,
+    "effects": {
+      "hp": 0,
+      "san": 15
+    },
+    "tags": ["AWAKENING"],
+    "flavorText": "戴上它，你就不再是任何人。解锁部分激进抗议选项。"
+  },
+  {
+    "id": "K05",
+    "name": "EMP 发生器图纸",
+    "price": 500,
+    "effects": {
+      "hp": -20,
+      "san": 40
+    },
+    "tags": ["AWAKENING"],
+    "flavorText": "既然无法修复系统，那就烧毁它。极高 SAN 需求。"
+  },
+  {
+    "id": "D01",
+    "name": "出售血浆",
+    "price": -40,
+    "effects": {
+      "hp": -15,
+      "san": 0
+    },
+    "tags": ["DARK_WEB"],
+    "flavorText": "10% 感染。最体面的卖命方式。除此之外你也卖不了别的体液了。"
+  },
+  {
+    "id": "D02",
+    "name": "试药 (一期)",
+    "price": -500,
+    "effects": {
+      "hp": -40,
+      "san": 0
+    },
+    "tags": ["DARK_WEB"],
+    "flavorText": "50% SAN崩溃。副作用包括：幻听、出血和变为植物人。"
+  },
+  {
+    "id": "D03",
+    "name": "代孕/捐精/卵",
+    "price": -2000,
+    "effects": {
+      "hp": -60,
+      "san": 0,
+      "maxHp": -60
+    },
+    "tags": ["DARK_WEB"],
+    "flavorText": "30% 永久内伤。这会导致长期 HP 上限降低。"
+  },
+  {
+    "id": "D04",
+    "name": "某岛屿VIP服务",
+    "price": -5000,
+    "effects": {
+      "hp": 0,
+      "san": -50
+    },
+    "tags": ["DARK_WEB"],
+    "flavorText": "极恶。100% 获得 Point_Wolf。你服务了一些大人物。"
+  },
+  {
+    "id": "D05",
+    "name": "人体拆解 (主动)",
+    "price": 0,
+    "effects": {
+      "hp": 0,
+      "san": 0,
+      "maxHp": -50
+    },
+    "tags": ["DARK_WEB"],
+    "unlockCondition": "Gold < -2000",
+    "flavorText": "条件：Gold < -2000。你是自愿走进那家诊所的。再见，左肾。"
+  }
+]

@@ -168,20 +168,3 @@ export interface GameState {
   // System
   _hasHydrated: boolean;
 }
-export interface GameState {
-  // ... (基础数值、动态数据、库存记录等保持不变)
-
-  // --- UI 状态 ---
-  isShopOpen: boolean;
-  isInventoryOpen: boolean;
-  isArchiveOpen: boolean;
-  isMenuOpen: boolean;
-  currentRoast: string | null;
-  notifications: GameNotification[];
-  
-  // 🚨 [新增] 当前需要高亮显示的档案 ID (用于从事件跳转到档案界面)
-  viewingArchive: string | null; 
-
-  // System
-  _hasHydrated: boolean;
-}

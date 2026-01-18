@@ -35,11 +35,9 @@ export const BillSchema = z.object({
   name: z.string(),
   amount: z.number(),
   type: z.enum(['SURPRISE', 'JUMP_SCARE']),
-  weight: z.number().default(10),
   triggerCondition: z.object({
     minGold: z.number().optional(),
     maxGold: z.number().optional(),
-    minSan: z.number().optional(), // ✅ 确认增加了这一行
     requiredClass: z.array(z.nativeEnum(PlayerClass)).optional(),
     isDebtOnly: z.boolean().optional(),
   }),

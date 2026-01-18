@@ -196,7 +196,7 @@ export const useGameStore = create<GameStore>()(
         newGold += salary;
 
         // 4. 触发账单
-        const bill = triggerBill(newGold, state.san, state.currentClass, gameDataCache.bills);
+        const bill = triggerBill(newGold, state.currentClass, gameDataCache.bills);
         let billAmount = 0;
         if (bill) {
             billAmount = bill.amount;

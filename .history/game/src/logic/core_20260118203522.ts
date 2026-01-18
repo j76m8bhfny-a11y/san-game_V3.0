@@ -48,30 +48,23 @@ export const triggerBill = (
     if (requiredClass && !requiredClass.includes(currentClass)) return false;
     if (minGold !== undefined && gold < minGold) return false;
     if (bill.triggerCondition.minSan !== undefined && san < bill.triggerCondition.minSan) return false;
-
+    
     return true;
   });
 
   // 4. 兜底账单
   if (validBills.length === 0) {
-    return null;
-  }
-  const totalWeight = validBills.reduce((sum, bill) => sum + (bill.weight || 10), 0);
-  
-  // B. 在 0 到 总权重 之间随机取一个值
-  let randomVal = Math.random() * totalWeight;
-  
-  // C. 遍历列表，看随机值落在哪个区间
-  for (const bill of validBills) {
-    const w = bill.weight || 10; // 默认权重兜底
-    if (randomVal < w) {
-      return bill; // 🎯 选中了这个账单
-    }
-    randomVal -= w;
+    return {
+      id: 'BILL_FALLBACK',
+      name: '不明开支',
+      amount: -50,
+      type: 'JUMP_SCARE',
+      triggerCondition: {},
+      flavorText: '你的口袋漏了一个洞，或者你只是记错了。反正少了 50 块钱。'
+    };
   }
 
-  // 理论上不会走到这里，兜底返回第一个
-  return validBills[0];
+  return validBills[Math.floor(Math.random() * validBills.length)];
 };
 
 export const checkClassUpdate = (gold: number): PlayerClass => {

@@ -196,7 +196,7 @@ export const useGameStore = create<GameStore>()(
         newGold += salary;
 
         // 4. 触发账单
-        const bill = triggerBill(newGold, state.san, state.currentClass, gameDataCache.bills);
+        const bill = triggerBill(newGold, state.currentClass, gameDataCache.bills);
         let billAmount = 0;
         if (bill) {
             billAmount = bill.amount;
@@ -305,7 +305,7 @@ export const useGameStore = create<GameStore>()(
                 deltaSan = -4;
                 break;
             case 'B': // 羊群 (苟活)
-                deltaGold = state.currentClass === PlayerClass.Homeless ? 10 : 50;
+                deltaGold = 50;
                 deltaHp = 2;
                 deltaSan = -2;
                 break;

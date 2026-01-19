@@ -1,0 +1,371 @@
+[
+  {
+    "id": "B_HOMELESS_ARSON",
+    "name": "人体火炬",
+    "amount": -50,
+    "weight": 2,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/tent_fire.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": -35
+    },
+    "flavorText": "凌晨，你在帐篷里睡觉时闻到了汽油味。紧接着是一声巨响。你带着满身的火苗滚了出来，背部皮肤被烧焦。",
+    "news": {
+      "source": "New York Times",
+      "content": "Attacks on the Homeless Rise: Random arson attacks on sleepers report sharp increase in major cities."
+    },
+    "roast": "他们觉得你碍眼，所以决定帮你“火化”，虽然你还没死。"
+  },
+  {
+    "id": "B_HOMELESS_SPRINKLER",
+    "name": "自动喷淋伏击",
+    "amount": 0,
+    "weight": 15,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/church_sprinkler.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": -10
+    },
+    "flavorText": "半夜2点，教堂天花板上的防流浪汉喷淋系统突然启动。冰冷的工业高压水柱把你淋成了落汤鸡。",
+    "news": {
+      "source": "BBC",
+      "content": "Catholic church installs water system to drench homeless, sparking ethics debate."
+    },
+    "roast": "这就是所谓的“洗礼”，只不过目的是为了让你滚蛋。"
+  },
+  {
+    "id": "B_HOMELESS_TIKTOK",
+    "name": "病毒式慈善",
+    "amount": 200,
+    "weight": 5,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/camera_flash.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "san": -20
+    },
+    "flavorText": "网红为了流量给了你$200，强迫你对着镜头痛哭感谢上帝。视频获得了100万点赞，你被拍得像个滑稽的乞丐。",
+    "news": {
+      "source": "Insider",
+      "content": "Exploitative homelessness videos on TikTok generate millions in ad revenue for creators."
+    },
+    "roast": "你的尊严售价$200，这是你这辈子卖过最贵的东西。"
+  },
+  {
+    "id": "B_HOMELESS_NO_SHOES",
+    "name": "鞋子消失术",
+    "amount": -20,
+    "weight": 12,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/bare_feet.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": -5
+    },
+    "flavorText": "昨晚忘了把鞋压在头底下。醒来时脚下空空如也，你只能光着脚走在满是碎玻璃和针头的柏油马路上。",
+    "news": {
+      "source": "The Guardian",
+      "content": "Life on the streets: Shoeless. Infection rates soar among the barefoot population."
+    },
+    "roast": "在这个城市，连你也算是“有产阶级”，因为你原本还有双鞋。"
+  },
+  {
+    "id": "B_HOMELESS_RAT_BITE",
+    "name": "鼠群之吻",
+    "amount": 0,
+    "weight": 10,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/rat_bite.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": -15
+    },
+    "flavorText": "半夜脸上一阵刺痛，一只硕大的挪威褐鼠咬破了你的鼻子。它大概把你当成了炸鸡。",
+    "news": {
+      "source": "NBC Los Angeles",
+      "content": "Typhus outbreak in downtown LA linked to rat infestations in encampments."
+    },
+    "roast": "你是食物链的最底层，现在连老鼠都想尝尝你的味道。"
+  },
+  {
+    "id": "B_HOMELESS_JAYWALK",
+    "name": "乱穿马路税",
+    "amount": -150,
+    "weight": 15,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/police_ticket.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"],
+      "minGold": 0
+    },
+    "effects": {
+      "san": -5
+    },
+    "flavorText": "因为推着购物车走得慢，红灯亮时你还在路中间。警察立刻开了一张罚单，因为你没钱交，这很快会变成逮捕令。",
+    "news": {
+      "source": "ProPublica",
+      "content": "Walking While Poor: 50% of jaywalking tickets are issued to the homeless."
+    },
+    "roast": "如果你开着宝马闯红灯，大概率没人管；但你推着破车走路，就是破坏交通。"
+  },
+  {
+    "id": "B_HOMELESS_BOTULISM",
+    "name": "肉毒杆菌罐头",
+    "amount": 0,
+    "weight": 3,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/rotten_can.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": -40
+    },
+    "flavorText": "你吃了捡来的变形罐头。两小时后，视力模糊、吞咽困难。你瘫痪在路边，只能等待毒素代谢或者死亡。",
+    "news": {
+      "source": "Food Safety News",
+      "content": "Botulism risk in scavenged food remains a critical threat to street populations."
+    },
+    "roast": "这罐牛肉的味道，是你这辈子吃过最“难忘”的。"
+  },
+  {
+    "id": "B_HOMELESS_AIRPODS",
+    "name": "意外的宝藏",
+    "amount": 60,
+    "weight": 5,
+    "type": "SURPRISE",
+    "image": "/assets/bills/broken_airpods.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "flavorText": "在高档店垃圾箱里，你发现了一副仅有一只耳机坏掉的AirPods。你把它卖给了当铺。",
+    "news": {
+      "source": "Vice",
+      "content": "Dumpster Diving for Apple Products: The staggering waste of the tech elite."
+    },
+    "roast": "富人的垃圾，真的是穷人的宝藏。"
+  },
+  {
+    "id": "B_HOMELESS_INDECENT",
+    "name": "公厕逮捕令",
+    "amount": -50,
+    "weight": 10,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/police_arrest.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "flavorText": "实在找不到厕所，你在巷子里解决时被捕。你因“公共猥亵罪”被登记为性犯罪者。",
+    "news": {
+      "source": "The Guardian",
+      "content": "The Criminalization of Biology: Lack of public restrooms creates legal trap for homeless."
+    },
+    "roast": "因为没有厕所而撒尿，现在你和强奸犯在同一个名单上了。"
+  },
+  {
+    "id": "B_HOMELESS_STREET_DOC",
+    "name": "街头医生",
+    "amount": 0,
+    "weight": 5,
+    "type": "SURPRISE",
+    "image": "/assets/bills/medical_backpack.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": 30
+    },
+    "flavorText": "“街头医疗队”的志愿者没有嫌弃你的恶臭，帮你清洗了化脓的伤口并给了抗生素。",
+    "news": {
+      "source": "CNN Heroes",
+      "content": "Jim Withers and Street Medicine: Bringing healthcare to the bridges and alleyways."
+    },
+    "roast": "这大概是你这几个月来，第一次被当作“人”对待。"
+  },
+  {
+    "id": "B_HOMELESS_LOST_ID",
+    "name": "身份清零",
+    "amount": -50,
+    "weight": 10,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/trash_compactor.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "flavorText": "警察把你装有身份证和社保卡的背包扔进了垃圾压缩车。没有ID，你无法申请任何福利，彻底变成了幽灵。",
+    "news": {
+      "source": "NPR",
+      "content": "For The Homeless, Losing ID Is An Easy Way To Lose A Future."
+    },
+    "roast": "恭喜，你现在连证明“你是你”的资格都没有了。"
+  },
+  {
+    "id": "B_HOMELESS_SCABIES",
+    "name": "疥疮地狱",
+    "amount": 0,
+    "weight": 8,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/skin_rash.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": -15
+    },
+    "flavorText": "疥螨在你的皮下挖掘隧道产卵。因为没钱买药，你只能疯狂抓挠，直到全身溃烂流血。",
+    "news": {
+      "source": "NIH",
+      "content": "Scabies outbreaks in homeless shelters highlight lack of basic hygiene facilities."
+    },
+    "roast": "这种痒是你不想活下去的主要原因之一，比饿肚子难受十倍。"
+  },
+  {
+    "id": "B_HOMELESS_PEPPER_SPRAY",
+    "name": "辣椒水闹钟",
+    "amount": 0,
+    "weight": 5,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/pepper_spray.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": -25
+    },
+    "flavorText": "私人保安直接对着你的脸喷了一罐辣椒水叫你起床。你的眼睛和呼吸道像着了火一样。",
+    "news": {
+      "source": "Vice",
+      "content": "Security guards pepper spraying homeless people: Private enforcement lacks regulation."
+    },
+    "roast": "这是这座城市最辣的叫醒服务，不含咖啡因。"
+  },
+  {
+    "id": "B_HOMELESS_WET_QUILT",
+    "name": "湿透的棉被",
+    "amount": 0,
+    "weight": 15,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/wet_blanket.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": -20
+    },
+    "flavorText": "半夜暴雨，你唯一的棉被吸饱了水，变得冰冷刺骨。你不得不把它扔掉，否则会死于失温。",
+    "news": {
+      "source": "Seattle Times",
+      "content": "Wet weather brings hypothermia risk: Staying dry is a matter of life and death."
+    },
+    "roast": "你不得不扔掉你唯一的床，因为它正试图冻死你。"
+  },
+  {
+    "id": "B_HOMELESS_E_COLI",
+    "name": "毒汉堡",
+    "amount": 0,
+    "weight": 8,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/rotten_burger.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": -20
+    },
+    "flavorText": "吃了垃圾桶里的墨西哥卷饼后，大肠杆菌让你剧烈腹痛。你拉到脱水，感觉肠子都要吐出来了。",
+    "news": {
+      "source": "Food Safety News",
+      "content": "Foodborne illness in homeless populations: The hidden danger of dumpster diving."
+    },
+    "roast": "垃圾桶美食就像俄罗斯轮盘赌，今天你中弹了。"
+  },
+  {
+    "id": "B_HOMELESS_FREE_MEAL",
+    "name": "错误的订单",
+    "amount": 0,
+    "weight": 8,
+    "type": "SURPRISE",
+    "image": "/assets/bills/fast_food_bag.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": 20
+    },
+    "flavorText": "快餐店员塞给你一个“做错”的纸袋，里面有热乎的双层芝士汉堡。这是你这周吃的第一顿热饭。",
+    "news": {
+      "source": "Reddit",
+      "content": "Do baristas give free food to homeless? Employees reveal acts of quiet kindness."
+    },
+    "roast": "感谢那位点错单的不知名顾客，他是你的衣食父母。"
+  },
+  {
+    "id": "B_HOMELESS_CANS",
+    "name": "兄弟会派对",
+    "amount": 30,
+    "weight": 6,
+    "type": "SURPRISE",
+    "image": "/assets/bills/crushed_cans.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "flavorText": "兄弟会昨晚开了派对，草坪上满是空啤酒罐。你花了半小时回收它们，这让你赚翻了。",
+    "news": {
+      "source": "The Daily Californian",
+      "content": "Canning after game day: How student partying supports the local recycling economy."
+    },
+    "roast": "大学生们的狂欢宿醉，就是你的年终奖。"
+  },
+  {
+    "id": "B_HOMELESS_MOTEL",
+    "name": "汽车旅馆券",
+    "amount": 0,
+    "weight": 2,
+    "type": "SURPRISE",
+    "image": "/assets/bills/motel_key.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": 50
+    },
+    "flavorText": "因即将到来的暴风雪，社工给了你一张紧急旅馆券。今晚你有热水澡和暖气，像在天堂一样。",
+    "news": {
+      "source": "Denver Post",
+      "content": "Motel vouchers for homeless during cold snap: A temporary respite from the freezing streets."
+    },
+    "roast": "睡在床上的感觉太不真实了，你甚至有点失眠。"
+  },
+  {
+    "id": "B_HOMELESS_NORTH_FACE",
+    "name": "被遗忘的外套",
+    "amount": 0,
+    "weight": 5,
+    "type": "SURPRISE",
+    "image": "/assets/bills/winter_jacket.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": 10
+    },
+    "flavorText": "你在长椅上发现了一件醉汉遗落的全新North Face羽绒服。它在店里卖$300，现在它是你的护甲。",
+    "news": {
+      "source": "New York Post",
+      "content": "Lost and Found on the streets: Where lost luxury items end up."
+    },
+    "roast": "那个丢衣服的人现在肯定在骂街，但他还是温暖了你。"
+  }
+]

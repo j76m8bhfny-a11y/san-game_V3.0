@@ -1,0 +1,81 @@
+[
+  {
+    "id": "B_REAPER_03",
+    "name": "紧急牙科手术",
+    "amount": -1500,
+    "weight": 100,
+    "type": "JUMP_SCARE",
+    "triggerCondition": { "requiredClass": ["WORKER", "MIDDLE"] },
+    "image": "/assets/bills/tooth_xray.png",
+    "flavorText": "你半夜疼醒了。这不是普通的牙疼，是神经在尖叫。你必须现在就去急诊，否则你会自己动手把牙拔下来。",
+    
+    "news": {
+      "source": "City Health Weekly",
+      "content": "Due to budget cuts, dental coverage is no longer considered 'essential health care' under the new act."
+    },
+    
+    "roast": "这颗牙现在比你全身的行头都贵。"
+  },
+  {
+    "id": "B_REAPER_02",
+    "name": "变速箱故障",
+    "amount": -1200,
+    "type": "JUMP_SCARE",
+    "triggerCondition": { "requiredClass": ["WORKER"] },
+    "flavorText": "你的通勤车坏了。修好它花光了你所有的积蓄。阶级爬升失败。"
+  },
+  {
+    "id": "B_REAPER_03",
+    "name": "牙疼",
+    "amount": -1500,
+    "weight": 100,
+    "type": "JUMP_SCARE",
+    "triggerCondition": { "requiredClass": ["WORKER", "MIDDLE"] },
+    "flavorText": "根管治疗不包含在医保内。这颗牙是你身上最贵的部分。"
+  },
+  {
+    "id": "B_REAPER_04",
+    "name": "股市熔断",
+    "amount": -50000,
+    "type": "JUMP_SCARE",
+    "triggerCondition": { "requiredClass": ["MIDDLE"] },
+    "flavorText": "中产阶级的财富就像肥皂泡，噗的一声就没了。你的资产缩水了40%。"
+  },
+  {
+    "id": "B_REAPER_05",
+    "name": "黑衣人上门",
+    "amount": 0,
+    "type": "JUMP_SCARE",
+    "triggerCondition": { 
+    "minGold": -999999,
+    "minSan": 80
+    },
+    "effects": { "hp": -40 },
+    "flavorText": "由于你的 SAN 值过高(>80)，系统认为你是个威胁。物理消灭开始。(效果：HP -40)"
+  },
+  {
+    "id": "B_MIRACLE_01",
+    "name": "刮刮乐中奖",
+    "amount": 500,
+    "type": "SURPRISE",
+    "triggerCondition": { "maxGold": 5000 }, 
+    "flavorText": "你在便利店找零时随手买了一张刮刮乐。这是系统偶尔漏出的微小善意。"
+  },
+  {
+    "id": "B_MIRACLE_02",
+    "name": "远房亲戚遗产",
+    "amount": 10000,
+    "type": "SURPRISE",
+    "triggerCondition": { "requiredClass": ["WORKER", "HOMELESS"] },
+    "flavorText": "一个你从未谋面的远房叔叔去世了。他没有别的亲人，而你恰好在他的遗嘱名单上。阶级跃迁的门票。"
+  },
+  {
+    "id": "B_MIRACLE_03",
+    "name": "捡到比特币钱包",
+    "amount": 60000,
+    "weight": 1,
+    "type": "SURPRISE",
+    "triggerCondition": { "minSan": 50 },
+    "flavorText": "你在旧硬盘里找回了十年前挖矿的私钥。或者是上帝看你太可怜了，决定给你开个挂。"
+  }
+]

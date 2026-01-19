@@ -43,23 +43,6 @@ export const BillOverlay: React.FC<{ bill: Bill }> = ({ bill }) => {
               {bill.amount > 0 ? '+' : ''}${Math.abs(bill.amount)}
             </div>
           </div>
-          {bill.image && (
-            <div className="w-full h-40 bg-gray-200 border border-gray-400 overflow-hidden relative grayscale hover:grayscale-0 transition-all duration-500">
-              <img 
-                src={bill.image} 
-                alt={bill.name}
-                className="w-full h-full object-cover mix-blend-multiply opacity-90"
-                onError={(e) => {
-                  // 图片加载失败时的兜底显示
-                  e.currentTarget.style.display = 'none';
-                  e.currentTarget.parentElement!.classList.add('flex', 'items-center', 'justify-center');
-                  e.currentTarget.parentElement!.innerText = '[IMAGE_CORRUPTED]';
-                }}
-              />
-              {/* 图片上的噪点遮罩，增加复古感 */}
-              <div className="absolute inset-0 bg-[url('/assets/textures/noise.svg')] opacity-20 pointer-events-none" />
-            </div>
-          )}
 
           {/* 2. 事件文字 (Flavor Text) */}
           <p className="font-serif text-lg leading-relaxed text-gray-800 italic">

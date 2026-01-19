@@ -69,14 +69,13 @@ interface TitleScreenProps {
 }
 
 export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
-  // 1. 获取状态 (确保 nextDay 被解构出来)
+  // 1. 🚨 [修改] 解构出 nextDay 方法
   const { day, resetGame, nextDay } = useGameStore();
   const { playBgm } = useAudioStore();
   
-  // 2. 存档判断 (Day > 0 即为有存档)
+  // 2. 🚨 [修改] 存档判定逻辑：只要大于 0 说明玩过
   const hasSave = day > 0;
   
-  // 3. 定义本地 UI 状态 (解决报错的关键：必须在这里定义)
   const [hoverItem, setHoverItem] = useState<string | null>(null);
   const [glitchTrigger, setGlitchTrigger] = useState(false);
 
@@ -96,9 +95,10 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
     if (type === 'NEW') {
       if (hasSave && !window.confirm('WARNING: OVERWRITE EXISTING REALITY?')) return;
       
-      resetGame(); // 重置为 Day 0
+      resetGame(); // 重置数据 (Day 变为 0)
       
-      // 4. 自动推进到 Day 1 (跳过结算)
+      // 3. 🚨 [新增] 自动开始第一天！
+      // 这会触发：工资结算 -> 账单判定 -> 抽取第一个随机事件
       setTimeout(() => {
         useGameStore.getState().nextDay(); 
       }, 0);
@@ -179,6 +179,7 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
                  className="w-full h-full object-cover grayscale opacity-60"
                  onError={(e) => e.currentTarget.style.display = 'none'} 
                />
+               {/* 这里的 div 是 img 加载失败后的兜底显示 */}
                <div className="absolute inset-0 flex items-center justify-center text-gray-500 font-bold text-xs opacity-50 z-0">IMG</div>
              </div>
              <div className="text-[6px] font-mono w-full px-2 text-center text-gray-500 leading-tight">

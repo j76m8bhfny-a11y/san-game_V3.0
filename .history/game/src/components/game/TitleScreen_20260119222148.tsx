@@ -69,14 +69,14 @@ interface TitleScreenProps {
 }
 
 export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
-  // 1. 获取状态 (确保 nextDay 被解构出来)
+  // 1. 获取状态 (增加 nextDay)
   const { day, resetGame, nextDay } = useGameStore();
   const { playBgm } = useAudioStore();
   
   // 2. 存档判断 (Day > 0 即为有存档)
   const hasSave = day > 0;
   
-  // 3. 定义本地 UI 状态 (解决报错的关键：必须在这里定义)
+  // 3. 定义本地 UI 状态 (解决报错的关键)
   const [hoverItem, setHoverItem] = useState<string | null>(null);
   const [glitchTrigger, setGlitchTrigger] = useState(false);
 

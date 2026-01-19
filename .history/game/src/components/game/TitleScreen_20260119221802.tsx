@@ -69,28 +69,10 @@ interface TitleScreenProps {
 }
 
 export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
-  // 1. 获取状态 (确保 nextDay 被解构出来)
-  const { day, resetGame, nextDay } = useGameStore();
-  const { playBgm } = useAudioStore();
+  const { day, resetGame, nextDay } = useGameStore(); // 解构出 nextDay
   
-  // 2. 存档判断 (Day > 0 即为有存档)
+  // 只要天数 > 0 就算有存档
   const hasSave = day > 0;
-  
-  // 3. 定义本地 UI 状态 (解决报错的关键：必须在这里定义)
-  const [hoverItem, setHoverItem] = useState<string | null>(null);
-  const [glitchTrigger, setGlitchTrigger] = useState(false);
-
-  useEffect(() => {
-    playBgm('bgm_title');
-    const interval = setInterval(() => {
-      // 随机触发红色故障闪烁
-      if (Math.random() > 0.8) {
-        setGlitchTrigger(true);
-        setTimeout(() => setGlitchTrigger(false), 150);
-      }
-    }, 3000);
-    return () => clearInterval(interval);
-  }, [playBgm]);
 
   const handleStart = (type: 'NEW' | 'CONTINUE') => {
     if (type === 'NEW') {
@@ -98,7 +80,8 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
       
       resetGame(); // 重置为 Day 0
       
-      // 4. 自动推进到 Day 1 (跳过结算)
+      // 🔥 立即触发第一天
+      // 这会执行 Day 0 -> Day 1 的逻辑：跳过结算，直接抽第一天的题目
       setTimeout(() => {
         useGameStore.getState().nextDay(); 
       }, 0);
@@ -179,6 +162,7 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
                  className="w-full h-full object-cover grayscale opacity-60"
                  onError={(e) => e.currentTarget.style.display = 'none'} 
                />
+               {/* 这里的 div 是 img 加载失败后的兜底显示 */}
                <div className="absolute inset-0 flex items-center justify-center text-gray-500 font-bold text-xs opacity-50 z-0">IMG</div>
              </div>
              <div className="text-[6px] font-mono w-full px-2 text-center text-gray-500 leading-tight">

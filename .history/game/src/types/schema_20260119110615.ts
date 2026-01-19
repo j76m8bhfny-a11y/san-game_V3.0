@@ -6,11 +6,7 @@ export enum PlayerClass {
   Middle = 'MIDDLE',
   Capitalist = 'CAPITALIST'
 }
-export enum ScalingMode {
-  FIXED = 'FIXED',             // 固定值 (捡钱)
-  CLASS_LEVERAGE = 'LEVERAGE', // 阶级杠杆 (工作收入)
-  INCOME_RATIO = 'INCOME',     // 收入比例 (罚款/税)
-}
+
 // --- Zod Schemas ---
 
 export const ItemSchema = z.object({
@@ -32,7 +28,6 @@ export const ArchiveSchema = z.object({
   id: z.string(),
   title: z.string(),
   flavorText: z.string(),
-  image: z.string().optional(),
 });
 
 export const BillSchema = z.object({
@@ -67,7 +62,6 @@ export const EventOptionSchema = z.object({
   label: z.string(),
   roast: z.string().optional(),
   effects: z.object({
-    scaling: z.nativeEnum(ScalingMode).optional(),
     hp: z.number().optional(),
     gold: z.number().optional(),
     san: z.number().optional(),

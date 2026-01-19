@@ -1,4 +1,5 @@
-import { PlayerClass, Bill, ScalingMode } from '../types/schema';
+import { PlayerClass, Bill } from '../types/schema';
+import { PlayerClass, ScalingMode } from '../types/schema'; // 记得引入 ScalingMode
 // ------------------------------------------------------------------
 // 核心公式 1: 动态压力系数 (P)
 // P = 1 + SAN^2 / 2000

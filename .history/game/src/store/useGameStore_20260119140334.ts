@@ -58,10 +58,10 @@ interface GameActions {
 type GameStore = GameState & GameActions;
 
 const INITIAL_STATE: Omit<GameState, '_hasHydrated'> = {
-  day: 0,
+  day: 1,
   hp: 100,
   maxHp: 100,
-  san: 0,
+  san: 50,
   gold: 100,
   currentClass: PlayerClass.Worker,
   
@@ -125,23 +125,8 @@ export const useGameStore = create<GameStore>()(
       setHydrated: () => set({ _hasHydrated: true }),
       
       resetGame: () => {
-        // 1. 重置为初始状态 (注意保留 _hasHydrated 为 true，否则会卡在 Loading)
-        set({
-          ...INITIAL_STATE,
-          _hasHydrated: true,
-          // 确保重置时清除可能存在的结局状态
-          ending: null, 
-          // 确保重置时关闭所有弹窗
-          isShopOpen: false,
-          isInventoryOpen: false,
-          isArchiveOpen: false,
-          isMenuOpen: false,
-          activeBill: null,
-          dailySummary: null
-        });
-        
-        // 2. 强制更新一下 localStorage，防止旧数据残留
-        // (Zustand 的 persist 中间件会自动处理 set 后的同步，但如果为了保险可以手动清理，不过通常 set 就够了)
+        localStorage.removeItem('american-insight-storage');
+        window.location.reload();
       },
 
       initializeData: async () => {

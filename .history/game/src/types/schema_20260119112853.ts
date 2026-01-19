@@ -32,7 +32,6 @@ export const ArchiveSchema = z.object({
   id: z.string(),
   title: z.string(),
   flavorText: z.string(),
-  image: z.string().optional(),
 });
 
 export const BillSchema = z.object({

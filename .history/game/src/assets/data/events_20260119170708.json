@@ -1,0 +1,358 @@
+[
+  {
+    "id": "EVT_01_BENCH",
+    "title": "公园长椅",
+    "bgImage": "/assets/scenes/bg_park_snow.png",
+    "eventImage": "/assets/events/evt_bench_spikes.png",
+    "text": {
+      "lowSan": "暴雪夜，你冻得全身僵硬，想在公园长椅上躺会儿。走近一看，椅子中间焊死了几个金属扶手，根本躺不进去。",
+      "highSan": "那不是椅子，是一排灰色的牙齿。金属扶手像肋骨一样突起，它们在尖叫：“滚开！贫穷是会传染的病毒！”只有彻底的恶意才能设计出这种让人无法安息的刑具。"
+    },
+    "conditions": { "minSan": 0, "maxSan": 100 },
+    "options": {
+      "A": { "label": "拒绝葛优瘫，保持体面", "roast": "冻死事小，失节事大。你死得很有线条感。", "effects": { "scaling": "LEVERAGE", "gold": 300, "hp": -3, "san": -4 } },
+      "B": { "label": "凑合坐会儿，别惹事", "roast": "真乖。你像条特别懂事的流浪狗，富人看了都说好。", "effects": { "scaling": "FIXED", "gold": 50, "hp": 2, "san": -2 } },
+      "C": { "label": "防止霸座，公平共享", "roast": "饭都没得吃，还在替纳税人操心？顶级耗材。", "effects": { "scaling": "INCOME", "gold": -0.2, "hp": 8, "san": 2 } },
+      "D": { "label": "混凝土做的驱逐武器", "roast": "人间清醒。可惜看穿了恶意也不能当被子盖，接着冻着吧。", "sanLock": 40, "isGlitched": true, "archiveId": "No.01_CAMDEN_BENCH", "effects": { "scaling": "INCOME", "gold": -0.4, "hp": -8, "san": 10 } }
+    }
+  },
+  {
+    "id": "EVT_02_TOILET",
+    "title": "上锁的厕所",
+    "bgImage": "/assets/scenes/bg_cafe_street.png",
+    "eventImage": "/assets/events/evt_keypad_lock.png",
+    "text": {
+      "lowSan": "你拉肚子快憋不住了，冲进路边的星巴克借厕所。店员冷冷指着密码锁：“密码在收据上，不买别用。” 你兜里只有两个钢镚。",
+      "highSan": "厕所门上的密码锁变成了一张巨大的嘴，它在索要“入场费”。店员的眼睛是两个二维码，扫描出你的身价为零，判定你没有排泄的资格。"
+    },
+    "conditions": { "minSan": 0, "maxSan": 100 },
+    "options": {
+      "A": { "label": "商业契约，付费天经地义", "roast": "拉裤兜里事小，失信事大。你虽然臭了，但灵魂是香的。", "effects": { "scaling": "LEVERAGE", "gold": 300, "hp": -3, "san": -4 } },
+      "B": { "label": "快走吧，别惹麻烦", "roast": "跑得挺快。“怂”是你最好的护身符。", "effects": { "scaling": "FIXED", "gold": 50, "hp": 2, "san": -2 } },
+      "C": { "label": "设门槛是为了防吸毒", "roast": "都在憋屎了还替老板操心？资本家就需要你这种自带干粮的保安。", "effects": { "scaling": "INCOME", "gold": -0.2, "hp": 8, "san": 2 } },
+      "D": { "label": "针对穷人的过滤器", "roast": "一针见血。可惜清醒并不能止泻，这下尴尬了。", "sanLock": 40, "isGlitched": true, "archiveId": "No.02_STARBUCKS_ARREST", "effects": { "scaling": "INCOME", "gold": -0.4, "hp": -8, "san": 10 } }
+    }
+  },
+  {
+    "id": "EVT_03_MILK",
+    "title": "倒掉牛奶",
+    "bgImage": "/assets/scenes/bg_supermarket_back.png",
+    "eventImage": "/assets/events/evt_bleach_milk.png",
+    "text": {
+      "lowSan": "饿得头昏眼花，你看见店员把成箱的牛奶倒进下水道，还往里面喷漂白水。",
+      "highSan": "白色的河流混着刺鼻的漂白剂味道。那是“价格之神”的祭品。店员的脸上没有表情，机械地执行着销毁程序，因为你的贱命没有牛奶的价格重要。"
+    },
+    "conditions": { "minSan": 0, "maxSan": 100 },
+    "options": {
+      "A": { "label": "严谨的工匠精神！", "roast": "感人。你的死因是“信仰充足，热量不足”。", "effects": { "scaling": "LEVERAGE", "gold": 300, "hp": -3, "san": -4 } },
+      "B": { "label": "怪可惜的，看一眼得了", "roast": "叹口气就走？多温顺的韭菜啊，镰刀都不忍心割你了。", "effects": { "scaling": "FIXED", "gold": 50, "hp": 2, "san": -2 } },
+      "C": { "label": "销毁比捐赠更省钱", "roast": "精神资本家你好！身无分文却在帮老板算账，老板很感动。", "effects": { "scaling": "INCOME", "gold": -0.2, "hp": 8, "san": 2 } },
+      "D": { "label": "向“价格之神”献祭", "roast": "真相帝。宁可毒死也不给你喝，你的贱命没牛奶值钱。", "sanLock": 40, "isGlitched": true, "archiveId": "No.03_DUMPSTER_GUARD", "effects": { "scaling": "INCOME", "gold": -0.4, "hp": -8, "san": 10 } }
+    }
+  },
+  {
+    "id": "EVT_04_SPIKES",
+    "title": "桥下尖刺",
+    "bgImage": "/assets/scenes/bg_underbridge.png",
+    "eventImage": "/assets/events/evt_concrete_spikes.png",
+    "text": {
+      "lowSan": "下暴雨了，你跑到立交桥下避雨。发现原本干燥的空地上，密密麻麻铺满了尖锐的水泥锥子。",
+      "highSan": "大地长出了刺。这些水泥锥子像地狱的石笋，目的只有一个：让你无法落脚。城市在对你尖叫：“消失！不许存在于此！”"
+    },
+    "conditions": { "minSan": 0, "maxSan": 100 },
+    "options": {
+      "A": { "label": "现代工业风装置艺术", "roast": "你有艺术细菌，可惜没命欣赏。", "effects": { "scaling": "LEVERAGE", "gold": 300, "hp": -3, "san": -4 } },
+      "B": { "label": "大概是为了防老鼠", "roast": "没错，防的就是你这只两条腿的大老鼠。", "effects": { "scaling": "FIXED", "gold": 50, "hp": 2, "san": -2 } },
+      "C": { "label": "消除火灾隐患和死角", "roast": "为了安全，把你弄死在雨里，这就很安全了。", "effects": { "scaling": "INCOME", "gold": -0.2, "hp": 8, "san": 2 } },
+      "D": { "label": "连站都不让你站", "roast": "完全正确。城市不仅不让你睡，连让你“存在”都觉得碍眼。", "sanLock": 40, "isGlitched": true, "archiveId": "No.04_ANTI_HOMELESS_SPIKES", "effects": { "scaling": "INCOME", "gold": -0.4, "hp": -8, "san": 10 } }
+    }
+  },
+  {
+    "id": "EVT_05_BUS_TICKET",
+    "title": "单程车票",
+    "bgImage": "/assets/scenes/bg_bus_station.png",
+    "eventImage": "/assets/events/evt_one_way_ticket.png",
+    "text": {
+      "lowSan": "警察把你叫醒，递给你一张去往几百公里外城市的长途大巴票：“去那边吧，那边福利好。”",
+      "highSan": "这张车票是通往地狱的签证。警察的脸变成了条形码扫描仪，正在将你这个“错误数据”从城市的数据库中移除。所谓的“那边”，只有无尽的虚空。",
+      "sanLock": 40
+    },
+    "conditions": { "minSan": 0, "maxSan": 100 },
+    "options": {
+      "A": { "label": "温暖的人道主义关怀！", "roast": "你感动得痛哭流涕，谢谢警察叔叔把你扔进了垃圾堆。", "effects": { "scaling": "LEVERAGE", "gold": 300, "hp": -3, "san": -4 } },
+      "B": { "label": "拿着吧，比坐牢强", "roast": "认命吧。你就是一袋被踢来踢去的垃圾。", "effects": { "scaling": "FIXED", "gold": 50, "hp": 2, "san": -2 } },
+      "C": { "label": "优化人口资源配置", "roast": "说得好听。翻译过来就是：只要不烂在我家门口就行。", "effects": { "scaling": "INCOME", "gold": -0.2, "hp": 8, "san": 2 } },
+      "D": { "label": "这就是“灰狗疗法”", "roast": "看穿了把戏。恭喜你，即将开始一段通往地狱的旅行。", "sanLock": 40, "isGlitched": true, "archiveId": "No.05_BUSSED_OUT", "effects": { "scaling": "INCOME", "gold": -0.4, "hp": -8, "san": 10 } }
+    }
+  },
+  {
+    "id": "EVT_06_HOSPITAL_DUMP",
+    "title": "医院弃人",
+    "bgImage": "/assets/scenes/bg_hospital_exit.png",
+    "eventImage": "/assets/events/evt_wheelchair_dump.png",
+    "text": {
+      "lowSan": "你在急诊室醒来，因为没保险，护士依然拔了针头。保安把你推上轮椅，扔到了几条街外的贫民窟路边。",
+      "highSan": "你在他们眼里不是病人，是一笔红色的坏账。针头是计算器，输液管是账单。拔掉针头的瞬间，系统判定你已无“维修价值”，像报废零件一样被丢弃。",
+      "sanLock": 40
+    },
+    "conditions": { "minSan": 0, "maxSan": 100 },
+    "options": {
+      "A": { "label": "资源留给更需要的人", "roast": "大爱无疆！你为了不占用床位自愿死在路边，感动美国。", "effects": { "scaling": "LEVERAGE", "gold": 300, "hp": -3, "san": -4 } },
+      "B": { "label": "没钱千万别生病", "roast": "废话。有钱男子汉，没钱汉子难，等死吧。", "effects": { "scaling": "FIXED", "gold": 50, "hp": 2, "san": -2 } },
+      "C": { "label": "急诊只负责稳定体征", "roast": "技术上说你还没死透，所以扔出去是合规的。", "effects": { "scaling": "INCOME", "gold": -0.2, "hp": 8, "san": 2 } },
+      "D": { "label": "这就叫“病人抛尸”", "roast": "精准概括。在医院眼里，你不是病人，是一笔坏账。", "sanLock": 40, "isGlitched": true, "archiveId": "No.06_PATIENT_DUMPING", "effects": { "scaling": "INCOME", "gold": -0.4, "hp": -8, "san": 10 } }
+    }
+  },
+  {
+    "id": "EVT_07_BEGGING_FINE",
+    "title": "乞讨罚单",
+    "bgImage": "/assets/scenes/bg_street_corner.png",
+    "eventImage": "/assets/events/evt_police_ticket.png",
+    "text": {
+      "lowSan": "你饿极了在路口举牌子乞讨。警察停下，给你开了一张50美元的罚单，理由是“非法乞讨”。",
+      "highSan": "罚单上的数字在燃烧。警察不是在执法，而是在进行“贫穷罪”的判决。那张罚单是一张入场券，通往私营监狱的流水线。",
+      "sanLock": 40
+    },
+    "conditions": { "minSan": 0, "maxSan": 100 },
+    "options": {
+      "A": { "label": "鼓励劳动，维护尊严", "roast": "尊严值50块钱吗？你有吗？没有就闭嘴。", "effects": { "scaling": "LEVERAGE", "gold": 300, "hp": -3, "san": -4 } },
+      "B": { "label": "倒霉催的，快跑吧", "roast": "跑？往哪跑？整个系统都是围墙。", "effects": { "scaling": "FIXED", "gold": 50, "hp": 2, "san": -2 } },
+      "C": { "label": "乞讨干扰交通安全", "roast": "为了交通通畅，请你原地蒸发，谢谢配合。", "effects": { "scaling": "INCOME", "gold": -0.2, "hp": 8, "san": 2 } },
+      "D": { "label": "贫穷本身就是犯罪", "roast": "正解。没钱交罚款？正好，私营监狱缺苦力了。", "sanLock": 40, "isGlitched": true, "archiveId": "No.07_HOUSING_NOT_HANDCUFFS", "effects": { "scaling": "INCOME", "gold": -0.4, "hp": -8, "san": 10 } }
+    }
+  },
+  {
+    "id": "EVT_08_LIBRARY",
+    "title": "图书馆驱逐",
+    "bgImage": "/assets/scenes/bg_library.png",
+    "eventImage": "/assets/events/evt_security_guard.png",
+    "text": {
+      "lowSan": "你想去图书馆吹空调。保安把你拦住，指着你的衣服：“体味过重，禁止入内。”",
+      "highSan": "知识的殿堂散发着消毒水的味道，那是为了洗去穷人的气味。空调风是特权阶级的呼吸，你这种“脏东西”吸一口都是亵渎。",
+      "sanLock": 40
+    },
+    "conditions": { "minSan": 0, "maxSan": 100 },
+    "options": {
+      "A": { "label": "尊重他人呼吸权", "roast": "你臭，你有罪。文明社会的空气不属于你。", "effects": { "scaling": "LEVERAGE", "gold": 300, "hp": -3, "san": -4 } },
+      "B": { "label": "确实味儿大，理解一下", "roast": "自我厌恶是流浪汉的美德。你也嫌弃你自己，对吧？", "effects": { "scaling": "FIXED", "gold": 50, "hp": 2, "san": -2 } },
+      "C": { "label": "卫生条例规定", "roast": "条例保护书，不保护人。书比你干净。", "effects": { "scaling": "INCOME", "gold": -0.2, "hp": 8, "san": 2 } },
+      "D": { "label": "最后的避难所没了", "roast": "悲惨事实。知识和空调是会员制的，脏东西不配拥有。", "sanLock": 40, "isGlitched": true, "archiveId": "No.08_LIBRARY_SMELL_BAN", "effects": { "scaling": "INCOME", "gold": -0.4, "hp": -8, "san": 10 } }
+    }
+  },
+  {
+    "id": "EVT_09_NO_WATER",
+    "title": "消失的水机",
+    "bgImage": "/assets/scenes/bg_hot_street.png",
+    "eventImage": "/assets/events/evt_dry_fountain.png",
+    "text": {
+      "lowSan": "高温40度，你口渴难耐。发现路边免费直饮水机都拆了，只有卖3美元一瓶水的售货机。",
+      "highSan": "售货机里的水瓶在沸腾，它们是资本的血液。免费的水管被切断了，因为你的口渴是雀巢公司的利润增长点。不付钱，就干枯成灰吧。",
+      "sanLock": 40
+    },
+    "conditions": { "minSan": 0, "maxSan": 100 },
+    "options": {
+      "A": { "label": "瓶装水更卫生便捷", "roast": "消费升级！渴死也是一种优胜劣汰，资本主义万岁。", "effects": { "scaling": "LEVERAGE", "gold": 300, "hp": -3, "san": -4 } },
+      "B": { "label": "去厕所接自来水喝", "roast": "求生欲很强。哪怕水里有屎味，活着就行。", "effects": { "scaling": "FIXED", "gold": 50, "hp": 2, "san": -2 } },
+      "C": { "label": "维护成本高，易染菌", "roast": "水是商品，不是人权。没钱就旱死，懂吗？", "effects": { "scaling": "INCOME", "gold": -0.2, "hp": 8, "san": 2 } },
+      "D": { "label": "喝水也要买门票", "roast": "一语道破。你的口渴是雀巢公司的利润增长点。", "sanLock": 40, "isGlitched": true, "archiveId": "No.09_DETROIT_WATER_CUT", "effects": { "scaling": "INCOME", "gold": -0.4, "hp": -8, "san": 10 } }
+    }
+  },
+  {
+    "id": "EVT_10_SELLING_PLASMA",
+    "title": "卖血换钱",
+    "bgImage": "/assets/scenes/bg_plasma_center.png",
+    "eventImage": "/assets/events/evt_blood_bag.png",
+    "text": {
+      "lowSan": "实在没钱了，你走进“血浆中心”。排队的人像牲口一样，抽一次血浆，给一张30美元预付卡。",
+      "highSan": "这里不是医院，是榨汁机。管子里流的不是血，是红色的黄金。你是一块人形电池，肉体毫无价值，只有被抽干的那一刻才对GDP有贡献。",
+      "sanLock": 40
+    },
+    "conditions": { "minSan": 0, "maxSan": 100 },
+    "options": {
+      "A": { "label": "爱心奉献，双赢慈善", "roast": "大善人啊！你卖命，药企数钱，确实是“双赢”。", "effects": { "scaling": "LEVERAGE", "gold": 300, "hp": -3, "san": -4 } },
+      "B": { "label": "好歹是条活路", "roast": "一周卖两次，够吃汉堡了。努力活下去，下次再来卖。", "effects": { "scaling": "FIXED", "gold": 50, "hp": 2, "san": -2 } },
+      "C": { "label": "合法的生物制品交易", "roast": "把你当原材料采购，还说得这么清新脱俗。", "effects": { "scaling": "INCOME", "gold": -0.2, "hp": 8, "san": 2 } },
+      "D": { "label": "你是药厂的人肉培养皿", "roast": "真相了。既然没劳动力价值，就把你榨干做成药。", "sanLock": 40, "isGlitched": true, "archiveId": "No.10_PLASMA_ECONOMY", "effects": { "scaling": "INCOME", "gold": -0.4, "hp": -8, "san": 10 } }
+    }
+  },
+  {
+    "id": "EVT_11_SNAP_HOT_FOOD",
+    "title": "只要冷的",
+    "bgImage": "/assets/scenes/bg_supermarket_counter.png",
+    "eventImage": "/assets/events/evt_cold_sandwich.png",
+    "text": {
+      "lowSan": "超市收银台，一个单亲妈妈想用食品券（SNAP）给孩子买只刚烤好的热鸡。收银员冷脸把鸡夺了回去：“福利卡只能买冷的，热的不卖。”",
+      "highSan": "那只热鸡散发着“禁止食用”的红光。资本主义的铁律：穷人的胃只配消化冷的工业垃圾。热量是特权，温暖是商品，你没资格拥有。",
+      "sanLock": 40
+    },
+    "conditions": { "minSan": 0, "maxSan": 100 },
+    "options": {
+      "A": { "label": "专款专用，这就是福利", "roast": "要饭还嫌饭凉？有得吃就不错了，别想那些资产阶级的享受。", "effects": { "scaling": "LEVERAGE", "gold": 300, "hp": -3, "san": -4 } },
+      "B": { "label": "买个冷三明治啃吧", "roast": "只要肚子不叫唤就行，胃痛是穷人的标配。", "effects": { "scaling": "FIXED", "gold": 50, "hp": 2, "san": -2 } },
+      "C": { "label": "热食属于餐饮服务", "roast": "严谨。热鸡是服务，冷鸡才是食物。您不配享受服务。", "effects": { "scaling": "INCOME", "gold": -0.2, "hp": 8, "san": 2 } },
+      "D": { "label": "垃圾食品巨头的阴谋", "roast": "真相帝。只有冷的工业垃圾才允许进入穷人的胃。", "sanLock": 40, "isGlitched": true, "archiveId": "No.11_SNAP_HOT_FOOD_BAN", "effects": { "scaling": "INCOME", "gold": -0.4, "hp": -8, "san": 10 } }
+    }
+  },
+  {
+    "id": "EVT_12_PERIOD_POVERTY",
+    "title": "经期贫困",
+    "bgImage": "/assets/scenes/bg_public_restroom.png",
+    "eventImage": "/assets/events/evt_newspaper_pad.png",
+    "text": {
+      "lowSan": "公厕里，一个衣衫褴褛的年轻女孩因为买不起卫生棉条（$8一盒），正在往内裤里塞从垃圾桶捡来的报纸。",
+      "highSan": "报纸上的油墨在渗入她的身体。那个$8的价格标签像吸血鬼一样盯着她。如果你是穷人，连生理期流血都是一种未偿还的债务。",
+      "sanLock": 40
+    },
+    "conditions": { "minSan": 0, "maxSan": 100 },
+    "options": {
+      "A": { "label": "以前没这东西也能活", "roast": "你真该穿越回中世纪，那里不仅没卫生巾，还没活人。", "effects": { "scaling": "LEVERAGE", "gold": 300, "hp": -3, "san": -4 } },
+      "B": { "label": "好脏啊，离我远点", "roast": "你嫌弃地捂住了鼻子。贫穷的气味确实不好闻，对吧？", "effects": { "scaling": "FIXED", "gold": 50, "hp": 2, "san": -2 } },
+      "C": { "label": "非必需品，不予补贴", "roast": "纳税人的钱不能给你买奢侈品。止血是奢侈的，懂吗？", "effects": { "scaling": "INCOME", "gold": -0.2, "hp": 8, "san": 2 } },
+      "D": { "label": "针对女性的“粉色税”", "roast": "精准打击。作为一个穷女人，活着本身就是一种负债。", "sanLock": 40, "isGlitched": true, "archiveId": "No.12_PERIOD_POVERTY", "effects": { "scaling": "INCOME", "gold": -0.4, "hp": -8, "san": 10 } }
+    }
+  },
+  {
+    "id": "EVT_13_CASHLESS",
+    "title": "无现金社会",
+    "bgImage": "/assets/scenes/bg_modern_mall.png",
+    "eventImage": "/assets/events/evt_no_cash_sign.png",
+    "text": {
+      "lowSan": "繁华的商业区，一个乞丐跪在地上乞讨。路过的精英们拿着最新款iPhone，统一摆手冷笑：“Sorry, no cash（没现金）。”",
+      "highSan": "空气中漂浮着无数不可见的数字流，穿过你的身体，但你无法触碰。你被隔离在“防火墙”之外。没有二维码，你在这个数字世界里已经是一具僵尸。",
+      "sanLock": 40
+    },
+    "conditions": { "minSan": 0, "maxSan": 100 },
+    "options": {
+      "A": { "label": "科技强国，支付便捷", "roast": "赢麻了！看着别人用手机支付，你饿肚子的样子更有科技感了。", "effects": { "scaling": "LEVERAGE", "gold": 300, "hp": -3, "san": -4 } },
+      "B": { "label": "真没钱，谁还带钱包", "roast": "实话。穷人唯一的收入来源被支付宝们消灭了。", "effects": { "scaling": "FIXED", "gold": 50, "hp": 2, "san": -2 } },
+      "C": { "label": "电子支付减少犯罪", "roast": "没错， बढ़ा也没人抢你了，因为你比抢劫犯还穷。", "effects": { "scaling": "INCOME", "gold": -0.2, "hp": 8, "san": 2 } },
+      "D": { "label": "你在数字世界已死", "roast": "系统性抹杀。没有二维码，你就不算人类，你是Bug。", "sanLock": 40, "isGlitched": true, "archiveId": "No.13_THE_UNBANKED", "effects": { "scaling": "INCOME", "gold": -0.4, "hp": -8, "san": 10 } }
+    }
+  },
+  {
+    "id": "EVT_31_CHILD_SNATCH",
+    "title": "被抢走的孩子",
+    "bgImage": "/assets/scenes/bg_police_car_night.png",
+    "eventImage": "/assets/events/evt_crying_child.png",
+    "text": {
+      "lowSan": "一辆车旁，警察正强行把一个哭喊的小女孩从母亲怀里拽走塞进警车。理由是母亲带着孩子睡在车里，属于“儿童忽视”。",
+      "highSan": "那个孩子不是被带走，是被“没收”了。在系统眼里，孩子是国有资产，穷人是由于“维护不当”而被剥夺使用权的管理员。母爱在法律面前一文不值。",
+      "sanLock": 40
+    },
+    "conditions": { "minSan": 0, "maxSan": 100 },
+    "options": {
+      "A": { "label": "为了孩子好，国家抚养", "roast": "多伟大。把孩子抢走给陌生人养，也不愿给亲妈发点房租补贴。", "effects": { "scaling": "LEVERAGE", "gold": 300, "hp": -3, "san": -4 } },
+      "B": { "label": "跟着流浪确实受罪", "roast": "是啊，心碎的母亲不是人，是生育机器，坏了就报废。", "effects": { "scaling": "FIXED", "gold": 50, "hp": 2, "san": -2 } },
+      "C": { "label": "法律规定必须提供固定住所", "roast": "法律说：穷人没资格当父母。剥夺生育权，文明版。", "effects": { "scaling": "INCOME", "gold": -0.2, "hp": 8, "san": 2 } },
+      "D": { "label": "以保护之名行拐卖之实", "roast": "诛心。寄养家庭拿的补贴比给穷人的救济金高多了，这叫GDP。", "sanLock": 40, "isGlitched": true, "archiveId": "No.31_CPS_BIAS", "effects": { "scaling": "INCOME", "gold": -0.4, "hp": -8, "san": 10 } }
+    }
+  },
+  {
+    "id": "EVT_32_ROBOT",
+    "title": "巡逻机器人",
+    "bgImage": "/assets/scenes/bg_parking_lot.png",
+    "eventImage": "/assets/events/evt_security_robot.png",
+    "text": {
+      "lowSan": "停车场里，一个蛋形的白色机器人正闪着警灯，发出刺耳的噪音逼近角落里的流浪汉。流浪汉惊恐地拿着毯子逃跑，机器人紧追不舍。",
+      "highSan": "那个白色的蛋是冷酷的机械眼。它没有怜悯，没有灵魂，只有“清除”指令。你被当成了停车场里的一块顽固污渍，正在被自动清洁程序追杀。",
+      "sanLock": 40
+    },
+    "conditions": { "minSan": 0, "maxSan": 100 },
+    "options": {
+      "A": { "label": "高科技安保，满满的安全感", "roast": "安全感？对，看着穷人被R2-D2追着跑，富人笑得很开心。", "effects": { "scaling": "LEVERAGE", "gold": 300, "hp": -3, "san": -4 } },
+      "B": { "label": "好萌的机器人，拍个照", "roast": "萌？这是终结者的婴儿版，专门用来终结穷人的睡眠。", "effects": { "scaling": "FIXED", "gold": 50, "hp": 2, "san": -2 } },
+      "C": { "label": "降低人力巡逻成本", "roast": "雇人赶人太贵，还可能有良心；机器没良心，只要7美元一小时。", "effects": { "scaling": "INCOME", "gold": -0.2, "hp": 8, "san": 2 } },
+      "D": { "label": "自动化的冷酷恶意", "roast": "赛博朋克现实版。科技进步了，欺负穷人的手段更花哨了。", "sanLock": 40, "isGlitched": true, "archiveId": "No.32_SECURITY_ROBOTS", "effects": { "scaling": "INCOME", "gold": -0.4, "hp": -8, "san": 10 } }
+    }
+  },
+  {
+    "id": "EVT_67_CRYING_HORROR",
+    "title": "恐怖的哭声",
+    "bgImage": "/assets/scenes/bg_welfare_office.png",
+    "eventImage": "/assets/events/evt_screaming_child.png",
+    "text": {
+      "lowSan": "福利署门口，一个满身淤青的孩子死死抓着门框，拼命想逃回那个刚虐待过他的寄养家庭。他发出绝望的尖叫：“我不去那里！求你们打我吧，别送我去那里！”",
+      "highSan": "孩子看到的不是福利院的车，而是一辆通往第18层地狱的灵车。寄养家庭是第17层地狱，而公立福利院是终极的绞肉机。在那里，残疾儿童像垃圾一样堆积，等待腐烂。",
+      "sanLock": 40
+    },
+    "conditions": { "minSan": 0, "maxSan": 100 },
+    "options": {
+      "A": { "label": "孩子不懂事，福利院条件更好", "roast": "好？那是从狼窝进虎穴。", "effects": { "scaling": "LEVERAGE", "gold": 300, "hp": -3, "san": -4 } },
+      "B": { "label": "寄养家庭把他打怕了吧", "roast": "他宁愿挨打也不去福利院，你想想为什么。", "effects": { "scaling": "FIXED", "gold": 50, "hp": 2, "san": -2 } },
+      "C": { "label": "分离焦虑症", "roast": "不，这是求生本能。", "effects": { "scaling": "INCOME", "gold": -0.2, "hp": 8, "san": 2 } },
+      "D": { "label": "那是通往第18层地狱的灵车", "roast": "寄养家庭是第17层地狱，而公立福利院是第18层。在那里，无人领养的残疾儿童会像垃圾一样被堆积、被强奸、被药物控制等死。", "sanLock": 40, "isGlitched": true, "archiveId": "No.67_INSTITUTIONAL_ABUSE", "effects": { "scaling": "INCOME", "gold": -0.4, "hp": -8, "san": 10 } }
+    }
+  },
+  {
+    "id": "EVT_XX_WHITE_FLOWER",
+    "title": "手里的小白花",
+    "bgImage": "/assets/scenes/bg_dirty_corner.png",
+    "eventImage": "/assets/events/evt_arm_flower.png",
+    "text": {
+      "lowSan": "街角，一个流浪汉靠在墙根，脸上带着慈祥宁静的微笑。他像抱着宝贝一样，捧着自己左臂上一簇盛开的、毛茸茸的“白色小花”。",
+      "highSan": "那不是花，那是死亡的舞蹈。赛拉嗪（Tranq）让他感觉不到痛，伤口里涌动的活蛆被他当成了花蕊。他在微笑着看着自己的身体一点点变成肥料。",
+      "sanLock": 40
+    },
+    "conditions": { "minSan": 0, "maxSan": 100 },
+    "options": {
+      "A": { "label": "身处沟渠，心向阳光", "roast": "多么感人的画面，流浪汉也有爱美之心。", "effects": { "scaling": "LEVERAGE", "gold": 300, "hp": -3, "san": -4 } },
+      "B": { "label": "可能是某种棉絮吧", "roast": "看错了，那东西在动。", "effects": { "scaling": "FIXED", "gold": 50, "hp": 2, "san": -2 } },
+      "C": { "label": "严重的皮肤真菌感染", "roast": "真菌可不会长得这么立体。", "effects": { "scaling": "INCOME", "gold": -0.2, "hp": 8, "san": 2 } },
+      "D": { "label": "那是伤口里涌动的活蛆", "roast": "由于芬太尼的麻醉，他感觉不到痛，甚至觉得蛆虫蠕动很舒服。", "sanLock": 40, "isGlitched": true, "archiveId": "No.XX_TRANQ_ZOMBIE", "effects": { "scaling": "INCOME", "gold": -0.4, "hp": -8, "san": 10 } }
+    }
+  },
+  {
+    "id": "EVT_68_SMILING_GULL",
+    "title": "满足的海鸥",
+    "bgImage": "/assets/scenes/bg_pier.png",
+    "eventImage": "/assets/events/evt_fat_seagull.png",
+    "text": {
+      "lowSan": "码头栈道上，一只海鸥体型硕大，看起来吃得很饱。它的嘴角沾着一点红色的浆果汁液，正眯着眼睛，呈现出一种诡异的“笑容”。",
+      "highSan": "海鸥的眼睛里映着一具卡在石缝里的尸体。那红色的不是浆果，是流浪汉的眼球液。它是这城市唯一的送葬者，因为吃得太饱而感到无比幸福。",
+      "sanLock": 40
+    },
+    "conditions": { "minSan": 0, "maxSan": 100 },
+    "options": {
+      "A": { "label": "人与自然和谐共处", "roast": "是挺和谐，它吃得比你还好。", "effects": { "scaling": "LEVERAGE", "gold": 300, "hp": -3, "san": -4 } },
+      "B": { "label": "那是偷吃了游客的草莓酱吧？", "roast": "草莓酱不会有这种铁锈味。", "effects": { "scaling": "FIXED", "gold": 50, "hp": 2, "san": -2 } },
+      "C": { "label": "海鸥是机会主义觅食者", "roast": "它是机会主义者，那谁是机会？", "effects": { "scaling": "INCOME", "gold": -0.2, "hp": 8, "san": 2 } },
+      "D": { "label": "它刚啄食完一具尸体的眼球", "roast": "那是人血。码头下面的石缝里，卡着一个没人收尸的流浪汉。因为吃得太饱，海鸥露出了满足的神情。", "sanLock": 40, "isGlitched": true, "archiveId": "No.68_URBAN_SCAVENGERS", "effects": { "scaling": "INCOME", "gold": -0.4, "hp": -8, "san": 10 } }
+    }
+  },
+  {
+    "id": "EVT_XX_MOLE_PEOPLE",
+    "title": "沉睡的极客",
+    "bgImage": "/assets/scenes/bg_sewer.png",
+    "eventImage": "/assets/events/evt_macbook_hobo.png",
+    "text": {
+      "lowSan": "暴雨过后的排洪渠口，堆着一堆破烂的衣物。你看得出来，那是一个人正蜷缩着睡觉，怀里还死死抱着一台贴满贴纸的MacBook Pro。",
+      "highSan": "他没有在睡觉，他已经死机了。那台MacBook是他的墓碑，贴纸是他的墓志铭。曾经的年薪百万，现在的下水道肥料，系统格式化了他的人生。",
+      "sanLock": 40
+    },
+    "conditions": { "minSan": 0, "maxSan": 100 },
+    "options": {
+      "A": { "label": "流浪也不忘学习编程", "roast": "励志故事。只要心中有代码，哪里都是硅谷。", "effects": { "scaling": "LEVERAGE", "gold": 300, "hp": -3, "san": -4 } },
+      "B": { "label": "可能是喝醉了", "roast": "这么大的雨都没醒，睡得真死。", "effects": { "scaling": "FIXED", "gold": 50, "hp": 2, "san": -2 } },
+      "C": { "label": "数字游民的极端生活方式", "roast": "确实极端，直接把自己游没了。", "effects": { "scaling": "INCOME", "gold": -0.2, "hp": 8, "san": 2 } },
+      "D": { "label": "那是他的墓碑", "roast": "他已经因失温死在昨晚的雨里了。曾经的年薪百万，现在的下水道肥料。", "sanLock": 40, "isGlitched": true, "archiveId": "No.XX_MOLE_PEOPLE", "effects": { "scaling": "INCOME", "gold": -0.4, "hp": -8, "san": 10 } }
+    }
+  },
+  {
+    "id": "EVT_XX_RED_MEAT",
+    "title": "特价牛排",
+    "bgImage": "/assets/scenes/bg_discount_store.png",
+    "eventImage": "/assets/events/evt_bright_red_meat.png",
+    "text": {
+      "lowSan": "在贫民区的折扣超市，大家在疯抢一种特价牛排。只要一美元一块，而且肉色鲜红欲滴，看起来比旁边20美元的肉还要新鲜。",
+      "highSan": "那是僵尸肉涂上了腮红。一氧化碳把早已腐烂发灰的尸肉伪装成了鲜活的生命。它鲜红得像谎言一样，正在诱惑饥饿的肠胃吞下细菌。",
+      "sanLock": 40
+    },
+    "conditions": { "minSan": 0, "maxSan": 100 },
+    "options": {
+      "A": { "label": "平价超市的惠民补贴", "roast": "资本家做慈善？梦里啥都有。", "effects": { "scaling": "LEVERAGE", "gold": 300, "hp": -3, "san": -4 } },
+      "B": { "label": "这肉看着真不错", "roast": "看着不错，吃起来就要命了。", "effects": { "scaling": "FIXED", "gold": 50, "hp": 2, "san": -2 } },
+      "C": { "label": "冷冻解冻后的肌红蛋白渗出", "roast": "不，这不是自然的红。", "effects": { "scaling": "INCOME", "gold": -0.2, "hp": 8, "san": 2 } },
+      "D": { "label": "那是腐肉的“尸体妆”", "roast": "早就发臭变灰的腐肉，用一氧化碳处理过。看起来新鲜，其实全是细菌。", "sanLock": 40, "isGlitched": true, "archiveId": "No.XX_CO_MEAT", "effects": { "scaling": "INCOME", "gold": -0.4, "hp": -8, "san": 10 } }
+    }
+  }
+]

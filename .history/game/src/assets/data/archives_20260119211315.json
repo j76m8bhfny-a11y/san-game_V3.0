@@ -1,0 +1,182 @@
+[
+  {
+    "id": "No.01_CAMDEN_BENCH",
+    "title": "卡姆登长椅 (The Camden Bench)",
+    "image": "/assets/archives/camden_bench_blueprint.png",
+    "flavorText": "【来源：CNN Style】这种长椅由特种混凝土制成，表面倾斜且粗糙。官方宣传语称其能“抵御22种不当使用行为”，包括睡觉、玩滑板甚至乱涂乱画。在伦敦和纽约安装后，流浪汉滞留率下降了60%以上——他们被赶去了更阴暗的角落。"
+  },
+  {
+    "id": "No.02_STARBUCKS_ARREST",
+    "title": "费城星巴克逮捕案",
+    "image": "/assets/archives/starbucks_police.png",
+    "flavorText": "【来源：NYT】2018年，两名黑人男子因“没点单坐着等人”被星巴克经理解释为非法入侵并报警逮捕。该事件揭露了“消费门槛”本质上是种族与阶级的筛选器：不花钱，就不配坐着。"
+  },
+  {
+    "id": "No.03_DUMPSTER_GUARD",
+    "title": "波特兰“垃圾箱守卫战”",
+    "image": "/assets/archives/dumpster_police.png",
+    "flavorText": "【来源：The Oregonian】2021年冰风暴期间，Fred Meyer超市因停电丢弃数千磅食物。当饥饿市民试图捡拾时，超市雇佣了12名持枪警察守卫垃圾箱，确保食物变质也不让人拿走。宁可烂掉，不可白送。"
+  },
+  {
+    "id": "No.04_ANTI_HOMELESS_SPIKES",
+    "title": "防流浪汉尖刺 (Anti-homeless Spikes)",
+    "image": "/assets/archives/london_spikes.png",
+    "flavorText": "【来源：The Guardian】2014年伦敦一处豪宅在门廊安装金属尖刺，引发全英抗议。从西雅图的重型自行车架到旧金山的巨石，城市设计的核心逻辑变成：消除一切可以让穷人停留的平面。"
+  },
+  {
+    "id": "No.05_BUSSED_OUT",
+    "title": "大巴清洗计划 (Bussed Out)",
+    "image": "/assets/archives/one_way_ticket.png",
+    "flavorText": "【来源：The Guardian】2011-2017年间，美国城市购买了34,240张单程车票送走流浪汉。所谓的“家庭团聚计划”往往是谎言，目的地根本没有亲人，城市只是为了让本地贫困数据清零。"
+  },
+  {
+    "id": "No.06_PATIENT_DUMPING",
+    "title": "好莱坞长老会医院抛尸案",
+    "image": "/assets/archives/patient_dumping_cctv.png",
+    "flavorText": "【来源：LA Times】2007年监控拍到，医院将一名患严重截瘫的男子（穿着病号服挂着尿袋）直接推下车丢弃在Skid Row贫民窟路边。这在私立医院是潜规则：没钱治病，就是坏账，坏账需要被清理。"
+  },
+  {
+    "id": "No.07_HOUSING_NOT_HANDCUFFS",
+    "title": "住房不是手铐 (Housing Not Handcuffs)",
+    "image": "/assets/archives/arrest_record.png",
+    "flavorText": "【来源：NLCHP】2006-2019年，禁止乞讨和车内居住的法律暴增。无法支付罚款导致流浪汉入狱，形成死循环：失业->流浪->被抓->有了犯罪记录->更找不到工作。"
+  },
+  {
+    "id": "No.08_LIBRARY_SMELL_BAN",
+    "title": "克雷默诉警察局案",
+    "image": "/assets/archives/library_rules.png",
+    "flavorText": "【来源：Federal Court 1992】理查德·克雷默因体味被驱逐。上诉法院裁定：图书馆有权禁止“体味令人反感”的顾客。这一判例成为公共场所合法拒绝流浪汉的尚方宝剑。"
+  },
+  {
+    "id": "No.09_DETROIT_WATER_CUT",
+    "title": "底特律断水危机",
+    "image": "/assets/archives/water_cut_notice.png",
+    "flavorText": "【来源：UN OHCHR】2014年，底特律切断了3万户贫困家庭供水。联合国称此为侵犯人权，但在美国法律中，水是商品。没钱买？那就渴着。"
+  },
+  {
+    "id": "No.10_PLASMA_ECONOMY",
+    "title": "美国血浆经济",
+    "image": "/assets/archives/plasma_center_line.png",
+    "flavorText": "【来源：The Atlantic】美国是极少数允许有偿卖血的发达国家，供应了全球70%的血浆。血浆中心故意建在贫民窟，对于穷人，身体是唯一的ATM机。"
+  },
+  {
+    "id": "No.11_SNAP_HOT_FOOD_BAN",
+    "title": "SNAP热食禁令 (Hot Food Ban)",
+    "image": "/assets/archives/snap_hot_food.png",
+    "flavorText": "【来源：USDA】食品券（SNAP）通常禁止购买“在销售点食用的热食”。这是可口可乐和卡夫等食品巨头游说的结果，确保福利资金流向高糖饮料和冷冻食品。潜台词：穷人只配吃工业垃圾。"
+  },
+  {
+    "id": "No.12_PERIOD_POVERTY",
+    "title": "经期贫困 (Period Poverty)",
+    "image": "/assets/archives/period_poverty.png",
+    "flavorText": "【来源：ACLU】在全美30个州，卫生棉条被征收销售税（归类为非必需品），而伟哥和生发剂却常免税。如果你是穷人，还在流血，那是你自己的问题，请不要弄脏地面。"
+  },
+  {
+    "id": "No.13_THE_UNBANKED",
+    "title": "无银行账户者 (The Unbanked)",
+    "image": "/assets/archives/unbanked_map.png",
+    "flavorText": "【来源：FDIC】约5.4%的美国家庭（710万人）没有银行账户。随着“无现金商店”的蔓延，这群人实际上被禁止购买食物和水，被彻底排除在现代经济循环之外。"
+  },
+  {
+    "id": "No.14_SHELTER_PET_BAN",
+    "title": "收容所低门槛准入争议",
+    "image": "/assets/archives/homeless_pet.png",
+    "flavorText": "【来源：National Alliance to End Homelessness】约10-25%的流浪者拥有宠物，但大多数收容所严禁宠物。这导致大量流浪者宁愿冻死也不愿抛弃唯一的亲人。"
+  },
+  {
+    "id": "No.15_GOOD_SAMARITAN_LAW",
+    "title": "艾默生好撒玛利亚人法案 (1996)",
+    "image": "/assets/archives/locked_dumpster.png",
+    "flavorText": "【来源：HuffPost】商家常借口“有人吃坏了会告我”而锁住垃圾桶。事实上，1996年的联邦法案已经给予了捐赠者免责保护。锁住垃圾桶的真实动机是防止降低销量。"
+  },
+  {
+    "id": "No.16_ID_TRAP",
+    "title": "身份陷阱 (The ID Trap)",
+    "image": "/assets/archives/id_card_denied.png",
+    "flavorText": "【来源：Brennan Center】约11%的美国公民没有有效ID。死循环：没有ID -> 无法申请工作/住房 -> 没有住房 -> 无法验证地址办ID。政府精心设计的这道墙，至今无人打破。"
+  },
+  {
+    "id": "No.17_DEINSTITUTIONALIZATION",
+    "title": "去机构化运动 (Deinstitutionalization)",
+    "image": "/assets/archives/prison_cell.png",
+    "flavorText": "【来源：NPR】全美最大的精神病收容机构不是医院，而是库克县监狱和洛杉矶县监狱。自1960年代关闭精神病院以来，监狱中的精神病患人数是医院的10倍。"
+  },
+  {
+    "id": "No.18_POVERTY_PORN",
+    "title": "贫困色情片 (Poverty Porn)",
+    "image": "/assets/archives/bumfights.png",
+    "flavorText": "【来源：Wikipedia】从Bumfights到TikTok上的“慈善挑战”，利用无家可归者的绝望来制造内容，本质上是对他人的非人化剥削。"
+  },
+  {
+    "id": "No.19_OPIOID_CRISIS",
+    "title": "阿片类药物危机 (Opioid Crisis)",
+    "image": "/assets/archives/fentanyl_pills.png",
+    "flavorText": "【来源：CDC】2023年，美国有超过11万人死于药物过量。对于绝望的底层，芬太尼不仅是毒品，更是唯一的廉价止痛药和抗抑郁药。"
+  },
+  {
+    "id": "No.20_HART_ISLAND",
+    "title": "哈特岛 (Hart Island)",
+    "image": "/assets/archives/hart_island_trenches.png",
+    "flavorText": "【来源：NYT】纽约市东侧的一座孤岛。150年来，超过100万具无人认领的尸体被囚犯们像叠积木一样埋在巨大的壕沟里。穷人只配批量填埋。"
+  },
+  {
+    "id": "No.21_FEEDING_BAN",
+    "title": "奥兰多反喂食法",
+    "image": "/assets/archives/feeding_ban_arrest.png",
+    "flavorText": "【来源：Newsweek】在奥兰多、休斯顿等地，慈善组织因在公园向无家可归者提供食物而被捕。政府认为，如果不给流浪汉吃的，他们就会神奇地消失。"
+  },
+  {
+    "id": "No.22_POWER_REMOVAL",
+    "title": "公共插座移除行动",
+    "image": "/assets/archives/covered_outlet.png",
+    "flavorText": "【来源：Street Roots】纽约MTA和各大商场近年来大量拆除或封锁公共插座。潜台词：电力是给消费者准备的。如果你不消费，就不配拥有满格的电池。"
+  },
+  {
+    "id": "No.23_VEHICLE_BAN",
+    "title": "车辆居住禁令 (Vehicle Dwelling Bans)",
+    "image": "/assets/archives/no_parking_sign.png",
+    "flavorText": "【来源：NLCHP】全美禁止车内居住的法律暴增213%。潜台词：没房住？那我们就让你连车也没得住，彻底把你逼上绝路。"
+  },
+  {
+    "id": "No.24_LEAN_BARS",
+    "title": "坐骨支撑架 (Ischial Supports)",
+    "image": "/assets/archives/lean_bars.png",
+    "flavorText": "【来源：Bloomberg CityLab】这种设计被称为“Lean bars”，让你只能靠不能坐。潜台词：公共空间不欢迎停留。坐下是一种我们不想赋予你的权利。"
+  },
+  {
+    "id": "No.25_RECYCLING_LIMITS",
+    "title": "加州回收中心关闭潮",
+    "image": "/assets/archives/recycling_limit_sign.png",
+    "flavorText": "【来源：LA Times】RePlanet等大型回收中心倒闭，加上每日限额政策（Daily Load Limits），导致收集者无法变现。数亿美元的未兑现押金留在了政府和饮料公司的口袋里。"
+  },
+  {
+    "id": "No.26_ADDRESS_DISCRIMINATION",
+    "title": "就业地址歧视",
+    "image": "/assets/archives/job_application.png",
+    "flavorText": "【来源：Anti-Poverty Network】雇主软件通常会自动过滤掉收容所或PO Box的地址。潜台词：想工作？先买房。买不起房？那你就别工作。"
+  },
+  {
+    "id": "No.27_ECHO_PARK_SWEEP",
+    "title": "洛杉矶回声公园清场 (Echo Park Sweep)",
+    "image": "/assets/archives/camp_sweep.png",
+    "flavorText": "【来源：The Guardian】2021年3月，警方出动数百人，花费数百万美元清理流浪汉营地，却并未提供足够的永久安置房。潜台词：你在这里不受欢迎。"
+  },
+  {
+    "id": "No.28_INSULIN_RATIONING",
+    "title": "胰岛素配给致死 (Insulin Rationing)",
+    "image": "/assets/archives/insulin_prices.png",
+    "flavorText": "【来源：Yale Study】1/4的美国糖尿病患者因为太贵而减少胰岛素用量。潜台词：你的生存权取决于你的银行余额。没钱？那就烂掉吧。"
+  },
+  {
+    "id": "No.29_SHADE_EQUITY",
+    "title": "树荫公平 (Shade Equity)",
+    "image": "/assets/archives/heat_map.png",
+    "flavorText": "【来源：National Geographic】历史上的红线政策导致贫困社区缺乏绿化，温度比富人区高5-10度。潜台词：种树是为了保值房产。至于你，像蚂蚁一样被烤干吧。"
+  },
+  {
+    "id": "No.30_LAUNDRY_BAN",
+    "title": "洗衣店隔离史",
+    "image": "/assets/archives/laundromat_sign.png",
+    "flavorText": "【来源：Social Problems Journal】许多商家实行“外貌歧视”，拒绝服务看起来像流浪汉的人。潜台词：我们要你保持肮脏，这样我们才有理由继续歧视你。"
+  }
+]

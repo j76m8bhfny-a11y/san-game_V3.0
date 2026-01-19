@@ -1,0 +1,62 @@
+[
+  {
+    "id": "No.01_CAMDEN_BENCH",
+    "title": "卡姆登长椅 (The Camden Bench)",
+    "image": "/assets/archives/camden_bench_blueprint.png",
+    "flavorText": "【来源：CNN Style】这种长椅由特种混凝土制成，表面倾斜且粗糙。官方宣传语称其能“抵御22种不当使用行为”，包括睡觉、玩滑板甚至乱涂乱画。在伦敦和纽约安装后，流浪汉滞留率下降了60%以上——他们被赶去了更阴暗的角落。"
+  },
+  {
+    "id": "No.02_STARBUCKS_ARREST",
+    "title": "费城星巴克逮捕案",
+    "image": "/assets/archives/starbucks_police.png",
+    "flavorText": "【来源：NYT】2018年，两名黑人男子因“没点单坐着等人”被星巴克经理解释为非法入侵并报警逮捕。该事件揭露了“消费门槛”本质上是种族与阶级的筛选器：不花钱，就不配坐着。"
+  },
+  {
+    "id": "No.03_DUMPSTER_GUARD",
+    "title": "波特兰“垃圾箱守卫战”",
+    "image": "/assets/archives/dumpster_police.png",
+    "flavorText": "【来源：The Oregonian】2021年冰风暴期间，Fred Meyer超市因停电丢弃数千磅食物。当饥饿市民试图捡拾时，超市雇佣了12名持枪警察守卫垃圾箱，确保食物变质也不让人拿走。宁可烂掉，不可白送。"
+  },
+  {
+    "id": "No.04_ANTI_HOMELESS_SPIKES",
+    "title": "防流浪汉尖刺 (Anti-homeless Spikes)",
+    "image": "/assets/archives/london_spikes.png",
+    "flavorText": "【来源：The Guardian】2014年伦敦一处豪宅在门廊安装金属尖刺，引发全英抗议。从西雅图的重型自行车架到旧金山的巨石，城市设计的核心逻辑变成：消除一切可以让穷人停留的平面。"
+  },
+  {
+    "id": "No.05_BUSSED_OUT",
+    "title": "大巴清洗计划 (Bussed Out)",
+    "image": "/assets/archives/one_way_ticket.png",
+    "flavorText": "【来源：The Guardian】2011-2017年间，美国城市购买了34,240张单程车票送走流浪汉。所谓的“家庭团聚计划”往往是谎言，目的地根本没有亲人，城市只是为了让本地贫困数据清零。"
+  },
+  {
+    "id": "No.06_PATIENT_DUMPING",
+    "title": "好莱坞长老会医院抛尸案",
+    "image": "/assets/archives/patient_dumping_cctv.png",
+    "flavorText": "【来源：LA Times】2007年监控拍到，医院将一名患严重截瘫的男子（穿着病号服挂着尿袋）直接推下车丢弃在Skid Row贫民窟路边。这在私立医院是潜规则：没钱治病，就是坏账，坏账需要被清理。"
+  },
+  {
+    "id": "No.07_HOUSING_NOT_HANDCUFFS",
+    "title": "住房不是手铐 (Housing Not Handcuffs)",
+    "image": "/assets/archives/arrest_record.png",
+    "flavorText": "【来源：NLCHP】2006-2019年，禁止乞讨和车内居住的法律暴增。无法支付罚款导致流浪汉入狱，形成死循环：失业->流浪->被抓->有了犯罪记录->更找不到工作。"
+  },
+  {
+    "id": "No.08_LIBRARY_SMELL_BAN",
+    "title": "克雷默诉警察局案",
+    "image": "/assets/archives/library_rules.png",
+    "flavorText": "【来源：Federal Court 1992】理查德·克雷默因体味被驱逐。上诉法院裁定：图书馆有权禁止“体味令人反感”的顾客。这一判例成为公共场所合法拒绝流浪汉的尚方宝剑。"
+  },
+  {
+    "id": "No.09_DETROIT_WATER_CUT",
+    "title": "底特律断水危机",
+    "image": "/assets/archives/water_cut_notice.png",
+    "flavorText": "【来源：UN OHCHR】2014年，底特律切断了3万户贫困家庭供水。联合国称此为侵犯人权，但在美国法律中，水是商品。没钱买？那就渴着。"
+  },
+  {
+    "id": "No.10_PLASMA_ECONOMY",
+    "title": "美国血浆经济",
+    "image": "/assets/archives/plasma_center_line.png",
+    "flavorText": "【来源：The Atlantic】美国是极少数允许有偿卖血的发达国家，供应了全球70%的血浆。血浆中心故意建在贫民窟，对于穷人，身体是唯一的ATM机。"
+  }
+]

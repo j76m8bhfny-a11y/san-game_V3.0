@@ -58,10 +58,10 @@ interface GameActions {
 type GameStore = GameState & GameActions;
 
 const INITIAL_STATE: Omit<GameState, '_hasHydrated'> = {
-  day: 0,
+  day: 1,
   hp: 100,
   maxHp: 100,
-  san: 0,
+  san: 50,
   gold: 100,
   currentClass: PlayerClass.Worker,
   

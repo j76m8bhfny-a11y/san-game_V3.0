@@ -1,0 +1,122 @@
+[
+  {
+    "id": "No.01_CAMDEN_BENCH",
+    "title": "卡姆登长椅 (The Camden Bench)",
+    "image": "/assets/archives/camden_bench_blueprint.png",
+    "flavorText": "【来源：CNN Style】这种长椅由特种混凝土制成，表面倾斜且粗糙。官方宣传语称其能“抵御22种不当使用行为”，包括睡觉、玩滑板甚至乱涂乱画。在伦敦和纽约安装后，流浪汉滞留率下降了60%以上——他们被赶去了更阴暗的角落。"
+  },
+  {
+    "id": "No.02_STARBUCKS_ARREST",
+    "title": "费城星巴克逮捕案",
+    "image": "/assets/archives/starbucks_police.png",
+    "flavorText": "【来源：NYT】2018年，两名黑人男子因“没点单坐着等人”被星巴克经理解释为非法入侵并报警逮捕。该事件揭露了“消费门槛”本质上是种族与阶级的筛选器：不花钱，就不配坐着。"
+  },
+  {
+    "id": "No.03_DUMPSTER_GUARD",
+    "title": "波特兰“垃圾箱守卫战”",
+    "image": "/assets/archives/dumpster_police.png",
+    "flavorText": "【来源：The Oregonian】2021年冰风暴期间，Fred Meyer超市因停电丢弃数千磅食物。当饥饿市民试图捡拾时，超市雇佣了12名持枪警察守卫垃圾箱，确保食物变质也不让人拿走。宁可烂掉，不可白送。"
+  },
+  {
+    "id": "No.04_ANTI_HOMELESS_SPIKES",
+    "title": "防流浪汉尖刺 (Anti-homeless Spikes)",
+    "image": "/assets/archives/london_spikes.png",
+    "flavorText": "【来源：The Guardian】2014年伦敦一处豪宅在门廊安装金属尖刺，引发全英抗议。从西雅图的重型自行车架到旧金山的巨石，城市设计的核心逻辑变成：消除一切可以让穷人停留的平面。"
+  },
+  {
+    "id": "No.05_BUSSED_OUT",
+    "title": "大巴清洗计划 (Bussed Out)",
+    "image": "/assets/archives/one_way_ticket.png",
+    "flavorText": "【来源：The Guardian】2011-2017年间，美国城市购买了34,240张单程车票送走流浪汉。所谓的“家庭团聚计划”往往是谎言，目的地根本没有亲人，城市只是为了让本地贫困数据清零。"
+  },
+  {
+    "id": "No.06_PATIENT_DUMPING",
+    "title": "好莱坞长老会医院抛尸案",
+    "image": "/assets/archives/patient_dumping_cctv.png",
+    "flavorText": "【来源：LA Times】2007年监控拍到，医院将一名患严重截瘫的男子（穿着病号服挂着尿袋）直接推下车丢弃在Skid Row贫民窟路边。这在私立医院是潜规则：没钱治病，就是坏账，坏账需要被清理。"
+  },
+  {
+    "id": "No.07_HOUSING_NOT_HANDCUFFS",
+    "title": "住房不是手铐 (Housing Not Handcuffs)",
+    "image": "/assets/archives/arrest_record.png",
+    "flavorText": "【来源：NLCHP】2006-2019年，禁止乞讨和车内居住的法律暴增。无法支付罚款导致流浪汉入狱，形成死循环：失业->流浪->被抓->有了犯罪记录->更找不到工作。"
+  },
+  {
+    "id": "No.08_LIBRARY_SMELL_BAN",
+    "title": "克雷默诉警察局案",
+    "image": "/assets/archives/library_rules.png",
+    "flavorText": "【来源：Federal Court 1992】理查德·克雷默因体味被驱逐。上诉法院裁定：图书馆有权禁止“体味令人反感”的顾客。这一判例成为公共场所合法拒绝流浪汉的尚方宝剑。"
+  },
+  {
+    "id": "No.09_DETROIT_WATER_CUT",
+    "title": "底特律断水危机",
+    "image": "/assets/archives/water_cut_notice.png",
+    "flavorText": "【来源：UN OHCHR】2014年，底特律切断了3万户贫困家庭供水。联合国称此为侵犯人权，但在美国法律中，水是商品。没钱买？那就渴着。"
+  },
+  {
+    "id": "No.10_PLASMA_ECONOMY",
+    "title": "美国血浆经济",
+    "image": "/assets/archives/plasma_center_line.png",
+    "flavorText": "【来源：The Atlantic】美国是极少数允许有偿卖血的发达国家，供应了全球70%的血浆。血浆中心故意建在贫民窟，对于穷人，身体是唯一的ATM机。"
+  },
+  {
+    "id": "No.11_SNAP_HOT_FOOD_BAN",
+    "title": "SNAP热食禁令",
+    "image": "/assets/archives/snap_card.png",
+    "flavorText": "【来源：USDA】食品券禁止购买热食。这是食品巨头游说的结果，确保福利资金流向高糖饮料和冷冻食品。潜台词：穷人只配吃工业垃圾。"
+  },
+  {
+    "id": "No.12_PERIOD_POVERTY",
+    "title": "经期贫困 (Period Poverty)",
+    "image": "/assets/archives/pink_tax.png",
+    "flavorText": "【来源：ACLU】在全美30个州，卫生棉条被征收销售税（归类为非必需品），而伟哥和生发剂却常免税。如果你是穷人，流血是你自己的错，请不要弄脏地面。"
+  },
+  {
+    "id": "No.13_THE_UNBANKED",
+    "title": "无银行账户者 (The Unbanked)",
+    "image": "/assets/archives/no_cash_store.png",
+    "flavorText": "【来源：FDIC】约710万美国家庭没有银行账户。随着“无现金商店”蔓延，这群人实际上被禁止购买食物，被彻底排除在现代经济循环之外。"
+  },
+  {
+    "id": "No.31_CPS_BIAS",
+    "title": "儿童福利系统的阶级偏见",
+    "image": "/assets/archives/cps_removal.png",
+    "flavorText": "【来源：The New Republic】美国CPS带走的孩子中，绝大多数是因为“贫困”而非虐待。如果你穷，你的孩子就是国家的财产。"
+  },
+  {
+    "id": "No.32_SECURITY_ROBOTS",
+    "title": "Knightscope K5 保安机器人",
+    "image": "/assets/archives/robot_police.png",
+    "flavorText": "【来源：Washington Post】旧金山SPCA曾雇佣机器人驱赶流浪汉。它可以拍照、报警、发出噪音，租金仅需$7/小时。比雇人便宜，且绝无怜悯之心。"
+  },
+  {
+    "id": "No.67_INSTITUTIONAL_ABUSE",
+    "title": "机构化虐待 (Institutional Abuse)",
+    "image": "/assets/archives/orphanage_bed.png",
+    "flavorText": "【来源：Disability Rights International】公立儿童福利系统极其腐败。对于无法被“售卖”（领养）的特殊儿童，福利院往往只是一个等待死亡的仓库。"
+  },
+  {
+    "id": "No.XX_TRANQ_ZOMBIE",
+    "title": "Tranq (赛拉嗪) 僵尸潮",
+    "image": "/assets/archives/tranq_wounds.png",
+    "flavorText": "【来源：VICE News】新型毒品“Tranq”会导致使用者皮肤出现坏死性溃疡。吸毒者往往在意识模糊中看着自己的身体腐烂生蛆而无动于衷，甚至产生幻觉认为那是美好的事物。"
+  },
+  {
+    "id": "No.68_URBAN_SCAVENGERS",
+    "title": "城市食腐链",
+    "image": "/assets/archives/seagull_scavenger.png",
+    "flavorText": "【来源：Forensic Entomology】在被忽视的城市角落，流浪汉的死亡往往无人知晓。自然界的清道夫（海鸥、老鼠）成为了他们最后且唯一的“送葬者”。"
+  },
+  {
+    "id": "No.XX_MOLE_PEOPLE",
+    "title": "拉斯维加斯“鼹鼠人”",
+    "image": "/assets/archives/las_vegas_tunnels.png",
+    "flavorText": "【来源：Dark Days】赌城的地下防洪隧道里住着数千人。近年来，越来越多失业IT工程师和前中产阶级因为破产加入了这个群体。暴雨是他们最大的死神。"
+  },
+  {
+    "id": "No.XX_CO_MEAT",
+    "title": "一氧化碳包装肉 (CO-Treated Meat)",
+    "image": "/assets/archives/red_meat_chem.png",
+    "flavorText": "【来源：FDA Regulations】肉类加工厂使用一氧化碳处理变质肉，使其保持鲜红色泽长达数周。消费者无法判断新鲜度，穷人经常买到这种美丽的“僵尸肉”。"
+  }
+]

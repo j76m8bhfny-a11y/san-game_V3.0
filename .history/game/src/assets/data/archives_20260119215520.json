@@ -634,35 +634,5 @@
     "title": "麦凯原则 (MacKay Doctrine)",
     "image": "/assets/archives/scab_rat.png",
     "flavorText": "【来源：Supreme Court 1938】美国法律规定，虽然不能因罢工“解雇”工人，但可以雇佣“永久替代者”来顶替他们的位置。这实际上让罢工权名存实亡。"
-  },
-  {
-    "id": "No.W51_SEXUAL_COERCION",
-    "title": "职场性胁迫 (Workplace Sexual Coercion)",
-    "image": "/assets/archives/kitchen_shadow.png",
-    "flavorText": "【来源：National Domestic Workers Alliance】对于无证移民女性（尤其是家政和农业工人），性暴力常被作为一种“就业条件”。老板掌握着她们的去留权，实际上拥有了对她们身体的绝对支配权。"
-  },
-  {
-    "id": "No.W52_DRUG_CYCLE",
-    "title": "蓝领药物依赖链",
-    "image": "/assets/archives/arm_vein.png",
-    "flavorText": "【来源：Dreamland: The True Tale of America's Opiate Epidemic】在底层高强度工种中，兴奋剂（用于干活）和止痛药（用于下班）构成了工人的燃料。卖血买药是这个产业链末端最常见的生存方式。"
-  },
-  {
-    "id": "No.W53_DIY_ABORTION",
-    "title": "罗伊诉韦德案推翻后的现实",
-    "image": "/assets/archives/wire_hanger.png",
-    "flavorText": "【来源：The Guardian】在堕胎禁令生效的州，地下诊所和“DIY堕胎”激增。衣架（Coat Hanger）成为了绝望女性的象征符号，常导致大出血和感染死亡。"
-  },
-  {
-    "id": "No.W54_FLINT_WATER",
-    "title": "弗林特水危机 (Flint Water Crisis)",
-    "image": "/assets/archives/brown_water.png",
-    "flavorText": "【来源：NRDC / EPA】铅具有甜味（乙酸铅曾被称为“铅糖”）。政府为了省钱切换水源，导致数万儿童铅中毒，且铅中毒对智力的损害是不可逆的。"
-  },
-  {
-    "id": "No.W55_SUGAR_CRAVING",
-    "title": "阿片类药物与嗜甜",
-    "image": "/assets/archives/sugar_pile.png",
-    "flavorText": "【来源：Addiction Science & Clinical Practice】长期服用阿片类药物（如OxyContin）会扰乱胰岛素代谢并抑制味觉，导致使用者疯狂摄入高糖食物。这是底层蓝领药物滥用的典型体征。"
   }
 ]

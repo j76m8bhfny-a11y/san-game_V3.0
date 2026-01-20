@@ -2,23 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
-/* --- 1. 核心修复：引入 Zpix 像素字体 (通过 CDN) --- */
-@font-face {
-  font-family: 'PixelFont';
-  /* 优先使用 CDN (国内速度快) */
-  src: url('https://cdn.jsdelivr.net/gh/SolidZORO/zpix-pixel-font@v3.1.10/dist/zpix.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
+/* --- 1. 引入在线像素字体 (Press Start 2P) --- */
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
 /* --- 2. 全局强制应用 --- */
 :root {
-  /* 定义字体栈：优先 Zpix，其次是常见像素字体，最后兜底 */
-  --font-pixel: 'PixelFont', 'Zpix', 'Press Start 2P', 'Microsoft YaHei', sans-serif;
+  /* 定义字体变量 */
+  --font-pixel: 'Press Start 2P', cursive;
 }
 
-/* 暴力接管所有元素 */
+/* 暴力接管所有元素的字体 */
 html, body, #root, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -32,14 +25,14 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video, button, input, textarea {
-  font-family: var(--font-pixel) !important;
+  font-family: var(--font-pixel) !important; /* 强制覆盖 */
   
-  /* 关键：关闭抗锯齿，保证边缘像刀切一样锐利 */
+  /* 优化像素字体显示 */
   -webkit-font-smoothing: none;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeSpeed;
   
-  /* Zpix 字体较大，行高设为 1.5 倍看着最舒服 */
+  /* "Press Start 2P" 字号偏大，稍微调小一点默认行高 */
   line-height: 1.5; 
   letter-spacing: 0.05em;
 }
@@ -57,7 +50,6 @@ body {
 
 @layer utilities {
   .text-shadow-neon {
-    /* 像素风阴影：实心黑边 + 荧光绿晕 */
     text-shadow: 2px 2px 0px #000, 0 0 10px rgba(0, 255, 157, 0.8);
   }
   
@@ -78,7 +70,7 @@ body {
   }
   
   .font-pixel {
-    font-family: var(--font-pixel);
+    font-family: 'Press Start 2P', cursive;
   }
 }
 
@@ -89,7 +81,7 @@ body {
 }
 ::-webkit-scrollbar-thumb {
   background: #444;
-  border: 2px solid #111;
+  border: 2px solid #111; /* 增加像素感 */
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #00ff9d;

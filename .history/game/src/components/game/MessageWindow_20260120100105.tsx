@@ -16,9 +16,6 @@ const TypewriterText: React.FC<{ text: string; onComplete?: () => void }> = ({ t
 
   useEffect(() => {
     let i = 0;
-    // 重置显示，防止文本切换时残留
-    setDisplay('');
-    
     const timer = setInterval(() => {
       if (i < text.length) {
         setDisplay(text.substring(0, i + 1));
@@ -68,7 +65,6 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
                 group-hover:scale-105 group-hover:shadow-md
               `}>
                 <span className="font-bold mr-1">[{opt.id}]</span>
-                {/* 🚨 [修复] 使用 .label 替代 .text */}
                 {opt.label}
               </div>
             </motion.button>
@@ -91,55 +87,46 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
 
 // --- 主组件 ---
 export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
-  // 🚨 [新增] 获取 san 值用于判断文本
-  const { chooseOption, san } = useGameStore();
+  const { chooseOption } = useGameStore();
   const { playSfx } = useAudioStore();
   
   const [stage, setStage] = useState<'INIT' | 'TYPING' | 'INTERACTIVE'>('INIT');
 
   // 初始化：睁眼动画 -> 开始打字
   useEffect(() => {
-    // 每次 event 变化时重置状态
-    setStage('INIT');
     const timer = setTimeout(() => {
       setStage('TYPING');
-    }, 1500); 
+    }, 1500); // 1.5秒睁眼动画时间
     return () => clearTimeout(timer);
-  }, [event.id]); // 监听 event.id 变化
+  }, []);
 
   const handleTextComplete = () => {
     setStage('INTERACTIVE');
-    playSfx('sfx_cash'); 
+    playSfx('sfx_cash'); // 提示音：可以操作了
   };
 
-  // 🚨 [修复] 选项映射使用 .label
   const options = [
-    { id: 'A', label: event.options.A.label, type: 'risk' },
-    { id: 'B', label: event.options.B.label, type: 'safe' },
-    { id: 'C', label: event.options.C.label, type: 'special' },
-    { id: 'D', label: event.options.D?.label, type: 'awakening' },
+    { id: 'A', label: event.options.A.text, type: 'risk' },
+    { id: 'B', label: event.options.B.text, type: 'safe' },
+    { id: 'C', label: event.options.C.text, type: 'special' },
+    { id: 'D', label: event.options.D?.text, type: 'awakening' },
   ].filter(opt => opt.label);
 
   const eventImg = event.eventImage || '/assets/events/default_event.png';
 
-  // 🚨 [修复] 根据 SAN 值选择文本 (低于 50 显示 lowSan，否则 highSan，或者反过来，根据你的设定)
-  // 假设：高 SAN (High) 是正常/理智视角，低 SAN (Low) 是疯狂视角
-  // 但 schema 中通常 lowSan 对应低理智时的描述。
-  const descriptionText = san < 50 ? event.text.lowSan : event.text.highSan;
-
   return (
     <div className="fixed inset-0 z-30 pointer-events-none">
       
-      {/* --- Phase 1: 睁眼特效层 --- */}
+      {/* --- Phase 1: 睁眼特效层 (Eye Opening) --- */}
       <motion.div
-        key={`eye-${event.id}`} // 增加 key 确保重播动画
         initial={{ clipPath: 'ellipse(0% 0% at 50% 50%)', filter: 'blur(20px)', background: '#000' }}
         animate={{ clipPath: 'ellipse(150% 150% at 50% 50%)', filter: 'blur(0px)', background: 'transparent' }}
         transition={{ duration: 1.5, ease: "easeOut" }}
         className="absolute inset-0 z-50 pointer-events-none"
       />
 
-      {/* --- Layer 2: 事件插图 --- */}
+      {/* --- Layer 2: 事件插图 (左侧 2/3) --- */}
+      {/* 在背景加载完成后出现，实际上这里的背景是透传 App 的 LayeredScene，这里只放前景图 */}
       <motion.div 
         initial={{ opacity: 0, scale: 1.1 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -152,10 +139,11 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
           className="w-full h-full object-cover"
           onError={(e) => e.currentTarget.src = 'https://placehold.co/800x600/222/FFF?text=NO+SIGNAL'}
         />
+        {/* 装饰：插图上的暗角 */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40" />
       </motion.div>
 
-      {/* --- Layer 3: 文本区域 --- */}
+      {/* --- Layer 3: 文本区域 (上方高斯模糊条) --- */}
       <motion.div 
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -167,18 +155,19 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
             {event.title}
           </h2>
           <div className="text-gray-200 text-sm md:text-lg min-h-[60px]">
+             {/* 只有在睁眼动画结束后才开始打字 */}
              {stage !== 'INIT' && (
-                // 🚨 [修复] 使用动态选择的文本
-                <TypewriterText text={descriptionText} onComplete={handleTextComplete} />
+                <TypewriterText text={event.description} onComplete={handleTextComplete} />
              )}
           </div>
         </div>
       </motion.div>
 
-      {/* --- Phase 3: 交互介入 --- */}
+      {/* --- Phase 3: 交互介入 (必须等待文本完成) --- */}
       <AnimatePresence>
         {stage === 'INTERACTIVE' && (
           <>
+            {/* Layer 4: 主角层 (左下角) */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
@@ -192,6 +181,7 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
               />
             </motion.div>
 
+            {/* Layer 5: UI 操作层 (像素手机 - 右下角滑入) */}
             <motion.div
               initial={{ x: '100%', y: '100%', rotate: 10 }}
               animate={{ x: 0, y: 0, rotate: 0 }}

@@ -2,11 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* --- 1. 核心修复：引入 Zpix 像素字体 (通过 CDN) --- */
+/* --- 1. 定义像素字体 --- */
 @font-face {
   font-family: 'PixelFont';
-  /* 优先使用 CDN (国内速度快) */
-  src: url('https://cdn.jsdelivr.net/gh/SolidZORO/zpix-pixel-font@v3.1.10/dist/zpix.ttf') format('truetype');
+  /* 确保你把字体文件放在了 public/assets/fonts/pixel.ttf */
+  src: url('/assets/fonts/pixel.ttf') format('truetype'); 
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -14,11 +14,10 @@
 
 /* --- 2. 全局强制应用 --- */
 :root {
-  /* 定义字体栈：优先 Zpix，其次是常见像素字体，最后兜底 */
-  --font-pixel: 'PixelFont', 'Zpix', 'Press Start 2P', 'Microsoft YaHei', sans-serif;
+  --font-pixel: 'PixelFont', 'Courier New', monospace; /* 兜底字体也是像素风 */
 }
 
-/* 暴力接管所有元素 */
+/* 暴力接管所有元素的字体 */
 html, body, #root, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -32,16 +31,15 @@ article, aside, canvas, details, embed,
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
 time, mark, audio, video, button, input, textarea {
-  font-family: var(--font-pixel) !important;
+  font-family: var(--font-pixel) !important; /* !important 确保覆盖 Tailwind 默认 */
   
-  /* 关键：关闭抗锯齿，保证边缘像刀切一样锐利 */
+  /* --- 3. 关闭抗锯齿 (让字体锐利) --- */
   -webkit-font-smoothing: none;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeSpeed;
+  text-rendering: optimizeSpeed; /* 优先速度，不追求平滑 */
   
-  /* Zpix 字体较大，行高设为 1.5 倍看着最舒服 */
-  line-height: 1.5; 
-  letter-spacing: 0.05em;
+  /* 简单的字间距调整，像素字体通常需要宽一点 */
+  letter-spacing: 0.05em; 
 }
 
 body {
@@ -49,22 +47,27 @@ body {
   padding: 0;
   background-color: #000;
   color: #fff;
-  overflow: hidden;
-  cursor: default;
+  overflow: hidden; /* 防止滚动条破坏沉浸感 */
+  cursor: default;  /* 可以在这里换成自定义的像素鼠标指针 */
 }
 
 /* --- 工具类补充 --- */
 
+/* 霓虹发光文字特效 */
 @layer utilities {
   .text-shadow-neon {
-    /* 像素风阴影：实心黑边 + 荧光绿晕 */
-    text-shadow: 2px 2px 0px #000, 0 0 10px rgba(0, 255, 157, 0.8);
+    text-shadow: 0 0 5px rgba(0, 255, 157, 0.5), 0 0 10px rgba(0, 255, 157, 0.3);
   }
   
   .text-shadow-red {
-    text-shadow: 2px 2px 0px #000, 0 0 10px rgba(255, 0, 85, 0.8);
+    text-shadow: 0 0 5px rgba(255, 0, 85, 0.5), 0 0 10px rgba(255, 0, 85, 0.3);
   }
 
+  .box-shadow-neon {
+    box-shadow: 0 0 15px rgba(0, 255, 157, 0.2), inset 0 0 20px rgba(0, 255, 157, 0.1);
+  }
+
+  /* 扫描线背景 */
   .scanline-bg {
     background: linear-gradient(
       to bottom,
@@ -77,20 +80,21 @@ body {
     pointer-events: none;
   }
   
+  /* 定义一个专门的像素字体类 (虽然全局都用了，但有时需要显式指定) */
   .font-pixel {
-    font-family: var(--font-pixel);
+    font-family: 'PixelFont', monospace;
   }
 }
 
-/* 滚动条美化 */
+/* 滚动条美化 (像素风) */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 8px;
   background: #111;
 }
 ::-webkit-scrollbar-thumb {
   background: #444;
-  border: 2px solid #111;
+  border-radius: 0; /* 直角 */
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #00ff9d;
+  background: #00ff9d; /* 激活色 */
 }

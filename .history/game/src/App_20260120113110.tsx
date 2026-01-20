@@ -164,14 +164,10 @@ export default function App() {
         <LayeredScene 
           bgImage={currentBg}
           
-          // 🚨 [修复] 直接传 undefined，因为现在的逻辑是：
-          // 1. 如果有事件，MessageWindow 负责显示插图（LayeredScene 不需要显示）。
-          // 2. 如果没事件，本来也就没插图。
-          // 所以 LayeredScene 只需要负责背景，不再负责前景插图。
-          eventImage={undefined} 
-          
-          // 这里的 playerImage 同理，MessageWindow 负责显示主角
-          playerImage={undefined}
+          // 🚨 [关键修改 3] 根据 showOverlayInScene 决定传什么给 LayeredScene
+          // 如果正在发生事件(showOverlayInScene 为 false)，传 undefined，让背景组件别画插图和主角。
+          eventImage={showOverlayInScene ? currentEvent?.eventImage : undefined} 
+          playerImage={showOverlayInScene ? "/assets/scenes/player_back.png" : undefined}
           
           isGlitch={san > 70 || san < 20} 
         />

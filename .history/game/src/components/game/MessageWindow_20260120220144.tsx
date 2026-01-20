@@ -264,23 +264,16 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
       >
         <div className="bg-black/80 backdrop-blur-sm border-2 border-white p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.5)]">
           <h2 className="text-cyan-400 font-pixel font-bold text-xl mb-4 tracking-widest uppercase border-b-2 border-white/20 pb-2">
-            {/* 👇 修改 4: 标题的条件渲染 */}
-            {stage === 'TYPING_TITLE' && (
-              <TypewriterText text={event.title} onComplete={handleTitleComplete} />
-            )}
-            {(stage === 'TYPING_BODY' || stage === 'INTERACTIVE') && (
-              event.title
-            )}
+            {event.title}
           </h2>
           <div className="text-gray-200 text-sm md:text-lg min-h-[60px] font-pixel">
-            {/* 👇 修改 5: 正文的条件渲染 */}
-            {stage === 'TYPING_BODY' && (
-                <TypewriterText text={descriptionText} onComplete={handleBodyComplete} />
-            )}
-   
-            {stage === 'INTERACTIVE' && (
+             {stage === 'TYPING' && (
+                <TypewriterText text={descriptionText} onComplete={handleTextComplete} />
+             )}
+             {stage === 'INTERACTIVE' && (
+                // 交互阶段直接渲染静态文本，稳如泰山
                 <span className="font-pixel leading-relaxed tracking-wide">{descriptionText}</span>
-            )}
+             )}
           </div>
         </div>
       </motion.div>

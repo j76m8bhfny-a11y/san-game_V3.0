@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'; // 👈 加上 useCallback
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
@@ -70,7 +70,7 @@ const PixelSMSBubble: React.FC<{
   }[type] || { bg: 'bg-[#E9E9EB]', text: 'text-black', shadow: 'shadow-[2px_2px_0px_#999]' };
 
   return (
-    <div className="flex justify-end items-end gap-2 mb-4 group w-full pl-2">
+    <div className="flex justify-end items-end gap-2 mb-4 group w-full pl-0">
       
       {/* 1. 序号/时间戳 (放在气泡左侧外面，模拟发送时间) */}
       <div className="text-[10px] text-gray-400 font-pixel mb-1 opacity-60 group-hover:opacity-100 transition-opacity">
@@ -202,24 +202,20 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
 export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
   const { chooseOption, san } = useGameStore();
   const { playSfx } = useAudioStore();
-  const [stage, setStage] = useState<'INIT' | 'TYPING_TITLE' | 'TYPING_BODY' | 'INTERACTIVE'>('INIT');
+  const [stage, setStage] = useState<'INIT' | 'TYPING' | 'INTERACTIVE'>('INIT');
 
   useEffect(() => {
     setStage('INIT');
     const timer = setTimeout(() => {
-      setStage('TYPING_TITLE');
+      setStage('TYPING');
     }, 1500); 
     return () => clearTimeout(timer);
   }, [event.id]);
 
-  const handleTitleComplete = useCallback(() => {
-    setStage('TYPING_BODY');
-  }, []);
-
-  const handleBodyComplete = useCallback(() => {
+  const handleTextComplete = () => {
     setStage('INTERACTIVE');
     playSfx('sfx_cash'); 
-  }, [playSfx]);
+  };
 
   const options = [
     { id: 'A', label: event.options.A.label, type: 'risk' },
@@ -257,30 +253,19 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
       </motion.div>
 
       <motion.div 
-        initial={{ y: -100, x: "-50%", opacity: 0 }}
-        animate={{ y: 0, x: "-50%", opacity: 1 }}
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 1 }}
-        className="absolute top-[15%] left-1/2 w-[90%] md:w-[80%] z-40"
+        className="absolute top-4 left-1/2 -translate-x-1/2 w-[90%] md:w-[80%] z-40"
       >
         <div className="bg-black/80 backdrop-blur-sm border-2 border-white p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.5)]">
           <h2 className="text-cyan-400 font-pixel font-bold text-xl mb-4 tracking-widest uppercase border-b-2 border-white/20 pb-2">
-            {/* 👇 修改 4: 标题的条件渲染 */}
-            {stage === 'TYPING_TITLE' && (
-              <TypewriterText text={event.title} onComplete={handleTitleComplete} />
-            )}
-            {(stage === 'TYPING_BODY' || stage === 'INTERACTIVE') && (
-              event.title
-            )}
+            {event.title}
           </h2>
           <div className="text-gray-200 text-sm md:text-lg min-h-[60px] font-pixel">
-            {/* 👇 修改 5: 正文的条件渲染 */}
-            {stage === 'TYPING_BODY' && (
-                <TypewriterText text={descriptionText} onComplete={handleBodyComplete} />
-            )}
-   
-            {stage === 'INTERACTIVE' && (
-                <span className="font-pixel leading-relaxed tracking-wide">{descriptionText}</span>
-            )}
+             {stage !== 'INIT' && (
+                <TypewriterText text={descriptionText} onComplete={handleTextComplete} />
+             )}
           </div>
         </div>
       </motion.div>

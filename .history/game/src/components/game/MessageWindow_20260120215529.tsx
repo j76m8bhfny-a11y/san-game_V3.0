@@ -202,24 +202,20 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
 export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
   const { chooseOption, san } = useGameStore();
   const { playSfx } = useAudioStore();
-  const [stage, setStage] = useState<'INIT' | 'TYPING_TITLE' | 'TYPING_BODY' | 'INTERACTIVE'>('INIT');
+  const [stage, setStage] = useState<'INIT' | 'TYPING' | 'INTERACTIVE'>('INIT');
 
   useEffect(() => {
     setStage('INIT');
     const timer = setTimeout(() => {
-      setStage('TYPING_TITLE');
+      setStage('TYPING');
     }, 1500); 
     return () => clearTimeout(timer);
   }, [event.id]);
 
-  const handleTitleComplete = useCallback(() => {
-    setStage('TYPING_BODY');
-  }, []);
-
-  const handleBodyComplete = useCallback(() => {
+  const handleTextComplete = useCallback(() => {
     setStage('INTERACTIVE');
     playSfx('sfx_cash'); 
-  }, [playSfx]);
+  }, [playSfx]); // 依赖项里加上 playSfx 即可
 
   const options = [
     { id: 'A', label: event.options.A.label, type: 'risk' },
@@ -264,23 +260,16 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
       >
         <div className="bg-black/80 backdrop-blur-sm border-2 border-white p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.5)]">
           <h2 className="text-cyan-400 font-pixel font-bold text-xl mb-4 tracking-widest uppercase border-b-2 border-white/20 pb-2">
-            {/* 👇 修改 4: 标题的条件渲染 */}
-            {stage === 'TYPING_TITLE' && (
-              <TypewriterText text={event.title} onComplete={handleTitleComplete} />
-            )}
-            {(stage === 'TYPING_BODY' || stage === 'INTERACTIVE') && (
-              event.title
-            )}
+            {event.title}
           </h2>
           <div className="text-gray-200 text-sm md:text-lg min-h-[60px] font-pixel">
-            {/* 👇 修改 5: 正文的条件渲染 */}
-            {stage === 'TYPING_BODY' && (
-                <TypewriterText text={descriptionText} onComplete={handleBodyComplete} />
-            )}
-   
-            {stage === 'INTERACTIVE' && (
+             {stage !== 'TYPING' && (
+                <TypewriterText text={descriptionText} onComplete={handleTextComplete} />
+             )}
+             {stage === 'INTERACTIVE' && (
+                // 交互阶段直接渲染静态文本，稳如泰山
                 <span className="font-pixel leading-relaxed tracking-wide">{descriptionText}</span>
-            )}
+             )}
           </div>
         </div>
       </motion.div>

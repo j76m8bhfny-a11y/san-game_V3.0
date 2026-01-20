@@ -118,7 +118,7 @@ const PixelSMSBubble: React.FC<{
 // --- 组件：像素手机 (UI Layer 5) ---
 const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> = ({ options, onChoose }) => {
   return (
-    <div className="relative w-[400px] h-[780px] flex items-center justify-center">
+    <div className="relative w-[500px] h-[780px] flex items-center justify-center">
       
       {/* 1. 外壳层 (Pixel Art Frame) */}
       <img 

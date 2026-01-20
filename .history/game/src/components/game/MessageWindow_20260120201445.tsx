@@ -118,7 +118,7 @@ const PixelSMSBubble: React.FC<{
 // --- 组件：像素手机 (UI Layer 5) ---
 const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> = ({ options, onChoose }) => {
   return (
-    <div className="relative w-[400px] h-[780px] flex items-center justify-center">
+    <div className="relative w-[540px] h-[1050px] flex items-center justify-center">
       
       {/* 1. 外壳层 (Pixel Art Frame) */}
       <img 
@@ -135,13 +135,11 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
       {/* 适配 iPhone 样式：全面屏、圆角、顶部挖孔 */}
       <div className="
         relative z-10 
-        w-[52%] h-[59%] 
+        w-[90%] h-[94%] 
         bg-[#f2f2f7] /* iOS 浅色背景灰 */
         rounded-[30px] 
         overflow-hidden 
         flex flex-col font-sans
-        mb-[138px]               /* 上下偏移 */
-        mr-[88px]          /* 👈 新增：向左偏移 (数字越大越往左) */
       ">
         
         {/* 屏幕内发光 & 扫描线 */}
@@ -290,13 +288,9 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
               initial={{ x: '100%', y: '100%', rotate: 10 }}
               animate={{ x: 0, y: 0, rotate: 0 }}
               transition={{ type: "spring", damping: 20, stiffness: 100 }}
-  
-              // 🛠️ 修改这里：去掉 md: 前缀，强制统一位置
-              // bottom: 距离底部的像素 (支持负数，如 -50px)
-              // right: 距离右侧的像素
-              className="absolute bottom-[-200px] right-[0px] z-50 pointer-events-auto origin-bottom-right"
+              className="absolute bottom-[0px] right-[0px] md:bottom-10 md:right-10 z-50 pointer-events-auto origin-bottom-right"
             >
-             <PixelPhone 
+              <PixelPhone 
                 options={options} 
                 onChoose={(id) => {
                   playSfx('sfx_click');

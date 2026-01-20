@@ -135,12 +135,12 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
       {/* 适配 iPhone 样式：全面屏、圆角、顶部挖孔 */}
       <div className="
         relative z-10 
-        w-[52%] h-[59%] 
+        w-[50%] h-[59%] 
         bg-[#f2f2f7] /* iOS 浅色背景灰 */
         rounded-[30px] 
         overflow-hidden 
         flex flex-col font-sans
-        mb-[138px]               /* 上下偏移 */
+        mb-[144px]               /* 上下偏移 */
         mr-[88px]          /* 👈 新增：向左偏移 (数字越大越往左) */
       ">
         

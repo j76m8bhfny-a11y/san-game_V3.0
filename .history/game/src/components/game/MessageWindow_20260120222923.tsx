@@ -118,7 +118,7 @@ const PixelSMSBubble: React.FC<{
 // --- 组件：像素手机 (UI Layer 5) ---
 const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> = ({ options, onChoose }) => {
   return (
-    <div className="relative w-[450px] h-[650px] flex items-center justify-center">
+    <div className="relative w-[480px] h-[700px] flex items-center justify-center">
       
       {/* 1. 外壳层 (Pixel Art Frame) */}
       <img 
@@ -141,7 +141,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
         overflow-hidden 
         flex flex-col font-sans
         mb-[138px]               /* 上下偏移 */
-        mr-[100px]          /* 👈 新增：向左偏移 (数字越大越往左) */
+        mr-[95px]          /* 👈 新增：向左偏移 (数字越大越往左) */
       ">
         
         {/* 屏幕内发光 & 扫描线 */}
@@ -163,8 +163,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
         </div>
 
         {/* 聊天内容区 (Chat View) */}
-        <div className="flex-1 p-4 overflow-y-auto flex flex-col justify-center 
-          pb-[10px] relative z-30 pointer-events-auto">
+        <div className="flex-1 p-4 overflow-y-auto flex flex-col justify-end pb-8 relative z-30 pointer-events-auto">
           
           {/* 系统提示 */}
           <div className="text-center text-[10px] text-gray-400 font-pixel mb-6">
@@ -180,7 +179,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
           </div> */}
 
           {/* 玩家选项 (右对齐气泡) */}
-          <div className="flex flex-col w-full space-y-6">
+          <div className="flex flex-col w-full space-y-2">
             {options.map((opt) => (
               <PixelSMSBubble 
                 key={opt.id}

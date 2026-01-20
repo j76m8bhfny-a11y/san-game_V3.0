@@ -164,7 +164,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
 
         {/* 聊天内容区 (Chat View) */}
         <div className="flex-1 p-4 overflow-y-auto flex flex-col justify-center 
-          pb-[10px] relative z-30 pointer-events-auto">
+          pb-[120px] relative z-30 pointer-events-auto">
           
           {/* 系统提示 */}
           <div className="text-center text-[10px] text-gray-400 font-pixel mb-6">

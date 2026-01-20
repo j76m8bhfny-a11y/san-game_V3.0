@@ -118,14 +118,14 @@ const PixelSMSBubble: React.FC<{
 // --- ✨ 补充缺失的组件：接收到的消息 (灰色左对齐气泡) ---
 const PixelReceivedBubble: React.FC<{ text: string }> = ({ text }) => {
   return (
-    <div className="flex justify-start items-end gap-2 w-full pr-4 pl-2">
+    <div className="flex justify-start items-end gap-2 w-full pr-12 pl-2">
       
       {/* 1. 头像 (模拟发送者) */}
       <div className="w-6 h-6 bg-[#8E8E93] rounded-full flex-shrink-0 mb-1 shadow-sm border border-black/10"></div>
 
       {/* 2. 气泡主体 */}
       <div 
-        className="relative w-full text-left text-sm font-bold font-pixel py-2 px-3 leading-tight bg-[#E9E9EB] text-black shadow-[2px_2px_0px_#999]"
+        className="relative max-w-[85%] text-left text-sm font-bold font-pixel py-2 px-3 leading-tight bg-[#E9E9EB] text-black shadow-[2px_2px_0px_#999]"
         style={{
           // 像素圆角裁剪
           clipPath: `polygon(
@@ -154,17 +154,6 @@ const PixelReceivedBubble: React.FC<{ text: string }> = ({ text }) => {
 };
 // --- 组件：像素手机 (UI Layer 5) ---
 const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> = ({ options, onChoose }) => {
-  // 👇 1. 新增状态控制
-  const [showOptions, setShowOptions] = useState(false);
-
-  // 👇 2. 模拟消息延迟：手机出来 0.8秒 后，才显示选项
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowOptions(true);
-    }, 800);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <div className="relative w-[450px] h-[650px] flex items-center justify-center">
       
@@ -212,7 +201,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
 
         {/* 聊天内容区 (Chat View) */}
         <div className="flex-1 p-4 overflow-y-auto flex flex-col justify-center 
-          pb-[80px] relative z-30 pointer-events-auto">
+          pb-[60px] relative z-30 pointer-events-auto">
           
           {/* 系统提示 */}
           <div className="text-center text-[10px] text-gray-400 font-pixel mb-6">
@@ -220,37 +209,22 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
              Today 9:41 AM
           </div>
 
+          {/* 👇 核心修改：容器增加 gap */}
           <div className="flex flex-col w-full space-y-4">
             
-            {/* 👇 3. 对方的消息 (带入场动画) */}
-            <motion.div
-              initial={{ opacity: 0, x: -20, scale: 0.9 }}
-              animate={{ opacity: 1, x: 0, scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.4 }} // 手机出来后 0.2s 弹出
-            >
-              <PixelReceivedBubble text="你怎么看？" />
-            </motion.div>
+            {/* 1. 对方发来的问题 (新增) */}
+            <PixelReceivedBubble text="你怎么看？……" />
 
-            {/* 👇 4. 我的选项 (条件渲染 + 动画) */}
-            <AnimatePresence>
-              {showOptions && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4 }}
-                  className="flex flex-col w-full space-y-4"
-                >
-                  {options.map((opt) => (
-                    <PixelSMSBubble 
-                      key={opt.id}
-                      {...opt}
-                      onClick={() => onChoose(opt.id)}
-                    />
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {/* 2. 我的回复选项 */}
+            {options.map((opt) => (
+              <PixelSMSBubble 
+                key={opt.id}
+                {...opt}
+                onClick={() => onChoose(opt.id)}
+              />
+            ))}
           </div>
+
           {/* 对方发来的消息 (模拟) - 可以是事件标题 */}
           {/* <div className="flex justify-start mb-6">
              <div className="bg-[#E9E9EB] text-black text-sm font-pixel py-2 px-3 rounded-xl rounded-tl-none max-w-[80%] shadow-sm">

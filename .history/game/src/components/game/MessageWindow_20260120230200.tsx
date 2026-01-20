@@ -228,7 +228,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
               animate={{ opacity: 1, x: 0, scale: 1 }}
               transition={{ delay: 0.2, duration: 0.4 }} // 手机出来后 0.2s 弹出
             >
-              <PixelReceivedBubble text="你怎么看？" />
+              <PixelReceivedBubble text="你怎么看？……" />
             </motion.div>
 
             {/* 👇 4. 我的选项 (条件渲染 + 动画) */}

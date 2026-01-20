@@ -124,7 +124,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
       <img 
         src="/assets/ui/pixel_phone_frame.png" 
         alt="Phone Shell"
-        className="absolute inset-0 w-full h-full object-contain z-20 pointer-events-none]"
+        className="absolute inset-0 w-full h-full object-contain z-20 pointer-events-none drop-shadow-[10px_10px_0px_rgba(0,0,0,0.5)]"
         onError={(e) => { e.currentTarget.style.display = 'none'; }} 
       />
       
@@ -149,9 +149,9 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
         <div className="absolute inset-0 pointer-events-none z-20 opacity-10 bg-[linear-gradient(#000_1px,transparent_1px)] [background-size:100%_4px]" />
 
         {/* 灵动岛 (Dynamic Island) */}
-        {/*<div className="absolute top-3 left-1/2 -translate-x-1/2 w-[28%] h-7 bg-black rounded-full z-30 flex items-center justify-center">
+        <div className="absolute top-3 left-1/2 -translate-x-1/2 w-[28%] h-7 bg-black rounded-full z-30 flex items-center justify-center">
            <div className="w-1.5 h-1.5 bg-[#1a1a1a] rounded-full ml-auto mr-2 opacity-50"></div>
-        </div> */}
+        </div>
 
         {/* 顶部状态栏 */}
         <div className="h-12 w-full flex justify-between items-end px-5 pb-1 text-[10px] font-bold text-black font-pixel z-20 select-none">

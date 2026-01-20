@@ -124,7 +124,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
       <img 
         src="/assets/ui/pixel_phone_frame.png" 
         alt="Phone Shell"
-        className="absolute inset-0 w-full h-full object-contain z-20 pointer-events-none]"
+        className="absolute inset-0 w-full h-full object-contain z-20 pointer-events-none drop-shadow-[10px_10px_0px_rgba(0,0,0,0.5)]"
         onError={(e) => { e.currentTarget.style.display = 'none'; }} 
       />
       

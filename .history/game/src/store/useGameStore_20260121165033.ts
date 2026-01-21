@@ -375,25 +375,7 @@ export const useGameStore = create<GameStore>()(
             history: [...state.history, `Option ${optionId}: HP${deltaHp.toFixed(1)} SAN${deltaSan} $${deltaGold}`]
         });
       },
-      dismissRoastAndEndEvent: () => {
-      const { viewingArchive } = get();
-  
-      // 👈 核心修改逻辑
-      if (viewingArchive) {
-        // 场景 A: 有关联档案 -> 关闭吐槽和事件，但立即打开档案机
-        set({ 
-          currentRoast: null, 
-          currentEvent: null,
-          isArchiveOpen: true  // 自动开启 BlackBox
-        });
-      } else {
-        // 场景 B: 无档案 -> 正常关闭所有
-        set({ 
-          currentRoast: null, 
-          currentEvent: null 
-        });
-      }
-    },
+
       buyItem: (itemId) => {
         // ... (保持原样，未修改)
         const state = get();

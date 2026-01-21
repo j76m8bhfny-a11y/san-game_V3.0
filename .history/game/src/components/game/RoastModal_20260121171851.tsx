@@ -23,7 +23,7 @@ export const RoastModal = () => {
             damping: 30,
             mass: 0.8 
           }}
-          className="fixed top-24 left-1/2 z-[100] w-[92vw] max-w-[680px]"
+          className="fixed top-20 left-1/2 z-[100] w-[92vw] max-w-[680px]"
         >
           {/* iOS Glassmorphism Container 
              - bg-white/80: 高透白底
@@ -32,50 +32,47 @@ export const RoastModal = () => {
           */}
           <div className="
             relative overflow-hidden
-            bg-white/70 
-            backdrop-blur-2xl 
-            backdrop-saturate-150
-            border border-white/50
+            bg-white/80 backdrop-blur-2xl saturate-150
+            border border-white/40
             rounded-[22px] 
             shadow-[0_8px_32px_rgba(0,0,0,0.12)]
-            p-4 flex items-center gap-4
+            p-4
           ">
-            {/* 👈 修改点 2: 左侧文本区 (Header + Content 包在一起) */}
-            <div className="flex-1 min-w-0"> 
-              
-              {/* Header */}
-              <div className="flex items-center gap-2 mb-1.5 opacity-50">
-                <div className="w-4 h-4 bg-black rounded-[5px] flex items-center justify-center">
-                   <span className="text-[9px] text-white font-bold font-mono">i</span>
+            {/* Header: 模拟 iOS 通知顶部的小标题栏 */}
+            <div className="flex items-center justify-between mb-2 opacity-60">
+              <div className="flex items-center gap-2">
+                {/* 伪装的 App Icon */}
+                <div className="w-5 h-5 bg-black rounded-[5px] flex items-center justify-center shadow-sm">
+                   <span className="text-[10px] text-white font-bold font-mono">R</span>
                 </div>
-                <span className="text-[11px] font-semibold tracking-wide text-black uppercase">
-                  MESSAGES
+                <span className="text-[13px] font-semibold uppercase tracking-wide text-black">
+                  REALITY OS
                 </span>
-                <span className="text-[10px] text-black font-medium ml-1">· 现在</span>
               </div>
-
-              {/* Content: 去掉了底部的 margin */}
-              <div className="pl-0.5">
-                <p className="text-[15px] leading-snug font-medium text-gray-900">
-                  {currentRoast}
-                </p>
-              </div>
+              <span className="text-[12px] text-black/80">现在</span>
             </div>
 
-            {/* 👈 修改点 3: 右侧按钮 (变为自适应宽度，不再是 w-full) */}
+            {/* Content: 吐槽正文 */}
+            <div className="mb-4 pl-1">
+              <p className="text-[15px] leading-snug font-medium text-gray-900 tracking-tight">
+                {currentRoast}
+              </p>
+            </div>
+
+            {/* Action Button: iOS 风格按钮 */}
             <button
               onClick={dismiss}
               className="
-                shrink-0       /* 防止被挤压 */
-                px-5 py-2.5    /* 调整内边距，使其大小合适 */
-                bg-[#000000]/5 hover:bg-[#000000]/10 active:bg-[#000000]/15
+                w-full py-3
+                bg-[#F2F2F7]/80 hover:bg-[#E5E5EA] active:bg-[#D1D1D6]
                 rounded-xl
                 text-[15px] font-semibold text-[#007AFF]
-                transition-colors duration-200
+                transition-all duration-200
                 flex items-center justify-center
+                group
               "
             >
-              我知道了
+              <span>我知道了</span>
             </button>
             
           </div>

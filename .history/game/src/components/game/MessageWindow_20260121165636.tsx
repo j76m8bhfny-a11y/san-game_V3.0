@@ -281,7 +281,6 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
   const { playSfx } = useAudioStore();
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [stage, setStage] = useState<'INIT' | 'TYPING_TITLE' | 'TYPING_BODY' | 'INTERACTIVE'>('INIT');
-  const [selectedOptId, setSelectedOptId] = useState<string | null>(null);
 
   useEffect(() => {
     setStage('INIT');
@@ -302,18 +301,6 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
     }, 1500); 
   }, [playSfx]);
 
-  const handleOptionClick = (id: string) => {
-    playSfx('sfx_click');
-    setSelectedOptId(id); // 1. 立即锁定UI，触发动画
-    
-    // 2. 延迟一下再调用 Store，让玩家看清“变成绿色/其他消失”的动画
-    // 同时，因为 Store 改过逻辑，调用这个也不会导致组件卸载
-    setTimeout(() => {
-      chooseOption(id as any);
-    }, 500); 
-  };
-  
-
   const options = [
     { id: 'A', label: event.options.A.label, type: 'risk' },
     { id: 'B', label: event.options.B.label, type: 'safe' },
@@ -329,7 +316,6 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
   // 2. 计算当前事件图是否应该居中
   // 逻辑：如果是“专注模式” 或者 “还没到交互阶段(手机没出来)”，就居中。否则往左边挪。
   const isCenterPosition = isFocusMode || stage !== 'INTERACTIVE';
-  const shouldHideTitle = isFocusMode || stage === 'INIT' || !!selectedOptId;
 
   return (
     <div className="fixed inset-0 z-30 pointer-events-none">
@@ -400,7 +386,7 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
       {/* --- 顶部题目框 --- */}
       <motion.div 
         initial={{ y: -100, x: "-50%", opacity: 0 }}
-        animate={shouldHideTitle 
+        animate={(isFocusMode || stage === 'INIT')
           ? { y: -200, x: "-50%", opacity: 0 } 
           : { y: 0, x: "-50%", opacity: 1 }
         }
@@ -468,8 +454,10 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
             >
              <PixelPhone 
                 options={options} 
-                selectedId={selectedOptId} // 👈 传入状态
-                onChoose={handleOptionClick} // 👈 使用新的处理函数 
+                onChoose={(id) => {
+                  playSfx('sfx_click');
+                  chooseOption(id as any);
+                }} 
               />
             </motion.div>
           </>

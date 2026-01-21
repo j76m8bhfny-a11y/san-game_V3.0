@@ -161,7 +161,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowOptions(true);
-    }, 1200);
+    }, 800);
     return () => clearTimeout(timer);
   }, []);
 

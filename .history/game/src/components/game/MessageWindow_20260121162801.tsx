@@ -161,7 +161,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowOptions(true);
-    }, 1200);
+    }, 800);
     return () => clearTimeout(timer);
   }, []);
 
@@ -287,10 +287,8 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
   }, []);
 
   const handleBodyComplete = useCallback(() => {
-    setTimeout(() => {
-      setStage('INTERACTIVE');
-      playSfx('sfx_cash'); 
-    }, 1500); 
+    setStage('INTERACTIVE');
+    playSfx('sfx_cash'); 
   }, [playSfx]);
 
   const options = [

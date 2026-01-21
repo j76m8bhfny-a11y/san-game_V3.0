@@ -161,7 +161,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowOptions(true);
-    }, 1200);
+    }, 3500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -278,7 +278,7 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
     setStage('INIT');
     const timer = setTimeout(() => {
       setStage('TYPING_TITLE');
-    }, 3500); 
+    }, 1500); 
     return () => clearTimeout(timer);
   }, [event.id]);
 
@@ -287,10 +287,8 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
   }, []);
 
   const handleBodyComplete = useCallback(() => {
-    setTimeout(() => {
-      setStage('INTERACTIVE');
-      playSfx('sfx_cash'); 
-    }, 1500); 
+    setStage('INTERACTIVE');
+    playSfx('sfx_cash'); 
   }, [playSfx]);
 
   const options = [
@@ -341,19 +339,20 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
         initial={{ opacity: 0, scale: 0.8, y: -50 }}
         animate={{ 
           opacity: 1, 
+          scale: 1,
           y: "-44%",   // 垂直永远居中
           x: "-50%",   // 水平基准修正
           
           // 核心位移：居中时在50%，交互时退到30%
-          left: isCenterPosition ? "50%" : "40%" ,
-          scale: (stage === 'INIT' || isFocusMode) ? 1.05 : 1,
+          left: isCenterPosition ? "50%" : "40%" 
         }}
         transition={{ 
-          // 👇 为 scale 单独配置 duration，让呼吸非常慢、非常平滑
-          scale: { duration: 3.5, ease: "easeInOut" },
-          // 其他属性 (left, opacity) 保持较快的切换速度
-          default: { type: "spring", stiffness: 60, damping: 20, duration: 0.8 }
+          type: "spring", 
+          stiffness: 60, 
+          damping: 20, 
+          duration: 0.8 
         }}
+        // 样式：悬浮卡片风格，圆角，白边框
         className="absolute top-1/2 w-[80%] md:w-[45%] aspect-[4/3] z-20 shadow-2xl overflow-hidden rounded-2xl border-4 border-white/10"
       >
         <img 

@@ -70,7 +70,7 @@ const PixelSMSBubble: React.FC<{
   }[type] || { bg: 'bg-[#E9E9EB]', text: 'text-black', shadow: 'shadow-[2px_2px_0px_#999]' };
 
   return (
-    <div className="flex justify-end items-end gap-2 group w-full pl-2">
+    <div className="flex justify-end items-end gap-2 mb-4 group w-full pl-2">
       
       {/* 1. 序号/时间戳 (放在气泡左侧外面，模拟发送时间) */}
       <div className="text-[10px] text-gray-400 font-pixel mb-1 opacity-60 group-hover:opacity-100 transition-opacity">
@@ -220,7 +220,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
              Today 9:41 AM
           </div>
 
-          <div className="flex flex-col w-full space-y-5">
+          <div className="flex flex-col w-full space-y-4">
             
             {/* 👇 3. 对方的消息 (带入场动画) */}
             <motion.div
@@ -298,6 +298,7 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
     { id: 'D', label: event.options.D?.label, type: 'awakening' },
   ].filter(opt => opt.label);
 
+  const eventImg = event.eventImage || '/assets/events/default_event.png';
   const descriptionText = san < 50 ? event.text.lowSan : event.text.highSan;
   // 1. 获取背景图和事件插图
   const bgImg = event.bgImage || event.eventImage || '/assets/scenes/default_bg.png';
@@ -340,11 +341,11 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
         animate={{ 
           opacity: 1, 
           scale: 1,
-          y: "-44%",   // 垂直永远居中
+          y: "-50%",   // 垂直永远居中
           x: "-50%",   // 水平基准修正
           
           // 核心位移：居中时在50%，交互时退到30%
-          left: isCenterPosition ? "50%" : "40%" 
+          left: isCenterPosition ? "50%" : "30%" 
         }}
         transition={{ 
           type: "spring", 

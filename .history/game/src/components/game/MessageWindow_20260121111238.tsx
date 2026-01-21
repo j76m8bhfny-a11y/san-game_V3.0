@@ -70,7 +70,7 @@ const PixelSMSBubble: React.FC<{
   }[type] || { bg: 'bg-[#E9E9EB]', text: 'text-black', shadow: 'shadow-[2px_2px_0px_#999]' };
 
   return (
-    <div className="flex justify-end items-end gap-2 group w-full pl-2">
+    <div className="flex justify-end items-end gap-2 mb-4 group w-full pl-2">
       
       {/* 1. 序号/时间戳 (放在气泡左侧外面，模拟发送时间) */}
       <div className="text-[10px] text-gray-400 font-pixel mb-1 opacity-60 group-hover:opacity-100 transition-opacity">
@@ -220,7 +220,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
              Today 9:41 AM
           </div>
 
-          <div className="flex flex-col w-full space-y-5">
+          <div className="flex flex-col w-full space-y-4">
             
             {/* 👇 3. 对方的消息 (带入场动画) */}
             <motion.div

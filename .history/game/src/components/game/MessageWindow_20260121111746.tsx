@@ -220,7 +220,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
              Today 9:41 AM
           </div>
 
-          <div className="flex flex-col w-full space-y-5">
+          <div className="flex flex-col w-full space-y-4">
             
             {/* 👇 3. 对方的消息 (带入场动画) */}
             <motion.div

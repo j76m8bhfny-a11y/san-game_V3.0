@@ -166,7 +166,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void }> =
   }, []);
 
   return (
-    <div className="relative w-[450px] h-[620px] flex items-center justify-center">
+    <div className="relative w-[450px] h-[650px] flex items-center justify-center">
       
       {/* 1. 外壳层 (Pixel Art Frame) */}
       <img 

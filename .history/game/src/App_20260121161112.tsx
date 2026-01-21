@@ -123,7 +123,7 @@ export default function App() {
       )}
 
       {/* --- L4: HUD & 交互层 --- */}
-      <div className={`absolute inset-0 z-40 pointer-events-none flex flex-col justify-between transition-all duration-500 ${isModalOpen ? 'blur-sm opacity-50' : ''}`}>
+      <div className={`absolute inset-0 z-40 flex flex-col justify-between transition-all duration-500 ${isModalOpen ? 'blur-sm opacity-50 pointer-events-none' : ''}`}>
         
         <div className="pointer-events-auto">
            <MiniHUD />

@@ -23,7 +23,7 @@ export const CLASS_INITIAL_STATS: Record<PlayerClass, { gold: number; hp: number
 
 // 初始状态常量
 const INITIAL_PLAYER_STATE = {
-  day: 0,
+  day: 1,
   hp: 100,
   maxHp: 100,
   san: 50,

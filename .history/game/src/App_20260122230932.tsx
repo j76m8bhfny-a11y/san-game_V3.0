@@ -80,11 +80,14 @@ const App: React.FC = () => {
 
       {/* L1: 主内容层 */}
       {ending ? (
-        <GameEnding endingId={ending} onRestart={() => setViewState('TITLE')} />
+        // 结局画面
+        <GameEnding 
+          endingId={ending} 
+          onRestart={handleRestart} 
+        />
       ) : viewState === 'TITLE' ? (
-        <TitleScreen onStart={() => setViewState('SELECT_CLASS')} /> // 👈 点击开始进入选角
-      ) : viewState === 'SELECT_CLASS' ? (
-        <ClassSelectorModal onConfirm={() => setViewState('GAME')} /> // 👈 选角确认后进入游戏
+        // 标题画面
+        <TitleScreen onStart={() => setViewState('GAME')} />
       ) : (
         // 游戏主循环画面
         <>

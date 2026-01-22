@@ -1,7 +1,6 @@
 import { StateCreator } from 'zustand';
 import { PlayerClass } from '@/types/schema';
 
-// 1. 定义初始难度配置
 export const CLASS_INITIAL_STATS: Record<PlayerClass, { gold: number; hp: number; san: number; desc: string }> = {
   [PlayerClass.Homeless]: { 
     gold: 50, hp: 60, san: 40, 
@@ -21,16 +20,18 @@ export const CLASS_INITIAL_STATS: Record<PlayerClass, { gold: number; hp: number
   }
 };
 
-// 初始状态常量
+// 定义玩家初始状态 (方便重置时调用)
 const INITIAL_PLAYER_STATE = {
-  day: 0,
+  day: 1,
   hp: 100,
   maxHp: 100,
   san: 50,
-  gold: 0, // 修改为 0，实际值由 startGame 决定
+  gold: 100,
   currentClass: PlayerClass.Worker,
   inventory: [] as string[],
   history: [] as string[],
+  // 注意：解锁的档案目前逻辑是跟随存档重置的，如果你希望档案永久解锁，
+  // 需要在 resetPlayerState 中像 achievedEndings 一样特殊保留。
   unlockedArchives: [] as string[], 
   flags: { 
     isHomeless: false, 
@@ -54,7 +55,7 @@ export interface PlayerSlice {
   inventory: string[];
   history: string[];
   unlockedArchives: string[];
-  achievedEndings: string[]; 
+  achievedEndings: string[]; // 这是一个永久数据，重置时不应清空
   
   flags: {
     isHomeless: boolean;
@@ -68,21 +69,49 @@ export interface PlayerSlice {
   ending: string | null;
 
   // --- Actions ---
+  // 通用的状态更新方法，方便简单的数值调整
   updatePlayerStats: (updates: Partial<PlayerSlice>) => void;
+  
+  // 触发结局 (同时记录到永久成就中)
   triggerEnding: (endingId: string) => void;
+  
+  // 重置游戏 (新游戏)
   resetPlayerState: () => void;
-  // ✅ 接口声明（只保留这一行）
   startGame: (selectedClass: PlayerClass) => void;
 }
 
 export const createPlayerSlice: StateCreator<any, [], [], PlayerSlice> = (set, get) => ({
   // --- Initial State ---
   ...INITIAL_PLAYER_STATE,
-  achievedEndings: [], 
+  achievedEndings: [], // 初始为空，但会被持久化存储覆盖
 
   // --- Actions Implementation ---
   updatePlayerStats: (updates) => set((state: any) => ({ ...state, ...updates })),
-
+  startGame: (selectedClass) => {
+    const stats = CLASS_INITIAL_STATS[selectedClass];
+    
+    // 重置所有状态，但保留永久成就
+    const savedEndings = get().achievedEndings;
+    
+    set({
+      ...INITIAL_PLAYER_STATE,
+      achievedEndings: savedEndings,
+      _hasHydrated: true,
+      
+      // 应用选中的职业数值
+      currentClass: selectedClass,
+      gold: stats.gold,
+      hp: stats.hp,
+      maxHp: stats.hp, // 初始 HP 即为最大 HP
+      san: stats.san,
+      
+      // 特殊 Flag 处理
+      flags: {
+        ...INITIAL_PLAYER_STATE.flags,
+        isHomeless: selectedClass === PlayerClass.Homeless
+      }
+    });
+  },
   triggerEnding: (endingId) => {
     const { achievedEndings } = get();
     // 避免重复添加同一个结局 ID
@@ -97,17 +126,23 @@ export const createPlayerSlice: StateCreator<any, [], [], PlayerSlice> = (set, g
   },
 
   resetPlayerState: () => {
+    // 获取当前已达成的结局（因为这是永久数据，不能被重置）
     const savedEndings = get().achievedEndings;
+    
     set({
       ...INITIAL_PLAYER_STATE,
+      // 恢复永久数据
       achievedEndings: savedEndings,
+      // 恢复 hydration 状态 (防止重置导致 loading 界面卡住)
       _hasHydrated: true 
     });
   },
-
-  // ✅ 实现函数（只保留这一个，且包含类型注解）
+  // 🟢 修复点 2: 给参数 selectedClass 加上类型注解 : PlayerClass
   startGame: (selectedClass: PlayerClass) => {
+    // 🟢 修复点 3: 现在 TS 知道 selectedClass 是 PlayerClass 类型，
+    // 所以这里的索引访问也是安全的，不会报 implicit any 错误
     const stats = CLASS_INITIAL_STATS[selectedClass];
+    
     const savedEndings = get().achievedEndings;
     
     set({

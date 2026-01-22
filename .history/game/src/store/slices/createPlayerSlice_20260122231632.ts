@@ -21,13 +21,12 @@ export const CLASS_INITIAL_STATS: Record<PlayerClass, { gold: number; hp: number
   }
 };
 
-// 初始状态常量
 const INITIAL_PLAYER_STATE = {
-  day: 0,
+  day: 1,
   hp: 100,
   maxHp: 100,
   san: 50,
-  gold: 0, // 修改为 0，实际值由 startGame 决定
+  gold: 100,
   currentClass: PlayerClass.Worker,
   inventory: [] as string[],
   history: [] as string[],
@@ -71,7 +70,6 @@ export interface PlayerSlice {
   updatePlayerStats: (updates: Partial<PlayerSlice>) => void;
   triggerEnding: (endingId: string) => void;
   resetPlayerState: () => void;
-  // ✅ 接口声明（只保留这一行）
   startGame: (selectedClass: PlayerClass) => void;
 }
 
@@ -82,10 +80,10 @@ export const createPlayerSlice: StateCreator<any, [], [], PlayerSlice> = (set, g
 
   // --- Actions Implementation ---
   updatePlayerStats: (updates) => set((state: any) => ({ ...state, ...updates })),
-
+  
+  // 🟢 触发结局
   triggerEnding: (endingId) => {
     const { achievedEndings } = get();
-    // 避免重复添加同一个结局 ID
     const newAchieved = achievedEndings.includes(endingId) 
       ? achievedEndings 
       : [...achievedEndings, endingId];
@@ -96,6 +94,7 @@ export const createPlayerSlice: StateCreator<any, [], [], PlayerSlice> = (set, g
     });
   },
 
+  // 🟢 重置状态
   resetPlayerState: () => {
     const savedEndings = get().achievedEndings;
     set({
@@ -105,7 +104,7 @@ export const createPlayerSlice: StateCreator<any, [], [], PlayerSlice> = (set, g
     });
   },
 
-  // ✅ 实现函数（只保留这一个，且包含类型注解）
+  // 🟢 开始游戏 (这是唯一正确的定义，已包含类型注解)
   startGame: (selectedClass: PlayerClass) => {
     const stats = CLASS_INITIAL_STATS[selectedClass];
     const savedEndings = get().achievedEndings;

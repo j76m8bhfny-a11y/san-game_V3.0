@@ -41,10 +41,10 @@ export const ItemSchema = z.object({
     san: z.number(),
     maxHp: z.number().optional(),
   }),
-  // 修复: 明确指定 key 为 string
+  // 新增：通用主动效果定义，替代硬编码
   activeEffect: z.object({
     type: z.enum(['NONE', 'LOTTERY', 'SURGERY', 'BLOOD_DONATION']),
-    params: z.record(z.string(), z.any()) 
+    params: z.record(z.any()) // { winRate: 0.01, winGold: 5000 }
   }).optional(),
   tags: z.array(z.enum(['CONSUMER', 'AWAKENING', 'DARK_WEB', 'WEAPON', 'TICKET'])),
   requiredClass: z.nativeEnum(PlayerClass).optional(),
@@ -140,6 +140,7 @@ export const EndingSchema = z.object({
   description: z.string(),
   priority: z.number(),
   type: z.enum(['DEATH', 'SURVIVAL', 'ALIENATION', 'STANCE', 'UR']),
+  // 新增：通用触发条件
   conditions: z.object({
     minDay: z.number().optional(),
     maxHp: z.number().optional(),
@@ -155,7 +156,7 @@ export const EndingSchema = z.object({
         old: z.number().optional()
     }).optional(),
     hasItem: z.string().optional(),
-    hasArchive: z.string().optional(),
+    hasArchive: z.string().optional(), // 新增: 检查是否解锁某档案
   }).optional(),
 });
 
@@ -167,7 +168,7 @@ export type Bill = z.infer<typeof BillSchema>;
 export type GameEvent = z.infer<typeof EventSchema>;
 export type Ending = z.infer<typeof EndingSchema>;
 
-// ... (GameState 定义保持不变) ...
+// ... (GameState 保持不变) ...
 export interface GameNotification {
   id: string;
   message: string;

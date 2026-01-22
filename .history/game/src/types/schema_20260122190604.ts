@@ -6,32 +6,13 @@ export enum PlayerClass {
   Middle = 'MIDDLE',
   Capitalist = 'CAPITALIST'
 }
-
 export enum ScalingMode {
-  FIXED = 'FIXED',
-  CLASS_LEVERAGE = 'LEVERAGE',
-  INCOME_RATIO = 'INCOME',
+  FIXED = 'FIXED',             // 固定值 (捡钱)
+  CLASS_LEVERAGE = 'LEVERAGE', // 阶级杠杆 (工作收入)
+  INCOME_RATIO = 'INCOME',     // 收入比例 (罚款/税)
 }
+// --- Zod Schemas ---
 
-// --- 新增: 全局配置 Schema ---
-export const GlobalSettingsSchema = z.object({
-  gameRules: z.object({
-    maxDays: z.number(),
-    victoryHpThreshold: z.number(),
-    pressureDivisor: z.number(),
-  }),
-  salaryConfig: z.array(z.object({
-    maxSan: z.number(),
-    efficiency: z.number(),
-    desc: z.string().optional()
-  })),
-  billConfig: z.object({
-    baseProb: z.number(),
-    debtProb: z.number()
-  })
-});
-
-// --- 修改: 物品 Schema (增加 activeEffect) ---
 export const ItemSchema = z.object({
   id: z.string(),
   name: z.string(),
@@ -41,11 +22,6 @@ export const ItemSchema = z.object({
     san: z.number(),
     maxHp: z.number().optional(),
   }),
-  // 修复: 明确指定 key 为 string
-  activeEffect: z.object({
-    type: z.enum(['NONE', 'LOTTERY', 'SURGERY', 'BLOOD_DONATION']),
-    params: z.record(z.string(), z.any()) 
-  }).optional(),
   tags: z.array(z.enum(['CONSUMER', 'AWAKENING', 'DARK_WEB', 'WEAPON', 'TICKET'])),
   requiredClass: z.nativeEnum(PlayerClass).optional(),
   unlockCondition: z.string().optional(),
@@ -133,41 +109,24 @@ export const EventSchema = z.object({
   }),
 });
 
-// --- 修改: 结局 Schema (增加 conditions) ---
 export const EndingSchema = z.object({
   id: z.string(),
   title: z.string(),
   description: z.string(),
   priority: z.number(),
   type: z.enum(['DEATH', 'SURVIVAL', 'ALIENATION', 'STANCE', 'UR']),
-  conditions: z.object({
-    minDay: z.number().optional(),
-    maxHp: z.number().optional(),
-    minSan: z.number().optional(),
-    maxSan: z.number().optional(),
-    minGold: z.number().optional(),
-    maxGold: z.number().optional(),
-    requiredClass: z.nativeEnum(PlayerClass).optional(),
-    requiredFlags: z.array(z.string()).optional(),
-    requiredPoints: z.object({
-        red: z.number().optional(),
-        wolf: z.number().optional(),
-        old: z.number().optional()
-    }).optional(),
-    hasItem: z.string().optional(),
-    hasArchive: z.string().optional(),
-  }).optional(),
 });
 
 // --- Type Inferences ---
-export type GlobalSettings = z.infer<typeof GlobalSettingsSchema>;
+
 export type Item = z.infer<typeof ItemSchema>;
 export type Archive = z.infer<typeof ArchiveSchema>;
 export type Bill = z.infer<typeof BillSchema>;
 export type GameEvent = z.infer<typeof EventSchema>;
 export type Ending = z.infer<typeof EndingSchema>;
 
-// ... (GameState 定义保持不变) ...
+// --- Game State Definition ---
+
 export interface GameNotification {
   id: string;
   message: string;
@@ -176,24 +135,33 @@ export interface GameNotification {
 }
 
 export interface GameState {
+  // 基础数值
   day: number;
   hp: number;
   maxHp: number;
   san: number;
   gold: number;
   currentClass: PlayerClass;
+  
+  // 动态数据
   currentEvent: GameEvent | null;
   activeBill: Bill | null;
   ending: string | null;
+  
+  // 每日结算数据
   dailySummary: {
     revenue: number;
     expenses: number;
     notes: string[];
   } | null;
+
+  // 库存与记录
   inventory: string[];
   history: string[];
   unlockedArchives: string[];
-  achievedEndings: string[];
+  achievedEndings: string[]; // 👈 [关键] 必须有这个字段
+
+  // 核心逻辑标记
   flags: {
     isHomeless: boolean;
     debtDays: number;
@@ -201,17 +169,23 @@ export interface GameState {
     hasCryptoKey: boolean;
     [key: string]: any;
   };
+
+  // 觉醒积分
   points: {
     red: number;
     wolf: number;
     old: number;
   };
+
+  // UI 状态
   isShopOpen: boolean;
   isInventoryOpen: boolean;
   isArchiveOpen: boolean;
   isMenuOpen: boolean;
   currentRoast: string | null;
   notifications: GameNotification[];
-  viewingArchive: string | null;
+  viewingArchive: string | null; // 👈 [关键] 必须有这个字段
+
+  // System
   _hasHydrated: boolean;
 }

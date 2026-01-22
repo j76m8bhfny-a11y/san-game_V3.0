@@ -1,0 +1,17 @@
+{
+  "gameRules": {
+    "maxDays": 40,
+    "victoryHpThreshold": 0,
+    "pressureDivisor": 2000
+  },
+  "salaryConfig": [
+    { "maxSan": 30, "efficiency": 1.1, "desc": "工贼" },
+    { "maxSan": 70, "efficiency": 1.0, "desc": "装傻" },
+    { "maxSan": 90, "efficiency": 0.6, "desc": "排挤" },
+    { "maxSan": 100, "efficiency": 0.1, "desc": "疯癫" }
+  ],
+  "billConfig": {
+    "baseProb": 0.3,
+    "debtProb": 0.5
+  }
+}

@@ -10,10 +10,6 @@ import { ShopModal } from './components/game/ShopModal';
 import { InventorySidebar } from './components/game/InventorySidebar';
 import { PauseMenu } from './components/game/PauseMenu';
 import { DailySettlement } from './components/game/DailySettlement';
-// 👇 新增引入：缺失的核心组件
-import { MessageWindow } from './components/game/MessageWindow';
-import { MiniHUD } from './components/game/MiniHUD';
-import { BlackBox } from './components/game/BlackBox';
 
 // --- UI / FX Components ---
 import { GlobalAtmosphere } from './components/ui/GlobalAtmosphere';
@@ -24,23 +20,22 @@ import { TooltipLayer } from './components/ui/TooltipLayer';
 
 const App: React.FC = () => {
   // --- Store Selectors ---
+  // 1. 数据与状态
   const initializeData = useGameStore((state) => state.initializeData);
   const _hasHydrated = useGameStore((state) => state._hasHydrated);
   
   const ending = useGameStore((state) => state.ending);
   const activeBill = useGameStore((state) => state.activeBill);
   const dailySummary = useGameStore((state) => state.dailySummary);
-  const currentEvent = useGameStore((state) => state.currentEvent);
+  const currentEvent = useGameStore((state) => state.currentEvent); // 获取当前事件以渲染背景
   
-  // UI 开关状态
+  // 2. UI 开关状态
   const isShopOpen = useGameStore((state) => state.isShopOpen);
   const isMenuOpen = useGameStore((state) => state.isMenuOpen);
-  const isArchiveOpen = useGameStore((state) => state.isArchiveOpen); // 👈 新增
   
-  // Actions
+  // 3. Actions (用于传递给组件的回调)
   const setShopOpen = useGameStore((state) => state.setShopOpen);
   const setMenuOpen = useGameStore((state) => state.setMenuOpen);
-  const setArchiveOpen = useGameStore((state) => state.setArchiveOpen); // 👈 新增
   const closeDailySummary = useGameStore((state) => state.closeDailySummary);
   const resetGame = useGameStore((state) => state.resetGame);
 
@@ -55,7 +50,7 @@ const App: React.FC = () => {
   // --- Handlers ---
   const handleRestart = () => {
     resetGame();
-    setViewState('TITLE');
+    setViewState('TITLE'); // 重置后返回标题画面
   };
 
   // --- Render Helpers ---
@@ -76,6 +71,7 @@ const App: React.FC = () => {
       {/* L1: 主内容层 */}
       {ending ? (
         // 结局画面
+        // 修复: 传递 endingId 和 onRestart
         <GameEnding 
           endingId={ending} 
           onRestart={handleRestart} 
@@ -86,20 +82,19 @@ const App: React.FC = () => {
       ) : (
         // 游戏主循环画面
         <>
-          {/* 1. 背景层 */}
+          {/* 修复: 传递必要的 bgImage, eventImage */}
+          {/* 如果没有当前事件，使用默认城市背景 */}
           <LayeredScene 
             bgImage={currentEvent?.bgImage || '/assets/scenes/city_morning.png'} 
             eventImage={currentEvent?.eventImage}
             isGlitch={currentEvent?.options?.D?.isGlitched} 
           />
           
-          {/* 2. 核心 UI 层 (之前漏掉的！) */}
-          <MiniHUD /> 
-          {currentEvent && <MessageWindow event={currentEvent} />}
-          
-          {/* 3. 模态覆盖层 */}
+          {/* 游戏内覆盖层 */}
+          {/* 修复: 传递 bill 对象 */}
           {activeBill && <BillOverlay bill={activeBill} />}
           
+          {/* 修复: 传递 isOpen 和 onClose */}
           {dailySummary && (
             <DailySettlement 
               isOpen={!!dailySummary} 
@@ -109,9 +104,10 @@ const App: React.FC = () => {
         </>
       )}
 
-      {/* L2: 全局功能 UI (商店、菜单、背包、档案) */}
+      {/* L2: 全局功能 UI */}
       {viewState === 'GAME' && !ending && (
         <>
+          {/* 修复: 传递 isOpen 和 onClose */}
           {isShopOpen && (
             <ShopModal 
               isOpen={isShopOpen} 
@@ -119,6 +115,7 @@ const App: React.FC = () => {
             />
           )}
           
+          {/* 修复: 传递 isOpen, onResume, onRestart (移除了 onQuit) */}
           {isMenuOpen && (
             <PauseMenu 
               isOpen={isMenuOpen} 
@@ -127,10 +124,7 @@ const App: React.FC = () => {
             />
           )}
           
-          {isArchiveOpen && ( // 👈 新增档案查看器
-             <BlackBox onClose={() => setArchiveOpen(false)} />
-          )}
-          
+          {/* 修复: InventorySidebar 不需要 props，它内部自己连接 Store */}
           <InventorySidebar />
         </>
       )}

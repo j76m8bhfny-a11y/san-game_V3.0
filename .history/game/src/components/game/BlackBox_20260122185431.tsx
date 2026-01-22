@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import ARCHIVES from '@/assets/data/archives.json';
-import ENDINGS from '@/assets/data/endings.json';
+import ENDINGS from '@/assets/data/endings.json'; // 👈 记得导入 endings
 
 interface BlackBoxProps {
   onClose: () => void;
@@ -14,35 +14,33 @@ type Category = 'HOMELESS' | 'WORKER' | 'MIDDLE' | 'CAPITALIST' | 'ENDING';
 
 export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
   const unlockedIds = useGameStore(s => s.unlockedArchives);
-  const achievedEndings = useGameStore(s => s.achievedEndings) || [];
+  const achievedEndings = useGameStore(s => s.achievedEndings) || []; // 防空
   const viewingId = useGameStore(s => s.viewingArchive);
   
   const [mode, setMode] = useState<ViewMode>(viewingId ? 'IMPACT' : 'GRID');
-  const [category, setCategory] = useState<Category>('HOMELESS');
+  const [category, setCategory] = useState<Category>('HOMELESS'); // 👈 当前标签
   const [selectedId, setSelectedId] = useState<string | null>(viewingId || null);
   
   const { playSfx } = useAudioStore();
 
-  // --- 核心修复 1: 统一文档类型结构 ---
-  // 我们将结局和档案都标准化为统一的结构，避免 TypeScript 报错
-  const currentDoc = useMemo(() => {
+  // 计算当前应该显示哪个文档（可能是档案，可能是结局）
+  // 结局和档案的数据结构略有不同，这里做统一适配
+  const currentDoc = React.useMemo(() => {
     if (!selectedId) return null;
-    
     const arch = ARCHIVES.find(a => a.id === selectedId);
-    if (arch) return { ...arch, type: 'ARCHIVE' }; // 标记类型
+    if (arch) return arch;
     
     const end = ENDINGS.find(e => e.id === selectedId);
     if (end) return { 
       id: end.id, 
       title: end.title, 
-      flavorText: end.description, 
-      image: undefined, // 显式声明结局没有图片
-      type: 'ENDING'
+      flavorText: end.description, // 结局描述作为正文
+      image: undefined // 结局可能没有图片，或者你可以专门配图
     };
-    
     return null;
   }, [selectedId]);
 
+  // 监听 viewingId (事件触发)
   useEffect(() => {
     if (viewingId) {
       setSelectedId(viewingId);
@@ -65,6 +63,7 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
     }
   };
 
+  // --- 格式化文本函数 (保持不变) ---
   const renderFormattedText = (text: string) => {
     const parts = text.split(/(【.*?】)/g);
     return parts.map((part, index) => {
@@ -77,20 +76,27 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
     });
   };
 
-  // --- 数据过滤 ---
-  const filteredList = useMemo(() => {
-    if (category === 'ENDING') return ENDINGS;
+  // --- 数据过滤逻辑 ---
+  const getFilteredItems = () => {
+    if (category === 'ENDING') return ENDINGS; // 结局特殊处理
+
     return ARCHIVES.filter(item => {
       const id = item.id;
       if (category === 'WORKER') return id.startsWith('No.W');
       if (category === 'MIDDLE') return id.startsWith('No.M');
       if (category === 'CAPITALIST') return id.startsWith('No.C');
+      // 剩下的都归类为流浪汉/通用
       return !id.startsWith('No.W') && !id.startsWith('No.M') && !id.startsWith('No.C');
     });
-  }, [category]);
+  };
 
-  // --- IMPACT 模式 ---
+  const filteredList = getFilteredItems();
+
+  // --- IMPACT 模式 (拍脸动画) ---
   if (mode === 'IMPACT' && currentDoc) {
+     // ... (保持原有的 IMPACT 代码不变，为了节省篇幅这里省略，请保留之前的代码)
+     // 如果你需要这部分代码，请告诉我，我再发一遍。
+     // 假设你保留了之前的 IMPACT 代码块...
      return (
        <div 
         className="fixed inset-0 z-[5000] flex items-center justify-center cursor-pointer"
@@ -110,6 +116,7 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
              <p className="font-mono text-[10px] text-gray-600 mt-1">CASE_ID: {currentDoc.id}</p>
            </div>
            <div className="font-serif text-lg leading-snug text-gray-900 line-clamp-6">
+              {/* 简易渲染 */}
              {currentDoc.flavorText.replace(/【.*?】/g, '')}
            </div>
            <div className="mt-8 text-center text-xs font-mono text-gray-500 animate-pulse">[ TAP TO READ ]</div>
@@ -146,7 +153,7 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
       {mode === 'GRID' && (
         <div className="w-full max-w-5xl h-[85vh] mt-12 flex flex-col">
           
-          {/* 标签栏 */}
+          {/* 👈 标签栏 (Tabs) */}
           <div className="flex gap-2 mb-4 overflow-x-auto pb-2 px-2 md:justify-center">
             {[
               { id: 'HOMELESS', label: '流浪汉' },
@@ -175,14 +182,10 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
               {filteredList.map((item) => {
                 const isEnding = category === 'ENDING';
+                // 判断解锁状态：如果是结局查 achievedEndings，如果是档案查 unlockedIds
                 const isUnlocked = isEnding 
                   ? achievedEndings.includes(item.id)
                   : unlockedIds.includes(item.id);
-                
-                // --- 核心修复 2: 安全获取图片 ---
-                // 使用类型断言 (as any) 告诉 TS 我们知道自己在做什么
-                // 或者检查 'image' 属性是否存在
-                const itemImage = (item as any).image;
 
                 return (
                   <button
@@ -197,10 +200,12 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
                     `}
                   >
                     {isUnlocked ? (
+                      // --- 解锁状态 ---
                       <>
                         <div className="flex-1 w-full overflow-hidden relative grayscale group-hover:grayscale-0 transition-all p-2">
-                           {itemImage ? (
-                             <img src={itemImage} className="w-full h-full object-cover mix-blend-multiply opacity-80" />
+                           {/* 如果有图显示图，没图显示大字 ID */}
+                           {item.image ? (
+                             <img src={item.image} className="w-full h-full object-cover mix-blend-multiply opacity-80" />
                            ) : (
                              <div className="w-full h-full flex items-center justify-center border border-gray-300">
                                <span className="text-4xl font-black text-gray-300/50 select-none">
@@ -217,16 +222,20 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
                         </div>
                       </>
                     ) : (
+                      // --- 👈 已加密状态 (田字格灰色) ---
                       <div className="w-full h-full flex flex-col items-center justify-center relative">
+                        {/* 锁图标 */}
                         <div className="mb-2 opacity-30">
                           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-500">
                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                           </svg>
                         </div>
+                        {/* 文字 */}
                         <span className="text-gray-600 font-mono text-xs tracking-widest font-bold">
                           已加密
                         </span>
+                        {/* 背景斜纹装饰 */}
                         <div className="absolute inset-0 bg-[url('/assets/textures/noise.svg')] opacity-5" />
                         <div className="absolute inset-0 opacity-10 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,#000_10px,#000_11px)]" />
                       </div>
@@ -239,7 +248,7 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
         </div>
       )}
 
-      {/* --- READER 视图 --- */}
+      {/* --- READER 视图 (大报纸) --- */}
       {mode === 'READER' && currentDoc && (
         <div className="w-full max-w-6xl h-[85vh] mt-8 flex flex-col items-center justify-center">
           <motion.div 
@@ -247,6 +256,7 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
             animate={{ opacity: 1, y: 0 }}
             className="w-full h-full bg-[#f0e6d2] text-[#1a1a1a] shadow-2xl overflow-hidden flex flex-col md:flex-row relative rounded-sm"
           >
+             {/* 纸张纹理 */}
              <div className="absolute inset-0 bg-[url('/assets/textures/noise.svg')] opacity-30 mix-blend-multiply pointer-events-none z-0" />
 
              {/* 左侧文字区 */}
@@ -266,6 +276,7 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
                 </div>
 
                 <div className="font-serif text-lg leading-relaxed text-justify text-gray-900">
+                  {/* 使用格式化函数 */}
                   {renderFormattedText(currentDoc.flavorText)}
                   
                   {category !== 'ENDING' && (
@@ -276,7 +287,7 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
                 </div>
              </div>
 
-             {/* 右侧图片区 */}
+             {/* 右侧图片/装饰区 */}
              <div className="w-full md:w-[45%] bg-[#e6dac0] p-8 md:p-12 flex flex-col items-center relative z-10">
                 {currentDoc.image ? (
                   <div className="relative w-full aspect-square bg-white p-3 shadow-lg rotate-2 hover:rotate-0 transition-transform duration-500 mb-6">

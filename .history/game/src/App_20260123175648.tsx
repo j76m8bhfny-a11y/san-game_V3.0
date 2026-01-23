@@ -33,8 +33,6 @@ const App: React.FC = () => {
     dailySummary,
     _hasHydrated,
     isShopOpen,
-    isJobBoardOpen,
-    setJobBoardOpen,
     isArchiveOpen,
     isMenuOpen,
     currentRoast,
@@ -126,14 +124,6 @@ const App: React.FC = () => {
           onClose={() => setShopOpen(false)} 
         />
       )}
-      {/* ✨ 挂载 JobBoardModal */}
-      {isJobBoardOpen && (
-        <JobBoardModal 
-          isOpen={isJobBoardOpen} 
-          onClose={() => setJobBoardOpen(false)} 
-        />
-      )}
-      
       {isArchiveOpen && (
         <BlackBox 
           onClose={() => setArchiveOpen(false)} 

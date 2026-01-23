@@ -1,0 +1,16 @@
+[
+  {
+    "id": "INS_BASIC",
+    "name": "白银互助计划",
+    "dailyCost": 80,
+    "coverage": "PARTIAL",
+    "description": "抵御 70% 的医疗类账单扣费。"
+  },
+  {
+    "id": "INS_PREMIUM",
+    "name": "Apex 至尊会员",
+    "dailyCost": 1500,
+    "coverage": "FULL",
+    "description": "免疫所有医疗类账单事件。"
+  }
+]

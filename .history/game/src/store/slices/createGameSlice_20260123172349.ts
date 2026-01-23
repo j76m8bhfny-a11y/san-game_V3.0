@@ -6,7 +6,6 @@ import {
   triggerBill, 
   humanDismantlementCheck, 
   clamp, 
-  calculateBillMitigation,
   calcPressure, 
   calcDynamicGold,
   checkMovePermission // 👈 引入新逻辑
@@ -121,10 +120,9 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
     const { gameDataCache } = state;
     if (!gameDataCache) return;
     
-    const { global, classMap, bills, events, itemMap } = gameDataCache;
+    const { global, classMap, bills, events } = gameDataCache;
     const globalRules = global.gameRules;
 
-    // 1. 胜利判定
     if (state.day >= globalRules.maxDays && state.hp > globalRules.victoryHpThreshold) {
         state.triggerEnding('ED-06');
         return;
@@ -137,97 +135,35 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
     const log: string[] = [];
     let newHp = state.hp;
     let newGold = state.gold;
-    let newSan = state.san;
     let bill = null;
     let billAmount = 0;
     let salary = 0;
 
-    // --- ⬇️ 核心经济逻辑重写 ⬇️ ---
-
     if (!isFirstDay) {
-        // A. 固定开销 (房租 + 医保)
-        const rentCost = state.activeHousing?.dailyCost || 0;
-        const insuranceCost = state.activeInsurance?.dailyCost || 0;
-        const totalFixedCost = rentCost + insuranceCost;
-
-        // B. 违约判定 (付不起房租)
-        if (rentCost > 0 && newGold < rentCost) {
-            // 💀 触发驱逐逻辑
-            log.push(`违约: 失去房产与工作`);
-            notes.push(`[严重] 资金不足以支付房租，你被房东赶了出来！失去住所和工作。`);
-            
-            // 强制扣除剩余资金（或者不扣，直接赶走，这里选择不扣钱但重置状态）
-            // newGold -= rentCost; // 可选：是否还要扣成负数？
-            
-            // 重置状态
-            set({ activeHousing: null, activeJob: null });
-            // 医保可能还会保留，只要付得起
-        } else {
-            // 正常扣费
-            if (totalFixedCost > 0) {
-                newGold -= totalFixedCost;
-                log.push(`固定开销: -$${totalFixedCost}`);
-                if (insuranceCost > 0) notes.push(`医保扣费: -$${insuranceCost}`);
-                if (rentCost > 0) notes.push(`房租扣费: -$${rentCost}`);
-            }
+        // --- 1. 固定生活费 ---
+        if (currentClassData.monthlyCost > 0) {
+            newGold -= currentClassData.monthlyCost;
+            log.push(`生活费: -$${currentClassData.monthlyCost}`);
         }
         
-        // C. 工作产出 (Job Salary)
-        // 逻辑：如果有工作，领工作薪资；没工作，领低保(如果是流浪汉)
-        let baseSalary = 0;
-        if (state.activeJob) {
-            baseSalary = state.activeJob.salary;
-            // 工作可能消耗 SAN (可选，如果 activeJob 有 sanCost)
-            if (state.activeJob.sanCost) {
-                newSan -= state.activeJob.sanCost;
-                // log.push(`工作劳累: SAN -${state.activeJob.sanCost}`);
-            }
-        } else if (state.currentClass === PlayerClass.Homeless) {
-            // 流浪汉低保 (保持原有的 class baseSalary 作为低保)
-            baseSalary = currentClassData.baseSalary; 
-        }
-
-        // 应用 SAN 值效率修正 (打工人心情不好效率低)
-        salary = calcSalary(baseSalary, newSan, global.salaryConfig);
+        // --- 2. 工资计算 (后续 Phase 2.2 会在这里改造为 Job 逻辑) ---
+        salary = calcSalary(currentClassData.baseSalary, state.san, global.salaryConfig);
         newGold += salary;
-        
-        // D. 账单触发与减免
-        // 收集背包里的载具 Tag
-        const vehicleTags = state.inventory
-            .map((id: string) => itemMap.get(id)?.tags || [])
-            .flat()
-            .filter((t: string) => t.startsWith('VEHICLE'));
 
-        bill = triggerBill(
-            newGold, newSan, state.currentClass, bills, global.billConfig,
-            { housing: state.activeHousing, vehicleTags }
-        );
-
+        // --- 3. 账单触发 ---
+        bill = triggerBill(newGold, state.san, state.currentClass, bills, global.billConfig);
         if (bill) {
-            // 计算减免
-            const mitigation = calculateBillMitigation(bill, state.activeHousing, state.activeInsurance);
-            billAmount = mitigation.finalAmount; // 这是一个负数或0 (如果bill.amount是负数)
-            
-            // 注意：bill.amount 在 json 里通常定义为负数 (e.g. -500)，或者正数代表扣除？
-            // 假设 json 里 amount 是 -500。
-            // 如果 mitigation 也是负数，直接加。
-            newGold += billAmount;
-
-            if (mitigation.mitigated) {
-                notes.push(`${mitigation.reason}: 减免至 ${Math.abs(billAmount)}`);
-            } else {
-                notes.push(`新增账单: ${bill.name} (${billAmount})`);
-            }
-
-            // 账单造成的额外伤害 (如 HP/SAN)
-            // 这里也可以加入房产防御逻辑 (比如豪宅减少 HP 伤害)
+            billAmount = bill.amount;
+            newGold += billAmount; // bill.amount 通常是负数
             if (bill.effects?.hp) {
                 newHp += bill.effects.hp;
-                log.push(`账单伤害: HP${bill.effects.hp}`);
+                notes.push(`环境伤害: HP ${bill.effects.hp}`); 
+                log.push(`账单扣血: ${bill.effects.hp}`);      
             }
+            notes.push(`新增账单: ${bill.name} (${bill.amount})`);
         }
 
-        // E. 负债与惩罚 (保持不变)
+        // --- 4. 负债与惩罚 ---
         if (newGold < 0) {
             const debt = Math.abs(newGold);
             const debtDmg = Math.floor(debt / 10); 
@@ -238,7 +174,7 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
             }
         }
 
-        // F. 人体拆解 (保持不变)
+        // --- 5. 人体拆解 ---
         const dismantleResult = humanDismantlementCheck(state.currentClass, state.flags.debtDays, newGold);
         if (dismantleResult?.triggered && dismantleResult.type === 'PASSIVE') {
              newGold = dismantleResult.changes.goldSetTo;
@@ -246,14 +182,14 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
         }
     }
 
-    // 2. 阶级更新
+    // 阶级更新
     const newClass = checkClassUpdate(newGold, gameDataCache.classes); 
     if (newClass !== state.currentClass) {
         log.push(`阶级变更: ${newClass}`);
         notes.push(`阶级变更: ${newClass}`);
     }
 
-    // 3. 死亡判定
+    // 死亡判定
     if (newHp <= 0) {
         const deathEnding = resolveEnding(
             { ...state, hp: newHp }, 
@@ -265,15 +201,21 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
         return;
     }
 
-    // 4. 事件生成 (保持 Phase 2-Part 1 的逻辑)
+    // --- 事件生成 (增加区域过滤) ---
     const availableEvents = events.filter((event: GameEvent) => {
       const { conditions } = event;
-      if (conditions.minSan !== undefined && newSan < conditions.minSan) return false;
-      if (conditions.maxSan !== undefined && newSan > conditions.maxSan) return false;
+      
+      // 基础过滤
+      if (conditions.minSan !== undefined && state.san < conditions.minSan) return false;
+      if (conditions.maxSan !== undefined && state.san > conditions.maxSan) return false;
       if (conditions.requiredClass && !conditions.requiredClass.includes(newClass)) return false;
       if (conditions.hasItem && !state.inventory.includes(conditions.hasItem)) return false;
-      // 区域过滤
+      
+      // 🗺️ 新增: 区域过滤 (如果事件指定了 region，必须在对应区域才能触发)
+      // 如果事件没有 region 字段，假设它是通用事件，可以在任何地方触发(或者你可以约定只能在 SLUMS)
+      // 这里的逻辑是：如果事件定义了 region，必须匹配；没定义则通用。
       if (conditions.region && conditions.region !== state.currentRegion) return false;
+
       return true;
     });
 
@@ -281,7 +223,9 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
         ? availableEvents[Math.floor(Math.random() * availableEvents.length)] 
         : null;
 
+    // 保底事件
     if (!randomEvent) {
+        console.warn("[Game] No event matched, triggering fallback.");
         randomEvent = {
              id: 'FALLBACK_EVENT',
              title: '平淡的一天',
@@ -302,7 +246,7 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
         currentEvent: randomEvent,
         dailySummary: isFirstDay ? null : {
             revenue: salary,
-            expenses: Math.abs(billAmount), // 这里仅显示额外支出，固定支出已在 notes 里体现，或者你可以把 totalFixedCost 加进来
+            expenses: currentClassData.monthlyCost + Math.abs(billAmount),
             notes: notes
         },
     });
@@ -311,9 +255,8 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
         day: state.day + 1,
         gold: newGold,
         hp: clamp(newHp, 0, state.maxHp),
-        san: clamp(newSan, 0, 100), // 记得更新 San
         currentClass: newClass,
-        history: [...state.history, `Day ${state.day + 1}: ${log.join(', ')}`]
+        history: [...state.history, `Month ${state.day + 1}: ${log.join(', ')}`]
     });
   },
 

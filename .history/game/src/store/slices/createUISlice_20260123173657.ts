@@ -8,8 +8,6 @@ export interface UISlice {
   isInventoryOpen: boolean;
   isArchiveOpen: boolean;
   isMenuOpen: boolean;
-  isJobBoardOpen: boolean;
-
   viewMode: 'MAP' | 'REGION';
 
   currentRoast: string | null;
@@ -21,7 +19,6 @@ export interface UISlice {
   setInventoryOpen: (isOpen: boolean) => void;
   setArchiveOpen: (isOpen: boolean) => void;
   setMenuOpen: (isOpen: boolean) => void;
-  setJobBoardOpen: (isOpen: boolean) => void;
   setRoast: (content: string | null) => void;
   setViewingArchive: (archiveId: string | null) => void;
   
@@ -42,7 +39,6 @@ export const createUISlice: StateCreator<any, [], [], UISlice> = (set, get) => (
   isInventoryOpen: false,
   isArchiveOpen: false,
   isMenuOpen: false,
-  isJobBoardOpen: false,
   viewMode: 'REGION',
   currentRoast: null,
   notifications: [],
@@ -59,7 +55,6 @@ export const createUISlice: StateCreator<any, [], [], UISlice> = (set, get) => (
   }),
   
   setMenuOpen: (isOpen) => set({ isMenuOpen: isOpen }),
-  setJobBoardOpen: (isOpen) => set({ isJobBoardOpen: isOpen }),
   setRoast: (content) => set({ currentRoast: content }),
   setViewingArchive: (archiveId) => set({ viewingArchive: archiveId }),
 

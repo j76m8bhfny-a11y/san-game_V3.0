@@ -1,0 +1,42 @@
+[
+  {
+    "id": "H_SLUMS_CAMP",
+    "name": "露营地帐篷",
+    "region": "SLUMS",
+    "type": "RENT",
+    "price": 0,
+    "dailyCost": 0,
+    "defenseLevel": 0,
+    "description": "免费，但没有任何保护。"
+  },
+  {
+    "id": "H_RUST_APT",
+    "name": "破旧公寓",
+    "region": "RUST_BELT",
+    "type": "RENT",
+    "price": 100,
+    "dailyCost": 30,
+    "defenseLevel": 1,
+    "description": "勉强能睡。允许申请正规工作。"
+  },
+  {
+    "id": "H_SUBURB_HOUSE",
+    "name": "独栋房屋 (按揭)",
+    "region": "SUBURBS",
+    "type": "OWN",
+    "price": 5000,
+    "dailyCost": 80,
+    "defenseLevel": 3,
+    "description": "中产阶级的象征。有防盗门。"
+  },
+  {
+    "id": "H_DOWNTOWN_VILLA",
+    "name": "景观别墅",
+    "region": "DOWNTOWN",
+    "type": "OWN",
+    "price": 500000,
+    "dailyCost": 500,
+    "defenseLevel": 5,
+    "description": "私人领地。免疫绝大多数灾难。"
+  }
+]

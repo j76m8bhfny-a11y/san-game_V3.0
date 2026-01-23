@@ -10,7 +10,6 @@ import { BillOverlay } from './components/game/BillOverlay';
 import { GameEnding } from './components/game/GameEnding';
 import { InventorySidebar } from './components/game/InventorySidebar';
 import { ShopModal } from './components/game/ShopModal';
-import { JobBoardModal } from './components/game/JobBoardModal';
 import { GlobalAtmosphere } from './components/ui/GlobalAtmosphere';
 import { RoutineToast } from './components/ui/RoutineToast';
 import { DailySettlement } from './components/game/DailySettlement';
@@ -33,8 +32,6 @@ const App: React.FC = () => {
     dailySummary,
     _hasHydrated,
     isShopOpen,
-    isJobBoardOpen,
-    setJobBoardOpen,
     isArchiveOpen,
     isMenuOpen,
     currentRoast,
@@ -42,7 +39,7 @@ const App: React.FC = () => {
     closeDailySummary,
     
     // ✨ 新增 UI 状态
-    viewMode, // 'MAP' | 'REGION'
+    viewMode // 'MAP' | 'REGION'
     setShopOpen,
     setArchiveOpen,
     setMenuOpen
@@ -126,14 +123,6 @@ const App: React.FC = () => {
           onClose={() => setShopOpen(false)} 
         />
       )}
-      {/* ✨ 挂载 JobBoardModal */}
-      {isJobBoardOpen && (
-        <JobBoardModal 
-          isOpen={isJobBoardOpen} 
-          onClose={() => setJobBoardOpen(false)} 
-        />
-      )}
-      
       {isArchiveOpen && (
         <BlackBox 
           onClose={() => setArchiveOpen(false)} 

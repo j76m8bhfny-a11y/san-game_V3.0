@@ -8,10 +8,6 @@ export interface UISlice {
   isInventoryOpen: boolean;
   isArchiveOpen: boolean;
   isMenuOpen: boolean;
-  isJobBoardOpen: boolean;
-
-  viewMode: 'MAP' | 'REGION';
-
   currentRoast: string | null;
   notifications: GameNotification[];
   viewingArchive: string | null;
@@ -21,7 +17,6 @@ export interface UISlice {
   setInventoryOpen: (isOpen: boolean) => void;
   setArchiveOpen: (isOpen: boolean) => void;
   setMenuOpen: (isOpen: boolean) => void;
-  setJobBoardOpen: (isOpen: boolean) => void;
   setRoast: (content: string | null) => void;
   setViewingArchive: (archiveId: string | null) => void;
   
@@ -31,7 +26,6 @@ export interface UISlice {
   // 通知系统
   addNotification: (message: string, type?: GameNotification['type']) => void;
   removeNotification: (id: string) => void;
-  setViewMode: (mode: 'MAP' | 'REGION') => void;
 }
 
 // 创建切片
@@ -42,8 +36,6 @@ export const createUISlice: StateCreator<any, [], [], UISlice> = (set, get) => (
   isInventoryOpen: false,
   isArchiveOpen: false,
   isMenuOpen: false,
-  isJobBoardOpen: false,
-  viewMode: 'REGION',
   currentRoast: null,
   notifications: [],
   viewingArchive: null,
@@ -59,7 +51,6 @@ export const createUISlice: StateCreator<any, [], [], UISlice> = (set, get) => (
   }),
   
   setMenuOpen: (isOpen) => set({ isMenuOpen: isOpen }),
-  setJobBoardOpen: (isOpen) => set({ isJobBoardOpen: isOpen }),
   setRoast: (content) => set({ currentRoast: content }),
   setViewingArchive: (archiveId) => set({ viewingArchive: archiveId }),
 
@@ -94,5 +85,4 @@ export const createUISlice: StateCreator<any, [], [], UISlice> = (set, get) => (
       notifications: state.notifications.filter((n: GameNotification) => n.id !== id)
     }));
   },
-  setViewMode: (mode) => set({ viewMode: mode }),
 });

@@ -1,0 +1,46 @@
+[
+  {
+    "id": "J_S01",
+    "title": "垃圾分类员",
+    "region": "SLUMS",
+    "salary": 15,
+    "sanCost": 5,
+    "description": "极低薪资，扣 HP/San。无需门槛。"
+  },
+  {
+    "id": "J_S02",
+    "title": "现金顶包者",
+    "region": "SLUMS",
+    "salary": 80,
+    "sanCost": 25,
+    "requiredVehicle": "VEHICLE_T1",
+    "description": "中等薪资，极高 San 惩罚。需破烂轿车。"
+  },
+  {
+    "id": "J_R01",
+    "title": "流水线装配工",
+    "region": "RUST_BELT",
+    "salary": 120,
+    "sanCost": 10,
+    "requiresAddress": true,
+    "description": "稳定低薪，持续扣 San。需住房。"
+  },
+  {
+    "id": "J_B01",
+    "title": "电话销售员",
+    "region": "SUBURBS",
+    "salary": 200,
+    "sanCost": 15,
+    "requiresAddress": true,
+    "description": "消耗 San。需 San > 60。"
+  },
+  {
+    "id": "J_D01",
+    "title": "高频交易员",
+    "region": "DOWNTOWN",
+    "salary": 2000,
+    "sanCost": 5,
+    "requiresAddress": true,
+    "description": "极高薪资。需独栋房屋。"
+  }
+]

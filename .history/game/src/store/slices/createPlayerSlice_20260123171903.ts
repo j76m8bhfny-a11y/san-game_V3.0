@@ -1,26 +1,8 @@
 import { StateCreator } from 'zustand';
 import { PlayerClass, RegionID, Job, Housing, Insurance } from '@/types/schema';
 
-// ✅ 重新加回这个常量，供 UI (ClassSelectorModal) 使用
-export const CLASS_INITIAL_STATS: Record<PlayerClass, { gold: number; hp: number; san: number; desc: string }> = {
-  [PlayerClass.Homeless]: { 
-    gold: 50, hp: 60, san: 40, 
-    desc: '地狱开局。除了活着，你一无所有。' 
-  },
-  [PlayerClass.Worker]: { 
-    gold: 200, hp: 100, san: 60, 
-    desc: '标准开局。用健康换取金钱的西西弗斯。' 
-  },
-  [PlayerClass.Middle]: { 
-    gold: 2000, hp: 90, san: 70, 
-    desc: '安逸的陷阱。看似拥有选择权，实则更怕失去。' 
-  },
-  [PlayerClass.Capitalist]: { 
-    gold: 10000, hp: 80, san: 50, 
-    desc: '顶层掠食者。金钱是数字，人性是筹码。' 
-  }
-};
-
+// 初始状态 (空值/默认值)
+// 注意：具体的数值 (Gold/HP/San) 现在由 startGame 读取 JSON 决定
 const INITIAL_PLAYER_STATE = {
   day: 1,
   hp: 100,
@@ -39,13 +21,12 @@ const INITIAL_PLAYER_STATE = {
   history: [] as string[],
   unlockedArchives: [] as string[], 
   
-  // ✅ 修复语法错误：移除了 [key: string]: any
   flags: { 
     isHomeless: false, 
     debtDays: 0, 
     hasRedBook: false, 
-    hasCryptoKey: false
-    // 这里不能写索引签名，它只存在于 Interface 定义中
+    hasCryptoKey: false,
+    [key: string]: any 
   },
   
   points: { red: 0, wolf: 0, old: 0 },
@@ -61,6 +42,7 @@ export interface PlayerSlice {
   gold: number;
   currentClass: PlayerClass;
   
+  // 🗺️ 核心生存状态
   currentRegion: RegionID;
   activeJob: Job | null;
   activeHousing: Housing | null;
@@ -71,7 +53,6 @@ export interface PlayerSlice {
   unlockedArchives: string[];
   achievedEndings: string[]; 
   
-  // Interface 里可以保留索引签名
   flags: {
     isHomeless: boolean;
     debtDays: number;
@@ -88,8 +69,10 @@ export interface PlayerSlice {
   triggerEnding: (endingId: string) => void;
   resetPlayerState: () => void;
   
+  // 🎮 游戏流程控制
   startGame: (selectedClass: PlayerClass) => void;
   
+  // 🗺️ 新增设置方法
   setRegion: (region: RegionID) => void;
   setJob: (job: Job | null) => void;
   setHousing: (housing: Housing | null) => void;
@@ -106,6 +89,7 @@ export const createPlayerSlice: StateCreator<any, [], [], PlayerSlice> = (set, g
 
   triggerEnding: (endingId) => {
     const { achievedEndings } = get();
+    // 避免重复添加同一个结局 ID
     const newAchieved = achievedEndings.includes(endingId) 
       ? achievedEndings 
       : [...achievedEndings, endingId];
@@ -127,21 +111,26 @@ export const createPlayerSlice: StateCreator<any, [], [], PlayerSlice> = (set, g
 
   startGame: (selectedClass: PlayerClass) => {
     const state = get();
+    
+    // 🔍 核心改动：从全局缓存 (SystemSlice) 中读取 JSON 数据
     const allGameData = state.gameDataCache; 
     
-    // 逻辑：优先读 JSON，如果 JSON 没加载或没配对，回退到 UI 常量 CLASS_INITIAL_STATS
-    let stats = CLASS_INITIAL_STATS[selectedClass];
-
-    if (allGameData && allGameData.classes) {
-       const classConfig = allGameData.classes.find((c: any) => c.id === selectedClass);
-       if (classConfig && classConfig.initialStats) {
-           stats = classConfig.initialStats;
-           console.log("Loaded stats from JSON:", stats);
-       }
+    if (!allGameData || !allGameData.classes) {
+      console.error("[PlayerSlice] Game data not loaded yet! Cannot start game.");
+      return;
     }
 
+    // 1. 查找选定阶级的配置
+    const classConfig = allGameData.classes.find((c: any) => c.id === selectedClass);
+    
+    // 2. 获取初始数值 (JSON 中定义)
+    // 如果 JSON 没配对 (容错)，给个默认的“穷人”数值
+    const stats = classConfig?.initialStats || { gold: 50, hp: 60, san: 40 };
+
+    // 3. 保留永久成就
     const savedEndings = state.achievedEndings;
     
+    // 4. 重置状态并应用新数值
     set({
       ...INITIAL_PLAYER_STATE,
       achievedEndings: savedEndings,
@@ -152,13 +141,18 @@ export const createPlayerSlice: StateCreator<any, [], [], PlayerSlice> = (set, g
       hp: stats.hp,
       maxHp: stats.hp, 
       san: stats.san,
+      
+      // 默认出生点：贫民窟
       currentRegion: RegionID.Slums,
       
+      // 特殊标记
       flags: {
         ...INITIAL_PLAYER_STATE.flags,
         isHomeless: selectedClass === PlayerClass.Homeless
       }
     });
+    
+    console.log(`[Game Started] Class: ${selectedClass}, Gold: ${stats.gold}, Region: SLUMS`);
   },
 
   setRegion: (region) => set({ currentRegion: region }),

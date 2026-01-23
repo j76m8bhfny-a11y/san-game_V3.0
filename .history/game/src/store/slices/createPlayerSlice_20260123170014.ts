@@ -1,7 +1,7 @@
 import { StateCreator } from 'zustand';
 import { PlayerClass, RegionID, Job, Housing, Insurance } from '@/types/schema';
 
-// ✅ 重新加回这个常量，供 UI (ClassSelectorModal) 使用
+// 1. 定义初始难度配置
 export const CLASS_INITIAL_STATS: Record<PlayerClass, { gold: number; hp: number; san: number; desc: string }> = {
   [PlayerClass.Homeless]: { 
     gold: 50, hp: 60, san: 40, 
@@ -29,8 +29,8 @@ const INITIAL_PLAYER_STATE = {
   gold: 0,
   currentClass: PlayerClass.Worker,
   
-  // 🗺️ 新增地图与生存状态
-  currentRegion: RegionID.Slums, 
+  // 🗺️ 新增状态初始化
+  currentRegion: RegionID.Slums, // 默认出生在贫民窟
   activeJob: null as Job | null,
   activeHousing: null as Housing | null,
   activeInsurance: null as Insurance | null,
@@ -38,16 +38,12 @@ const INITIAL_PLAYER_STATE = {
   inventory: [] as string[],
   history: [] as string[],
   unlockedArchives: [] as string[], 
-  
-  // ✅ 修复语法错误：移除了 [key: string]: any
   flags: { 
     isHomeless: false, 
     debtDays: 0, 
     hasRedBook: false, 
-    hasCryptoKey: false
-    // 这里不能写索引签名，它只存在于 Interface 定义中
+    hasCryptoKey: false 
   },
-  
   points: { red: 0, wolf: 0, old: 0 },
   ending: null as string | null,
 };
@@ -61,6 +57,7 @@ export interface PlayerSlice {
   gold: number;
   currentClass: PlayerClass;
   
+  // 🗺️ 新增接口定义
   currentRegion: RegionID;
   activeJob: Job | null;
   activeHousing: Housing | null;
@@ -71,7 +68,6 @@ export interface PlayerSlice {
   unlockedArchives: string[];
   achievedEndings: string[]; 
   
-  // Interface 里可以保留索引签名
   flags: {
     isHomeless: boolean;
     debtDays: number;
@@ -90,6 +86,7 @@ export interface PlayerSlice {
   
   startGame: (selectedClass: PlayerClass) => void;
   
+  // 🗺️ 新增 Actions
   setRegion: (region: RegionID) => void;
   setJob: (job: Job | null) => void;
   setHousing: (housing: Housing | null) => void;
@@ -126,21 +123,8 @@ export const createPlayerSlice: StateCreator<any, [], [], PlayerSlice> = (set, g
   },
 
   startGame: (selectedClass: PlayerClass) => {
-    const state = get();
-    const allGameData = state.gameDataCache; 
-    
-    // 逻辑：优先读 JSON，如果 JSON 没加载或没配对，回退到 UI 常量 CLASS_INITIAL_STATS
-    let stats = CLASS_INITIAL_STATS[selectedClass];
-
-    if (allGameData && allGameData.classes) {
-       const classConfig = allGameData.classes.find((c: any) => c.id === selectedClass);
-       if (classConfig && classConfig.initialStats) {
-           stats = classConfig.initialStats;
-           console.log("Loaded stats from JSON:", stats);
-       }
-    }
-
-    const savedEndings = state.achievedEndings;
+    const stats = CLASS_INITIAL_STATS[selectedClass];
+    const savedEndings = get().achievedEndings;
     
     set({
       ...INITIAL_PLAYER_STATE,
@@ -152,6 +136,10 @@ export const createPlayerSlice: StateCreator<any, [], [], PlayerSlice> = (set, g
       hp: stats.hp,
       maxHp: stats.hp, 
       san: stats.san,
+      
+      // 🗺️ 针对不同阶级，也许未来可以设置不同的初始区域
+      // 目前统一为 Slums，或者你可以根据阶级设置
+      // 例如: Middle -> Suburbs, 但这需要处理移动逻辑，目前先统一
       currentRegion: RegionID.Slums,
       
       flags: {
@@ -161,6 +149,7 @@ export const createPlayerSlice: StateCreator<any, [], [], PlayerSlice> = (set, g
     });
   },
 
+  // 🗺️ 新增 Actions 实现
   setRegion: (region) => set({ currentRegion: region }),
   setJob: (job) => set({ activeJob: job }),
   setHousing: (housing) => set({ activeHousing: housing }),

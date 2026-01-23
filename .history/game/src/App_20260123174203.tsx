@@ -10,7 +10,6 @@ import { BillOverlay } from './components/game/BillOverlay';
 import { GameEnding } from './components/game/GameEnding';
 import { InventorySidebar } from './components/game/InventorySidebar';
 import { ShopModal } from './components/game/ShopModal';
-import { JobBoardModal } from './components/game/JobBoardModal';
 import { GlobalAtmosphere } from './components/ui/GlobalAtmosphere';
 import { RoutineToast } from './components/ui/RoutineToast';
 import { DailySettlement } from './components/game/DailySettlement';
@@ -33,8 +32,7 @@ const App: React.FC = () => {
     dailySummary,
     _hasHydrated,
     isShopOpen,
-    isJobBoardOpen,
-    setJobBoardOpen,
+    isInventoryOpen,
     isArchiveOpen,
     isMenuOpen,
     currentRoast,
@@ -42,10 +40,7 @@ const App: React.FC = () => {
     closeDailySummary,
     
     // ✨ 新增 UI 状态
-    viewMode, // 'MAP' | 'REGION'
-    setShopOpen,
-    setArchiveOpen,
-    setMenuOpen
+    viewMode // 'MAP' | 'REGION'
   } = useGameStore();
 
   const [viewState, setViewState] = useState<'TITLE' | 'SELECT_CLASS' | 'GAME'>('TITLE');
@@ -120,36 +115,13 @@ const App: React.FC = () => {
 
       {/* Layer 2: Modals & Sidebars */}
       <InventorySidebar />
-      {isShopOpen && (
-        <ShopModal 
-          isOpen={isShopOpen} 
-          onClose={() => setShopOpen(false)} 
-        />
-      )}
-      {/* ✨ 挂载 JobBoardModal */}
-      {isJobBoardOpen && (
-        <JobBoardModal 
-          isOpen={isJobBoardOpen} 
-          onClose={() => setJobBoardOpen(false)} 
-        />
-      )}
-      
-      {isArchiveOpen && (
-        <BlackBox 
-          onClose={() => setArchiveOpen(false)} 
-        />
-      )}
-      {isMenuOpen && (
-        <PauseMenu 
-          isOpen={isMenuOpen} 
-          onResume={() => setMenuOpen(false)} 
-          onRestart={handleRestart} 
-        />
-      )}
+      {isShopOpen && <ShopModal />}
+      {isArchiveOpen && <BlackBox />}
+      {isMenuOpen && <PauseMenu />}
       {/* 预留: HousingModal, JobBoardModal */}
 
       {/* Layer 3: FX & Feedback */}
-      {currentRoast && <RoastModal />}
+      {currentRoast && <RoastModal text={currentRoast} />}
       <RoutineToast />
       <FeedbackLayer />
       <TooltipLayer />

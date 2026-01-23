@@ -1,4 +1,4 @@
-import { PlayerClass, Bill, ScalingMode, GlobalSettings, RegionID, Item, Housing, Insurance } from '../types/schema';
+import { PlayerClass, Bill, ScalingMode, GlobalSettings, RegionID, Item } from '../types/schema';
 
 // ------------------------------------------------------------------
 // 核心公式 1: 动态压力系数
@@ -53,26 +53,18 @@ export const triggerBill = (
   san: number,
   currentClass: PlayerClass,
   billPool: Bill[],
-  config: GlobalSettings['billConfig'],
-  // 👇 新增参数：资产状态
-  assets: {
-    housing: Housing | null;
-    vehicleTags: string[]; // 传入背包里所有的 VEHICLE_Tx 标签
-  }
+  config: GlobalSettings['billConfig']
 ): Bill | null => {
+  // 1. 使用配置的概率
   const actualProb = gold < 0 ? config.debtProb : config.baseProb;
-  
-  // 载具维护费逻辑：如果持有载具，稍微提高账单触发率 (模拟维护成本)
-  // 或者可以在下面提高特定账单的权重
-  
+
+  // 2. 掷骰子
   if (Math.random() > actualProb) return null;
 
+  // 3. 过滤可用账单
   const validBills = billPool.filter(bill => {
     if (!bill.triggerCondition) return true;
-    const { 
-      isDebtOnly, requiredClass, minGold, minSan, maxGold,
-      hasVehicle, hasHousing 
-    } = bill.triggerCondition;
+    const { isDebtOnly, requiredClass, minGold, minSan, maxGold } = bill.triggerCondition;
 
     if (isDebtOnly && gold >= 0) return false;
     if (requiredClass && !requiredClass.includes(currentClass)) return false;
@@ -80,21 +72,11 @@ export const triggerBill = (
     if (maxGold !== undefined && gold > maxGold) return false;
     if (minSan !== undefined && san < minSan) return false;
 
-    // 🚗 载具特定账单 (例如：只有通过 T1 车才能触发 "破车抛锚")
-    if (hasVehicle && !assets.vehicleTags.includes(hasVehicle)) return false;
-
-    // 🏠 房产特定账单
-    if (hasHousing !== undefined) {
-      const playerHasHousing = !!assets.housing;
-      if (hasHousing !== playerHasHousing) return false;
-    }
-
     return true;
   });
 
   if (validBills.length === 0) return null;
   
-  // 权重计算
   const totalWeight = validBills.reduce((sum, bill) => sum + (bill.weight || 10), 0);
   let randomVal = Math.random() * totalWeight;
   
@@ -189,44 +171,4 @@ export const checkMovePermission = (
     default:
       return { allowed: true };
   }
-};
-export const calculateBillMitigation = (
-  bill: Bill,
-  housing: Housing | null,
-  insurance: Insurance | null
-): { finalAmount: number; mitigated: boolean; reason?: string } => {
-  let finalAmount = bill.amount; // bill.amount 通常是负数 (扣钱)
-  let reason = '';
-  let mitigated = false;
-
-  // 1. 医保判定 (针对 MEDICAL 类型)
-  if (bill.type === 'MEDICAL' && insurance) {
-    if (insurance.coverage === 'FULL') {
-      finalAmount = 0;
-      reason = `[医保] ${insurance.name} 全额覆盖`;
-      mitigated = true;
-    } else if (insurance.coverage === 'PARTIAL') {
-      finalAmount = Math.floor(finalAmount * 0.3); // 减免 70%
-      reason = `[医保] ${insurance.name} 报销 70%`;
-      mitigated = true;
-    }
-  }
-
-  // 2. 房产防御判定 (针对 DISASTER / JUMP_SCARE 类型)
-  // 逻辑：如果房产防御等级 > 0，可以按比例减免环境伤害带来的金钱损失(维修费)
-  // 或者直接免疫某些低级灾难
-  if ((bill.type === 'DISASTER' || bill.type === 'JUMP_SCARE') && housing) {
-    // 简单逻辑：防御等级每级减少 10% 损失，最高 50%
-    const reduction = Math.min(housing.defenseLevel * 0.1, 0.5);
-    if (reduction > 0) {
-      finalAmount = Math.floor(finalAmount * (1 - reduction));
-      reason = reason ? `${reason} + [安保] 减免` : `[安保] ${housing.name} 拦截`;
-      mitigated = true;
-    }
-  }
-
-  // 3. 法律豁免 (针对 LEGAL 类型)
-  // 这通常通过持有特定 Item (如参议员电话) 处理，也可以在这里扩展
-
-  return { finalAmount, mitigated, reason };
 };

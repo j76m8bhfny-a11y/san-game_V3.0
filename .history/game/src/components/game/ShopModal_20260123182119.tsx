@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
-import { useAudioStore } from '@/store/useAudioStore';
 import { Item } from '@/types/schema';
 // 如果 useAudioStore 还没创建，暂时注释掉或者我也给你一份
 // import { useAudioStore } from '@/store/useAudioStore'; 
 
 export const ShopModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
   // 1. 解构出 shopItems 函数
-  const { getShopItems, gold, buyItem, currentRegion } = useGameStore();
+  const { shopItems, gold, buyItem, currentRegion } = useGameStore();
   
   // 2. 🚨【关键修改】这里必须调用函数 () 才能拿到筛选后的数组
-  const allItems = getShopItems(); 
-  const items = allItems.filter((item: Item) => {
+  const allItems = shopItems(); 
+  const items = allItems.filter(item => {
       // 如果物品没有定义 region，假设它是通用的，或者是贫民窟的
-      // 这里设定：没写 region 的到处都卖，写了的只在对应区域卖
+      // 或者你可以设定：没写 region 的到处都卖，写了的只在对应区域卖
       if (!item.region) return true; 
       return item.region === currentRegion;
   }); 

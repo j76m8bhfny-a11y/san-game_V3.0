@@ -1,0 +1,61 @@
+[
+  {
+    "id": "CHURCH",
+    "name": "救赎教会",
+    "description": "富人的麻醉剂。只需一点奉献，主就宽恕你的罪。",
+    "color": "text-yellow-400",
+    "requirements": { "gold": 100 },
+    "action": {
+      "label": "缴纳什一税",
+      "costType": "GOLD_PERCENT",
+      "costValue": 0.1,
+      "effectType": "RESTORE_SAN",
+      "effectValue": 15,
+      "minCost": 20,
+      "flavor": "缴纳了什一税，内心获得了极大的平静。"
+    }
+  },
+  {
+    "id": "BROTHERHOOD",
+    "name": "互助兄弟会",
+    "description": "穷人的避难所。严守戒律，团结互助。",
+    "color": "text-green-500",
+    "requirements": { "noContraband": true },
+    "action": {
+      "label": "参加聚礼",
+      "costType": "NONE",
+      "effectType": "RANDOM_BENEFIT",
+      "flavor": "大家分享了羊肉汤和祷告。"
+    }
+  },
+  {
+    "id": "CULT",
+    "name": "血肉神教",
+    "description": "疯子的狂欢。理智是枷锁，痛苦是货币。",
+    "color": "text-purple-500",
+    "requirements": { "maxSan": 40 },
+    "action": {
+      "label": "进行血祭",
+      "costType": "HP_FIXED",
+      "costValue": 15,
+      "effectType": "GAIN_GOLD",
+      "effectValue": 150,
+      "flavor": "伤口流出的血变成了冰冷的金币。"
+    }
+  },
+  {
+    "id": "REVOLUTION",
+    "name": "星星之火",
+    "description": "觉醒者的道路。只有这里才有真正的未来。",
+    "color": "text-red-600",
+    "requirements": { "minHp": 80, "minSan": 80 },
+    "action": {
+      "label": "理论学习",
+      "costType": "SAN_FIXED",
+      "costValue": 10,
+      "effectType": "GAIN_RED_POINT",
+      "effectValue": 5,
+      "flavor": "你阅读了地下刊物，眼里的火光更亮了。"
+    }
+  }
+]

@@ -300,7 +300,6 @@ export interface GameState {
   notifications: GameNotification[];
   viewingArchive: string | null;
   _hasHydrated: boolean;
-  faith: FaithState;
 }
 
 // 1. 信仰 ID 枚举
@@ -312,34 +311,42 @@ export enum FaithID {
   REVOLUTION = 'REVOLUTION'
 }
 
-// 2. 信仰静态数据接口 (对应 JSON)
-export interface FaithData {
-  id: FaithID;
-  name: string;
-  description: string;
-  color: string;
-  joinCost: {
-    gold?: number;
-    cleanInventory?: boolean;
-    maxSan?: number;
-    minHp?: number;
-    minSan?: number;
-  };
-  rite: {
-    name: string;
-    description: string;
-    baseSanReward?: number;
-    baseHpReward?: number;
-    hpCost?: number;
-    sanCost?: number;
-    goldReward?: number;
-    redPointReward?: number;
-  };
-}
+// 2. 信仰配置数据结构 (对应 JSON)
+export const FaithConfigSchema = z.object({
+  id: z.nativeEnum(FaithID),
+  name: z.string(),
+  description: z.string(),
+  color: z.string(),
+  requirements: z.object({
+    gold: z.number().optional(),
+    maxSan: z.number().optional(),
+    minHp: z.number().optional(),
+    minSan: z.number().optional(),
+    noContraband: z.boolean().optional(),
+  }),
+  action: z.object({
+    label: z.string(),
+    costType: z.enum(['GOLD_PERCENT', 'HP_FIXED', 'SAN_FIXED', 'NONE']),
+    costValue: z.number().optional(),
+    minCost: z.number().optional(),
+    effectType: z.enum(['RESTORE_SAN', 'GAIN_GOLD', 'GAIN_RED_POINT', 'RANDOM_BENEFIT']),
+    effectValue: z.number().optional(),
+    flavor: z.string(),
+  })
+});
 
-// 3. 玩家信仰状态
-export interface FaithState {
-  id: FaithID;
-  level: number;
-  hasPerformedRite: boolean; // 今日是否已仪式
+// 3. 玩家存储的信仰状态
+export const FaithStateSchema = z.object({
+  id: z.nativeEnum(FaithID),
+  level: z.number().default(1),
+  hasPerformedRite: z.boolean().default(false), // 今日是否已互动
+});
+
+export type FaithConfig = z.infer<typeof FaithConfigSchema>;
+export type FaithState = z.infer<typeof FaithStateSchema>;
+
+// 4. 更新 GameState
+export interface GameState {
+  // ... (现有字段)
+  faith: FaithState; // ✨ 新增
 }

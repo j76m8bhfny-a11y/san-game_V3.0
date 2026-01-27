@@ -1,3 +1,7 @@
+{
+type: uploaded file
+fileName: src/components/game/DailySettlement.tsx
+fullContent:
 import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -85,3 +89,4 @@ export const DailySettlement: React.FC<DailySettlementProps> = ({ isOpen, onClos
     </AnimatePresence>
   );
 };
+}

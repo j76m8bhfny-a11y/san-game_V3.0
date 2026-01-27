@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { motion, useSpring, useTransform } from 'framer-motion';
 import { useGameStore } from '@/store/useGameStore';
 // ✨ 1. 引入 UI Store
+import { useUIStore } from '@/store/slices/createUISlice';
 
 import CLASSES_DATA from '@/assets/data/classes.json';
 import FaithSidebar from './FaithSidebar';
@@ -21,7 +22,7 @@ export const LayeredScene: React.FC<LayeredSceneProps> = ({
 }) => {
   const currentClass = useGameStore(s => s.currentClass);
   // ✨ 2. 获取打开侧边栏的方法
-  const setFaithOpen = useGameStore(s => s.setFaithOpen);
+  const setFaithOpen = useUIStore(s => s.setFaithOpen);
   
   const [bgLoaded, setBgLoaded] = useState(false);
 

@@ -258,7 +258,6 @@ export interface GameState {
   gold: number;
   currentClass: PlayerClass;
   bank: BankState; // ✨ 新增
-  prison: PrisonState; // ✨ 新增
   
   // 🗺️ 新增核心状态
   currentRegion: RegionID;
@@ -308,6 +307,15 @@ export interface GameState {
   viewingArchive: string | null;
   _hasHydrated: boolean;
   faith: FaithState;
+}
+
+// 1. 信仰 ID 枚举
+export enum FaithID {
+  NONE = 'NONE',
+  CHURCH = 'CHURCH',
+  BROTHERHOOD = 'BROTHERHOOD',
+  CULT = 'CULT',
+  REVOLUTION = 'REVOLUTION'
 }
 
 // 2. 信仰静态数据接口 (对应 JSON)
@@ -378,57 +386,4 @@ export interface PrisonState {
   sentenceDays: number;     // 总刑期
   daysServed: number;       // 已服刑天数
   bailAmount: number;       // 当前保释金
-}
-
-export interface LoanProduct {
-  id: string;
-  name: string;
-  provider: string;
-  description: string;
-  minScore: number;
-  dailyRate: number;
-  maxAmount: number;
-  termDays: number;
-  color: string;
-  riskLevel: string;
-}
-
-export interface ActiveLoan {
-  id: string;
-  productId: string;
-  principal: number;
-  interest: number;
-  rate: number;
-  dueDate: number;
-  isOverdue: boolean;
-}
-
-export interface BankState {
-  creditScore: number;
-  creditHistory: number[];
-  activeLoans: ActiveLoan[];
-  lifetimeInterestPaid: number;
-}
-
-// 2. --- 新增: 监狱相关定义 ---
-export interface PrisonState {
-  inJail: boolean;
-  crime: string;
-  sentenceDays: number;
-  daysServed: number;
-  bailAmount: number;
-}
-
-// 3. --- 新增: 信仰相关定义 ---
-export enum FaithID {
-  NONE = 'NONE',
-  CHURCH = 'CHURCH',
-  BROTHERHOOD = 'BROTHERHOOD',
-  CULT = 'CULT',
-  REVOLUTION = 'REVOLUTION'
-}
-export interface FaithState {
-  id: FaithID;
-  level: number;
-  hasPerformedRite: boolean;
 }

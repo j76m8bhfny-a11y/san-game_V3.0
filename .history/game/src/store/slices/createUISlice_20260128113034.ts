@@ -78,7 +78,6 @@ export const createUISlice: StateCreator<any, [], [], UISlice> = (set, get) => (
   setCryptoOpen: (isOpen) => set({ isCryptoOpen: isOpen }),
   setRoast: (content) => set({ currentRoast: content }),
   setViewingArchive: (archiveId) => set({ viewingArchive: archiveId }),
-  setBankOpen: (isOpen) => set({ isBankOpen: isOpen }),
 
   dismissRoastAndEndEvent: () => {
     const { viewingArchive } = get();

@@ -1,0 +1,38 @@
+[
+  {
+    "id": "PAYDAY",
+    "name": "快速发薪日贷",
+    "provider": "Shark Financia Inc.",
+    "description": "不需要信用检查。立即放款。只要你还活着就行。",
+    "minScore": 0,
+    "dailyRate": 0.25,
+    "maxAmount": 1000,
+    "termDays": 3,
+    "color": "text-red-500",
+    "riskLevel": "PREDATORY"
+  },
+  {
+    "id": "PERSONAL",
+    "name": "优选个人贷",
+    "provider": "City Standard Bank",
+    "description": "为负责任的公民提供的资金。建立您的未来。",
+    "minScore": 600,
+    "dailyRate": 0.03,
+    "maxAmount": 10000,
+    "termDays": 14,
+    "color": "text-blue-400",
+    "riskLevel": "STANDARD"
+  },
+  {
+    "id": "MARGIN",
+    "name": "黑卡杠杆信托",
+    "provider": "Apex Capital",
+    "description": "仅限受邀会员。以低廉的资金成本撬动世界。",
+    "minScore": 750,
+    "dailyRate": 0.005,
+    "maxAmount": 100000,
+    "termDays": 30,
+    "color": "text-yellow-400",
+    "riskLevel": "PRIME"
+  }
+]

@@ -30,7 +30,7 @@ export const useGameStore = create<GameStore>()(
     }),
     {
       name: 'american-insight-storage',
-      version: 14.3, // 👈 建议再升一下，因为加了 faith 结构
+      version: 14.2, // 👈 建议再升一下，因为加了 faith 结构
       storage: createJSONStorage(() => localStorage),
       
       migrate: (persistedState: any, version) => {

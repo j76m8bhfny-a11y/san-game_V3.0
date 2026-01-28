@@ -1,6 +1,5 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { createPrisonSlice, PrisonSlice } from './slices/createPrisonSlice';
 // 引入开发者工具 (可选，但在之前你的代码里可能被去掉了，如果需要可以加回 devtools)
 
 import { createPlayerSlice, PlayerSlice } from './slices/createPlayerSlice';
@@ -13,7 +12,7 @@ import { createBankSlice, BankSlice } from './slices/createBankSlice'; // ✨ Im
 import { createFaithSlice, FaithSlice } from './slices/createFaithSlice';
 
 // ✅ 2. 在类型定义中合并 FaithSlice
-export type GameStore = PlayerSlice & UISlice & SystemSlice & GameSlice & CryptoSlice & FaithSlice & BankSlice & PrisonSlice; // ✨ Add Type
+export type GameStore = PlayerSlice & UISlice & SystemSlice & GameSlice & CryptoSlice & FaithSlice & BankSlice; // ✨ Add Type
 
 export const useGameStore = create<GameStore>()(
   persist(
@@ -26,11 +25,10 @@ export const useGameStore = create<GameStore>()(
       // ✨ 3. 挂载 slice
       ...createFaithSlice(...a),
       ...createBankSlice(...a), // ✨ Add Slice
-      ...createPrisonSlice(...a),
     }),
     {
       name: 'american-insight-storage',
-      version: 14.3, // 👈 建议再升一下，因为加了 faith 结构
+      version: 14.2, // 👈 建议再升一下，因为加了 faith 结构
       storage: createJSONStorage(() => localStorage),
       
       migrate: (persistedState: any, version) => {
@@ -69,7 +67,6 @@ export const useGameStore = create<GameStore>()(
         // ✨ 4. 关键：把 faith 状态加入持久化白名单！
         faith: state.faith,
         bank: state.bank, // ✨ Add to persistence whitelist!
-        prison: state.prison, // ✨ 持久化
       }),
     }
   )

@@ -310,6 +310,15 @@ export interface GameState {
   faith: FaithState;
 }
 
+// 1. 信仰 ID 枚举
+export enum FaithID {
+  NONE = 'NONE',
+  CHURCH = 'CHURCH',
+  BROTHERHOOD = 'BROTHERHOOD',
+  CULT = 'CULT',
+  REVOLUTION = 'REVOLUTION'
+}
+
 // 2. 信仰静态数据接口 (对应 JSON)
 export interface FaithData {
   id: FaithID;

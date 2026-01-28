@@ -155,7 +155,6 @@ export const LayeredScene: React.FC<LayeredSceneProps> = ({
 
       {/* ✨ 5. 渲染侧边栏组件 */}
       <FaithSidebar />
-      <BankSidebar />
       
     </div>
   );

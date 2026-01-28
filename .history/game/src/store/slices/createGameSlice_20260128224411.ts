@@ -1,7 +1,7 @@
 import { StateCreator } from 'zustand';
 import { GameEvent, Bill, RegionID } from '@/types/schema';
 import { checkMovePermission, checkClassUpdate, clamp } from '@/logic/core';
-import { runDailySystems } from '../../systems/SystemRegistry';
+import { runDailySystems } from '@/systems/SystemRegistry';
 import { resolveOption } from '@/logic/eventResolver'; // 引入刚才写的逻辑
 import { resolveEnding } from '@/logic/endings';
 

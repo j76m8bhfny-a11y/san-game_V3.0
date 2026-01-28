@@ -1,7 +1,7 @@
 import { StateCreator } from 'zustand';
 import { GameEvent, Bill, RegionID } from '@/types/schema';
 import { checkMovePermission, checkClassUpdate, clamp } from '@/logic/core';
-import { runDailySystems } from '../../systems/SystemRegistry';
+import { runDailySystems } from '@/systems/SystemRegistry';
 import { resolveOption } from '@/logic/eventResolver'; // 引入刚才写的逻辑
 import { resolveEnding } from '@/logic/endings';
 
@@ -146,7 +146,7 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
     });
   },
 
-  buyItem: (_itemId) => {
+  buyItem: (itemId) => {
      // buyItem 建议使用 ActionExecutor 重构，
      // 类似于: executeActions(item.onBuyActions)
      // 这样这里也能变成 3 行代码。

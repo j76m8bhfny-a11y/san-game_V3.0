@@ -1,0 +1,107 @@
+import { StateCreator } from 'zustand';
+import { GameState, Job, JobType, PlayerClass, RegionID } from '@/types/schema';
+import jobsData from '@/assets/data/jobs.json';
+
+export interface JobSlice {
+  // Actions
+  acceptJob: (jobId: string) => { success: boolean; message: string };
+  quitJob: (jobId: string) => { success: boolean; message: string };
+  
+  // Helpers
+  getJobSlotsUsed: () => number;
+}
+
+// 阶级权重，用于判断向下兼容
+const CLASS_WEIGHT = {
+  [PlayerClass.Homeless]: 0,
+  [PlayerClass.Worker]: 1,
+  [PlayerClass.Middle]: 2,
+  [PlayerClass.Capitalist]: 3
+};
+
+export const createJobSlice: StateCreator<any, [], [], JobSlice> = (set, get) => ({
+
+  getJobSlotsUsed: () => {
+    const state = get() as GameState;
+    const activeJobIds = state.vitality.activeJobs || [];
+    let usedSlots = 0;
+    
+    activeJobIds.forEach(id => {
+      const job = jobsData.find(j => j.id === id) as unknown as Job;
+      if (job) {
+        usedSlots += (job.type === JobType.FULL_TIME ? 2 : 1);
+      }
+    });
+    return usedSlots;
+  },
+
+  acceptJob: (jobId) => {
+    const state = get() as GameState;
+    const { vitality, activeHousing, inventory } = state;
+    const job = jobsData.find(j => j.id === jobId) as unknown as Job;
+
+    if (!job) return { success: false, message: "工作不存在" };
+
+    // 1. 检查是否已经拥有该工作
+    if (vitality.activeJobs.includes(jobId)) {
+      return { success: false, message: "你已经在这份工作中了。" };
+    }
+
+    // 2. 检查槽位限制 (全职=2, 零工=1, 上限3)
+    const currentSlots = get().getJobSlotsUsed();
+    const requiredSlots = job.type === JobType.FULL_TIME ? 2 : 1;
+    
+    if (currentSlots + requiredSlots > 3) {
+      return { success: false, message: "精力不足！上限：1全职+1零工 或 3零工。" };
+    }
+
+    // 3. 检查阶级 (向下兼容)
+    const playerWeight = CLASS_WEIGHT[vitality.identity.currentClass];
+    const jobWeight = CLASS_WEIGHT[job.requiredClass];
+    
+    if (playerWeight < jobWeight) {
+      return { success: false, message: "你的阶级不够，HR直接把简历扔进了垃圾桶。" };
+    }
+
+    // 4. 检查房产 (必须在本地有房，流浪汉除外)
+    if (job.requiresHousing) {
+      if (!activeHousing) {
+        return { success: false, message: "这份工作需要固定住址。" };
+      }
+      if (activeHousing.region !== job.region) {
+        return { success: false, message: "你住得太远了，通勤不现实。" };
+      }
+    }
+
+    // 5. 检查道具 (如车)
+    if (job.requiredItem) {
+      // 假设 inventory 存的是 ID，或者我们需要去检查 tags，这里简单检查 ID 或 Tag
+      // 假设 requiredItem 是一个 Tag (如 "VEHICLE") 或者具体的 ID
+      // 这里的逻辑需要根据 Item 结构微调，假设是简单的 ID 包含
+      const hasItem = inventory.some(itemId => itemId === job.requiredItem || itemId.includes(job.requiredItem!));
+      if (!hasItem) {
+        return { success: false, message: `缺少必要工具: ${job.requiredItem}` };
+      }
+    }
+
+    // 成功入职
+    set((prev: GameState) => ({
+      vitality: {
+        ...prev.vitality,
+        activeJobs: [...prev.vitality.activeJobs, jobId]
+      }
+    }));
+
+    return { success: true, message: `入职成功: ${job.title}` };
+  },
+
+  quitJob: (jobId) => {
+    set((state: GameState) => ({
+      vitality: {
+        ...state.vitality,
+        activeJobs: state.vitality.activeJobs.filter(id => id !== jobId)
+      }
+    }));
+    return { success: true, message: "你炒了老板鱿鱼。" };
+  }
+});

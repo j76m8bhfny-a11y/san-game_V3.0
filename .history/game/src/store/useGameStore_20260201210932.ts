@@ -14,7 +14,7 @@ import { createUISlice, UISlice } from './slices/createUISlice';
 import { createSystemSlice, SystemSlice } from './slices/createSystemSlice';
 import { createGameSlice, GameSlice } from './slices/createGameSlice';
 import { createHousingSlice, HousingSlice } from './slices/createHousingSlice'; // ✅ 新增
-import { createJobSlice, JobSlice } from './slices/createJobSlice'; 
+import { createJobSlice, JobSlice } from './slices/createJobSlice';
 
 // 3. 导入被“瘦身”后的玩家资产切片
 // 注意：原 createPlayerSlice 现在主要负责 Inventory, Job, Housing, Region 等非数值状态

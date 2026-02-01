@@ -36,18 +36,7 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
       hp: 100, maxHp: 100, 
       san: 50, maxSan: 100, 
       gold: 0,
-      creditScore: 580 // 初始信用分
-    },
-    // ✅ 修复：补全 identity
-    identity: {
-      currentClass: PlayerClass.Homeless,
-      points: { red: 0, wolf: 0, old: 0 }
-    },
-    // ✅ 修复：补全 time
-    time: {
-      currentTurn: 1,
-      totalTurns: 52,
-      dayOfWeek: 1
+      creditScore: 580 // ✅ 初始信用分
     },
     ledger: { history: [] },
     flags: { isHomeless: false, debtTurns: 0, hiddenTags: [] },

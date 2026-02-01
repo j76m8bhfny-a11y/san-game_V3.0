@@ -386,9 +386,10 @@ export interface ActiveLoan {
 }
 
 export interface BankState {
+  creditScore: number;
+  creditHistory: number[];
   activeLoans: ActiveLoan[];
   lifetimeInterestPaid: number;
-  // creditScore 已移至 Vitality
 }
 
 // 监狱系统接口

@@ -367,9 +367,9 @@ export interface LoanProduct {
   provider: string;
   description: string;
   minScore: number;
-  weeklyRate: number;
+  weeklyRate: number; // ✅ daily -> weekly
   maxAmount: number;
-  termTurns: number;
+  termTurns: number; // ✅ days -> turns
   color: string;
   riskLevel: string;
 }
@@ -377,18 +377,19 @@ export interface LoanProduct {
 export interface ActiveLoan {
   id: string;
   productId: string;
-  principal: number; // 剩余本金
-  interest: number;  // 累积未还利息
-  rate: number;      // 锁定利率
-  dueTurn: number;   // 到期回合
-  overdueTurns: number; // ✅ 新增: 已逾期多少周 (用于判断催收阶段)
-  isMortgage: boolean;
+  principal: number;
+  interest: number;
+  rate: number;
+  dueTurn: number; // ✅ Date -> Turn
+  isOverdue: boolean;
+  isMortgage?: boolean; // ✅ 新增：标记是否为房贷
 }
 
 export interface BankState {
+  creditScore: number;
+  creditHistory: number[];
   activeLoans: ActiveLoan[];
   lifetimeInterestPaid: number;
-  // creditScore 已移至 Vitality
 }
 
 // 监狱系统接口

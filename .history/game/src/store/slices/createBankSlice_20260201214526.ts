@@ -26,9 +26,7 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
     const { vitality } = state as GameState;
     const currentScore = vitality.metrics.creditScore;
 
-    // ✅ 修复：显式使用 LoanProduct 类型进行断言，解决未使用警告
-    const rawProduct = (loansData as unknown as LoanProduct[]).find(p => p.id === productId);
-    
+    const rawProduct = loansData.find(p => p.id === productId);
     if (!rawProduct) return { success: false, message: "信贷产品不存在" };
     
     // 门槛检查

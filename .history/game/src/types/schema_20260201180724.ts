@@ -528,11 +528,3 @@ export interface GameState {
     housing?: Housing[]; // ✅ 缓存房产数据
   };
 }
-export interface WeeklyReport {
-  turn: number;
-  totalIncome: number;
-  totalExpense: number;
-  netChange: number;
-  records: LedgerRecord[];
-  summaryByCategory: Record<string, number>;
-}

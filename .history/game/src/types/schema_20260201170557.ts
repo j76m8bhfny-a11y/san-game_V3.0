@@ -24,88 +24,58 @@ export enum ScalingMode {
   INCOME_RATIO = 'INCOME',
 }
 
+// 动作代码 (用于 JSON 驱动的通用逻辑)
 export enum ActionCode {
-  MODIFY_STAT = 'MODIFY_STAT',     
-  ADD_ITEM = 'ADD_ITEM',           
-  REMOVE_ITEM = 'REMOVE_ITEM',     
-  UNLOCK_ARCHIVE = 'UNLOCK_ARCHIVE', 
-  CHANCE = 'CHANCE',               
-  TRIGGER_EVENT = 'TRIGGER_EVENT', 
-  GAME_OVER = 'GAME_OVER'          
+  MODIFY_STAT = 'MODIFY_STAT',     // 修改数值 (hp, san, gold)
+  MODIFY_VITALITY = 'MODIFY_VITALITY', // ✨ 新增: 专门用于修改维生状态
+  ADD_ITEM = 'ADD_ITEM',           // 获得物品
+  REMOVE_ITEM = 'REMOVE_ITEM',     // 移除物品
+  UNLOCK_ARCHIVE = 'UNLOCK_ARCHIVE', // 解锁档案
+  CHANCE = 'CHANCE',               // 概率分支
+  TRIGGER_EVENT = 'TRIGGER_EVENT', // 强制触发事件
+  GAME_OVER = 'GAME_OVER'          // 结局
 }
 
-// ✅ 新增：账本分类与房产类型
-export type LedgerCategory = 
-  | 'INCOME'    // 工资、卖东西
-  | 'HOUSING'   // 房租、房贷、物业费
-  | 'FOOD'      // 餐饮、生存消耗
-  | 'MEDICAL'   // 医院、药品
-  | 'BILL'      // 突发账单
-  | 'BANK'      // 银行利息、贷款费用
-  | 'TAX'       // 税务
-  | 'MISC';     // 其他
-
-export type HousingType = 'RENT' | 'OWN';
+// 信仰 ID
+export enum FaithID {
+  NONE = 'NONE',
+  CHURCH = 'CHURCH',
+  BROTHERHOOD = 'BROTHERHOOD',
+  CULT = 'CULT',
+  REVOLUTION = 'REVOLUTION'
+}
 
 // ==========================================
-// 2. 核心 Zod Schemas (数据校验)
+// 2. 核心 Zod Schemas (JSON 数据校验)
 // ==========================================
 
-// --- 通用动作 Schema ---
+// --- Action Schema (通用指令) ---
 export const GameActionSchema: z.ZodType<any> = z.lazy(() => z.object({
   code: z.nativeEnum(ActionCode),
   params: z.object({
-    target: z.enum(['hp', 'san', 'gold', 'maxHp']).optional(),
+    // 通用参数
+    target: z.string().optional(), // 如 'metrics.hp', 'identity.points.red'
     value: z.number().optional(),
     min: z.number().optional(),
     max: z.number().optional(),
+    
+    // 物品/档案相关
     itemId: z.string().optional(),
     archiveId: z.string().optional(),
+    
+    // 概率相关
     rate: z.number().min(0).max(1).optional(),
     successActions: z.array(GameActionSchema).optional(),
     failActions: z.array(GameActionSchema).optional(),
+    
+    // 结局相关
     endingId: z.string().optional()
-  }).passthrough()
+  }).passthrough() 
 }));
 
 export type GameAction = z.infer<typeof GameActionSchema>;
 
-// --- ✅ 新增：房产系统 Schema (适配新设计) ---
-
-export const HousingCostItemSchema = z.object({
-  key: z.string(),          // "RENT", "TAX", "HOA"
-  label: z.string(),        // "租金", "房产税"
-  baseAmount: z.number(),   // 基础周费用
-  isVariable: z.boolean().optional()
-});
-
-export const HousingSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  region: z.nativeEnum(RegionID),
-  requiredClass: z.nativeEnum(PlayerClass),
-  
-  // 租赁配置
-  rentConfig: z.object({
-    deposit: z.number(),
-    weeklyCosts: z.array(HousingCostItemSchema)
-  }).optional(),
-
-  // 置业配置
-  buyConfig: z.object({
-    price: z.number(),
-    downPaymentRate: z.number(),
-    mortgageTermTurns: z.number(),
-    interestRate: z.number(),
-    weeklyCosts: z.array(HousingCostItemSchema)
-  }).optional(),
-
-  regenHp: z.number(),
-  defenseLevel: z.number(),
-  description: z.string(),
-});
-
-// --- 其他子系统 Schema ---
+// --- 子系统 Schemas ---
 
 export const CryptoPositionSchema = z.object({
   id: z.string(),
@@ -113,7 +83,7 @@ export const CryptoPositionSchema = z.object({
   entryPrice: z.number(),
   leverage: z.number(),
   principal: z.number(),
-  turn: z.number(), // ✅ Day -> Turn
+  day: z.number(),
 });
 
 export const NewsItemSchema = z.object({
@@ -126,7 +96,7 @@ export const JobSchema = z.object({
   id: z.string(),
   title: z.string(),
   region: z.nativeEnum(RegionID),
-  baseSalary: z.number(), // ✅ salary -> baseSalary (明确是周薪)
+  salary: z.number(),
   sanCost: z.number(),
   requiresAddress: z.boolean().default(false),
   requiredVehicle: z.string().optional(),
@@ -134,12 +104,40 @@ export const JobSchema = z.object({
   description: z.string(),
 });
 
+export const HousingSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  region: z.nativeEnum(RegionID),
+  type: z.enum(['RENT', 'OWN']),
+  price: z.number(),
+  dailyCost: z.number(),
+  defenseLevel: z.number(),
+  description: z.string(),
+});
+
 export const InsuranceSchema = z.object({
   id: z.string(),
   name: z.string(),
-  weeklyCost: z.number(), // ✅ dailyCost -> weeklyCost
+  dailyCost: z.number(),
   coverage: z.enum(['PARTIAL', 'FULL']),
   description: z.string(),
+});
+
+export const GlobalSettingsSchema = z.object({
+  gameRules: z.object({
+    maxDays: z.number(),
+    victoryHpThreshold: z.number(),
+    pressureDivisor: z.number(),
+  }),
+  salaryConfig: z.array(z.object({
+    maxSan: z.number(),
+    efficiency: z.number(),
+    desc: z.string().optional()
+  })),
+  billConfig: z.object({
+    baseProb: z.number(),
+    debtProb: z.number()
+  })
 });
 
 // --- 物品与事件 Schemas ---
@@ -218,7 +216,7 @@ export const EventOptionSchema = z.object({
       count: z.number(), 
     })).optional(),
     jail: z.object({
-      turns: z.number(), // ✅ days -> turns
+      days: z.number(),
       bail: z.number(),
       reason: z.string(),
     }).optional(),
@@ -261,7 +259,7 @@ export const EndingSchema = z.object({
   priority: z.number(),
   type: z.enum(['DEATH', 'SURVIVAL', 'ALIENATION', 'STANCE', 'UR']),
   conditions: z.object({
-    minTurn: z.number().optional(), // ✅ Day -> Turn
+    minDay: z.number().optional(),
     maxHp: z.number().optional(),
     minSan: z.number().optional(),
     maxSan: z.number().optional(),
@@ -280,9 +278,10 @@ export const EndingSchema = z.object({
 });
 
 // ==========================================
-// 3. TypeScript 类型推导与状态接口
+// 3. 核心 State 接口定义 (Type Definitions)
 // ==========================================
 
+export type GlobalSettings = z.infer<typeof GlobalSettingsSchema>;
 export type Item = z.infer<typeof ItemSchema>;
 export type Archive = z.infer<typeof ArchiveSchema>;
 export type Bill = z.infer<typeof BillSchema>;
@@ -291,7 +290,6 @@ export type EventOption = z.infer<typeof EventOptionSchema>;
 export type Ending = z.infer<typeof EndingSchema>;
 export type Job = z.infer<typeof JobSchema>;
 export type Housing = z.infer<typeof HousingSchema>;
-export type HousingCostItem = z.infer<typeof HousingCostItemSchema>;
 export type Insurance = z.infer<typeof InsuranceSchema>;
 export type CryptoPosition = z.infer<typeof CryptoPositionSchema>;
 export type NewsItem = z.infer<typeof NewsItemSchema>;
@@ -303,15 +301,91 @@ export interface GameNotification {
   value?: number;
 }
 
-// 信仰系统接口
-export enum FaithID {
-  NONE = 'NONE',
-  CHURCH = 'CHURCH',
-  BROTHERHOOD = 'BROTHERHOOD',
-  CULT = 'CULT',
-  REVOLUTION = 'REVOLUTION'
+// --- ✨ 维生系统 (Vitality System) ---
+
+// 1. 基础维生指标
+export interface VitalityMetrics {
+  hp: number;
+  maxHp: number;
+  san: number;
+  maxSan: number;
+  gold: number;
+  [key: string]: number; // 支持未来扩展指标 (如 hunger, radiation)
 }
 
+// 2. 身份与意识形态
+export interface VitalityIdentity {
+  currentClass: PlayerClass;
+  points: {
+    red: number;  // 革命/激进
+    wolf: number; // 资本/狼性
+    old: number;  // 保守/旧世界
+  };
+}
+
+// 3. 状态标记
+export interface VitalityFlags {
+  isHomeless: boolean;
+  debtDays: number;
+  hiddenTags: string[]; // 统一存放如 "HAS_KEY", "MURDERER" 等标签
+  [key: string]: any;   // 支持任意自定义标记
+}
+
+// 4. 聚合对象：维生状态集
+export interface VitalityState {
+  metrics: VitalityMetrics;
+  identity: VitalityIdentity;
+  flags: VitalityFlags;
+}
+
+// --- 辅助类型: 深度 Partial ---
+export type DeepPartial<T> = {
+  [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
+};
+
+// --- 子系统状态接口 ---
+
+// 银行
+export interface LoanProduct {
+  id: string;
+  name: string;
+  provider: string;
+  description: string;
+  minScore: number;
+  dailyRate: number;
+  maxAmount: number;
+  termDays: number;
+  color: string;
+  riskLevel: string;
+}
+
+export interface ActiveLoan {
+  id: string;
+  productId: string;
+  principal: number;
+  interest: number;
+  rate: number;
+  dueDate: number;
+  isOverdue: boolean;
+}
+
+export interface BankState {
+  creditScore: number;
+  creditHistory: number[];
+  activeLoans: ActiveLoan[];
+  lifetimeInterestPaid: number;
+}
+
+// 监狱
+export interface PrisonState {
+  inJail: boolean;
+  crime: string;
+  sentenceDays: number;
+  daysServed: number;
+  bailAmount: number;
+}
+
+// 信仰
 export interface FaithData {
   id: FaithID;
   name: string;
@@ -342,127 +416,28 @@ export interface FaithState {
   hasPerformedRite: boolean;
 }
 
-// 银行系统接口
-export interface LoanProduct {
-  id: string;
-  name: string;
-  provider: string;
-  description: string;
-  minScore: number;
-  weeklyRate: number; // ✅ daily -> weekly
-  maxAmount: number;
-  termTurns: number; // ✅ days -> turns
-  color: string;
-  riskLevel: string;
-}
-
-export interface ActiveLoan {
-  id: string;
-  productId: string;
-  principal: number;
-  interest: number;
-  rate: number;
-  dueTurn: number; // ✅ Date -> Turn
-  isOverdue: boolean;
-  isMortgage?: boolean; // ✅ 新增：标记是否为房贷
-}
-
-export interface BankState {
-  creditScore: number;
-  creditHistory: number[];
-  activeLoans: ActiveLoan[];
-  lifetimeInterestPaid: number;
-}
-
-// 监狱系统接口
-export interface PrisonState {
-  inJail: boolean;
-  crime: string;
-  sentenceTurns: number; // ✅ Days -> Turns
-  turnsServed: number;   // ✅ Days -> Turns
-  bailAmount: number;
-}
-
 // ==========================================
-// 4. ✅ 核心维生系统定义 (Vitality Core)
+// 4. GameState (主状态)
 // ==========================================
-
-export interface LedgerRecord {
-  id: string;
-  turn: number;
-  category: LedgerCategory;
-  amount: number;
-  description: string;
-  timestamp: number;
-}
-
-export interface VitalityMetrics {
-  hp: number;
-  maxHp: number;
-  san: number;
-  maxSan: number;
-  gold: number;
-  [key: string]: number; // 支持扩展
-}
-
-export interface VitalityIdentity {
-  currentClass: PlayerClass;
-  points: {
-    red: number;
-    wolf: number;
-    old: number;
-  };
-}
-
-export interface VitalityState {
-  metrics: VitalityMetrics;
-  
-  identity: VitalityIdentity;
-  
-  // ✅ 时间系统 (周回合制)
-  time: {
-    currentTurn: number; // 第几周
-    totalTurns: number;  // 游戏总时长
-    dayOfWeek: number;   // 1-7 (虽然是周回合，但可能用于UI显示或细节判定)
-  };
-
-  // ✅ 账本系统
-  ledger: {
-    history: LedgerRecord[];
-  };
-
-  flags: {
-    isHomeless: boolean;
-    debtTurns: number; // 负债持续周数
-    hiddenTags: string[];
-    [key: string]: any;
-  };
-}
-
-// ==========================================
-// 5. ✅ 全局 GameState (根状态)
-// ==========================================
-
-// 玩家当前持有的房产状态 (运行时)
-export interface ActiveHousingState {
-  definitionId: string;
-  type: HousingType;
-  name: string;
-  region: RegionID;
-  
-  loanId?: string;      // 关联房贷
-  defenseLevel: number;
-  regenHp: number;
-}
 
 export interface GameState {
-  // ✅ 维生核心 (取代原有的 hp, gold, day)
+  // --- 全局环境 ---
+  day: number;
+  currentRegion: RegionID;
+  
+  // --- ✅ 维生核心 (替代了原有的 hp, gold, class 等扁平属性) ---
   vitality: VitalityState;
 
-  // 物理位置
-  currentRegion: RegionID;
+  // --- 资产与库存 ---
+  activeJob: Job | null;
+  activeHousing: Housing | null;
+  activeInsurance: Insurance | null;
+  inventory: string[];        // 存放 Item ID
+  unlockedArchives: string[]; // 存放 Archive ID
+  achievedEndings: string[];  // 存放 Ending ID
+  history: string[];          // 历史记录文本
 
-  // 核心子系统状态
+  // --- 核心子系统 ---
   bank: BankState;
   prison: PrisonState;
   faith: FaithState;
@@ -474,17 +449,17 @@ export interface GameState {
     dailyNews: NewsItem | null;
   };
 
-  // 资产与库存
-  activeJob: Job | null; 
-  activeHousing: ActiveHousingState | null; // ✅ 使用新定义的 ActiveHousingState
-  activeInsurance: Insurance | null;
-  
-  inventory: string[];
-  history: string[]; // 文本历史记录
-  unlockedArchives: string[];
-  achievedEndings: string[];
-  
-  // UI 状态
+  // --- 每日临时状态 (Daily Flux) ---
+  currentEvent: GameEvent | null;
+  activeBill: Bill | null;
+  ending: string | null;      // 当前触发的结局 ID (非空则游戏结束)
+  dailySummary: {
+    revenue: number;
+    expenses: number;
+    notes: string[];
+  } | null;
+
+  // --- UI 状态 ---
   isShopOpen: boolean;
   isInventoryOpen: boolean;
   isArchiveOpen: boolean;
@@ -492,31 +467,11 @@ export interface GameState {
   currentRoast: string | null;
   notifications: GameNotification[];
   viewingArchive: string | null;
-  currentEvent: GameEvent | null;
-  activeBill: Bill | null;
-  ending: string | null;
-  
   _hasHydrated: boolean;
-
-  // --- UI & Helper Methods ---
-  setRegion: (r: RegionID) => void;
-  addNotification: (msg: string, type: any) => void;
   
-  // 兼容性接口 (未来建议移除，改用 Slice)
-  updatePlayerStats: (updates: any) => void; 
-  setRoast: (t: string | null) => void;
-  setViewingArchive: (id: string | null) => void;
-  triggerEnding: (id: string) => void;
-  setShopOpen: (v: boolean) => void;
-  setInventoryOpen: (v: boolean) => void;
-  setArchiveOpen: (v: boolean) => void;
-  setMenuOpen: (v: boolean) => void;
-  
-  resetPlayerState: () => void;
-  
-  // 数据缓存 (不持久化)
+  // --- 数据缓存 (Runtime Cache, 非持久化) ---
   gameDataCache?: {
-    global: any;
+    global: GlobalSettings;
     items: Item[];
     itemMap: Map<string, Item>;
     events: GameEvent[];
@@ -525,14 +480,25 @@ export interface GameState {
     classMap: any;
     endings: Ending[];
     news?: NewsItem[];
-    housing?: Housing[]; // ✅ 缓存房产数据
+    insurance?: Insurance[];
   };
-}
-export interface WeeklyReport {
-  turn: number;
-  totalIncome: number;
-  totalExpense: number;
-  netChange: number;
-  records: LedgerRecord[];
-  summaryByCategory: Record<string, number>;
+  
+  // --- Actions (由各 Slice 实现并合并) ---
+  // 这里只列出通用的，具体由 Slice 定义
+  setRegion: (r: RegionID) => void;
+  addNotification: (msg: string, type: any) => void;
+  setRoast: (t: string | null) => void;
+  setViewingArchive: (id: string | null) => void;
+  triggerEnding: (id: string) => void;
+  
+  setShopOpen: (v: boolean) => void;
+  setInventoryOpen: (v: boolean) => void;
+  setArchiveOpen: (v: boolean) => void;
+  setMenuOpen: (v: boolean) => void;
+  
+  resetPlayerState: () => void;
+  processNightlyMarket: (news: NewsItem[]) => { logs: string[], notes: string[] };
+
+  // ✨ 新增通用更新器 (由 createVitalitySlice 实现)
+  updateVitality: (updates: DeepPartial<VitalityState>) => void;
 }

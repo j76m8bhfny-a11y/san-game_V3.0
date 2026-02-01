@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useGameStore } from '../../store/useGameStore';
 import { X, Heart, Activity, DollarSign, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';

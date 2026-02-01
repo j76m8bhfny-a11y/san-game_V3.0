@@ -24,88 +24,121 @@ export enum ScalingMode {
   INCOME_RATIO = 'INCOME',
 }
 
+// 动作类型 (用于 JSON 驱动逻辑)
 export enum ActionCode {
-  MODIFY_STAT = 'MODIFY_STAT',     
-  ADD_ITEM = 'ADD_ITEM',           
-  REMOVE_ITEM = 'REMOVE_ITEM',     
-  UNLOCK_ARCHIVE = 'UNLOCK_ARCHIVE', 
-  CHANCE = 'CHANCE',               
-  TRIGGER_EVENT = 'TRIGGER_EVENT', 
-  GAME_OVER = 'GAME_OVER'          
+  MODIFY_STAT = 'MODIFY_STAT',     // 修改数值
+  ADD_ITEM = 'ADD_ITEM',           // 获得物品
+  REMOVE_ITEM = 'REMOVE_ITEM',     // 移除物品
+  UNLOCK_ARCHIVE = 'UNLOCK_ARCHIVE', // 解锁档案
+  CHANCE = 'CHANCE',               // 概率分支
+  TRIGGER_EVENT = 'TRIGGER_EVENT', // 强制触发事件
+  GAME_OVER = 'GAME_OVER',         // 结局
+  ADD_TRANSACTION = 'ADD_TRANSACTION' // ✨ 新增: 记账动作
 }
 
-// ✅ 新增：账本分类与房产类型
+// ✨ 新增: 账本分类
 export type LedgerCategory = 
   | 'INCOME'    // 工资、卖东西
-  | 'HOUSING'   // 房租、房贷、物业费
-  | 'FOOD'      // 餐饮、生存消耗
+  | 'HOUSING'   // 房租
+  | 'FOOD'      // 吃饭、生存消耗
   | 'MEDICAL'   // 医院、药品
   | 'BILL'      // 突发账单
-  | 'BANK'      // 银行利息、贷款费用
+  | 'BANK'      // 银行利息、贷款
   | 'TAX'       // 税务
   | 'MISC';     // 其他
 
-export type HousingType = 'RENT' | 'OWN';
-
 // ==========================================
-// 2. 核心 Zod Schemas (数据校验)
+// 2. 维生系统核心定义 (Vitality Core)
 // ==========================================
 
-// --- 通用动作 Schema ---
+// 账本记录
+export interface LedgerRecord {
+  id: string;        // 唯一ID
+  turn: number;      // 发生在哪一周
+  category: LedgerCategory;
+  amount: number;    // 正数=收入，负数=支出
+  description: string;
+  timestamp: number; // 真实时间戳
+}
+
+// 基础数值
+export interface VitalityMetrics {
+  hp: number;
+  maxHp: number;
+  san: number;
+  maxSan: number;
+  gold: number;
+  [key: string]: number; // 支持扩展 (如 hunger, radiation)
+}
+
+// 身份与政治倾向
+export interface VitalityIdentity {
+  currentClass: PlayerClass;
+  points: {
+    red: number;  // 革命/激进
+    wolf: number; // 资本/狼性
+    old: number;  // 保守/旧世界
+  };
+}
+
+// 隐藏标记与状态
+export interface VitalityFlags {
+  isHomeless: boolean;
+  debtTurns: number;    // 负债持续回合数
+  hiddenTags: string[]; // 如 "HAS_KEY", "MURDERER"
+  [key: string]: any;   // 自定义标记
+}
+
+// ✨ 聚合对象：维生系统状态
+export interface VitalityState {
+  // --- 核心数值 ---
+  metrics: VitalityMetrics;
+  
+  // --- 身份 ---
+  identity: VitalityIdentity;
+  
+  // --- 时间 (回合制) ---
+  time: {
+    currentTurn: number; // 当前周数 (1, 2, 3...)
+    totalTurns: number;  // 游戏总时长限制 (如 52 周)
+  };
+
+  // --- 账本 (本周流水) ---
+  ledger: {
+    history: LedgerRecord[]; // 仅记录本周，结算后清空或存档
+  };
+
+  // --- 标记 ---
+  flags: VitalityFlags;
+}
+
+// ==========================================
+// 3. 核心 Zod Schemas (数据校验)
+// ==========================================
+
+// 通用动作 Schema
 export const GameActionSchema: z.ZodType<any> = z.lazy(() => z.object({
   code: z.nativeEnum(ActionCode),
   params: z.object({
-    target: z.enum(['hp', 'san', 'gold', 'maxHp']).optional(),
+    target: z.enum(['hp', 'san', 'gold', 'maxHp', 'maxSan']).optional(),
     value: z.number().optional(),
-    min: z.number().optional(),
-    max: z.number().optional(),
+    category: z.string().optional(), // for ADD_TRANSACTION
+    description: z.string().optional(), // for ADD_TRANSACTION
+    
     itemId: z.string().optional(),
     archiveId: z.string().optional(),
+    
     rate: z.number().min(0).max(1).optional(),
     successActions: z.array(GameActionSchema).optional(),
     failActions: z.array(GameActionSchema).optional(),
+    
     endingId: z.string().optional()
   }).passthrough()
 }));
 
 export type GameAction = z.infer<typeof GameActionSchema>;
 
-// --- ✅ 新增：房产系统 Schema (适配新设计) ---
-
-export const HousingCostItemSchema = z.object({
-  key: z.string(),          // "RENT", "TAX", "HOA"
-  label: z.string(),        // "租金", "房产税"
-  baseAmount: z.number(),   // 基础周费用
-  isVariable: z.boolean().optional()
-});
-
-export const HousingSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  region: z.nativeEnum(RegionID),
-  requiredClass: z.nativeEnum(PlayerClass),
-  
-  // 租赁配置
-  rentConfig: z.object({
-    deposit: z.number(),
-    weeklyCosts: z.array(HousingCostItemSchema)
-  }).optional(),
-
-  // 置业配置
-  buyConfig: z.object({
-    price: z.number(),
-    downPaymentRate: z.number(),
-    mortgageTermTurns: z.number(),
-    interestRate: z.number(),
-    weeklyCosts: z.array(HousingCostItemSchema)
-  }).optional(),
-
-  regenHp: z.number(),
-  defenseLevel: z.number(),
-  description: z.string(),
-});
-
-// --- 其他子系统 Schema ---
+// --- 子系统 Schemas ---
 
 export const CryptoPositionSchema = z.object({
   id: z.string(),
@@ -113,7 +146,7 @@ export const CryptoPositionSchema = z.object({
   entryPrice: z.number(),
   leverage: z.number(),
   principal: z.number(),
-  turn: z.number(), // ✅ Day -> Turn
+  day: z.number(), // 这里指建仓时的 turn
 });
 
 export const NewsItemSchema = z.object({
@@ -126,7 +159,7 @@ export const JobSchema = z.object({
   id: z.string(),
   title: z.string(),
   region: z.nativeEnum(RegionID),
-  baseSalary: z.number(), // ✅ salary -> baseSalary (明确是周薪)
+  salary: z.number(), // 周薪
   sanCost: z.number(),
   requiresAddress: z.boolean().default(false),
   requiredVehicle: z.string().optional(),
@@ -134,12 +167,40 @@ export const JobSchema = z.object({
   description: z.string(),
 });
 
+export const HousingSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  region: z.nativeEnum(RegionID),
+  type: z.enum(['RENT', 'OWN']),
+  price: z.number(),     // 购买价格
+  dailyCost: z.number(), // 周租金 (虽然字段名叫 dailyCost，逻辑上我们会当作 weeklyCost 处理，或者改名)
+  defenseLevel: z.number(),
+  description: z.string(),
+});
+
 export const InsuranceSchema = z.object({
   id: z.string(),
   name: z.string(),
-  weeklyCost: z.number(), // ✅ dailyCost -> weeklyCost
+  dailyCost: z.number(), // 周费
   coverage: z.enum(['PARTIAL', 'FULL']),
   description: z.string(),
+});
+
+export const GlobalSettingsSchema = z.object({
+  gameRules: z.object({
+    maxDays: z.number(), // 实际上是 maxTurns
+    victoryHpThreshold: z.number(),
+    pressureDivisor: z.number(),
+  }),
+  salaryConfig: z.array(z.object({
+    maxSan: z.number(),
+    efficiency: z.number(),
+    desc: z.string().optional()
+  })),
+  billConfig: z.object({
+    baseProb: z.number(),
+    debtProb: z.number()
+  })
 });
 
 // --- 物品与事件 Schemas ---
@@ -154,10 +215,6 @@ export const ItemSchema = z.object({
     san: z.number(),
     maxHp: z.number().optional(),
   }),
-  activeEffect: z.object({
-    type: z.enum(['NONE', 'LOTTERY', 'SURGERY', 'BLOOD_DONATION']),
-    params: z.record(z.string(), z.any()) 
-  }).optional(),
   onUseActions: z.array(GameActionSchema).optional(),
   tags: z.array(z.string()), 
   requiredClass: z.nativeEnum(PlayerClass).optional(),
@@ -206,7 +263,7 @@ export const EventOptionSchema = z.object({
   effects: z.object({
     scaling: z.nativeEnum(ScalingMode).optional(),
     hp: z.number().optional(),
-    gold: z.number().optional(),
+    gold: z.number().optional(), // 这里的 gold 变动也会被转化为 Transaction
     san: z.number().optional(),
     points: z.object({
       red: z.number().optional(),
@@ -218,7 +275,7 @@ export const EventOptionSchema = z.object({
       count: z.number(), 
     })).optional(),
     jail: z.object({
-      turns: z.number(), // ✅ days -> turns
+      days: z.number(), // 指 turns
       bail: z.number(),
       reason: z.string(),
     }).optional(),
@@ -261,7 +318,7 @@ export const EndingSchema = z.object({
   priority: z.number(),
   type: z.enum(['DEATH', 'SURVIVAL', 'ALIENATION', 'STANCE', 'UR']),
   conditions: z.object({
-    minTurn: z.number().optional(), // ✅ Day -> Turn
+    minDay: z.number().optional(), // minTurn
     maxHp: z.number().optional(),
     minSan: z.number().optional(),
     maxSan: z.number().optional(),
@@ -280,9 +337,10 @@ export const EndingSchema = z.object({
 });
 
 // ==========================================
-// 3. TypeScript 类型推导与状态接口
+// 4. TypeScript 类型推导与状态接口
 // ==========================================
 
+export type GlobalSettings = z.infer<typeof GlobalSettingsSchema>;
 export type Item = z.infer<typeof ItemSchema>;
 export type Archive = z.infer<typeof ArchiveSchema>;
 export type Bill = z.infer<typeof BillSchema>;
@@ -291,7 +349,6 @@ export type EventOption = z.infer<typeof EventOptionSchema>;
 export type Ending = z.infer<typeof EndingSchema>;
 export type Job = z.infer<typeof JobSchema>;
 export type Housing = z.infer<typeof HousingSchema>;
-export type HousingCostItem = z.infer<typeof HousingCostItemSchema>;
 export type Insurance = z.infer<typeof InsuranceSchema>;
 export type CryptoPosition = z.infer<typeof CryptoPositionSchema>;
 export type NewsItem = z.infer<typeof NewsItemSchema>;
@@ -349,9 +406,9 @@ export interface LoanProduct {
   provider: string;
   description: string;
   minScore: number;
-  weeklyRate: number; // ✅ daily -> weekly
+  dailyRate: number; // 周息率
   maxAmount: number;
-  termTurns: number; // ✅ days -> turns
+  termDays: number;  // termTurns
   color: string;
   riskLevel: string;
 }
@@ -362,9 +419,8 @@ export interface ActiveLoan {
   principal: number;
   interest: number;
   rate: number;
-  dueTurn: number; // ✅ Date -> Turn
+  dueDate: number; // dueTurn
   isOverdue: boolean;
-  isMortgage?: boolean; // ✅ 新增：标记是否为房贷
 }
 
 export interface BankState {
@@ -378,145 +434,62 @@ export interface BankState {
 export interface PrisonState {
   inJail: boolean;
   crime: string;
-  sentenceTurns: number; // ✅ Days -> Turns
-  turnsServed: number;   // ✅ Days -> Turns
+  sentenceDays: number; // sentenceTurns
+  daysServed: number;   // turnsServed
   bailAmount: number;
 }
 
-// ==========================================
-// 4. ✅ 核心维生系统定义 (Vitality Core)
-// ==========================================
-
-export interface LedgerRecord {
-  id: string;
-  turn: number;
-  category: LedgerCategory;
-  amount: number;
-  description: string;
-  timestamp: number;
+// 加密货币状态接口
+export interface CryptoState {
+  isAccountOpen: boolean;
+  btcPrice: number;
+  priceHistory: number[];
+  positions: CryptoPosition[];
+  dailyNews: NewsItem | null; // weeklyNews
 }
 
-export interface VitalityMetrics {
-  hp: number;
-  maxHp: number;
-  san: number;
-  maxSan: number;
-  gold: number;
-  [key: string]: number; // 支持扩展
-}
-
-export interface VitalityIdentity {
-  currentClass: PlayerClass;
-  points: {
-    red: number;
-    wolf: number;
-    old: number;
-  };
-}
-
-export interface VitalityState {
-  metrics: VitalityMetrics;
-  
-  identity: VitalityIdentity;
-  
-  // ✅ 时间系统 (周回合制)
-  time: {
-    currentTurn: number; // 第几周
-    totalTurns: number;  // 游戏总时长
-    dayOfWeek: number;   // 1-7 (虽然是周回合，但可能用于UI显示或细节判定)
-  };
-
-  // ✅ 账本系统
-  ledger: {
-    history: LedgerRecord[];
-  };
-
-  flags: {
-    isHomeless: boolean;
-    debtTurns: number; // 负债持续周数
-    hiddenTags: string[];
-    [key: string]: any;
-  };
-}
-
-// ==========================================
-// 5. ✅ 全局 GameState (根状态)
-// ==========================================
-
-// 玩家当前持有的房产状态 (运行时)
-export interface ActiveHousingState {
-  definitionId: string;
-  type: HousingType;
-  name: string;
-  region: RegionID;
-  
-  loanId?: string;      // 关联房贷
-  defenseLevel: number;
-  regenHp: number;
-}
-
+// --- 游戏主状态 (State) ---
 export interface GameState {
-  // ✅ 维生核心 (取代原有的 hp, gold, day)
+  // ✅ 1. 维生系统 (核心状态)
   vitality: VitalityState;
-
-  // 物理位置
+  
+  // ✅ 2. 物理位置
   currentRegion: RegionID;
+  
+  // ✅ 3. 资产与库存 (保留在根节点以便 UI 访问)
+  activeJob: Job | null;
+  activeHousing: Housing | null;
+  activeInsurance: Insurance | null;
+  inventory: string[]; // Item IDs
 
-  // 核心子系统状态
+  // ✅ 4. 子系统状态
   bank: BankState;
   prison: PrisonState;
   faith: FaithState;
-  crypto: {
-    isAccountOpen: boolean;
-    btcPrice: number;
-    priceHistory: number[];
-    positions: CryptoPosition[];
-    dailyNews: NewsItem | null;
-  };
+  crypto: CryptoState;
 
-  // 资产与库存
-  activeJob: Job | null; 
-  activeHousing: ActiveHousingState | null; // ✅ 使用新定义的 ActiveHousingState
-  activeInsurance: Insurance | null;
+  // ✅ 5. 临时与 UI 状态
+  currentEvent: GameEvent | null;
+  activeBill: Bill | null;
+  ending: string | null;
   
-  inventory: string[];
-  history: string[]; // 文本历史记录
-  unlockedArchives: string[];
-  achievedEndings: string[];
-  
-  // UI 状态
   isShopOpen: boolean;
   isInventoryOpen: boolean;
   isArchiveOpen: boolean;
   isMenuOpen: boolean;
   currentRoast: string | null;
+  
   notifications: GameNotification[];
   viewingArchive: string | null;
-  currentEvent: GameEvent | null;
-  activeBill: Bill | null;
-  ending: string | null;
+  history: string[]; // 文本日志历史
+  unlockedArchives: string[];
+  achievedEndings: string[];
   
   _hasHydrated: boolean;
-
-  // --- UI & Helper Methods ---
-  setRegion: (r: RegionID) => void;
-  addNotification: (msg: string, type: any) => void;
   
-  // 兼容性接口 (未来建议移除，改用 Slice)
-  updatePlayerStats: (updates: any) => void; 
-  setRoast: (t: string | null) => void;
-  setViewingArchive: (id: string | null) => void;
-  triggerEnding: (id: string) => void;
-  setShopOpen: (v: boolean) => void;
-  setInventoryOpen: (v: boolean) => void;
-  setArchiveOpen: (v: boolean) => void;
-  setMenuOpen: (v: boolean) => void;
-  
-  resetPlayerState: () => void;
-  
-  // 数据缓存 (不持久化)
+  // ✅ 6. 数据缓存 (不持久化)
   gameDataCache?: {
-    global: any;
+    global: GlobalSettings;
     items: Item[];
     itemMap: Map<string, Item>;
     events: GameEvent[];
@@ -525,14 +498,27 @@ export interface GameState {
     classMap: any;
     endings: Ending[];
     news?: NewsItem[];
-    housing?: Housing[]; // ✅ 缓存房产数据
+    housing?: Housing[];
+    jobs?: Job[];
+    insurance?: Insurance[];
   };
-}
-export interface WeeklyReport {
-  turn: number;
-  totalIncome: number;
-  totalExpense: number;
-  netChange: number;
-  records: LedgerRecord[];
-  summaryByCategory: Record<string, number>;
+  
+  // Update helpers
+  setRegion: (r: RegionID) => void;
+  addNotification: (msg: string, type: any) => void;
+  // updatePlayerStats 已废弃，请使用 updateVitality 或 addTransaction
+  
+  setRoast: (t: string | null) => void;
+  setViewingArchive: (id: string | null) => void;
+  triggerEnding: (id: string) => void;
+  
+  // UI setters
+  setShopOpen: (v: boolean) => void;
+  setInventoryOpen: (v: boolean) => void;
+  setArchiveOpen: (v: boolean) => void;
+  setMenuOpen: (v: boolean) => void;
+  
+  // Slices actions (reference)
+  resetPlayerState: () => void;
+  processNightlyMarket: (news: NewsItem[]) => { logs: string[], notes: string[] };
 }

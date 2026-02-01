@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { BankState, LoanProduct, GameState, ActiveLoan } from '@/types/schema';
+import { BankState, LoanProduct, GameState, ActiveLoan, LedgerCategory } from '@/types/schema';
 import loansData from '@/assets/data/loans.json';
 
 // 生成唯一ID
@@ -37,34 +37,12 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
 
   // --- 1. 普通贷款 ---
   takeLoan: (productId, amount) => {
-    // ✅ 修复: 使用 any 获取完整 Store 以访问 addTransaction Action
-    const state = get() as any; 
-    const { vitality } = state as GameState;
-
-    const rawProduct = loansData.find(p => p.id === productId);
-    if (!rawProduct) return { success: false, message: "信贷产品不存在" };
-
-    // ✅ 修复: 构造符合新 Schema 的 Product 对象，处理 daily -> weekly 转换
-    // 并且先定义 product 变量，再在后续逻辑中使用
-    const product: LoanProduct = {
-        id: rawProduct.id,
-        name: rawProduct.name,
-        provider: rawProduct.provider || "Unknown",
-        description: rawProduct.description,
-        minScore: rawProduct.minScore,
-        // 如果 JSON 是 dailyRate，这里 x7，否则直接用
-        weeklyRate: (rawProduct as any).dailyRate ? (rawProduct as any).dailyRate * 7 : (rawProduct as any).weeklyRate || 0.05,
-        maxAmount: rawProduct.maxAmount,
-        // 如果 JSON 是 termDays，这里 /7，否则直接用 termTurns
-        termTurns: (rawProduct as any).termDays ? Math.ceil((rawProduct as any).termDays / 7) : (rawProduct as any).termTurns || 4,
-        color: rawProduct.color,
-        riskLevel: rawProduct.riskLevel
-    };
+    const state = get() as GameState;
+    const { vitality } = state;
+    const product = loansData.find(p => p.id === productId) as LoanProduct;
     
-    // 检查信用分
-    if (state.bank.creditScore < product.minScore) {
-        return { success: false, message: `信用评分不足 (需 ${product.minScore})` };
-    }
+    if (!product) return { success: false, message: "信贷产品不存在" };
+    if (state.bank.creditScore < product.minScore) return { success: false, message: `信用评分不足 (需 ${product.minScore})` };
 
     // 创建贷款记录
     const newLoan: ActiveLoan = {
@@ -78,7 +56,7 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
       isMortgage: false
     };
 
-    // 1. 发放资金 (调用 VitalitySlice 的 Action)
+    // 1. 发放资金 (记账)
     state.addTransaction('BANK', amount, `贷款发放: ${product.name}`);
 
     // 2. 更新银行状态
@@ -128,14 +106,13 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
 
   // --- 3. 全额还款 ---
   repayLoan: (loanId) => {
-    const state = get() as any; // Cast for actions
-    const { vitality, bank } = state as GameState;
-    const loan = bank.activeLoans.find((l: ActiveLoan) => l.id === loanId);
+    const state = get() as GameState;
+    const loan = state.bank.activeLoans.find(l => l.id === loanId);
     
     if (!loan) return { success: false, message: "贷款记录不存在" };
     
     const totalDue = loan.principal + loan.interest;
-    if (vitality.metrics.gold < totalDue) return { success: false, message: "资金不足以还清本息" };
+    if (state.vitality.metrics.gold < totalDue) return { success: false, message: "资金不足以还清本息" };
 
     // 1. 扣款
     state.addTransaction('BANK', -totalDue, `还款: 结清贷款`);
@@ -165,6 +142,9 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
     
     const loan = { ...loans[loanIndex] };
     
+    // 逻辑：先还利息，再还本金
+    // 但如果 amount 是通过 HousingSystem 自动扣的，它通常是定额的
+    
     let remainingPayment = amount;
     let interestPaid = 0;
     let principalPaid = 0;
@@ -192,6 +172,11 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
     } else {
       loans[loanIndex] = loan; // 更新贷款
     }
+
+    // 4. 不在这里扣款 (addTransaction)，假设调用方已经扣了钱 (如 HousingSystem)
+    // 或者是 UI 里的主动还款，UI 层负责调用 addTransaction? 
+    // 为了安全，这里我们不扣款，只处理 Bank 内部账目。
+    // 调用方 (HousingSystem 或 UI) 必须负责 addTransaction。
 
     set((s: GameState) => ({
       bank: {
@@ -246,6 +231,8 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
     } else {
       scoreChange = 0; // 无贷无分
     }
+    
+    // 如果分数过低，可能需要额外逻辑 (如强制变卖)，暂时不做
 
     const newScore = Math.max(300, Math.min(850, creditScore + scoreChange));
 

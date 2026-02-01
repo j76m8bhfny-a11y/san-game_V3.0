@@ -1,6 +1,5 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware'; // ✅ 补全导入
-import { GameState } from '@/types/schema';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 // 1. 导入新的维生切片
 import { createVitalitySlice, VitalitySlice } from './slices/createVitalitySlice';
@@ -13,7 +12,6 @@ import { createPrisonSlice, PrisonSlice } from './slices/createPrisonSlice';
 import { createUISlice, UISlice } from './slices/createUISlice';
 import { createSystemSlice, SystemSlice } from './slices/createSystemSlice';
 import { createGameSlice, GameSlice } from './slices/createGameSlice';
-import { createHousingSlice, HousingSlice } from './slices/createHousingSlice'; // ✅ 新增
 
 // 3. 导入被“瘦身”后的玩家资产切片
 // 注意：原 createPlayerSlice 现在主要负责 Inventory, Job, Housing, Region 等非数值状态
@@ -30,7 +28,6 @@ export type StoreState =
   & PrisonSlice     // ⚖️ 监狱
   & UISlice         // 🖥️ UI状态
   & SystemSlice     // ⚙️ 系统配置
-  & HousingSlice     // 🏠 住宅
   & GameSlice;      // 🎮 全局游戏控制
 
 export const useGameStore = create<StoreState>()(
@@ -40,7 +37,6 @@ export const useGameStore = create<StoreState>()(
       
       // 1. 核心维生 (优先级最高)
       ...createVitalitySlice(...a),
-      ...createHousingSlice(...a),
 
       // 2. 玩家资产与位置
       ...createPlayerSlice(...a),

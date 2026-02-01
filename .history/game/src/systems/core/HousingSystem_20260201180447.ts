@@ -26,14 +26,13 @@ export const HousingSystem: GameSystem = {
 
     // 3. 处理回血 (Benefit)
     if (activeHousing.regenHp > 0) {
-      // ✅ 修复: 使用类型断言 as any 绕过 Partial 检查，或者构造完整的结构
-      // 因为 SystemRegistry 会做深度合并，这里给部分结构是安全的
+      // 暂时只加 HP，不通过 updates.vitality 覆盖，而是增量
+      // 注意：SystemRegistry 会处理 updates.vitality 的合并
       result.updates.vitality = {
         metrics: { 
           hp: Math.min(vitality.metrics.maxHp, vitality.metrics.hp + activeHousing.regenHp) 
         }
-      } as any; 
-      
+      };
       result.logs.push(`家中休息: HP +${activeHousing.regenHp}`);
     }
 

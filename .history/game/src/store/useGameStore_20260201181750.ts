@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware'; // ✅ 补全导入
+import { persist } from 'zustand/middleware';
 import { GameState } from '@/types/schema';
 
 // 1. 导入新的维生切片

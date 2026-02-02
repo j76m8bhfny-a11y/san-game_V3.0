@@ -16,10 +16,9 @@ export const BankSidebar: React.FC = () => {
     activeInsurance,
     setInsurance,
     addNotification,
-    //playSfx //
+    playSfx 
   } = useGameStore();
 
-  const { playSfx } = useAudioStore(); // ✅ 2. 正确获取播放函数
   const [activeTab, setActiveTab] = useState<Tab>('LOANS');
 
   // 获取数据

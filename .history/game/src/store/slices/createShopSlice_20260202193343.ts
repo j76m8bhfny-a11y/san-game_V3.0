@@ -157,4 +157,4 @@ export const createShopSlice: StateCreator<any, [], [], ShopSlice> = (set, get) 
       state.addNotification(`使用了 ${item.name}`, "success");
     }
   }
-);
+});

@@ -1,0 +1,76 @@
+[
+  {
+    "id": "SLUM_MYSTERY_PILL",
+    "name": "散装止痛片",
+    "region": "SLUMS",
+    "type": "DRUG",
+    "baseCost": 20,
+    "effects": { "hpRestore": 15, "addiction": 10 },
+    "requirements": { "riskRate": 0.2 },
+    "insurance": { "isCovered": false, "baseCopayRate": 1.0 },
+    "flavorText": "没有任何标签。可能是药，可能是老鼠药，反正能止痛。"
+  },
+  {
+    "id": "SLUM_SELL_KIDNEY",
+    "name": "器官捐赠(左肾)",
+    "region": "SLUMS",
+    "type": "SPECIAL",
+    "baseCost": -3000, 
+    "effects": { "hpCapMod": -30, "hpRestore": -20 },
+    "insurance": { "isCovered": false, "baseCopayRate": 0 },
+    "flavorText": "一手交钱，一手交肾。这就是这里的规矩。"
+  },
+  {
+    "id": "SLUM_STREET_DOC",
+    "name": "街头急救",
+    "region": "SLUMS",
+    "type": "SURGERY",
+    "baseCost": 150,
+    "effects": { "cureType": ["ACUTE"], "hpRestore": 20 },
+    "requirements": { "riskRate": 0.5 },
+    "insurance": { "isCovered": false, "baseCopayRate": 1.0 },
+    "flavorText": "医生用的手术刀看起来像是餐刀磨出来的。"
+  },
+  {
+    "id": "RUST_WORKER_SURGERY",
+    "name": "基础外科手术",
+    "region": "RUST_BELT",
+    "type": "SURGERY",
+    "baseCost": 2000,
+    "effects": { "cureType": ["ACUTE", "CHRONIC"], "hpRestore": 50 },
+    "requirements": { "waitTurns": [4, 8] },
+    "insurance": { "isCovered": true, "baseCopayRate": 0.3, "isHiddenInfo": true },
+    "flavorText": "标准的流水线作业。缝合线很粗糙，但能保命。"
+  },
+  {
+    "id": "RUST_TEST_DRUG",
+    "name": "二期临床试药",
+    "region": "RUST_BELT",
+    "type": "SPECIAL",
+    "baseCost": -500,
+    "effects": { "hpRestore": -10, "addiction": 5, "sanRestore": -5 },
+    "insurance": { "isCovered": false, "baseCopayRate": 0 },
+    "flavorText": "签署免责协议，以此换取微薄的报酬。"
+  },
+  {
+    "id": "DOWNTOWN_THERAPY",
+    "name": "深度心理重构",
+    "region": "DOWNTOWN",
+    "type": "THERAPY",
+    "baseCost": 5000,
+    "effects": { "sanRestore": 60, "cureType": ["MENTAL"] },
+    "requirements": { "waitTurns": [1, 3] },
+    "insurance": { "isCovered": true, "baseCopayRate": 0.2 },
+    "flavorText": "在这里，连你的童年阴影都可以被格式化。"
+  },
+  {
+    "id": "DOWNTOWN_STEM_CELL",
+    "name": "干细胞再生疗法",
+    "region": "DOWNTOWN",
+    "type": "SPECIAL",
+    "baseCost": 50000,
+    "effects": { "hpCapMod": 20, "hpRestore": 100 },
+    "insurance": { "isCovered": false, "baseCopayRate": 1.0 },
+    "flavorText": "只有顶层阶级才配拥有的永生科技雏形。"
+  }
+]

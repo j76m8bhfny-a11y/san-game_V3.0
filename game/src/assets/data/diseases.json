@@ -1,0 +1,35 @@
+[
+  {
+    "id": "FLU_LOW",
+    "name": "贫民窟流感",
+    "type": "CHRONIC",
+    "severity": 1,
+    "effects": { "hpDrain": 5 },
+    "description": "空气中弥漫着霉菌和绝望的味道，你的肺部在抗议。"
+  },
+  {
+    "id": "SEPSIS",
+    "name": "败血症",
+    "type": "ACUTE",
+    "severity": 8,
+    "effects": { "hpDrain": 40 },
+    "cureCondition": { "requiredServiceTags": ["SURGERY"] },
+    "description": "伤口感染了铁锈和工业废料。不立即手术你会死。"
+  },
+  {
+    "id": "WORKER_LUNG",
+    "name": "铁锈尘肺",
+    "type": "CHRONIC",
+    "severity": 3,
+    "effects": { "hpDrain": 8, "statDebuff": "MAX_HP_DOWN" },
+    "description": "每一个工人的最终归宿。咳出的痰里有金属颗粒。"
+  },
+  {
+    "id": "VOID_PSYCHOSIS",
+    "name": "虚空精神病",
+    "type": "MENTAL",
+    "severity": 5,
+    "effects": { "sanDrain": 10 },
+    "description": "你开始看见不存在的霓虹灯，听见资本的低语。"
+  }
+]

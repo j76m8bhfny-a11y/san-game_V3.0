@@ -391,10 +391,7 @@ export interface VitalityMetrics {
   san: number;
   maxSan: number;
   gold: number;
-  creditScore: number;
-  // ✅ 新增
-  addiction: number;
-  resistance: number;
+  creditScore: number; // ✅ 核心变更: 信用分归位 (300-850)
   [key: string]: number;
 }
 
@@ -409,21 +406,24 @@ export interface VitalityIdentity {
 
 export interface VitalityState {
   metrics: VitalityMetrics;
-  identity: VitalityIdentity;
-  time: {
-    currentTurn: number;
-    totalTurns: number;
-    dayOfWeek: number;
-  };
-  // ✅ 新增
-  activeDiseases: string[]; // 存疾病 ID
   
+  identity: VitalityIdentity;
+  
+  // ✅ 时间系统 (周回合制)
+  time: {
+    currentTurn: number; // 第几周
+    totalTurns: number;  // 游戏总时长
+    dayOfWeek: number;   // 1-7 (虽然是周回合，但可能用于UI显示或细节判定)
+  };
+
+  // ✅ 账本系统
   ledger: {
     history: LedgerRecord[];
   };
+
   flags: {
     isHomeless: boolean;
-    debtTurns: number;
+    debtTurns: number; // 负债持续周数
     hiddenTags: string[];
     [key: string]: any;
   };
@@ -549,8 +549,6 @@ export const ItemSchema = z.object({
     hp: z.number().optional(),
     san: z.number().optional(),
     maxHp: z.number().optional(),
-    addiction: z.number().optional(),   // 增加成瘾度
-    resistance: z.number().optional(),  // 增加耐药性
     // 政治倾向整合
     points: z.object({
         red: z.number().optional(),

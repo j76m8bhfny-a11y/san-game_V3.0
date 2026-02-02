@@ -1,9 +1,9 @@
 import React, { useMemo, useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
-import { MedicalService, Disease, RegionID } from '@/types/schema'; // 移除 DiseaseType, RegionID 如果只做类型引用保留即可
+import { MedicalService, RegionID, DiseaseType } from '@/types/schema';
 import { calculateMedicalCost, getHospitalTheme } from '@/logic/medical';
 import { Heart, Activity, Skull, Shield, AlertCircle, Clock, CreditCard } from 'lucide-react';
-import { motion } from 'framer-motion'; // 移除 AnimatePresence
+import { motion, AnimatePresence } from 'framer-motion';
 
 export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
   const { 
@@ -11,28 +11,28 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
     currentRegion, 
     gameDataCache, 
     activeInsurance, 
-    // activeHousing, // ❌ 移除未使用
+    activeHousing,
     addTransaction, 
     modifyStats, 
     addNotification,
     cureDisease,
-    // setHospitalOpen // ❌ 移除未使用
+    setHospitalOpen 
   } = useGameStore();
 
   const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
 
-  // 1. 获取当前区域服务 (显式类型断言)
+  // 1. 获取当前区域服务
   const services = useMemo(() => {
-    if (!gameDataCache?.hospitalServices) return [] as MedicalService[];
-    return (gameDataCache.hospitalServices as MedicalService[]).filter((s) => s.region === currentRegion);
+    if (!gameDataCache?.hospitalServices) return [];
+    return gameDataCache.hospitalServices.filter((s: MedicalService) => s.region === currentRegion);
   }, [gameDataCache, currentRegion]);
 
   // 2. 检测是否处于“强制急诊”状态
+  // 如果有急性病 (ACUTE) 且未治愈，强制显示急诊界面，且不能关闭 (除非点击放弃治疗去死，或者治好)
   const emergencyDiseases = useMemo(() => {
-    // 显式声明 d 和 dx 的类型
     return vitality.activeDiseases
-      .map((id: string) => (gameDataCache?.diseases as Disease[])?.find((d: Disease) => d.id === id))
-      .filter((d): d is Disease => d?.type === 'ACUTE');
+      .map(id => gameDataCache?.diseases?.find(d => d.id === id))
+      .filter(d => d?.type === 'ACUTE');
   }, [vitality.activeDiseases, gameDataCache]);
 
   const isEmergencyMode = emergencyDiseases.length > 0;
@@ -40,16 +40,18 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
 
   // 3. 购买处理逻辑
   const handlePurchase = (service: MedicalService) => {
-    // A. 门槛检查
+    // A. 门槛检查 (耐药性/成瘾性)
     if (service.requirements?.maxAddiction && vitality.metrics.addiction > service.requirements.maxAddiction) {
       addNotification("耐药性过高，药物无效！", "error");
       return;
     }
 
-    // B. 排队检查
+    // B. 排队检查 (简单模拟：如果有 waitTurns，这就只是个挂号操作)
+    // 这里为了流畅性，假设只有 "0" 等待的才能买，或者做成概率失败
     if (service.requirements?.waitTurns && service.requirements.waitTurns[0] > 0) {
+       // TODO: 实现真实的挂号系统。这里暂时用运气判定：
        const waitTime = Math.floor(Math.random() * (service.requirements.waitTurns[1] - service.requirements.waitTurns[0])) + service.requirements.waitTurns[0];
-       if (waitTime > 2) { 
+       if (waitTime > 2) { // 假设运气不好
          addNotification(`号源已满！最早预约在 ${waitTime} 周后。`, "warning");
          return; 
        }
@@ -59,11 +61,13 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
     // C. 费用计算
     const { finalCost, reason } = calculateMedicalCost(service, activeInsurance, vitality.identity.currentClass);
 
-    // D. 资金检查与贷款
+    // D. 资金检查与贷款逻辑
     if (finalCost > 0 && vitality.metrics.gold < finalCost) {
+      // 自动贷款逻辑 (BankSystem Hook 应该在这里接入，这里简化处理)
       const loanNeeded = finalCost - vitality.metrics.gold;
       addTransaction('BANK', loanNeeded, `自动医疗贷款: ${service.name}`);
       addNotification(`资金不足，自动申请了 $${loanNeeded} 贷款`, "warning");
+      // 注意：这里先发钱再扣钱，保证余额不为负(除非逻辑允许负债)
     }
 
     // E. 扣费与执行
@@ -78,23 +82,27 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
       addiction: effects.addiction
     });
 
-    // 治病逻辑 (显式类型)
+    // 治病逻辑
     if (effects.cureType) {
-      vitality.activeDiseases.forEach((dId: string) => {
-        const d = (gameDataCache?.diseases as Disease[])?.find((dx: Disease) => dx.id === dId);
-        // 使用类型守卫或可选链
+      // 治愈所有符合类型的病
+      vitality.activeDiseases.forEach(dId => {
+        const d = gameDataCache?.diseases?.find(dx => dx.id === dId);
         if (d && effects.cureType?.includes(d.type)) {
           cureDisease(dId);
         }
       });
     }
+    // 特指治愈
     if (effects.cureDiseases) {
-      effects.cureDiseases.forEach((id: string) => cureDisease(id));
+      effects.cureDiseases.forEach(id => cureDisease(id));
     }
 
     addNotification(`治疗完成。(${reason})`, "success");
     
+    // 如果是急诊模式且病好了，允许关闭
     if (isEmergencyMode) {
+       // 检查是否还有急性病，这里会有个状态同步延迟，实际开发可能需要 useEffect 监听
+       // 暂时假设一次急诊治好所有急性病
        if (effects.cureType?.includes('ACUTE')) {
          onClose();
        }
@@ -148,8 +156,10 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
           <div className="flex-1 overflow-y-auto p-6 space-y-3 custom-scrollbar">
              {services.map((service: MedicalService) => {
                const costInfo = calculateMedicalCost(service, activeInsurance, vitality.identity.currentClass);
-               // ❌ 移除未使用变量 isAffordable, isWaitlist
+               const isAffordable = vitality.metrics.gold >= costInfo.finalCost;
+               const isWaitlist = service.requirements?.waitTurns && service.requirements.waitTurns[1] > 0;
                
+               // 如果是急诊模式，只显示急诊服务或手术
                if (isEmergencyMode && service.type !== 'EMERGENCY' && service.type !== 'SURGERY') return null;
 
                return (
@@ -196,8 +206,7 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
           <div className="w-1/3 bg-black/20 border-l border-white/10 p-6 flex flex-col">
             {selectedServiceId ? (
               (() => {
-                // 显式声明 s 类型
-                const service = services.find((s: MedicalService) => s.id === selectedServiceId)!;
+                const service = services.find(s => s.id === selectedServiceId)!;
                 const costInfo = calculateMedicalCost(service, activeInsurance, vitality.identity.currentClass);
                 
                 return (
@@ -251,7 +260,7 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
                          className={`w-full py-4 rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2
                            ${vitality.metrics.gold >= costInfo.finalCost 
                              ? 'bg-white text-black hover:scale-[1.02]' 
-                             : 'bg-red-600 text-white hover:bg-red-700' 
+                             : 'bg-red-600 text-white hover:bg-red-700' // 没钱也可以点，触发贷款
                            }
                          `}
                        >
@@ -273,7 +282,7 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
           </div>
         </div>
 
-        {/* Close Button */}
+        {/* Close Button (仅非急诊模式可用) */}
         {!isEmergencyMode && (
           <button 
             onClick={onClose}

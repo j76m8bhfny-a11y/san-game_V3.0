@@ -549,8 +549,6 @@ export const ItemSchema = z.object({
     hp: z.number().optional(),
     san: z.number().optional(),
     maxHp: z.number().optional(),
-    addiction: z.number().optional(),   // 增加成瘾度
-    resistance: z.number().optional(),  // 增加耐药性
     // 政治倾向整合
     points: z.object({
         red: z.number().optional(),

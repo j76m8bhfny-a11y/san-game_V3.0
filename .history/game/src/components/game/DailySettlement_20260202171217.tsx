@@ -25,12 +25,8 @@ export const DailySettlement: React.FC<DailySettlementProps> = ({ isOpen, onClos
     clearWeeklyLedger, 
     setHospitalOpen, 
     addNotification,
-    //playSfx // 假设你有音频Store，如果没有可忽略
+    playSfx // 假设你有音频Store，如果没有可忽略
   } = useGameStore();
-
-  const playSfx = (name: string) => {
-    console.log(`[Audio Stub] Would play sound: ${name}`);
-  };
 
   const { ledger, time, metrics, activeDiseases } = vitality;
 

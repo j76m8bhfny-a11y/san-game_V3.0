@@ -202,8 +202,6 @@ export const BillSchema = z.object({
 export const EventOptionSchema = z.object({
   label: z.string(),
   roast: z.string().optional(),
-  requiredItem: z.string().optional(),
-  lockedText: z.string().optional(),
   effects: z.object({
     scaling: z.nativeEnum(ScalingMode).optional(),
     hp: z.number().optional(),

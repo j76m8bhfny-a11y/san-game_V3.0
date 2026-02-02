@@ -66,7 +66,7 @@ export const ShopModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ 
                [ 该区域暂无商品供应 ]
              </div>
            ) : (
-             items.map((item: Item) => (
+             items.map((item) => (
                <ShopItemCard key={item.id} item={item} canAfford={gold >= item.price} onBuy={() => buyItem(item.id)} />
              ))
            )}

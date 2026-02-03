@@ -53,10 +53,11 @@ export const createCryptoSlice: StateCreator<any, [], [], CryptoSlice> = (set, g
 
   openPosition: (type, principal, leverage) => {
     const { vitality } = get();
+    const currentGold = vitality.metrics.gold;
     const currentTurn = vitality.time.currentTurn;
     
     // 1. 检查资金
-    if (vitality.metrics.gold < ACCOUNT_FEE) {
+    if (currentGold < principal) {
       get().addNotification('可用资金不足', 'error');
       return;
     }

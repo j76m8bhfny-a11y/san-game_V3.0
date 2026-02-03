@@ -1,0 +1,214 @@
+import React, { useMemo } from 'react';
+import { useGameStore } from '@/store/useGameStore';
+import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  ArrowRight, TrendingUp, TrendingDown, DollarSign, Calendar, AlertCircle, Bitcoin
+} from 'lucide-react';
+import { Disease } from '@/types/schema';
+
+interface WeeklySettlementProps {
+  isOpen: boolean;
+  onClose?: () => void; // 变为可选，因为逻辑主要由 closeWeeklyReport 控制
+}
+
+export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) => {
+  const { 
+    vitality, 
+    crypto, // 获取 Crypto 状态
+    gameDataCache, 
+    closeWeeklyReport, // 使用新的 Action
+    setHospitalOpen, 
+    addNotification,
+    weeklyReport // 使用 store 中的 report 数据
+  } = useGameStore();
+
+  const { ledger, time, activeDiseases } = vitality;
+  
+  const summary = useMemo(() => {
+    // 优先使用 weeklyReport 里的预计算数据
+    if (weeklyReport) {
+        return {
+            income: weeklyReport.totalIncome,
+            expense: weeklyReport.totalExpense,
+            net: weeklyReport.netChange,
+            records: weeklyReport.records // 如果 report 里存了 records
+        };
+    }
+
+    // Fallback: 实时计算 (防止 report 为空时的闪烁)
+    let income = 0;
+    let expense = 0;
+    ledger.history.forEach(record => {
+      if (record.amount > 0) income += record.amount;
+      else expense += Math.abs(record.amount);
+    });
+    return { income, expense, net: income - expense, records: ledger.history };
+  }, [ledger.history, weeklyReport]);
+  
+  // 如果 store 里没有 report，可能是在打开前或者已经关闭，做一个 fallback
+  const reportData = weeklyReport || {
+    income: 0, expense: 0, net: 0, records: ledger.history
+  };
+
+  // 1. 实时计算汇总 (Fallback，以防 report 还没生成)
+  const summary = useMemo(() => {
+    // 优先使用 weeklyReport 里的预计算数据
+    if (weeklyReport) return weeklyReport;
+
+    let income = 0;
+    let expense = 0;
+    ledger.history.forEach(record => {
+      if (record.amount > 0) income += record.amount;
+      else expense += Math.abs(record.amount);
+    });
+    return { income, expense, net: income - expense };
+  }, [ledger.history, weeklyReport]);
+
+  // 2. 检查是否有急性病
+  const acuteDiseases = useMemo(() => {
+    if (!gameDataCache?.diseases) return [];
+    return activeDiseases
+      .map(id => gameDataCache.diseases.find((d: Disease) => d.id === id))
+      .filter((d: Disease | undefined): d is Disease => !!d && d.type === 'ACUTE');
+  }, [activeDiseases, gameDataCache]);
+
+  // 3. 处理“下一周”
+  const handleNextWeek = () => {
+    // A. 播放音效
+    // playSfx('sfx_stamp');
+
+    // B. 关闭结算单并推进回合
+    closeWeeklyReport();
+
+    // C. 🚨 急诊拦截逻辑 🚨
+    // 检查当前是否有急性病 (这里使用当前 store 状态)
+    const currentDiseases = useGameStore.getState().vitality.activeDiseases;
+    const hasAcute = currentDiseases.some(id => {
+       const d = gameDataCache?.diseases?.find((x: Disease) => x.id === id);
+       return d?.type === 'ACUTE';
+    });
+
+    if (hasAcute) {
+      setHospitalOpen(true);
+      addNotification("警告：检测到致命病症，系统已强制启动急救程序。", "error");
+    }
+  };
+
+  if (!isOpen) return null;
+
+  return (
+    <AnimatePresence>
+      <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
+        <motion.div 
+          initial={{ y: 50, opacity: 0, scale: 0.95 }}
+          animate={{ y: 0, opacity: 1, scale: 1 }}
+          exit={{ y: 50, opacity: 0, scale: 0.95 }}
+          className="w-full max-w-md bg-[#F5F5F7] dark:bg-[#111] rounded-3xl shadow-2xl overflow-hidden flex flex-col font-sans relative border border-gray-200 dark:border-gray-800"
+        >
+          {/* Header */}
+          <div className="p-6 pb-2 bg-white dark:bg-[#161616]">
+            <div className="flex justify-between items-center mb-1">
+              <div className="text-xs font-bold text-gray-400 uppercase tracking-widest">WEEKLY STATEMENT</div>
+              <div className="flex items-center gap-1 text-gray-500 font-mono text-xs">
+                 <Calendar size={12}/>
+                 <span>WEEK {time.currentTurn} / 52</span>
+              </div>
+            </div>
+            <h2 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">
+              周结账单
+            </h2>
+            
+            {/* 财务摘要 */}
+            <div className="mt-6 grid grid-cols-2 gap-3">
+               <div className="bg-gray-50 dark:bg-white/5 p-4 rounded-2xl">
+                 <div className="text-xs text-gray-400 mb-1 flex items-center gap-1">
+                   <TrendingUp size={12} /> 总收入
+                 </div>
+                 <div className="text-xl font-bold text-green-500 font-mono">
+                   +${summary.income}
+                 </div>
+               </div>
+               <div className="bg-gray-50 dark:bg-white/5 p-4 rounded-2xl">
+                 <div className="text-xs text-gray-400 mb-1 flex items-center gap-1">
+                   <TrendingDown size={12} /> 总支出
+                 </div>
+                 <div className="text-xl font-bold text-red-500 font-mono">
+                   -${summary.expense}
+                 </div>
+               </div>
+            </div>
+
+            {/* Crypto 简报 (如果有开户) */}
+            {crypto.isAccountOpen && (
+              <div className="mt-3 py-2 px-3 bg-gray-900 rounded-lg flex justify-between items-center text-xs">
+                <div className="flex items-center gap-2 text-gray-400">
+                  <Bitcoin size={14} className="text-amber-500" />
+                  <span>BTC/USD</span>
+                </div>
+                <div className="font-mono text-white">
+                  ${crypto.btcPrice.toLocaleString()} 
+                  {/* 这里可以简单计算一下涨跌，或者只显示当前价格 */}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* 账单流水列表 */}
+          <div className="flex-1 overflow-y-auto px-6 py-4 space-y-3 min-h-[200px] max-h-[350px] custom-scrollbar bg-[#F5F5F7] dark:bg-[#0a0a0a]">
+             {ledger.history.length === 0 ? (
+               <div className="h-full flex flex-col items-center justify-center text-gray-400 opacity-50 space-y-2 py-10">
+                 <DollarSign size={32} />
+                 <span className="text-xs">本周躺平，无资金变动</span>
+               </div>
+             ) : (
+               ledger.history.map((record) => (
+                 <div key={record.id} className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-gray-800 last:border-0">
+                   <div>
+                     <div className="font-bold text-sm text-gray-700 dark:text-gray-200">
+                       {record.description}
+                     </div>
+                     <div className="text-[10px] text-gray-400 uppercase px-1.5 py-0.5 bg-gray-200 dark:bg-white/10 rounded w-fit mt-1">
+                       {record.category}
+                     </div>
+                   </div>
+                   <div className={`font-mono font-bold ${record.amount > 0 ? 'text-green-500' : 'text-gray-900 dark:text-white'}`}>
+                     {record.amount > 0 ? '+' : ''}{record.amount}
+                   </div>
+                 </div>
+               ))
+             )}
+          </div>
+
+          {/* 底部按钮区 */}
+          <div className="p-6 bg-white dark:bg-[#161616] border-t border-gray-200 dark:border-gray-800">
+             {/* 疾病警告 */}
+             {acuteDiseases.length > 0 && (
+               <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-xl flex items-center gap-3 text-sm font-bold border border-red-500/20">
+                 <AlertCircle className="shrink-0 animate-pulse" />
+                 <div>
+                   <div className="uppercase text-[10px] opacity-70">Medical Alert</div>
+                   检测到急性病症: {acuteDiseases.map(d => d.name).join(', ')}
+                 </div>
+               </div>
+             )}
+
+             <div className="flex justify-between items-center mb-4">
+                <span className="text-xs text-gray-400 uppercase">Net Profit</span>
+                <span className={`text-2xl font-black font-mono ${summary.net >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                   {summary.net >= 0 ? '+' : ''}{summary.net}
+                </span>
+             </div>
+
+             <button
+               onClick={handleNextWeek}
+               className="w-full py-4 bg-black dark:bg-white text-white dark:text-black rounded-xl font-bold text-lg hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 shadow-xl"
+             >
+               Start Week {time.currentTurn + 1} <ArrowRight size={20} />
+             </button>
+          </div>
+
+        </motion.div>
+      </div>
+    </AnimatePresence>
+  );
+};

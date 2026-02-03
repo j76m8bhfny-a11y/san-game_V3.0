@@ -47,6 +47,7 @@ const App: React.FC = () => {
     isMenuOpen,
     currentRoast,
     initializeData,
+    closeDailySummary,
     
     viewMode,
     isCryptoOpen,
@@ -54,8 +55,7 @@ const App: React.FC = () => {
     crypto, 
     setShopOpen,
     setArchiveOpen,
-    setMenuOpen,
-    resetPlayerState // ✅ 使用正确的重置方法名
+    setMenuOpen
   } = useGameStore();
 
   const [viewState, setViewState] = useState<'TITLE' | 'SELECT_CLASS' | 'GAME'>('TITLE');
@@ -79,7 +79,7 @@ const App: React.FC = () => {
 
   const handleRestart = () => {
     setViewState('TITLE');
-    resetPlayerState(); 
+    useGameStore.getState().resetGame();
   };
 
   if (loading || !_hasHydrated) return <div className="bg-black text-green-500 p-10 font-mono">LOADING SYSTEM...</div>;

@@ -14,15 +14,13 @@ export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) =
     gameDataCache, 
     currentRegion, 
     activeHousing, 
-    vitality,
+    gold,
     rentHousing, // ✅ 使用 Slice Action
     buyHousing,  // ✅ 使用 Slice Action
     addNotification,
     setHousing // 仅用于搬离 (handleMoveOut)
   } = useGameStore();
   
-  const gold = vitality.metrics.gold;
-
   const { playSfx } = useAudioStore();
 
   if (!isOpen || !gameDataCache) return null;

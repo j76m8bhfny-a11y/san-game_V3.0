@@ -41,40 +41,31 @@ const useValueChange = (value: number) => {
 };
 
 export const MiniHUD: React.FC = () => {
-  // ✅ 1. 修复：从 Store 中解构出 vitality，移除根层级不存在的属性
   const { 
-    vitality, 
-    activeInsurance, 
-    gameDataCache,
-    setShopOpen, 
-    setInventoryOpen, 
-    setArchiveOpen, 
-    setMenuOpen 
+    day, hp, maxHp, san, gold, currentClass, vitality, activeInsurance, gameDataCache,
+    setShopOpen, setInventoryOpen, setArchiveOpen, setMenuOpen 
   } = useGameStore();
-  
   const { playSfx } = useAudioStore();
-
-  // ✅ 2. 数值路径映射 (重定向至 vitality.metrics)
-  const { hp, maxHp, san, gold, addiction } = vitality.metrics;
-  const { currentClass } = vitality.identity;
-  const { activeDiseases } = vitality;
 
   const hpChange = useValueChange(hp);
   const goldChange = useValueChange(gold);
 
-  // ✅ 3. 修复 7053: 显式转换类型以匹配索引
-  const classInfo = CLASS_CONFIG[currentClass as PlayerClass] || CLASS_CONFIG[PlayerClass.Homeless];
+  const classInfo = CLASS_CONFIG[currentClass] || CLASS_CONFIG[PlayerClass.Homeless];
   
+  // 解构新状态
+  const { addiction } = vitality.metrics;
+  const { activeDiseases } = vitality;
+
   // 计算当前疾病名称列表
   const diseaseNames = useMemo(() => {
     if (!gameDataCache?.diseases) return [];
     return activeDiseases
-      .map(id => (gameDataCache.diseases as Disease[]).find(d => d.id === id)?.name)
+      .map(id => gameDataCache.diseases.find((d: Disease) => d.id === id)?.name)
       .filter(Boolean)
       .join(', ');
   }, [activeDiseases, gameDataCache]);
 
-  const hasStatusEffects = addiction > 0 || activeDiseases.length > 0 || !!activeInsurance;
+  const hasStatusEffects = addiction > 0 || activeDiseases.length > 0 || activeInsurance;
 
   return (
     <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[98%] max-w-5xl pointer-events-none select-none">
@@ -92,7 +83,7 @@ export const MiniHUD: React.FC = () => {
               </div>
             </div>
 
-            <div key={currentClass} className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border shadow-inner transition-all duration-500 ${classInfo.bg} ${classInfo.text} ${classInfo.border}`}>
+            <div key={currentClass} className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border shadow-inner transition-all duration-500 ${classInfo.bg} ${classInfo.text} ${classInfo.border} animate-in fade-in slide-in-from-top-2`}>
               <span className="text-sm filter drop-shadow-sm">{classInfo.icon}</span>
               <span className="hidden md:block text-[10px] font-black tracking-widest uppercase font-mono pt-0.5">{classInfo.label}</span>
             </div>
@@ -102,6 +93,7 @@ export const MiniHUD: React.FC = () => {
 
           {/* Vitals (HP/SAN) */}
           <div className="flex items-center gap-4 md:gap-6">
+            {/* HP */}
             <div className="flex flex-col gap-0.5 min-w-[60px]">
                <div className="flex items-center justify-between">
                   <span className={`text-[10px] md:text-xs font-bold tracking-wider ${hp < 30 ? 'text-red-500 animate-pulse' : 'text-gray-400'}`}>HP</span>
@@ -114,6 +106,7 @@ export const MiniHUD: React.FC = () => {
                </div>
             </div>
 
+            {/* SAN */}
             <div className="flex flex-col gap-0.5 min-w-[60px]">
                <div className="flex items-center justify-between">
                   <span className={`text-[10px] md:text-xs font-bold tracking-wider ${san > 80 ? 'text-purple-400' : 'text-gray-400'}`}>SAN</span>
@@ -125,32 +118,42 @@ export const MiniHUD: React.FC = () => {
             </div>
           </div>
 
-          {/* Status Monitor */}
+          {/* ✨ New: Status Monitor (Dynamic) */}
           {hasStatusEffects && (
             <>
               <div className="hidden md:block w-px h-8 bg-white/10 mx-1"></div>
               <div className="flex items-center gap-3">
+                 
+                 {/* 1. Addiction Meter */}
                  {addiction > 0 && (
-                   <div className="group relative flex flex-col items-center justify-center pt-1">
+                   <div className="group relative flex flex-col items-center justify-center pt-1" title={`药物成瘾度: ${addiction}%`}>
                       <div className="text-xs animate-bounce" style={{ animationDuration: '3s' }}>💉</div>
                       <div className="w-8 h-1 bg-gray-800 rounded-full mt-1 overflow-hidden border border-white/10">
-                         <div className={`h-full ${addiction > 50 ? 'bg-purple-500' : 'bg-purple-800'}`} style={{ width: `${Math.min(addiction, 100)}%` }} />
+                         <div 
+                           className={`h-full ${addiction > 50 ? 'bg-purple-500' : 'bg-purple-800'}`} 
+                           style={{ width: `${Math.min(addiction, 100)}%` }} 
+                         />
                       </div>
                    </div>
                  )}
+
+                 {/* 2. Disease Indicator */}
                  {activeDiseases.length > 0 && (
-                   <div className="relative group flex items-center justify-center w-8 h-8 bg-red-900/30 rounded-full border border-red-500/50 animate-pulse">
+                   <div className="relative group flex items-center justify-center w-8 h-8 bg-red-900/30 rounded-full border border-red-500/50 animate-pulse cursor-help">
                       <span className="text-sm">🦠</span>
-                      <div className="absolute top-full mt-3 left-1/2 -translate-x-1/2 w-max max-w-[150px] px-3 py-2 bg-black/95 text-red-200 text-[10px] rounded-lg border border-red-500/30 opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                      {/* Tooltip */}
+                      <div className="absolute top-full mt-3 left-1/2 -translate-x-1/2 w-max max-w-[150px] px-3 py-2 bg-black/95 text-red-200 text-[10px] rounded-lg border border-red-500/30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl">
                          <div className="font-bold border-b border-red-500/30 mb-1 pb-1">当前病症</div>
                          {diseaseNames}
                       </div>
                    </div>
                  )}
+
+                 {/* 3. Insurance Badge */}
                  {activeInsurance && (
-                   <div className="flex items-center justify-center w-8 h-8 bg-emerald-900/20 rounded-full border border-emerald-500/30 group">
+                   <div className="flex items-center justify-center w-8 h-8 bg-emerald-900/20 rounded-full border border-emerald-500/30 cursor-help group">
                       <span className="text-sm">🛡️</span>
-                      <div className="absolute top-full mt-3 left-1/2 -translate-x-1/2 w-max px-3 py-2 bg-black/95 text-emerald-200 text-[10px] rounded-lg border border-emerald-500/30 opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                      <div className="absolute top-full mt-3 left-1/2 -translate-x-1/2 w-max px-3 py-2 bg-black/95 text-emerald-200 text-[10px] rounded-lg border border-emerald-500/30 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-50 shadow-xl">
                          <div className="font-bold border-b border-emerald-500/30 mb-1 pb-1">医疗保险生效中</div>
                          {activeInsurance.name}
                       </div>
@@ -164,8 +167,8 @@ export const MiniHUD: React.FC = () => {
 
         {/* Center: Gold */}
         <div className={`
-          flex items-center gap-1.5 md:gap-2 font-mono text-lg md:text-2xl font-black transition-all
-          ${goldChange === 'UP' ? 'text-green-400 scale-110' : goldChange === 'DOWN' ? 'text-red-400' : gold < 0 ? 'text-red-500' : 'text-yellow-400'}
+          flex items-center gap-1.5 md:gap-2 font-mono text-lg md:text-2xl font-black transition-all duration-300 mx-2 md:mx-4
+          ${goldChange === 'UP' ? 'text-green-400 scale-110 drop-shadow-[0_0_8px_rgba(74,222,128,0.5)]' : goldChange === 'DOWN' ? 'text-red-400' : gold < 0 ? 'text-red-500' : 'text-yellow-400'}
         `}>
            <span className="text-sm opacity-50 font-sans">$</span>
            <span>{gold.toLocaleString()}</span>
@@ -174,15 +177,16 @@ export const MiniHUD: React.FC = () => {
         {/* Right: Buttons */}
         <div className="flex items-center gap-1.5 md:gap-3 pl-3 md:pl-8 border-l border-white/10">
            {[
-             { label: 'SHOP', action: () => setShopOpen(true), icon: '🛍️', color: 'hover:bg-blue-500/20' },
-             { label: 'BAG', action: () => setInventoryOpen(true), icon: '🎒', color: 'hover:bg-green-500/20' },
-             { label: 'DATA', action: () => setArchiveOpen(true), icon: '💾', color: 'hover:bg-purple-500/20' },
-             { label: 'SYS', action: () => setMenuOpen(true), icon: '⚙️', color: 'hover:bg-gray-500/20' },
+             { label: 'SHOP', action: () => setShopOpen(true), icon: '🛍️', color: 'hover:bg-blue-500/20 hover:text-blue-300 hover:border-blue-500/30' },
+             { label: 'BAG', action: () => setInventoryOpen(true), icon: '🎒', color: 'hover:bg-green-500/20 hover:text-green-300 hover:border-green-500/30' },
+             { label: 'DATA', action: () => setArchiveOpen(true), icon: '💾', color: 'hover:bg-purple-500/20 hover:text-purple-300 hover:border-purple-500/30' },
+             { label: 'SYS', action: () => setMenuOpen(true), icon: '⚙️', color: 'hover:bg-gray-500/20 hover:text-gray-200 hover:border-gray-500/30' },
            ].map(btn => (
              <button
                key={btn.label}
                onClick={() => { playSfx('sfx_click'); btn.action(); }}
-               className={`w-9 h-9 md:w-11 md:h-11 rounded-xl bg-white/5 flex items-center justify-center text-base md:text-xl transition-all border border-white/5 ${btn.color}`}
+               className={`w-9 h-9 md:w-11 md:h-11 rounded-xl bg-white/5 flex items-center justify-center text-base md:text-xl transition-all active:scale-95 border border-white/5 ${btn.color}`}
+               title={btn.label}
              >
                {btn.icon}
              </button>

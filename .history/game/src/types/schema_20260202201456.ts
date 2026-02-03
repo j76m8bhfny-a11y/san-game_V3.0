@@ -655,26 +655,3 @@ export const InsuranceSchema = z.object({
 });
 
 export type Insurance = z.infer<typeof InsuranceSchema>;
-
-export interface ActiveJobState {
-  id: string;
-  title: string;
-  baseSalary: number;
-  sanCost: number;
-  region: RegionID;
-}
-
-// ✅ 确保导出 Insurance 的运行时状态
-export interface ActiveInsuranceState {
-  id: string;
-  name: string;
-  type: 'MEDICAL' | 'LIFE' | 'PROPERTY';
-  coverage: {
-    copayModifier: number;
-    emergencyCovered: boolean;
-    mentalCovered: boolean;
-    addictionCovered: boolean;
-  };
-  premium: number;
-  renewalTurn: number;
-}

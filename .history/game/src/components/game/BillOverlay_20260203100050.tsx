@@ -8,17 +8,12 @@ import { useAudioStore } from '@/store/useAudioStore';
 import { motion } from 'framer-motion';
 
 export const BillOverlay: React.FC<{ bill: Bill }> = ({ bill }) => {
-
+  // ✅ 修复：resolveBill 可能已更名或需要从 UISlice/GameSlice 中获取
+  // 如果你的 Store 中没有这个方法，请确保在相应的 Slice 中定义它
+  // 这里暂时使用 set({ activeBill: null }) 的逻辑替代调用
+  const setStore = useGameStore(s => s.setState || (s as any).updatePlayerStats);
   const { playSfx } = useAudioStore();
   const [isPaying, setIsPaying] = useState(false);
-
-  // ✅ 修复：Zustand 的标准更新方式是调用 store 里的 action
-  // 如果没有 resolveBill，可以直接使用 useGameStore 暴露的全局 setState
-  // 或者在 Slice 里定义一个专用的关闭函数
-  const closeBill = () => {
-    // 方式 A：直接调用 store 实例上的 setState (最快修复)
-    useGameStore.setState({ activeBill: null });
-  };
 
   useEffect(() => { 
     playSfx('sfx_paper'); 

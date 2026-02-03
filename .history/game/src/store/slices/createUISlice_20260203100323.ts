@@ -1,6 +1,5 @@
 import { StateCreator } from 'zustand';
-// ✅ 修复：从 schema 导入缺失的 Bill 类型
-import { GameNotification, Bill } from '@/types/schema';
+import { GameNotification } from '@/types/schema';
 
 // 定义 UI 切片的状态和方法
 export interface UISlice {
@@ -13,20 +12,20 @@ export interface UISlice {
   isHousingOpen: boolean;
   isHospitalOpen: boolean;
   isCryptoOpen: boolean;
-  isFaithOpen: boolean; 
+  isFaithOpen: boolean; // ✨ 新增
   isBankOpen: boolean;
   viewMode: 'MAP' | 'REGION';
 
   currentRoast: string | null;
   notifications: GameNotification[];
   viewingArchive: string | null;
-  activeBill: Bill | null; // ✅ 确保 Bill 类型已正确引用
 
   // --- Actions ---
   setShopOpen: (isOpen: boolean) => void;
   setInventoryOpen: (isOpen: boolean) => void;
   setArchiveOpen: (isOpen: boolean) => void;
   setMenuOpen: (isOpen: boolean) => void;
+  activeBill: Bill | null;
   setJobBoardOpen: (isOpen: boolean) => void;
   setHousingOpen: (isOpen: boolean) => void;
   setHospitalOpen: (isOpen: boolean) => void;
@@ -34,19 +33,19 @@ export interface UISlice {
   setRoast: (content: string | null) => void;
   setViewingArchive: (archiveId: string | null) => void;
   
-  // ✅ 补充：在接口中定义 closeBill，以便在 BillOverlay 中正确调用
-  closeBill: () => void;
-
+  // 复杂的 UI 逻辑：关闭吐槽弹窗并结束当前事件（用于查看档案后）
   dismissRoastAndEndEvent: () => void;
 
   // 通知系统
   addNotification: (message: string, type?: GameNotification['type']) => void;
   removeNotification: (id: string) => void;
   setViewMode: (mode: 'MAP' | 'REGION') => void;
-  setFaithOpen: (isOpen: boolean) => void; 
+  setFaithOpen: (isOpen: boolean) => void; // ✨ 新增
   setBankOpen: (isOpen: boolean) => void;
 }
 
+// 创建切片
+// 注意：这里的泛型 <any, [], [], UISlice> 表示我们将它合并到主 Store 中
 export const createUISlice: StateCreator<any, [], [], UISlice> = (set, get) => ({
   // --- Initial State ---
   isShopOpen: false,
@@ -57,13 +56,13 @@ export const createUISlice: StateCreator<any, [], [], UISlice> = (set, get) => (
   isHousingOpen: false,
   isHospitalOpen: false,
   isCryptoOpen: false,
-  isFaithOpen: false,
   isBankOpen: false,
   viewMode: 'REGION',
   currentRoast: null,
   notifications: [],
   viewingArchive: null,
   activeBill: null,
+  closeBill: () => set({ activeBill: null }),
 
   // --- Actions Implementation ---
   setShopOpen: (isOpen) => set({ isShopOpen: isOpen }),
@@ -71,6 +70,7 @@ export const createUISlice: StateCreator<any, [], [], UISlice> = (set, get) => (
   
   setArchiveOpen: (isOpen) => set({ 
     isArchiveOpen: isOpen,
+    // 如果关闭档案，同时清空当前查看的档案 ID
     viewingArchive: isOpen ? get().viewingArchive : null 
   }),
   
@@ -82,17 +82,14 @@ export const createUISlice: StateCreator<any, [], [], UISlice> = (set, get) => (
   setRoast: (content) => set({ currentRoast: content }),
   setViewingArchive: (archiveId) => set({ viewingArchive: archiveId }),
   setBankOpen: (isOpen) => set({ isBankOpen: isOpen }),
-  setFaithOpen: (isOpen) => set({ isFaithOpen: isOpen }),
-
-  // ✅ 规范化 Action 实现
-  closeBill: () => set({ activeBill: null }),
 
   dismissRoastAndEndEvent: () => {
     const { viewingArchive } = get();
+    // 如果当前正在查看档案（比如通过事件选项解锁并跳转的），关闭 Roast 后保持 Archive 开启
     if (viewingArchive) {
       set({
         currentRoast: null,
-        currentEvent: null, 
+        currentEvent: null, // 结束事件
         isArchiveOpen: true
       });
     } else {
@@ -104,10 +101,11 @@ export const createUISlice: StateCreator<any, [], [], UISlice> = (set, get) => (
   },
 
   addNotification: (message, type = 'info') => {
-    const id = Math.random().toString(36).substring(2, 9);
+    const id = Math.random().toString(36).substr(2, 9);
     set((state: any) => ({
       notifications: [...state.notifications, { id, message, type }]
     }));
+    // 3秒后自动移除
     setTimeout(() => get().removeNotification(id), 3000);
   },
 
@@ -117,4 +115,6 @@ export const createUISlice: StateCreator<any, [], [], UISlice> = (set, get) => (
     }));
   },
   setViewMode: (mode) => set({ viewMode: mode }),
+  isFaithOpen: false,
+  setFaithOpen: (isOpen) => set({ isFaithOpen: isOpen }),
 });

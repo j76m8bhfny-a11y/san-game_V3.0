@@ -7,10 +7,8 @@ const checkCondition = (state: GameState, condition: Ending['conditions']): bool
   // 1. 快捷访问路径
   const { metrics, identity, time, flags } = state.vitality;
 
-  // 2. 检查各项指标
-  // ✅ 修复：将 condition.minDay 修改为 condition.minTurn
-  if (condition.minTurn !== undefined && time.currentTurn < condition.minTurn) return false;
-  
+  // 2. 检查各项指标 (修正路径)
+  if (condition.minDay !== undefined && time.currentTurn < condition.minDay) return false;
   if (condition.maxHp !== undefined && metrics.hp > condition.maxHp) return false;
   
   if (condition.minSan !== undefined && metrics.san < condition.minSan) return false;
@@ -44,12 +42,12 @@ const checkCondition = (state: GameState, condition: Ending['conditions']): bool
 export const resolveEnding = (
     state: GameState, 
     allEndings: Ending[], 
-    maxTurns: number = 40, // ✅ 建议参数名也改为 maxTurns 以保持一致
+    maxDays: number = 40, 
     deathReason?: string
 ): string => {
   const { metrics, identity, time } = state.vitality;
 
-  // 1. 系统强制死亡判定
+  // 1. 系统强制死亡判定 (修正路径：state.hp -> metrics.hp)
   if (metrics.hp <= 0 || deathReason) {
       if (deathReason === 'DISMANTLED') return 'ED-03';
       if (deathReason === 'COP') return 'ED-04';
@@ -60,12 +58,13 @@ export const resolveEnding = (
       );
       if (deathEnding) return deathEnding.id;
 
+      // 修正路径：state.currentClass -> identity.currentClass
       return identity.currentClass === PlayerClass.Homeless ? 'ED-01' : 'ED-02';
   }
 
-  // 🔴 保护逻辑：如果还没到最后一周/回合，直接屏蔽所有“非死亡”结局
-  // ✅ 修正路径：使用 time.currentTurn 和传入的 maxTurns
-  if (time.currentTurn < maxTurns) {
+  // 🔴 保护逻辑：如果还没到最后一天，直接屏蔽所有“非死亡”结局
+  // 修正路径：state.day -> time.currentTurn
+  if (time.currentTurn < maxDays) {
       return ''; 
   }
 

@@ -25,6 +25,7 @@ export const BillSystem: GameSystem = {
       ? (housingData as unknown as Housing[]).find(h => h.id === activeHousingState.definitionId) || null
       : null;
 
+
     // =================================================================
     // ⚡️ 随机账单触发
     // =================================================================

@@ -4,7 +4,7 @@ import {
   PlayerClass, 
   LedgerCategory, 
   GameState,
-  ActiveInsuranceState 
+  ActiveInsuranceState // ✅ 确保导入
 } from '@/types/schema';
 import { CLASS_INITIAL_STATS } from './createPlayerSlice';
 import { calculateMedicalCost } from '@/logic/medical';
@@ -26,8 +26,6 @@ export interface VitalitySlice {
   cureDisease: (diseaseId: string) => void;
   advanceTurn: () => void;
   clearWeeklyLedger: () => void;
-  
-  // ✅ 医疗交互逻辑集中于此
   performTreatment: (serviceId: string) => { success: boolean; msg: string };
 }
 
@@ -73,7 +71,7 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
       prison: { inJail: false, crime: '', sentenceTurns: 0, turnsServed: 0, bailAmount: 0 },
       crypto: { isAccountOpen: false, btcPrice: 20000, positions: [], priceHistory: [], dailyNews: null },
       activeHousing: null,
-      activeInsurance: null, 
+      activeInsurance: null, // 初始化为空
       activeJob: null,
       inventory: [],
       bank: { activeLoans: [], lifetimeInterestPaid: 0 }
@@ -109,28 +107,31 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
     }
   })),
 
-  // ✅ 核心医疗逻辑 (保留)
   performTreatment: (serviceId) => {
+    // 类型转换确保 activeInsurance 是 ActiveInsuranceState
     const state = get() as GameState & VitalitySlice;
     const { vitality, activeInsurance } = state;
 
+    // 1. 查找服务
     const service = (hospitalData as any[]).find(s => s.id === serviceId);
     if (!service) return { success: false, msg: "服务不可用" };
 
+    // 2. 计算费用 (现在 activeInsurance 类型正确，不会报错)
     const { finalCost } = calculateMedicalCost(service, activeInsurance, vitality.identity.currentClass);
 
+    // 3. 检查资金
     if (vitality.metrics.gold < finalCost) {
         return { success: false, msg: "资金不足" };
     }
 
+    // 4. 扣费
     state.addTransaction('MEDICAL', -finalCost, `治疗: ${service.name}`);
 
-    // 风险判定: roll (0~1) >= riskRate 则成功
-    // 例如 riskRate 0.2, roll 0.1 (失败), roll 0.3 (成功)
-    // 成功率 = 1 - riskRate
+    // 5. 风险判定
     const riskRate = service.requirements?.riskRate || 0;
     const isSuccess = Math.random() >= riskRate;
     
+    // 6. 应用结果
     const effects = service.effects || {};
     const addictionGain = effects.addiction || 0;
 
@@ -145,7 +146,7 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
         state.modifyStats({
             hp: -10, 
             san: -5,
-            addiction: addictionGain // 失败也成瘾
+            addiction: addictionGain
         });
         return { success: false, msg: "治疗失败！产生了严重的排异反应，病情未见好转。" };
     }

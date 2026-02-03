@@ -1,12 +1,11 @@
 import { GameSystem, SystemResult, SystemContext } from '../types';
 import { triggerBill, calculateBillMitigation } from '@/logic/core';
-import type { VitalityMetrics, ActiveInsuranceState, Housing, ActiveHousingState } from '@/types/schema'; 
+import type { VitalityMetrics } from '@/types/schema';
 
 // 导入数据
 import billsData from '@/assets/data/bills.json';
 import globalData from '@/assets/data/global.json';
 import itemsData from '@/assets/data/items.json';
-import housingData from '@/assets/data/housing.json'; // ✅ 引入房产数据
 
 export const BillSystem: GameSystem = {
   id: 'BILL',
@@ -16,24 +15,40 @@ export const BillSystem: GameSystem = {
     const notes: string[] = [];
     const newTransactions: any[] = []; 
 
+    // 快捷访问路径
     const { metrics, identity } = state.vitality;
-    const activeInsurance = state.activeInsurance as ActiveInsuranceState | null;
-    
-    // ✅ 修复: 解析房产配置 (从 State 获取 Definition ID)
-    const activeHousingState = state.activeHousing as ActiveHousingState | null;
-    const housingConfig = activeHousingState 
-      ? (housingData as unknown as Housing[]).find(h => h.id === activeHousingState.definitionId) || null
-      : null;
+    const { activeInsurance, activeHousing } = state; // ✅ 获取保险状态
 
     // =================================================================
-    // ⚡️ 随机账单触发
+    // 🛡️ 核心修复 1: 自动扣除保险费 (Recurring Premium)
+    // =================================================================
+    if (activeInsurance && activeInsurance.weeklyCost > 0) {
+        // 检查余额是否足够 (如果不足，通常保险会失效或欠费，这里简化为直接扣成负数或强制扣除)
+        // 既然是 System 结算，我们通常允许扣成负数，或者在 log 里提示
+        
+        newTransactions.push({
+            id: Math.random().toString(36).substring(2, 9),
+            turn: state.vitality.time.currentTurn,
+            category: 'MEDICAL', // 归类为医疗/保险支出
+            amount: -activeInsurance.weeklyCost,
+            description: `保险续费: ${activeInsurance.name}`,
+            timestamp: Date.now()
+        });
+        
+        logs.push(`自动扣除保险费: $${activeInsurance.weeklyCost}`);
+    }
+
+    // =================================================================
+    // ⚡️ 原有逻辑: 随机账单触发
     // =================================================================
 
+    // 准备数据 (车辆标签)
     const vehicleTags = (state.inventory || [])
       .map((id: string) => (itemsData as any[]).find(i => i.id === id)?.tags || [])
       .flat()
       .filter((t: string) => t.startsWith('VEHICLE'));
 
+    // 触发账单
     const bill = triggerBill(
       metrics.gold, 
       metrics.san, 
@@ -41,17 +56,18 @@ export const BillSystem: GameSystem = {
       billsData as any, 
       globalData.billConfig,
       { 
-        housing: housingConfig, // ✅ 传入解析后的配置对象
+        housing: activeHousing as any, 
         vehicleTags 
       }
     );
 
+    // 如果没账单，直接返回 (带上保险费的事务)
     if (!bill) {
       return { updates: {}, logs, notes, newTransactions };
     }
 
-    // 计算减免 (现在传入正确的 housingConfig)
-    const mitigation = calculateBillMitigation(bill, housingConfig, activeInsurance);
+    // 计算减免
+    const mitigation = calculateBillMitigation(bill, activeHousing as any, activeInsurance);
     const finalAmount = mitigation.finalAmount;
 
     if (mitigation.mitigated) {
@@ -59,6 +75,7 @@ export const BillSystem: GameSystem = {
     }
     logs.push(`收到账单: ${bill.name} (${finalAmount} Gold)`);
 
+    // 生成账单事务
     newTransactions.push({
       id: Math.random().toString(36).substring(2, 9),
       turn: state.vitality.time.currentTurn,
@@ -68,11 +85,13 @@ export const BillSystem: GameSystem = {
       timestamp: Date.now()
     });
 
+    // 构建结果
     const result: SystemResult = {
       updates: {
         activeBill: bill,
         vitality: {
           metrics: {
+            // gold 由事务处理
             hp: metrics.hp + (bill.effects?.hp || 0),
             san: metrics.san + (bill.effects?.san || 0),
           } as Partial<VitalityMetrics>

@@ -26,6 +26,22 @@ export const BillSystem: GameSystem = {
       : null;
 
     // =================================================================
+    // 🛡️ 自动扣除保险费
+    // =================================================================
+    if (activeInsurance && activeInsurance.premium > 0) {
+        newTransactions.push({
+            id: Math.random().toString(36).substring(2, 9),
+            turn: state.vitality.time.currentTurn,
+            category: 'MEDICAL', 
+            amount: -activeInsurance.premium, 
+            description: `保险续费: ${activeInsurance.name}`,
+            timestamp: Date.now()
+        });
+        
+        logs.push(`自动扣除保险费: $${activeInsurance.premium}`);
+    }
+
+    // =================================================================
     // ⚡️ 随机账单触发
     // =================================================================
 

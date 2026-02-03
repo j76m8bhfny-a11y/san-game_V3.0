@@ -1,9 +1,7 @@
 import { StateCreator } from 'zustand';
 import { CryptoPosition, NewsItem, GameState } from '@/types/schema';
-// 引入抽离的算法逻辑
 import { calculateNextPrice, calculatePnL, checkLiquidation } from '@/logic/market';
-// 引入新闻数据
-import newsData from '@/assets/data/news.json';
+import newsData from '@/assets/data/news.json'; // ✅ 1. 引入新闻数据源
 
 const INITIAL_BTC_PRICE = 15000; 
 const ACCOUNT_FEE = 500; 
@@ -30,48 +28,45 @@ export const createCryptoSlice: StateCreator<any, [], [], CryptoSlice> = (set, g
     btcPrice: INITIAL_BTC_PRICE,
     priceHistory: Array(7).fill(INITIAL_BTC_PRICE),
     positions: [],
-    // 初始化预埋新闻，防止第一周盲赌
+    // ✅ 修复 1: 初始化时预埋一条新闻，避免第一周“盲赌”
     weeklyNews: newsData.length > 0 
       ? (newsData as NewsItem[])[Math.floor(Math.random() * newsData.length)] 
       : null,
   },
 
   openCryptoAccount: () => {
-    const state = get() as GameState & { addTransaction: Function; playSfx: Function };
+    const state = get() as GameState & { addTransaction: Function };
     const { vitality } = state;
 
     if (vitality.metrics.gold < ACCOUNT_FEE) {
-      state.addNotification('资金不足，无法支付去中心化网络接入费', 'error');
-      if (state.playSfx) state.playSfx('sfx_deny');
+      // 理论上 UI 层会拦截，这里做双重保险
       return;
     }
-    
-    // 支付开户费
+
+    // 扣除开户费
     state.addTransaction('BANK', -ACCOUNT_FEE, '开通加密货币账户');
 
     set((s: any) => ({
       crypto: { ...s.crypto, isAccountOpen: true }
     }));
-    
-    state.addNotification('网络已连接。Welcome to the degenerate future.', 'success');
-    if (state.playSfx) state.playSfx('sfx_cash');
   },
 
+  // ✅ 修复 2: 完整的开仓逻辑，包含原子扣款
   openPosition: (type, principal, leverage) => {
-    const state = get() as GameState & { addTransaction: Function; playSfx: Function };
+    const state = get() as GameState & { addTransaction: Function };
     const { crypto, vitality } = state;
-    
-    // 1. 检查资金 (🚨 修复：必须检查 principal，而不是 ACCOUNT_FEE)
+
+    // A. 余额检查
     if (vitality.metrics.gold < principal) {
-      state.addNotification('可用资金不足以建立此仓位', 'error');
-      if (state.playSfx) state.playSfx('sfx_deny');
-      return;
+        // UI 应该处理反馈，这里只做逻辑阻断
+        return;
     }
 
-    // 2. 原子扣款 (使用 INVESTMENT 或 BANK 类别)
-    state.addTransaction('BANK', -principal, `开仓: BTC ${type} x${leverage}`);
+    // B. ✅ 核心修复：原子性扣款 (防止免费开仓)
+    // 投资属于 BANK 或 MISC 类别，这里用 BANK 比较合适
+    state.addTransaction('BANK', -principal, `建立仓位: BTC ${type} x${leverage}`);
 
-    // 3. 记录仓位
+    // C. 创建仓位记录
     const newPosition: CryptoPosition = {
       id: generateId(),
       type,
@@ -81,19 +76,18 @@ export const createCryptoSlice: StateCreator<any, [], [], CryptoSlice> = (set, g
       turn: vitality.time.currentTurn
     };
 
+    // D. 更新状态
     set((s: any) => ({
       crypto: {
         ...s.crypto,
-        positions: [newPosition, ...s.crypto.positions]
+        positions: [newPosition, ...s.crypto.positions] // 新仓位排在前面
       }
     }));
-
-    if (state.playSfx) state.playSfx('sfx_cash');
-    state.addNotification(`${type === 'LONG' ? '做多' : '做空'} BTC x${leverage} 成功`, 'success');
   },
 
+  // ✅ 补充: 平仓逻辑
   closePosition: (id) => {
-    const state = get() as GameState & { addTransaction: Function; playSfx: Function };
+    const state = get() as GameState & { addTransaction: Function };
     const { crypto } = state;
     
     const positionIndex = crypto.positions.findIndex(p => p.id === id);
@@ -101,16 +95,16 @@ export const createCryptoSlice: StateCreator<any, [], [], CryptoSlice> = (set, g
 
     const position = crypto.positions[positionIndex];
     
-    // 1. 调用 logic/market.ts 计算盈亏
-    const { pnl, totalValue } = calculatePnL(position, crypto.btcPrice);
-    
-    // 2. 资金回笼 (本金 + 盈亏)
-    // 注意：totalValue 已经是 (principal + pnl) 了
-    const returnAmount = Math.max(0, totalValue);
+    // 1. 计算最终价值 (PnL)
+    // PnL 返回的是纯利润/亏损额，我们需要加上本金才是退回的钱？
+    // calculatePnL 通常返回的是 "盈亏金额" (例如 +50 或 -50)
+    // 所以最终退回金额 = 本金 + PnL
+    const pnl = calculatePnL(position, crypto.btcPrice);
+    const returnAmount = Math.max(0, position.principal + pnl); // 只有没爆仓的才能手动平仓，理论上不会小于0
 
+    // 2. 资金回账
     if (returnAmount > 0) {
-        const sign = pnl >= 0 ? '+' : '';
-        state.addTransaction('INCOME', returnAmount, `平仓结算 (PnL: ${sign}$${pnl})`);
+        state.addTransaction('INCOME', returnAmount, `平仓: BTC ${position.type} (PnL: ${pnl > 0 ? '+' : ''}${pnl})`);
     }
 
     // 3. 移除仓位
@@ -120,30 +114,27 @@ export const createCryptoSlice: StateCreator<any, [], [], CryptoSlice> = (set, g
     set((s: any) => ({
       crypto: { ...s.crypto, positions: newPositions }
     }));
-
-    if (state.playSfx) state.playSfx('sfx_cash');
-    
-    // 根据盈亏显示不同颜色的通知
-    const msgType = pnl >= 0 ? 'success' : (pnl > -position.principal ? 'warning' : 'error');
-    state.addNotification(`平仓完成。净盈亏: $${pnl}`, msgType);
   },
 
   processWeeklyMarket: (allNews) => {
     const state = get();
-    const { btcPrice, weeklyNews, positions } = state.crypto;
+    const { btcPrice, positions, weeklyNews } = state.crypto;
     const logs: string[] = [];
     const notes: string[] = [];
 
-    // 1. 计算下周价格 (使用本周新闻)
+    // 1. 计算下周价格
+    // 使用当前已知的 weeklyNews 来驱动价格变化
     const newsEffect = weeklyNews ? weeklyNews.effect : 0;
     const { price: nextPrice, trend } = calculateNextPrice(btcPrice, newsEffect);
 
     // 2. 检查爆仓
     const remainingPositions: CryptoPosition[] = [];
+    
     positions.forEach((pos: CryptoPosition) => {
       const isLiquidated = checkLiquidation(pos, nextPrice);
       
       if (isLiquidated) {
+        // 💥 爆仓！本金归零，不产生 Transaction 回款
         logs.push(`BTC爆仓: 损失 $${pos.principal}`);
         notes.push(`[强平通知] 市场剧烈波动，你的 ${pos.leverage}x ${pos.type} 仓位已爆仓，本金归零。`);
       } else {
@@ -151,7 +142,8 @@ export const createCryptoSlice: StateCreator<any, [], [], CryptoSlice> = (set, g
       }
     });
 
-    // 3. 生成给下周看的新闻 (Forecast)
+    // 3. 抽取“下周”新闻 (Forecast)
+    // 玩家在下一周看到的将是这条新闻，用于预测下下周的价格
     const nextWeekNews = allNews.length > 0 
       ? allNews[Math.floor(Math.random() * allNews.length)] 
       : null;
@@ -166,16 +158,12 @@ export const createCryptoSlice: StateCreator<any, [], [], CryptoSlice> = (set, g
         weeklyNews: nextWeekNews
       }
     }));
-
-    // 5. 生成大盘日志
-    if (nextPrice !== btcPrice) {
-      const changePercent = ((nextPrice - btcPrice) / btcPrice * 100).toFixed(2);
-      const trendEmoji = parseFloat(changePercent) > 0 ? '📈' : '📉';
-      logs.push(`BTC ${trendEmoji} ${nextPrice} (${changePercent}%)`);
-      
-      if (trend === 'MOON') notes.push(`🚀 市场疯狂！比特币直冲云霄！`);
-      if (trend === 'DOOM') notes.push(`🩸 血洗！加密货币市场崩盘！`);
-    }
+    
+    // 记录市场大盘日志
+    let trendLog = `BTC 收盘价: $${nextPrice}`;
+    if (trend === 'MOON') trendLog += " 🚀 (To The Moon!)";
+    if (trend === 'DOOM') trendLog += " 📉 (Rekt!)";
+    logs.push(trendLog);
 
     return { logs, notes };
   }

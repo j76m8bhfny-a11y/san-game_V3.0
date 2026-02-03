@@ -1,7 +1,6 @@
 import { GameSystem, SystemResult } from '../types';
-import { GameState, Job, Item } from '@/types/schema'; // ✅ 确保导入 Item 类型
+import { GameState, Job } from '@/types/schema';
 import jobsData from '@/assets/data/jobs.json';
-import itemsData from '@/assets/data/items.json'; 
 
 export const JobSystem: GameSystem = {
   id: 'JOB_SYSTEM',
@@ -19,10 +18,6 @@ export const JobSystem: GameSystem = {
 
     const currentSan = vitality.metrics.san;
     
-    // 强制类型断言，防止 TS 因 JSON 推断错误而报红
-    // (修复 JSON 后，这里的 as Item[] 其实是多余的，但能提供双重保险)
-    const allItems = itemsData as unknown as Item[];
-
     // --- 核心逻辑: 灵视效率曲线 ---
     let efficiency = 1.0;
     let statusText = "正常";
@@ -41,16 +36,6 @@ export const JobSystem: GameSystem = {
       statusText = "灵视干扰 (20%)";
     }
 
-    // 辅助函数：检查物品需求
-    const hasRequiredItem = (req: string) => {
-      return inventory.some(invId => {
-        // 使用强类型的 allItems 数组进行查找
-        const itemDef = allItems.find(i => i.id === invId);
-        if (!itemDef) return false;
-        return itemDef.id === req || (itemDef.tags && itemDef.tags.includes(req));
-      });
-    };
-
     // 遍历所有工作进行结算
     let totalIncome = 0;
     let totalHpCost = 0;
@@ -60,29 +45,25 @@ export const JobSystem: GameSystem = {
       const job = jobsData.find(j => j.id === jobId) as unknown as Job;
       if (!job) return;
 
-      // =================================================================
-      // 🛡️ 资格复核 (Post-Hiring Check)
-      // =================================================================
+      // === ✅ 新增: 每周资格复核 (Post-Hiring Check) ===
       
-      // 1. 复核房产
+      // 1. 复核房产 (如需房产且当前无房或房产不在该区域)
       if (job.requiresHousing) {
         if (!activeHousing || activeHousing.region !== job.region) {
             result.logs.push(`【停薪】${job.title}: 失去固定住所或搬离该区域。`);
-            result.notes.push(`工作异常: ${job.title} 因住所问题暂停发放工资。`);
-            return; 
+            // 可以在这里触发自动离职逻辑，但作为 System 最好只做结算
+            return; // 跳过发薪
         }
       }
 
-      // 2. 复核道具
+      // 2. 复核道具 (如车卖了)
       if (job.requiredItem) {
-          if (!hasRequiredItem(job.requiredItem)) {
+          const hasItem = inventory.some(itemId => itemId === job.requiredItem || itemId.includes(job.requiredItem!));
+          if (!hasItem) {
               result.logs.push(`【停薪】${job.title}: 缺少必要工具 (${job.requiredItem})。`);
-              result.notes.push(`工作异常: ${job.title} 因缺少工具暂停发放工资。`);
-              return; 
+              return; // 跳过发薪
           }
       }
-
-      // =================================================================
 
       // 3. 计算 HP 消耗
       if (vitality.metrics.hp <= totalHpCost + job.hpCost) {
@@ -93,7 +74,9 @@ export const JobSystem: GameSystem = {
       totalHpCost += job.hpCost;
       totalSanCost += job.sanCost;
 
-      // 4. 计算工资
+      // === ✅ 优化: 收益计算逻辑 ===
+      
+      // 基础工资结算 (总是发生，除非上方被拦截)
       const actualSalary = Math.floor(job.baseSalary * efficiency);
       totalIncome += actualSalary;
       
@@ -106,9 +89,10 @@ export const JobSystem: GameSystem = {
         timestamp: Date.now()
       });
 
-      // 5. 额外事件: 高灵视事故
+      // 额外事件: 高灵视事故 (独立判定，不再吞没工资)
+      // 概率降低: 30% -> 15%
       if (currentSan > 80 && Math.random() < 0.15) {
-        const penalty = Math.floor(job.baseSalary * 0.25);
+        const penalty = Math.floor(job.baseSalary * 0.25); // 罚款基数为底薪的 25%
         result.newTransactions!.push({
           id: Math.random().toString(),
           turn: vitality.time.currentTurn,

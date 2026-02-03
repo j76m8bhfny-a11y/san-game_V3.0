@@ -22,8 +22,8 @@ const REGION_DISEASES: Record<RegionID, string[]> = {
  * 返回：触发的疾病 ID (如果没有则返回 null)
  */
 export const checkDailyDisease = (state: GameState): string | null => {
-  const { currentRegion, vitality, activeHousing, activeJob } = state;
-  const { metrics, identity } = vitality;
+  const { currentRegion, vitality, activeHousing } = state;
+  const { metrics } = vitality;
   
   // 1. 已经有急性病，不再触发新病 (避免暴毙)
   const hasAcute = vitality.activeDiseases.some(dId => dId.includes('ACUTE'));
@@ -42,7 +42,10 @@ export const checkDailyDisease = (state: GameState): string | null => {
 
   // -- 修正因子 B: 职业危害 --
   // 如果工作是高危类型 (假设 Job 数据里有 dangerLevel，这里简化判断)
-  if (activeJob && ['MINER', 'TEST_SUBJECT'].includes(activeJob.id)) {
+  const highRiskJobIds = ['MINER', 'TEST_SUBJECT'];
+  const hasHighRiskJob = vitality.activeJobs.some(id => highRiskJobIds.includes(id));
+
+  if (hasHighRiskJob) {
     risk += 0.05;
   }
 

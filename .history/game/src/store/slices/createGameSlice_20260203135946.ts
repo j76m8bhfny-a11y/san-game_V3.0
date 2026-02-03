@@ -168,6 +168,11 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
         store.triggerEnding('ENDING_DEATH_HP'); // 假设: 因过劳/疾病死亡
         return; // ⛔️ 熔断：不显示周报
     }
+    
+    if (san <= 0) {
+        store.triggerEnding('ENDING_DEATH_SAN'); // 假设: 因疯狂/自杀死亡
+        return; // ⛔️ 熔断：不显示周报
+    }
 
     // =================================================================
 

@@ -115,39 +115,16 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
     }
 
     // 3. 深度应用 Vitality 更新
-    set((prev: any) => {
-        // 先计算出原本会变成多少
-        const prevMetrics = prev.vitality.metrics;
-        const updateMetrics = result.updates.vitality?.metrics || {};
-        
-        // 原始计算结果
-        let rawSan = (updateMetrics.san !== undefined) ? updateMetrics.san : prevMetrics.san;
-        let rawHp = (updateMetrics.hp !== undefined) ? updateMetrics.hp : prevMetrics.hp;
-
-        // 🛡️ 数值守门员 (Clamping)
-        // 灵视值 (SAN): 锁定在 0-100。0 = 麻木(安全), 100 = 洞察(危险)
-        const finalSan = Math.max(0, Math.min(100, rawSan));
-        
-        // 生命值 (HP): 假设 HP 也是 0-100 (或者你有其他上限配置)
-        const finalHp = Math.max(0, Math.min(100, rawHp)); 
-
-        return {
-            ...prev,
-            ...result.updates,
-            vitality: result.updates.vitality ? {
-                ...prev.vitality,
-                ...result.updates.vitality,
-                metrics: { 
-                    ...prev.vitality.metrics, 
-                    ...updateMetrics,
-                    // 覆盖掉可能越界的数值，写入钳制后的最终值
-                    san: finalSan, 
-                    hp: finalHp
-                },
-                identity: { ...prev.vitality.identity, ...(result.updates.vitality.identity || {}) }
-            } : prev.vitality
-        };
-    });
+    set((prev: any) => ({
+      ...prev,
+      ...result.updates,
+      vitality: result.updates.vitality ? {
+        ...prev.vitality,
+        ...result.updates.vitality,
+        metrics: { ...prev.vitality.metrics, ...(result.updates.vitality.metrics || {}) },
+        identity: { ...prev.vitality.identity, ...(result.updates.vitality.identity || {}) }
+      } : prev.vitality
+    }));
 
     // =================================================================
     // ☠️ 生存熔断机制 (Death Check)
@@ -168,8 +145,11 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
         store.triggerEnding('ENDING_DEATH_HP'); // 假设: 因过劳/疾病死亡
         return; // ⛔️ 熔断：不显示周报
     }
-
-    // =================================================================
+    
+    if (san <= 0) {
+        store.triggerEnding('ENDING_DEATH_SAN'); // 假设: 因疯狂/自杀死亡
+        return; // ⛔️ 熔断：不显示周报
+    }
 
     // 4. 存储报表并打开 UI
     set({ weeklyReport: result.report });

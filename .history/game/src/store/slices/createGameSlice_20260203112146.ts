@@ -115,61 +115,16 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
     }
 
     // 3. 深度应用 Vitality 更新
-    set((prev: any) => {
-        // 先计算出原本会变成多少
-        const prevMetrics = prev.vitality.metrics;
-        const updateMetrics = result.updates.vitality?.metrics || {};
-        
-        // 原始计算结果
-        let rawSan = (updateMetrics.san !== undefined) ? updateMetrics.san : prevMetrics.san;
-        let rawHp = (updateMetrics.hp !== undefined) ? updateMetrics.hp : prevMetrics.hp;
-
-        // 🛡️ 数值守门员 (Clamping)
-        // 灵视值 (SAN): 锁定在 0-100。0 = 麻木(安全), 100 = 洞察(危险)
-        const finalSan = Math.max(0, Math.min(100, rawSan));
-        
-        // 生命值 (HP): 假设 HP 也是 0-100 (或者你有其他上限配置)
-        const finalHp = Math.max(0, Math.min(100, rawHp)); 
-
-        return {
-            ...prev,
-            ...result.updates,
-            vitality: result.updates.vitality ? {
-                ...prev.vitality,
-                ...result.updates.vitality,
-                metrics: { 
-                    ...prev.vitality.metrics, 
-                    ...updateMetrics,
-                    // 覆盖掉可能越界的数值，写入钳制后的最终值
-                    san: finalSan, 
-                    hp: finalHp
-                },
-                identity: { ...prev.vitality.identity, ...(result.updates.vitality.identity || {}) }
-            } : prev.vitality
-        };
-    });
-
-    // =================================================================
-    // ☠️ 生存熔断机制 (Death Check)
-    // =================================================================
-    // 在状态更新后，立即检查是否存活。如果死了，不再显示周报。
-    
-    const freshState = get() as GameState; // 获取最新状态
-    const { hp, san } = freshState.vitality.metrics;
-    
-    // A. 检查是否有子系统直接触发了 Ending (例如 BankSystem 触发的牢底坐穿)
-    if (freshState.ending) {
-        return; // 直接退出，App.tsx 会渲染 GameEnding
-    }
-
-    // B. 检查数值死亡 (HP/SAN 耗尽)
-    // 注意：请确保 endingId 与你的 endings.json 或常量定义一致
-    if (hp <= 0) {
-        store.triggerEnding('ENDING_DEATH_HP'); // 假设: 因过劳/疾病死亡
-        return; // ⛔️ 熔断：不显示周报
-    }
-
-    // =================================================================
+    set((prev: any) => ({
+      ...prev,
+      ...result.updates,
+      vitality: result.updates.vitality ? {
+        ...prev.vitality,
+        ...result.updates.vitality,
+        metrics: { ...prev.vitality.metrics, ...(result.updates.vitality.metrics || {}) },
+        identity: { ...prev.vitality.identity, ...(result.updates.vitality.identity || {}) }
+      } : prev.vitality
+    }));
 
     // 4. 存储报表并打开 UI
     set({ weeklyReport: result.report });

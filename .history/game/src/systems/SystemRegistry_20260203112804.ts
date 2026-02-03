@@ -55,32 +55,23 @@ export const runTurnSettlement = (currentState: GameState) => {
 
       // A. 收集 Vitality 更新 (增加安全过滤)
       if (result.updates.vitality) {
-        const rawUpdates = result.updates.vitality;
-        
-        // 创建一个用于合并的 updates 对象，避免直接修改原始引用
-        // 并处理 gold 剥离逻辑
-        let safeUpdates = rawUpdates;
+        const vitUpdates = result.updates.vitality;
 
         // 🔥 核心修复：防御性剥离 gold 字段
-        if (rawUpdates.metrics && typeof rawUpdates.metrics.gold !== 'undefined') {
+        // 防止子系统既修改了 gold 又提交了 transaction 导致双重计算
+        if (vitUpdates.metrics && typeof vitUpdates.metrics.gold !== 'undefined') {
           // 我们只信任 transaction 带来的金钱变动
-          const { gold, ...restMetrics } = rawUpdates.metrics;
-          
-          // 构建一个新的 updates 对象，覆盖 metrics
-          safeUpdates = {
-            ...rawUpdates,
-            metrics: restMetrics as any // 👈 强制断言，允许缺少 gold，因为 mergeVitality 能处理
-          };
+          const { gold, ...safeMetrics } = vitUpdates.metrics;
+          vitUpdates.metrics = safeMetrics;
         }
 
-        // 使用处理后的 safeUpdates 进行合并
-        tempState.vitality = mergeVitality(tempState.vitality, safeUpdates);
+        tempState.vitality = mergeVitality(tempState.vitality, vitUpdates);
         
         // 同步到最终更新列表
         if (!accumulatedUpdates.vitality) {
              accumulatedUpdates.vitality = JSON.parse(JSON.stringify(currentState.vitality));
         }
-        accumulatedUpdates.vitality = mergeVitality(accumulatedUpdates.vitality, safeUpdates);
+        accumulatedUpdates.vitality = mergeVitality(accumulatedUpdates.vitality, vitUpdates);
       }
 
       // B. 收集其他状态更新

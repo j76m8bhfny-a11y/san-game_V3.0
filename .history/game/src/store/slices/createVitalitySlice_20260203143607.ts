@@ -11,7 +11,6 @@ export interface VitalitySlice {
   addTransaction: (category: LedgerCategory, amount: number, description: string) => void;
   modifyStats: (changes: { 
     hp?: number; san?: number; 
-    hunger?: number;
     maxHp?: number; maxSan?: number;
     addiction?: number; resistance?: number;
   }) => void;
@@ -25,7 +24,7 @@ const generateId = () => Math.random().toString(36).substring(2, 9);
 
 export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (set, get) => ({
   vitality: {
-    metrics: { hunger: 100, maxHunger: 100,hp: 100, maxHp: 100, san: 100, maxSan: 100, gold: 0, creditScore: 650, addiction: 0, resistance: 0 },
+    metrics: { hp: 100, maxHp: 100, san: 100, maxSan: 100, gold: 0, creditScore: 650, addiction: 0, resistance: 0 },
     identity: { currentClass: PlayerClass.Homeless, points: { red: 0, wolf: 0, old: 0 } },
     time: { currentTurn: 1, totalTurns: 1 },
     activeDiseases: [],
@@ -54,8 +53,6 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
           maxHp: config.hp, // 假设初始 HP 即为上限
           san: config.san,
           maxSan: 100,
-          hunger: 100,
-          maxHunger: 100,
           resistance: 0, // 可以根据 config 扩展
           creditScore: selectedClass === PlayerClass.Homeless ? 500 : 650
         },

@@ -33,38 +33,34 @@ export const StatRuleSystem: GameSystem = {
         // 使用局部变量引用，TS 就能确认它非空
         const vitMetrics = result.updates.vitality.metrics;
 
-        // =================================================================
-        // 1. ✅ 饥饿循环 (Hunger Cycle)
-        // =================================================================
-    
-        // 配置参数
-        const HUNGER_DECAY_PER_TURN = 20; // 每周消耗20点 (5周不吃必死)
-        const STARVATION_DAMAGE = 15;     // 饥饿度为0时的扣血量
-
-        // 获取当前值 (优先取 metrics 中的原始值)
-        const currentHunger = metrics.hunger ?? 100;
-        const currentHp = metrics.hp;
-
-        // 计算新饥饿值 (钳制在 0 附近，不为负)
-        let newHunger = Math.max(0, currentHunger - HUNGER_DECAY_PER_TURN);
-        let hpLoss = 0;
-
-        if (newHunger === 0) {
-            // 如果已经是0，或者扣减后变成了0 -> 触发饥饿伤害
-            hpLoss = STARVATION_DAMAGE;
-            result.logs.push(`⚠️ 极度饥饿: 生命流失 -${hpLoss}`);
-            result.notes.push("你快饿死了，快去买点吃的！");
-        } else {
-            result.logs.push(`饱腹感下降: -${HUNGER_DECAY_PER_TURN} (剩余: ${newHunger})`);
-        }
-
-        // 写入更新
-        vitMetrics.hunger = newHunger;
-        if (hpLoss > 0) {
-            vitMetrics.hp = Math.max(0, currentHp - hpLoss);
-        }
+        // 计算新的 HP
+        const currentHpLoss = (vitMetrics.hp !== undefined) 
+            ? (metrics.hp - vitMetrics.hp) 
+            : 0;
+            
+        vitMetrics.hp = Math.max(0, metrics.hp - baseMetabolismCost);
+        
+        result.logs.push(`基础代谢: HP -${baseMetabolismCost}`);
     }
 
+    // =================================================================
+    // 2. 疾病检查 (Disease Check)
+    // =================================================================
+    const newDiseaseId = checkDailyDisease(state);
+
+    if (newDiseaseId) {
+        const currentDiseases = activeDiseases || [];
+        if (!currentDiseases.includes(newDiseaseId)) {
+            // 初始化 vitality
+            if (!result.updates.vitality) result.updates.vitality = {};
+            
+            // ✅ 直接赋值，无需担心覆盖 metrics (SystemRegistry 会处理合并)
+            result.updates.vitality.activeDiseases = [...currentDiseases, newDiseaseId];
+            
+            result.notes.push(`【健康警报】你感到身体不适... (检测到: ${newDiseaseId})`);
+            result.logs.push(`染上疾病: ${newDiseaseId}`);
+        }
+    }
 
     // =================================================================
     // 2.1 [新增] 现有疾病症状发作 (Ongoing Disease Effects)
@@ -99,27 +95,6 @@ export const StatRuleSystem: GameSystem = {
 
         result.logs.push(`疾病折磨: HP -${diseaseHpLoss}, SAN -${diseaseSanLoss}`);
     }
-
-    // =================================================================
-    // 2. 疾病检查 (Disease Check)
-    // =================================================================
-    const newDiseaseId = checkDailyDisease(state);
-
-    if (newDiseaseId) {
-        const currentDiseases = activeDiseases || [];
-        if (!currentDiseases.includes(newDiseaseId)) {
-            // 初始化 vitality
-            if (!result.updates.vitality) result.updates.vitality = {};
-            
-            // ✅ 直接赋值，无需担心覆盖 metrics (SystemRegistry 会处理合并)
-            result.updates.vitality.activeDiseases = [...currentDiseases, newDiseaseId];
-            
-            result.notes.push(`【健康警报】你感到身体不适... (检测到: ${newDiseaseId})`);
-            result.logs.push(`染上疾病: ${newDiseaseId}`);
-        }
-    }
-
-    
 
     // =================================================================
     // 3. SAN 值惩罚 (Mental Break)

@@ -1,5 +1,6 @@
 import { GameSystem, SystemResult } from '../types';
 import { GameState, PlayerClass } from '@/types/schema';
+// ✅ 优化 3: 引入 bank.ts 中的利息计算函数，消除冗余
 import { processTurnInterest } from '@/logic/bank';
 
 export const BankSystem: GameSystem = {
@@ -19,14 +20,15 @@ export const BankSystem: GameSystem = {
     const currentTurn = vitality.time.currentTurn;
     let totalScoreChange = 0;
     
-    // ✅ 修复 1: 修正解构属性名 (totalInterest -> totalTurnInterest)
-    const { updatedLoans, totalTurnInterest } = processTurnInterest(bank.activeLoans, currentTurn);
+    // ✅ 优化 3: 使用统一的利息计算逻辑
+    // processTurnInterest 返回更新后的 loans 副本和总利息
+    const { updatedLoans, totalInterest } = processTurnInterest(bank.activeLoans, currentTurn);
     
-    // 我们需要进一步处理逾期状态
+    // 我们需要进一步处理逾期状态 (Overdue Logic)
+    // 注意: processTurnInterest 内部只负责算钱，不负责改 overdueTurns，所以这里我们要基于 updatedLoans 继续处理
     const processedLoans = [...updatedLoans];
     const loansToRemove: string[] = []; 
 
-    // ... (后续逻辑保持不变)
     processedLoans.forEach((loan) => {
       const isOverdue = currentTurn > loan.dueTurn;
       
@@ -57,12 +59,15 @@ export const BankSystem: GameSystem = {
            }
         } 
         
-        // === 普通贷款催收逻辑 ===
+        // === 普通贷款催收逻辑 (逻辑遮蔽修复版) ===
         else {
+          // Stage 1: 信用污点 (1周)
           if (loan.overdueTurns === 1) {
             result.logs.push(`贷款逾期警告: 信用评分下降。`);
             totalScoreChange -= 30;
           }
+          
+          // Stage 2: 暴力催收 (2-3周)
           else if (loan.overdueTurns <= 3) {
             result.logs.push(`【暴力催收】讨债人打断了你的肋骨！`);
             result.updates.vitality = {
@@ -73,6 +78,10 @@ export const BankSystem: GameSystem = {
             } as any;
             totalScoreChange -= 50;
           }
+          
+          // Stage 3: 强制划扣 (4-8周)
+          // ✅ 漏洞 2 修复: 使用严格区间，防止逻辑遮蔽
+          // 并且采纳建议，将期限延长至 8 周
           else if (loan.overdueTurns > 3 && loan.overdueTurns <= 8) {
              const seizeAmount = Math.min(vitality.metrics.gold, 5000); 
              if (seizeAmount > 0) {
@@ -92,6 +101,9 @@ export const BankSystem: GameSystem = {
              }
              totalScoreChange -= 80;
           }
+          
+          // Stage 4: 牢底坐穿 (>8周)
+          // ✅ 此时明确 > 8 才会触发，逻辑清晰
           else if (loan.overdueTurns > 8) {
              result.logs.push(`【司法介入】因长期恶意拖欠，你被逮捕了。`);
              (result.updates as any).prison = {
@@ -106,6 +118,7 @@ export const BankSystem: GameSystem = {
         }
         
       } else {
+        // 按时还款奖励
         totalScoreChange += 1;
       }
     });

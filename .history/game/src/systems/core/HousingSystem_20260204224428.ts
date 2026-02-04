@@ -3,7 +3,6 @@ import { Housing, LedgerRecord, PlayerClass } from '@/types/schema';
 import housingData from '@/assets/data/housing.json';
 import bankRules from '@/assets/data/rules/bankRules.json';
 import housingRules from '@/assets/data/rules/housingRules.json';
-import { calculateMortgagePayment } from '@/logic/bank';
 
 
 export const HousingSystem: GameSystem = {
@@ -116,25 +115,26 @@ export const HousingSystem: GameSystem = {
             
             // [New Configured Logic]
             // 读取 JSON 配置 (注意处理浮点数精度问题，这里保留原有 ceil 逻辑)
+            const repaymentRate = bankRules.mortgage.weeklyPrincipalRate;
+            const serviceFee = bankRules.mortgage.weeklyServiceFee;
+
+            const weeklyInterest = Math.ceil(loan.principal * loan.rate);
+            const weeklyPrincipal = Math.ceil(loan.principal * repaymentRate) + serviceFee;
             
-            const payment = calculateMortgagePayment(loan.principal, loan.rate);
-            
-            // 直接使用计算结果
-            const totalMortgagePayment = payment.total;
+            const totalMortgagePayment = weeklyInterest + weeklyPrincipal;
 
             if (vitality.metrics.gold >= totalMortgagePayment) {
                 result.newTransactions!.push({
                     id: Math.random().toString(),
                     turn: vitality.time.currentTurn,
-                    category: 'HOUSING', // 建议改为 'BANK' 或细分
+                    category: 'HOUSING',
                     amount: -totalMortgagePayment,
-                    // 描述也可以更精确
-                    description: `房贷还款 (本金$${payment.principalPayment} + 利息$${payment.interestPayment})`,
+                    description: `房贷自动扣款 (本金$${weeklyPrincipal} + 利息$${weeklyInterest})`,
                     timestamp: Date.now()
                 });
 
-                loan.interest = Math.max(0, loan.interest - payment.interestPayment); // 这里的逻辑取决于你的利息是先累积还是现付，通常房贷是现付
-                loan.principal = Math.max(0, loan.principal - payment.principalPayment);
+                loan.interest = Math.max(0, loan.interest - weeklyInterest);
+                loan.principal = Math.max(0, loan.principal - weeklyPrincipal);
 
                 if (loan.principal <= 0) {
                     result.logs.push(`【恭喜】${activeHousing.name} 的房贷已全部还清！`);

@@ -4,7 +4,6 @@ import { useAudioStore } from '@/store/useAudioStore';
 import { Housing } from '@/types/schema';
 import { AlertCircle, Home, Key, Shield } from 'lucide-react';
 import housingRules from '@/assets/data/rules/housingRules.json';
-import { calculateMortgagePayment } from '@/logic/bank';
 
 interface HousingModalProps {
   isOpen: boolean;
@@ -108,17 +107,12 @@ export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) =
               if (isSale && buyConfig) {
                 modeLabel = '出售 (FOR SALE)';
                 weeklyCost = buyConfig.weeklyCosts.reduce((s, c) => s + c.baseAmount, 0); // 物业费等
-                const estimatedPrincipal = buyConfig.price * (1 - buyConfig.downPaymentRate);
-                
-                // 调用核心库计算
-                const mortgageResult = calculateMortgagePayment(
-                    estimatedPrincipal, 
-                    buyConfig.interestRate
-                );
-
-                // 🔥 关键修复：定义 variable 'estimatedMortgage'，避免 TS 报错
-                // 这样后续如果有代码用到这个变量名，或者仅仅是逻辑完整性，都能跑通
-                const estimatedMortgage = mortgageResult.total;
+                // 虽然暂时可能还要保留计算，但建议加上 TODO 或检查配置开关
+                let estimatedMortgage = 0;
+                if (housingRules.mortgage.displayEstimation.includeInterest) {
+                  // 这里暂时保留计算公式，但理想情况下应该调用 BankSystem 的 helper 方法
+                    estimatedMortgage = Math.floor((buyConfig.price * (1-buyConfig.downPaymentRate)) * buyConfig.interestRate);
+                }
                 weeklyCost += estimatedMortgage; 
                 
                 upfrontCost = buyConfig.price * buyConfig.downPaymentRate;

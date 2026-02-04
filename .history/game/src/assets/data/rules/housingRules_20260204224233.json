@@ -1,0 +1,28 @@
+{
+  "settings": {
+    "systemName": "HOUSING",
+    "description": "房产系统核心规则配置"
+  },
+  "access": {
+    "homelessAllowedRegions": ["SLUMS"],
+    "homelessClassId": "HOMELESS",
+    "allowWorkWithoutHome": false
+  },
+  "eviction": {
+    "enableEviction": true,
+    "sanPenalty": 20,
+    "hpPenalty": 0,
+    "retainInventory": true,
+    "fallbackState": null
+  },
+  "mortgage": {
+    "displayEstimation": {
+      "includePrincipal": true,
+      "includeInterest": true
+    }
+  },
+  "defaults": {
+    "baseRegenHp": 0,
+    "baseDefense": 0
+  }
+}

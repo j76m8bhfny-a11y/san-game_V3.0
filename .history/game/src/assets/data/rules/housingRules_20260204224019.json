@@ -1,0 +1,27 @@
+{
+  "system": {
+    "tickInterval": "WEEKLY",
+    "description": "住房系统全局配置"
+  },
+  "access": {
+    "freeRoamRegions": ["SLUMS"],
+    "homelessClassId": "HOMELESS",
+    "allowHomelessWork": true
+  },
+  "eviction": {
+    "enabled": true,
+    "sanPenalty": 20,
+    "hpPenalty": 0,
+    "thresholdType": "ZERO_BALANCE",
+    "gracePeriodTurns": 0
+  },
+  "ui": {
+    "maxDefenseLevel": 5,
+    "displayDateFormat": "WEEKLY",
+    "colors": {
+      "rent": "blue-400",
+      "sale": "amber-500",
+      "current": "green-400"
+    }
+  }
+}

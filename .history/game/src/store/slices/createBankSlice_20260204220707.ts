@@ -27,6 +27,7 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
     const { vitality } = state as GameState;
     const currentScore = vitality.metrics.creditScore;
 
+    // ✅ 修复：显式使用 LoanProduct 类型进行断言，解决未使用警告
     const rawProduct = (loansData as unknown as LoanProduct[]).find(p => p.id === productId);
     
     if (!rawProduct) return { success: false, message: "信贷产品不存在" };
@@ -51,21 +52,16 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
       isMortgage: false
     };
 
+
     state.addTransaction('BANK', amount, `贷款发放: ${rawProduct.name}`);
 
-    // 硬查询扣分 (从 JSON 读取)
-    const penalty = bankRules.creditScore.actions.hardInquiry; 
+    // ✅ Refactor: 硬查询扣分
+    const penalty = bankRules.creditScore.actions.hardInquiry; // -5
+    // 注意：这里配置的是负数，直接相加即可；如果是正数配置则需取反，需约定清楚。
+    // 当前约定：配置值为 -5，所以直接 add。
     state.modifyVitality({ 
-        metrics: { creditScore: penalty } // 注意: modifyVitality 通常是累加值
+        metrics: { creditScore: penalty } 
     });
-
-    // ✅ 修复: 必须把新贷款存入 bank 状态
-    set((s: GameState) => ({
-      bank: {
-        ...s.bank,
-        activeLoans: [...s.bank.activeLoans, newLoan]
-      }
-    }));
 
     return { success: true, message: `贷款 $${amount} 已发放。` };
   },
@@ -85,7 +81,6 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
       isMortgage: true
     };
 
-    // ✅ 修复: 这里只需要存入贷款，不要写信用分逻辑（或者只扣硬查询分）
     set((s: GameState) => ({
       bank: {
         ...s.bank,
@@ -96,10 +91,12 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
     return { success: true, message: "按揭贷款已批复。", loanId: newLoan.id };
   },
 
+  // ✅ 支持部分还款
   makeInstallment: (loanId, amount) => {
     const state = get() as GameState & { addTransaction: (c: string, a: number, d: string) => void };
     const { bank, vitality } = state;
     
+    // 1. ✅ 原子性检查：先确认钱够不够
     if (vitality.metrics.gold < amount) {
         return { success: false, message: "资金不足，无法还款", principalPaid: 0, interestPaid: 0 };
     }
@@ -114,7 +111,7 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
     let interestPaid = 0;
     let principalPaid = 0;
 
-    // 扣除逻辑 (先息后本)
+    // 2. 扣除逻辑 (先息后本)
     if (loan.interest > 0) {
       const payInterest = Math.min(loan.interest, remainingPayment);
       loan.interest -= payInterest;
@@ -128,9 +125,10 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
       principalPaid += payPrincipal;
     }
 
+    // 3. ✅ 关键修复：直接在这里扣钱，不再依赖 UI
     state.addTransaction('BANK', -amount, `偿还贷款: ${loan.id.substring(0, 4)}...`);
 
-    // 更新贷款状态
+    // 4. 更新贷款状态
     const isCleared = loan.principal <= 0 && loan.interest <= 0;
     
     if (isCleared) {
@@ -145,17 +143,12 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
         activeLoans: loans,
         lifetimeInterestPaid: s.bank.lifetimeInterestPaid + interestPaid,
       },
-      // ✅ 修复: 这里才是正确使用 isCleared 和 bankRules 的地方
+      // 信用分奖励 (稍微增加一点)
       vitality: {
           ...s.vitality,
           metrics: {
               ...s.vitality.metrics,
-              creditScore: Math.min(
-                  bankRules.creditScore.maxScore, // 850
-                  s.vitality.metrics.creditScore + (isCleared 
-                      ? bankRules.creditScore.actions.loanCleared       // +5
-                      : bankRules.creditScore.actions.installmentPaid)  // +1
-              )
+              creditScore: Math.min(850, s.vitality.metrics.creditScore + (isCleared ? 5 : 1))
           }
       }
     }));

@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "version": "1.0",
+    "description": "金融系统风控与借贷规则"
+  },
+  "creditScore": {
+    "minScore": 300,
+    "maxScore": 850,
+    "ratings": [
+      { "threshold": 800, "label": "PRIME (至尊)", "color": "text-yellow-400" },
+      { "threshold": 740, "label": "EXCELLENT (卓越)", "color": "text-green-400" },
+      { "threshold": 670, "label": "GOOD (良好)", "color": "text-green-600" },
+      { "threshold": 580, "label": "FAIR (一般)", "color": "text-yellow-600" },
+      { "threshold": 300, "label": "POOR (差劲)", "color": "text-red-500" }
+    ],
+    "borrowLimit": {
+      "baseRate": 0.2,
+      "growthDivisor": 200
+    },
+    "actions": {
+      "hardInquiry": -5,
+      "installmentPaid": 1,
+      "loanCleared": 5
+    }
+  },
+  "mortgage": {
+    "foreclosureTurns": 4,
+    "warningPenalty": 10,
+    "foreclosurePenalty": 100
+  },
+  "collection": {
+    "warning": {
+      "turn": 1,
+      "scorePenalty": 30
+    },
+    "violence": {
+      "maxTurn": 3,
+      "hpDamage": 20,
+      "sanDamage": 15,
+      "scorePenalty": 50
+    },
+    "seizure": {
+      "maxTurn": 8,
+      "limit": 5000,
+      "scorePenalty": 80
+    },
+    "jail": {
+      "sentenceTurns": 8,
+      "scorePenalty": 100
+    }
+  },
+  "insurance": {
+    "contractDuration": 12
+  }
+}

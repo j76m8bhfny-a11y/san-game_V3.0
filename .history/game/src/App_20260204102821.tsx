@@ -13,7 +13,7 @@ import { ShopModal } from './components/game/ShopModal';
 import { JobBoardModal } from './components/game/JobBoardModal';
 import { GlobalAtmosphere } from './components/ui/GlobalAtmosphere';
 import { RoutineToast } from './components/ui/RoutineToast';
-import { WeeklySettlement } from './components/game/WeeklySettlement'; 
+import { WeeklySettlement } from './components/game/WeeklySettlement'; // ✅ 修正引用
 import { FeedbackLayer } from './components/ui/FeedbackLayer';
 import { TooltipLayer } from './components/ui/TooltipLayer';
 import { PauseMenu } from './components/game/PauseMenu';
@@ -28,7 +28,6 @@ import { HousingModal } from './components/game/HousingModal';
 import { CryptoSidebar } from './components/game/Crypto/CryptoSidebar';
 import { NewsTicker } from './components/game/Crypto/NewsTicker';
 import JailOverlay from './components/game/JailOverlay';
-
 
 const App: React.FC = () => {
   const { 
@@ -56,10 +55,9 @@ const App: React.FC = () => {
     setShopOpen,
     setArchiveOpen,
     setMenuOpen,
-    restartGame 
+    restartGame // ✅ 使用正确的重置方法名
   } = useGameStore();
 
-  // ✅ 你的状态定义在这里：
   const [viewState, setViewState] = useState<'TITLE' | 'SELECT_CLASS' | 'GAME'>('TITLE');
   const [loading, setLoading] = useState(false);
 
@@ -79,12 +77,8 @@ const App: React.FC = () => {
     init();
   }, []);
 
-  // ✅ 修复：使用 setViewState 来重置 UI 流程
   const handleRestart = () => {
-    restartGame();       // 1. 重置 Store 数据
-    setMenuOpen(false);  // 2. 关闭菜单
-    
-    // 3. 核心修复：回到标题画面 (替代原来的 setShowTitle/setClassSelectorOpen)
+    restartGame();
     setViewState('TITLE'); 
   };
 
@@ -118,10 +112,13 @@ const App: React.FC = () => {
 
       {/* --- Layer 2: UI & Overlays --- */}
 
+      {/* ✨ 1. 新闻跑马灯 (仅在游戏进行中显示) */}
       {viewState === 'GAME' && !ending && <NewsTicker />}
 
+      {/* ✨ 2. 加密货币侧边栏与悬浮按钮 */}
       {viewState === 'GAME' && !ending && (
         <>
+          {/* 左侧悬浮按钮 - 样式增强：灰色背景 + 亮边框 */}
           <button
             onClick={() => setCryptoOpen(true)}
             className={`
@@ -158,6 +155,7 @@ const App: React.FC = () => {
       {isArchiveOpen && <BlackBox onClose={() => setArchiveOpen(false)} />}
       {isMenuOpen && <PauseMenu isOpen={isMenuOpen} onResume={() => setMenuOpen(false)} onRestart={handleRestart} />}
 
+      {/* Layer 3: FX & Feedback */}
       {currentRoast && <RoastModal />}
       <RoutineToast />
       <FeedbackLayer />

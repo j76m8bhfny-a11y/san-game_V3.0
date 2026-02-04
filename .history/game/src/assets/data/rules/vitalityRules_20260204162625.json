@@ -1,0 +1,72 @@
+{
+  "classes": {
+    "HOMELESS": {
+      "gold": 50, "hp": 60, "san": 40, "maxHp": 60, "maxSan": 100,
+      "desc": "地狱开局。除了活着，你一无所有。"
+    },
+    "WORKER": {
+      "gold": 200, "hp": 100, "san": 60, "maxHp": 100, "maxSan": 100,
+      "desc": "标准开局。用健康换取金钱的西西弗斯。"
+    },
+    "MIDDLE": {
+      "gold": 2000, "hp": 90, "san": 70, "maxHp": 90, "maxSan": 100,
+      "desc": "安逸的陷阱。看似拥有选择权，实则更怕失去。"
+    },
+    "CAPITALIST": {
+      "gold": 10000, "hp": 80, "san": 50, "maxHp": 80, "maxSan": 100,
+      "desc": "顶层掠食者。金钱是数字，人性是筹码。"
+    }
+  },
+  "defaults": {
+    "maxHunger": 100,
+    "maxSan": 100,
+    "creditScore": {
+      "homeless": 500,
+      "standard": 650
+    }
+  },
+  "metabolism": {
+    "baseCost": 5,
+    "hungerDecayPerTurn": 20,
+    "starvationDamage": 15
+  },
+  "medical": {
+    "failurePenalty": { "hp": -10, "san": -5 }
+  },
+  "disease": {
+    "infectionRates": {
+      "SLUMS": 0.15,
+      "RUST_BELT": 0.10,
+      "SUBURBS": 0.05,
+      "DOWNTOWN": 0.02
+    },
+    "modifiers": {
+      "housingBonus": 0.6,
+      "homelessPenalty": 1.5,
+      "jobRiskAdd": 0.05,
+      "resistanceDivisor": 200,
+      "weakBodyThresholdPct": 0.3,
+      "weakSanThresholdPct": 0.2,
+      "weakBodyMultiplier": 1.5,
+      "weakSanMultiplier": 1.2
+    },
+    "highRiskJobs": ["MINER", "TEST_SUBJECT"]
+  },
+  "sanity": {
+    "breakThreshold": 20,
+    "selfHarmDamage": 10
+  },
+  "visuals": {
+    "thresholds": {
+      "hpLow": 30,
+      "sanHigh": 80,
+      "sanMedium": 70,
+      "sanLow": 30,
+      "addictionHigh": 50
+    },
+    "phases": {
+      "bluePillMin": 71,
+      "cracksMin": 31
+    }
+  }
+}

@@ -38,7 +38,7 @@ export const GlobalAtmosphere: React.FC = () => {
   const san = useGameStore((state) => state.vitality.metrics.san);
   
   // ✅ 2. 修正：理智值低于 30 才是“疯癫/精神污染”状态
-  rules.visuals.thresholds.sanLow;
+  visuals.thresholds.sanLow (30);
   const isMadness = san < rules.visuals.thresholds.sanLow; 
 
   return (

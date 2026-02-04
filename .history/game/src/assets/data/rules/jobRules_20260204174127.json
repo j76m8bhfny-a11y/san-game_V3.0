@@ -1,0 +1,46 @@
+{
+  "settings": {
+    "maxSlotCapacity": 3,
+    "slotCosts": {
+      "FULL_TIME": 2,
+      "GIG": 1
+    }
+  },
+  "classWeights": {
+    "HOMELESS": 0,
+    "WORKER": 1,
+    "MIDDLE": 2,
+    "CAPITALIST": 3
+  },
+  "efficiencyCurve": [
+    {
+      "maxSan": 20,
+      "modifier": 1.2,
+      "label": "麻木",
+      "statusText": "麻木 (120%)"
+    },
+    {
+      "maxSan": 50,
+      "modifier": 1.0,
+      "label": "稳定",
+      "statusText": "稳定 (100%)"
+    },
+    {
+      "maxSan": 80,
+      "modifier": 0.6,
+      "label": "分心",
+      "statusText": "分心 (60%)"
+    },
+    {
+      "maxSan": 100,
+      "modifier": 0.2,
+      "label": "灵视干扰",
+      "statusText": "灵视干扰 (20%)"
+    }
+  ],
+  "accidents": {
+    "highSanThreshold": 80,
+    "probability": 0.15,
+    "penaltyRate": 0.25
+  }
+}

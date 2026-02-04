@@ -7,7 +7,6 @@ import {
   ActiveInsuranceState 
 } from '@/types/schema';
 import vitalityRules from '@/assets/data/rules/vitalityRules.json';
-
 export const CLASS_INITIAL_STATS = vitalityRules.classes as Record<PlayerClass, any>;
 
 

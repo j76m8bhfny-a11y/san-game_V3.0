@@ -1,0 +1,13 @@
+{
+  "generation": {
+    "defaultWeight": 10
+  },
+  "ui": {
+    "paymentDelayMs": 800,
+    "overlayZIndex": 6000,
+    "animation": {
+      "initialScale": 0.9,
+      "initialY": 50
+    }
+  }
+}

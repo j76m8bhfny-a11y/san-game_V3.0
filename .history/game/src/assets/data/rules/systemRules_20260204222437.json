@@ -1,0 +1,14 @@
+{
+  "gameLoop": {
+    "maxTurns": 52,
+    "startTurn": 1
+  },
+  "priorities": {
+    "housing": 100,
+    "bank": 90,
+    "job": 80,
+    "bill": 70,
+    "faith": 50,
+    "event": 10
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "generation": {
+    "defaultWeight": 10,
+    "minAmountClamp": 0
+  },
+  "ui": {
+    "paymentDelayMs": 800,
+    "overlayZIndex": 6000,
+    "animation": {
+      "initialScale": 0.9,
+      "initialY": 50
+    }
+  },
+  "settlement": {
+    "animationScale": 0.95,
+    "modalZIndex": 60
+  }
+}

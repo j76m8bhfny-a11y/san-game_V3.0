@@ -68,7 +68,7 @@ const MenuCard: React.FC<MenuCardProps> = ({
 
 // --- 主组件 ---
 interface TitleScreenProps {
-  onStart: (type: 'NEW' | 'CONTINUE') => void;
+  onStart: () => void;
 }
 
 export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {

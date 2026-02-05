@@ -166,6 +166,7 @@ export const StatRuleSystem: GameSystem = {
     // =================================================================
     
     // 这里的 metrics.gold 是经过前面系统（如 Housing, Job）结算后的最新金额
+    const { metrics } = state.vitality;
     const currentGold = metrics.gold; 
     
     // 调用逻辑层函数，根据 classes.json 的配置计算新阶级

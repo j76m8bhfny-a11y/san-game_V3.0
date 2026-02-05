@@ -1,0 +1,31 @@
+{
+  "defaults": {
+    "initialLevel": 1,
+    "dailyReset": true,
+    "transactionCategories": {
+      "join": "MISC",
+      "riteCost": "TAX",
+      "riteIncome": "INCOME"
+    }
+  },
+  "constraints": {
+    "forbiddenItemIds": ["I02", "I03", "I06"],
+    "checkCleanInventoryMessage": "身带违禁品，无法入会。"
+  },
+  "mechanics": {
+    "tithe": {
+      "enabled": true,
+      "targetFaithId": "CHURCH", 
+      "rate": 0.1,
+      "minAmount": 20,
+      "description": "缴纳 ${amount} 什一税。"
+    }
+  },
+  "text": {
+    "joinSuccess": "已加入: {name}",
+    "leaveSuccess": "你背弃了信仰。",
+    "riteDone": "今日已完成仪式，请明日再来。",
+    "noFaith": "无信仰",
+    "insufficientGold": "无法支付什一税 (需 ${amount})"
+  }
+}

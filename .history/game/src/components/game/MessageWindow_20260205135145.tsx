@@ -3,10 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import { GameEvent } from '@/types/schema';
-// 👇 1. 引入配置文件
+// ✅ 1. 引入配置文件 (无需 configLoader)
 import NARRATIVE_RULES from '@/assets/data/rules/narrative_rules.json';
 
-// 便捷引用配置
+// ✅ 2. 解构配置项
 const { pacing, ui } = NARRATIVE_RULES;
 
 // --- 类型定义 ---
@@ -31,14 +31,14 @@ const TypewriterText: React.FC<{ text: string; onComplete?: () => void }> = ({ t
         clearInterval(timer);
         onComplete && onComplete();
       }
-    }, pacing.typewriterSpeedMs); // ✅ 替换: 读取配置中的打字速度
+    }, pacing.typewriterSpeedMs); // ✅ 替换：使用 JSON 配置的速度
     return () => clearInterval(timer);
   }, [text, playSfx, onComplete]);
 
   return <span className="font-pixel leading-relaxed tracking-wide">{display}</span>;
 };
 
-// --- ✨ 组件：iOS 像素短信气泡 ---
+// --- 组件：iOS 像素短信气泡 ---
 const PixelSMSBubble: React.FC<{ 
   label: string; 
   id: string; 
@@ -46,9 +46,8 @@ const PixelSMSBubble: React.FC<{
   onClick: () => void; 
 }> = ({ label, id, type, onClick }) => {
   
-  // ✅ 修复类型错误的核心：
-  // 1. 使用 (ui.bubbleColors as any) 允许使用字符串 type 进行索引
-  // 2. 添加 || ui.bubbleColors.default 作为兜底，防止 crash
+  // ✅ 替换：从 JSON 读取颜色主题
+  // 使用类型断言或回退逻辑，确保找不到类型时使用 default
   const theme = (ui.bubbleColors as any)[type] || ui.bubbleColors.default;
 
   return (
@@ -64,9 +63,10 @@ const PixelSMSBubble: React.FC<{
         whileHover={{ scale: 1.02, x: -2 }}
         whileTap={{ scale: 0.98 }}
         onClick={onClick}
-        // ✅ 使用配置中的 class (theme.bg, theme.text, theme.shadow)
+        // ✅ 替换：应用 JSON 中的 tailwind 类名 (bg, text, shadow)
         className={`relative w-full text-left text-sm font-bold font-pixel py-2 px-3 leading-tight ${theme.bg} ${theme.text} ${theme.shadow}`}
         style={{
+          // 像素圆角裁剪
           clipPath: `polygon(
             4px 0, calc(100% - 4px) 0, 
             100% 4px, 100% calc(100% - 4px), 
@@ -78,8 +78,9 @@ const PixelSMSBubble: React.FC<{
         {/* 文本内容 */}
         {label}
 
-        {/* 3. 小尾巴 (Tail) */}
+        {/* 3. 小尾巴 (Tail) - 位于右下角 */}
         <div 
+          // ✅ 替换：尾巴颜色跟随主题背景
           className={`absolute bottom-0 -right-[6px] w-[6px] h-[6px] ${theme.bg}`}
           style={{
             clipPath: 'polygon(0 0, 0 100%, 100% 100%)' // 直角三角形
@@ -91,13 +92,14 @@ const PixelSMSBubble: React.FC<{
 
       </motion.button>
 
-      {/* 4. 占位 */}
+      {/* 4. 发送者头像占位 */}
       <div className="w-0 md:w-0"></div> 
     </div>
   );
 };
 
 // --- 组件：接收到的消息 (灰色左对齐气泡) ---
+// 注：接收气泡通常样式固定，这里也可以选择放入 rules.json 的 default 中，或者保持现状
 const PixelReceivedBubble: React.FC<{ text: string }> = ({ text }) => {
   return (
     <div className="flex justify-start items-end gap-2 w-full pr-4 pl-2">
@@ -123,7 +125,7 @@ const PixelReceivedBubble: React.FC<{ text: string }> = ({ text }) => {
         <div 
           className="absolute bottom-0 -left-[6px] w-[6px] h-[6px] bg-[#E9E9EB]"
           style={{
-            clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' 
+            clipPath: 'polygon(100% 0, 100% 100%, 0 100%)'
           }}
         />
         
@@ -134,17 +136,17 @@ const PixelReceivedBubble: React.FC<{ text: string }> = ({ text }) => {
   );
 };
 
-// --- 组件：像素手机 ---
+// --- 组件：像素手机 (UI Layer 5) ---
 const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void;
   selectedId: string | null; 
 }> = ({ options, onChoose , selectedId }) => {
   const [showOptions, setShowOptions] = useState(false);
 
-  // 模拟消息延迟
+  // 模拟消息延迟：手机出来后才显示选项
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowOptions(true);
-    }, pacing.delayPhoneSlideInMs); // ✅ 替换: 读取配置中的手机滑入延迟
+    }, pacing.delayPhoneSlideInMs); // ✅ 替换：使用 JSON 配置的滑入延迟
     return () => clearTimeout(timer);
   }, []);
 
@@ -166,7 +168,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void;
       <div className="
         relative z-10 
         w-[52%] h-[72%] 
-        bg-[#f2f2f7] 
+        bg-[#f2f2f7]
         rounded-[30px] 
         overflow-hidden 
         flex flex-col font-sans
@@ -174,6 +176,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void;
         mr-[100px]
       ">
         
+        {/* 屏幕内发光 & 扫描线 */}
         <div className="absolute inset-0 pointer-events-none z-20 opacity-10 bg-[linear-gradient(#000_1px,transparent_1px)] [background-size:100%_4px]" />
 
         {/* 顶部状态栏 */}
@@ -200,7 +203,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void;
             <motion.div
               initial={{ opacity: 0, x: -20, scale: 0.9 }}
               animate={{ opacity: 1, x: 0, scale: 1 }}
-              transition={{ delay: 0.2, duration: 0.4 }}
+              transition={{ delay: 0.2, duration: 0.4 }} 
             >
               <PixelReceivedBubble text="你怎么看？" />
             </motion.div>
@@ -221,7 +224,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void;
                       key={opt.id}
                       {...opt}
                       onClick={() => !selectedId && onChoose(opt.id)}
-                      // 如果已选中，显示 safe (蓝色)，否则显示各自的类型
+                      // 这里的 type 会去匹配 rules.json 中的 keys
                       type={selectedId ? 'safe' : opt.type} 
                     />
                   </motion.div>
@@ -240,7 +243,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void;
 // --- 主组件 ---
 export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
   const { resolveEventOption, vitality } = useGameStore();
-  const { san } = vitality.metrics; 
+  const { san } = vitality.metrics;
   const { playSfx } = useAudioStore();
   
   const [isFocusMode, setIsFocusMode] = useState(false);
@@ -251,7 +254,7 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
     setStage('INIT');
     const timer = setTimeout(() => {
       setStage('TYPING_TITLE');
-    }, pacing.delayTitleToBodyMs); // ✅ 替换: 读取配置
+    }, pacing.delayTitleToBodyMs); // ✅ 替换：标题出现延迟
     return () => clearTimeout(timer);
   }, [event.id]);
 
@@ -263,23 +266,24 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
     setTimeout(() => {
       setStage('INTERACTIVE');
       playSfx('sfx_cash'); 
-    }, pacing.delayBodyToInteractionMs); // ✅ 替换: 读取配置
+    }, pacing.delayBodyToInteractionMs); // ✅ 替换：正文读完到出现选项的延迟
   }, [playSfx]);
 
   const handleOptionClick = (id: string) => {
     playSfx('sfx_click');
     setSelectedOptId(id); 
     
+    // ✅ 替换：选项被点击后的处理延迟 (500ms -> autoResolveDelayMs)
     setTimeout(() => {
       if (resolveEventOption) {
         resolveEventOption(id as 'A' | 'B' | 'C' | 'D');
       } else {
         console.error("resolveEventOption is not defined in GameStore");
       }
-    }, pacing.autoResolveDelayMs); // ✅ 替换: 读取配置 (500ms -> autoResolveDelayMs)
+    }, pacing.autoResolveDelayMs); 
   };
   
-
+  // 选项映射：type 对应 rules.json ui.bubbleColors 中的 key
   const options = [
     { id: 'A', label: event.options.A.label, type: 'risk' },
     { id: 'B', label: event.options.B.label, type: 'safe' },
@@ -361,8 +365,8 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
           ? { y: -200, x: "-50%", opacity: 0 } 
           : { y: 0, x: "-50%", opacity: 1 }
         }
-        transition={{ duration: 0.5, ease: "easeOut" }}
-        className="absolute top-[15%] left-1/2 w-[90%] md:w-[80%] z-40 pointer-events-none" 
+        transition={{ duration: 0.5, ease: "easeOut" }} 
+        className="absolute top-[15%] left-1/2 w-[90%] md:w-[80%] z-40 pointer-events-none"
       >
         <div className={`bg-black/40 backdrop-blur-md border-2 border-white p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.5)] transition-all ${isFocusMode ? 'pointer-events-none' : 'pointer-events-auto'}`}>
           <h2 className="text-cyan-400 font-pixel font-bold text-xl mb-4 tracking-widest uppercase border-b-2 border-white/20 pb-2">

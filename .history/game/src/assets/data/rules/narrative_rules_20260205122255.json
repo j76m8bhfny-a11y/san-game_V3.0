@@ -1,0 +1,39 @@
+{
+  "system": {
+    "priority": 10,
+    "defaults": {
+      "optionSanLock": 70,
+      "eventWeight": 10
+    }
+  },
+  "pacing": {
+    "typewriterSpeedMs": 30,
+    "delayTitleToBodyMs": 3500,
+    "delayBodyToInteractionMs": 1500,
+    "delayPhoneSlideInMs": 1200,
+    "autoResolveDelayMs": 500
+  },
+  "ui": {
+    "bubbleColors": {
+      "safe": "#007AFF",
+      "risk": "#FF3B30",
+      "special": "#FFCC00",
+      "awakening": "#AF52DE",
+      "default": "#E9E9EB"
+    },
+    "impactAnimation": {
+      "initialScale": 3,
+      "stiffness": 300,
+      "damping": 15
+    }
+  },
+  "archives": {
+    "categories": [
+      { "id": "HOMELESS", "label": "流浪汉", "prefix": null },
+      { "id": "WORKER", "label": "工人", "prefix": "No.W" },
+      { "id": "MIDDLE", "label": "中产", "prefix": "No.M" },
+      { "id": "CAPITALIST", "label": "资本家", "prefix": "No.C" },
+      { "id": "ENDING", "label": "结局", "prefix": null }
+    ]
+  }
+}

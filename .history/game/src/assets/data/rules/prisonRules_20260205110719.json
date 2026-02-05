@@ -1,0 +1,33 @@
+{
+  "settings": {
+    "systemPriority": 100,
+    "blockedSystems": ["JOB_SYSTEM"]
+  },
+  "bail": {
+    "enableCashBail": true,
+    "enableBond": true,
+    "bondDownPaymentRate": 0.1,
+    "linkedLoanProductId": "LOAN_BAIL_BOND"
+  },
+  "dailyRoutine": {
+    "default": {
+      "hpChange": -20,
+      "sanChange": -25,
+      "log": "这是地狱。帮派分子抢走了你的饭，狱警对此视而不见。"
+    },
+    "classOverrides": {
+      "CAPITALIST": {
+        "hpChange": 5,
+        "sanChange": 5,
+        "log": "你在最低安保级别的‘度假村’里打了一天高尔夫，结识了几位参议员。"
+      },
+      "MIDDLE": {
+        "hpChange": -5,
+        "sanChange": -10,
+        "log": "你在单人牢房里读了一整天书。隔壁的尖叫声让你有点神经衰弱。"
+      },
+      "WORKER": "default",
+      "HOMELESS": "default"
+    }
+  }
+}

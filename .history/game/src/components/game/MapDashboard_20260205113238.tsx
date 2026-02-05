@@ -16,7 +16,7 @@ export const MapDashboard: React.FC = () => {
     currentRegion, 
     vitality, 
     inventory, 
-    prison, // ✅ 1. 获取监狱状态
+    prison, 
     gameDataCache, 
     setRegion, 
     setViewMode 
@@ -26,7 +26,6 @@ export const MapDashboard: React.FC = () => {
 
   // 辅助：检查是否解锁
   const checkUnlock = (region: RegionID) => {
-    // 防御性检查：确保数据已加载
     if (!gameDataCache || !gameDataCache.itemMap) {
       return { allowed: false, reason: '数据加载中...' };
     }
@@ -34,9 +33,9 @@ export const MapDashboard: React.FC = () => {
     return checkMovePermission(
       region, 
       currentClass, 
-      inventory,       // ✅ 2. 传递物品 ID 列表 (确保匹配 core.ts 签名)
-      gameDataCache.itemMap, // 传递物品数据表
-      prison.inJail          // ✅ 3. 传递监狱状态 (Core 根据 JSON 决定是否封锁)
+      inventory,             // ✅ 修复：inventory 本身就是 string[]，直接传入
+      gameDataCache.itemMap, 
+      prison.inJail          
     );
   };
 
@@ -55,7 +54,6 @@ export const MapDashboard: React.FC = () => {
             <button
               key={regionId}
               onClick={() => {
-                // 双重保障：虽然 UI disabled 了，逻辑上也拦截一下
                 if (!allowed && !isCurrent) return;
 
                 if (isCurrent) {
@@ -65,8 +63,7 @@ export const MapDashboard: React.FC = () => {
                   setViewMode('REGION');
                 }
               }}
-              // ✅ UI 状态完全由 checkUnlock 返回的 allowed 控制
-              disabled={!allowed && !isCurrent} 
+              disabled={!allowed && !isCurrent}
               className={`
                 relative p-6 flex flex-col justify-between text-left group transition-all duration-300
                 border-2 overflow-hidden
@@ -91,9 +88,6 @@ export const MapDashboard: React.FC = () => {
 
               <div className="relative z-10 mt-4">
                  {!allowed && !isCurrent ? (
-                   // ✅ 这里显示的 reason 现在是动态的：
-                   // 如果坐牢且配置封锁，显示 "你正在服刑中..."
-                   // 如果没车去郊区，显示 "私人社区..."
                    <div className="text-red-500 text-xs font-bold font-mono border border-red-900/50 bg-black/50 p-2 rounded">
                      ⛔ {reason}
                    </div>

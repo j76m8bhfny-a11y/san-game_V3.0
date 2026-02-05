@@ -34,7 +34,7 @@ export const MapDashboard: React.FC = () => {
     return checkMovePermission(
       region, 
       currentClass, 
-      inventory,       // ✅ 2. 传递物品 ID 列表 (确保匹配 core.ts 签名)
+      inventory.items,       // ✅ 2. 传递物品 ID 列表 (确保匹配 core.ts 签名)
       gameDataCache.itemMap, // 传递物品数据表
       prison.inJail          // ✅ 3. 传递监狱状态 (Core 根据 JSON 决定是否封锁)
     );

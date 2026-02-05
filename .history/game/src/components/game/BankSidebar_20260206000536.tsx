@@ -77,7 +77,7 @@ export const BankSidebar: React.FC = () => {
   if (!isBankOpen) return null;
 
   return (
-    <div className="fixed right-4 top-24 bottom-12 w-2/3 bg-[#0a0a0a] text-white font-mono border border-gray-800 z-50 rounded-lg shadow-2xl">
+    <div className="fixed right-0 top-0 h-full w-80 bg-[#0a0a0a] text-white font-mono border-l border-gray-800 z-50">
       {/* Header Tabs */}
       <div className="flex border-b border-gray-800">
         <button

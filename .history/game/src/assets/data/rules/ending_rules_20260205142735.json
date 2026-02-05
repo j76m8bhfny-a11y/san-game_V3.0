@@ -1,0 +1,31 @@
+{
+  "constraints": {
+    "maxTurns": 40
+  },
+  "deathReasons": {
+    "DISMANTLED": "ED-03",
+    "COP": "ED-04",
+    "SUICIDE": "ED-05"
+  },
+  "mappings": {
+    "fallbackDeath": {
+      "homeless": "ED-01",
+      "default": "ED-02"
+    }
+  },
+  "ui": {
+    "categories": {
+      "death": "DEATH",
+      "goodTypes": ["UR", "STANCE"]
+    },
+    "animation": {
+      "fadeInDuration": 1.0,
+      "initialScale": 0.9
+    },
+    "fallbackContent": {
+      "title": "UNKNOWN_FATE",
+      "description": "数据丢失。你处于存在的边缘。",
+      "type": "DEATH"
+    }
+  }
+}

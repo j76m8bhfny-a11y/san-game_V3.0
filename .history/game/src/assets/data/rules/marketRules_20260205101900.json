@@ -1,0 +1,37 @@
+{
+  "crypto": {
+    "initialPrice": 15000,
+    "accountFee": 500
+  },
+  "trading": {
+    "leverage": {
+      "default": 10,
+      "min": 1,
+      "max": 100
+    },
+    "defaultAmount": 100,
+    "liquidationThreshold": -1.0
+  },
+  "market": {
+    "baseVolatility": 0.15,
+    "price": {
+      "min": 500
+    },
+    "events": {
+      "moonChance": 0.02,
+      "doomChance": 0.02,
+      "moonMultiplierBase": 0.5,
+      "doomMultiplierBase": 0.4
+    }
+  },
+  "ui": {
+    "chart": {
+      "paddingMin": 0.95,
+      "paddingMax": 1.05
+    },
+    "ticker": {
+      "defaultText": ">>> SYSTEM: WAITING FOR NETWORK CONNECTION... <<<",
+      "speedSeconds": 20
+    }
+  }
+}

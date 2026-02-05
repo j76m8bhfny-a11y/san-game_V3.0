@@ -18,7 +18,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
   return (
     <div className="fixed inset-0 z-[8000] flex items-center justify-center bg-black/20 backdrop-blur-sm p-4">
       
-      {/* ✅ 3. 测试用如果 Debug 模式打开，显示 Debug 面板，隐藏设置面板 (或者覆盖在上面) */}
+      {/* ✅ 3. 如果 Debug 模式打开，显示 Debug 面板，隐藏设置面板 (或者覆盖在上面) */}
       {showDebug && <DebugPanel onClose={() => setShowDebug(false)} />}
 
       {/* iOS 风格面板 */}
@@ -101,7 +101,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
             Changes to reality perception may result in permanent cognitive dissonance. Proceed with caution.
           </div>
 
-          {/* ✅ 测试用4. 在最底部添加 DEV 按钮 */}
+          {/* ✅ 4. 在最底部添加 DEV 按钮 */}
            <div className="pt-4 border-t border-gray-200/20 flex justify-center">
              <button 
                onClick={() => setShowDebug(true)}

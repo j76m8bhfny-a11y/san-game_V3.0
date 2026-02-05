@@ -2,13 +2,14 @@ import { StateCreator } from 'zustand';
 import { GameState, GameEvent, EventOption, WeeklyReport, Ending } from '@/types/schema';
 import { resolveOption } from '@/logic/eventResolver';
 import { runTurnSettlement } from '@/systems/SystemRegistry';
+// ✅ 引入结局判定逻辑和数据
 import { resolveEnding } from '@/logic/endings'; 
 import endingsData from '@/assets/data/endings.json';
 import ENDING_RULES from '@/assets/data/rules/ending_rules.json';
-
-// ✅ 引入配置文件
 import INITIAL_STATE from '@/assets/data/config/initial_state.json';
 import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
+
+
 
 export interface GameSlice {
   // --- State ---
@@ -25,7 +26,7 @@ export interface GameSlice {
   nextTurn: () => void;
   closeWeeklyReport: () => void;
   
-  // 全局重置
+  // ✅ 新增: 全局重置 (修复僵尸存档)
   restartGame: () => void;
 }
 
@@ -50,6 +51,7 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
     (get() as any).selectOption(option);
   },
 
+  // 内部逻辑处理
   selectOption: (option: EventOption) => {
     const state = get() as GameState; 
     const store = get() as any;      
@@ -57,22 +59,7 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
     const { updates, logs } = resolveOption(state, option);
 
     if (Object.keys(updates).length > 0) {
-      set((prev: any) => {
-        // 如果更新中包含 vitality，需要进行深层合并，防止 identity, flags 等丢失
-        const newVitality = updates.vitality ? {
-          ...prev.vitality,
-          ...updates.vitality,
-          metrics: { ...prev.vitality.metrics, ...(updates.vitality.metrics || {}) },
-          identity: { ...prev.vitality.identity, ...(updates.vitality.identity || {}) },
-          flags: { ...prev.vitality.flags, ...(updates.vitality.flags || {}) }
-        } : prev.vitality;
-
-        return { 
-          ...prev, 
-          ...updates, 
-          vitality: newVitality 
-        };
-      });
+      set((prev: any) => ({ ...prev, ...updates }));
     }
 
     if (option.effects.gold) {
@@ -119,22 +106,24 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
     const state = get() as GameState;
     const store = get() as any;
     
-    // 使用配置中的 maxTurns
+    // ✅ 2. [Refactor] 使用配置中的 maxTurns
     const maxTurns = ENDING_RULES.constraints.maxTurns;
-    // ✅ Refactor: 从配置中读取数值钳制范围
-    const { minStat, maxStat } = SYSTEM_RULES.caps;
 
-    // 1. 回合上限检查 (结局判定)
+    // =================================================================
+    // 🔴 修复 1: 回合上限检查
+    // =================================================================
     if (state.vitality.time.currentTurn >= maxTurns) {
-        const endingId = resolveEnding(state, endingsData as unknown as Ending[]);
+        // ✅ 3. [Refactor] 调用时不再传入硬编码常量，或显式传入配置值
+        // const endingId = resolveEnding(state, endingsData, maxTurns); // 显式传入
+        const endingId = resolveEnding(state, endingsData as unknown as Ending[]); // 让函数使用默认值
         store.triggerEnding(endingId);
         return; 
     }
 
-    // 2. 运行核心系统的周结算
+    // 1. 运行核心系统的周结算
     const result = runTurnSettlement(state);
 
-    // 3. Crypto 市场结算
+    // 2. Crypto 市场结算
     let cryptoLogs: string[] = [];
     let cryptoNotes: string[] = [];
     
@@ -145,7 +134,7 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
       cryptoNotes = cryptoResult.notes || [];
     }
 
-    // 4. 深度应用 Vitality 更新 (含数值钳制)
+    // 3. 深度应用 Vitality 更新 (含数值钳制)
     set((prev: any) => {
         const prevMetrics = prev.vitality.metrics;
         const updateMetrics = result.updates.vitality?.metrics || {};
@@ -153,9 +142,8 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
         let rawSan = (updateMetrics.san !== undefined) ? updateMetrics.san : prevMetrics.san;
         let rawHp = (updateMetrics.hp !== undefined) ? updateMetrics.hp : prevMetrics.hp;
 
-        // ✅ Refactor: 使用配置变量替换硬编码的 0 和 100
-        const finalSan = Math.max(minStat, Math.min(maxStat, rawSan));
-        const finalHp = Math.max(minStat, Math.min(maxStat, rawHp)); 
+        const finalSan = Math.max(0, Math.min(100, rawSan));
+        const finalHp = Math.max(0, Math.min(100, rawHp)); 
 
         return {
             ...prev,
@@ -174,19 +162,18 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
         };
     });
 
-    // 5. 生存熔断机制 (Death Check)
+    // 4. 生存熔断机制 (Death Check)
     const freshState = get() as GameState;
     const { hp } = freshState.vitality.metrics;
     
     if (freshState.ending) return; 
 
-    // ✅ Refactor: 如果有配置"死亡阈值"，也可以在这里替换 minStat
-    if (hp <= minStat) {
+    if (hp <= 0) {
         store.triggerEnding('ENDING_DEATH_HP'); 
         return; 
     }
     
-    // 6. 存储报表并打开 UI
+    // 5. 存储报表并打开 UI
     set({ weeklyReport: result.report });
 
     const turn = state.vitality.time.currentTurn;
@@ -213,53 +200,35 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
   },
 
   // =================================================================
-  // ✅ Refactor: 使用 JSON 数据驱动的全局重置
+  // 🔴 修复 2: 全局重置 (Fix Zombie Bug)
   // =================================================================
   restartGame: () => {
     const { achievedEndings, unlockedArchives } = get(); // 🔥 仅保留 Meta 数据
     
+    // 暴力重置所有 Slice 的状态到初始值
+    // 注意：这里没有使用各个 Slice 的 reset 方法，因为难以协调
+    // 直接覆盖是一个虽粗暴但最有效的“核弹级”修复
     set({
-        // 1. Vitality 重置 (从 JSON 读取)
+        // 1. Vitality 重置
         vitality: {
-            metrics: { ...INITIAL_STATE.vitality }, // 读取 hp, san, gold, creditScore 等
-            identity: { 
-                // 注意：这里类型可能需要根据 Schema 调整，确保 JSON 里的 string 能对应 enum
-                currentClass: INITIAL_STATE.identity.defaultClass, 
-                points: { ...INITIAL_STATE.identity.points } 
-            },
-            time: { 
-                currentTurn: INITIAL_STATE.time.startTurn, 
-                totalTurns: 1 
-            },
+            metrics: { hp: 100, maxHp: 100, san: 100, maxSan: 100, gold: 0, creditScore: 500, hunger: 100, maxHunger: 100, addiction: 0, resistance: 0 },
+            identity: { currentClass: 'HOMELESS', points: { red: 0, wolf: 0, old: 0 } }, // 稍后会被 initGame 覆盖
+            time: { currentTurn: 1, totalTurns: 1 },
             activeDiseases: [],
             ledger: { history: [] },
-            flags: { 
-                ...INITIAL_STATE.flags, // 读取 isHomeless, debtTurns 等
-                hiddenTags: [] 
-            },
+            flags: { isHomeless: true, debtTurns: 0, hiddenTags: [] },
             activeJobs: []
         },
-        
         // 2. Systems 重置
         bank: { activeLoans: [], lifetimeInterestPaid: 0 },
-        
-        crypto: { 
-            isAccountOpen: false, 
-            btcPrice: INITIAL_STATE.crypto.startPrice, // 读取初始币价
-            priceHistory: [INITIAL_STATE.crypto.startPrice], 
-            positions: [], 
-            weeklyNews: null 
-        },
-        
+        crypto: { isAccountOpen: false, btcPrice: 15000, priceHistory: [15000], positions: [], weeklyNews: null },
         faith: { id: 'NONE', level: 1, hasPerformedRite: false },
         prison: { inJail: false, crime: '', sentenceTurns: 0, turnsServed: 0, bailAmount: 0 },
-        
         // 3. Assets 重置
         activeHousing: null,
         activeInsurance: null,
         activeJob: null, 
         inventory: [],
-        
         // 4. Game Loop 重置
         ending: null,
         isEventOpen: false,
@@ -267,8 +236,10 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
         weeklyReport: null,
         
         // 5. 恢复 Meta 数据
-        unlockedArchives,
-        achievedEndings
+        unlockedArchives
     });
+
+    // 提示：UI 层 (App.tsx) 应该在检测到 ending === null 且 turn === 1 时
+    // 自动弹出 ClassSelectorModal，让玩家重新选择职业，从而触发 initGame。
   }
 });

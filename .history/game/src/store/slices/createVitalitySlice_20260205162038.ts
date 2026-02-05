@@ -41,10 +41,7 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
     time: { ...INITIAL_STATE.time, currentTurn: 1, totalTurns: 1 },
     activeDiseases: [],
     ledger: { history: [] },
-    flags: { 
-            ...INITIAL_STATE.flags, 
-            hiddenTags: [] 
-        },
+    flags: { ...INITIAL_STATE.flags },
     activeJobs: []
   },
 
@@ -79,10 +76,6 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
         time: { currentTurn: 1, totalTurns: 1 },
         activeDiseases: [],
         ledger: { history: [] },
-        flags: { 
-        ...INITIAL_STATE.flags, 
-        hiddenTags: [] 
-        },
         activeJobs: []
       },
       // 重置子系统

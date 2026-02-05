@@ -45,8 +45,6 @@ export interface UISlice {
   // 通知系统
   addNotification: (message: string, type?: GameNotification['type']) => void;
   removeNotification: (id: string) => void;
-  _hasHydrated: boolean;     // 👈 必须有这个
-  setHasHydrated: (state: boolean) => void; // 👈 必须有这个
 }
 
 export const createUISlice: StateCreator<any, [], [], UISlice> = (set, get) => ({
@@ -66,7 +64,6 @@ export const createUISlice: StateCreator<any, [], [], UISlice> = (set, get) => (
   notifications: [],
   viewingArchive: null,
   activeBill: null,
-  _hasHydrated: false,
 
   // --- Actions Implementation ---
   setShopOpen: (isOpen) => set({ isShopOpen: isOpen }),
@@ -88,7 +85,6 @@ export const createUISlice: StateCreator<any, [], [], UISlice> = (set, get) => (
   setRoast: (content) => set({ currentRoast: content }),
   setViewingArchive: (archiveId) => set({ viewingArchive: archiveId }),
   setViewMode: (mode) => set({ viewMode: mode }),
-  setHasHydrated: (state) => set({ _hasHydrated: state }),
 
   closeBill: () => set({ activeBill: null }),
 

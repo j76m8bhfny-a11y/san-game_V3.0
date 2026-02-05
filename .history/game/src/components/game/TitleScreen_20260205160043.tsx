@@ -73,13 +73,13 @@ interface TitleScreenProps {
 
 export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
   // ✅ Refactor: 使用 restartGame 替代旧的 resetPlayerState
-  const { vitality, inventory, restartGame } = useGameStore();
+  const { vitality, restartGame } = useGameStore();
   const { playBgm } = useAudioStore();
   
   const currentTurn = vitality.time.currentTurn;
   // 简单的判定：如果回合数 > 1 (或者根据你的初始设定)，则认为有存档
   // 如果初始回合是1，这里可能需要判断 flags 或其他状态，或者干脆 currentTurn > 1
-  const hasSave = currentTurn > 1 || vitality.metrics.gold !== 0 || inventory.length > 0;
+  const hasSave = currentTurn > 1 || vitality.metrics.gold !== 0 || vitality.inventory.length > 0;
   
   const [hoverItem, setHoverItem] = useState<string | null>(null);
   const [glitchTrigger, setGlitchTrigger] = useState(false);

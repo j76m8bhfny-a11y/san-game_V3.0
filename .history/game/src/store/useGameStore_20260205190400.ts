@@ -30,9 +30,9 @@ export type StoreState =
   & JobSlice
   & ShopSlice;
 
-// --- 🛠️ 日志中间件 (Logger Middleware) ---
+// --- 🛠️ 定义日志中间件 (Logger Middleware) ---
 type Logger = <
-  T,
+  T extends unknown,
   Mps extends [StoreMutatorIdentifier, unknown][] = [],
   Mcs extends [StoreMutatorIdentifier, unknown][] = []
 >(
@@ -41,11 +41,13 @@ type Logger = <
 ) => StateCreator<T, Mps, Mcs>;
 
 const loggerImpl: Logger = (f, name) => (set, get, store) => {
-  // 1. 定义拦截函数，接受任意参数
-  const loggedSet = (...args: any[]) => {
+  // ✅ 修复 1 & 2: 显式声明 args 的类型，解决 implicit any 和 spread argument 错误
+  const loggedSet: typeof set = (...args: Parameters<typeof set>) => {
     const prevState = get();
-    // 强制执行原 set 函数
-    (set as any)(...args);
+    
+    // 执行原来的 set
+    set(...args);
+    
     const newState = get();
 
     console.groupCollapsed(`🎬 Action Triggered`);
@@ -54,16 +56,15 @@ const loggerImpl: Logger = (f, name) => (set, get, store) => {
     console.groupEnd();
   };
 
-  // 2. 覆盖 store 的 setState 方法
-  store.setState = loggedSet as any;
+  // ✅ 修复 3: 使用类型断言 (as ...) 解决 TS2322 赋值类型不匹配问题
+  store.setState = loggedSet as typeof store.setState;
 
-  // 🔥 3. 关键修复：在这里也加 as any，解决 "参数类型不匹配" 的 TS 报错
-  return f(loggedSet as any, get, store);
+  return f(loggedSet, get, store);
 };
 
 // --- 创建 Store ---
 export const useGameStore = create<StoreState>()(
-  // 使用 logger 包裹 persist
+  // 🔥 使用 logger 包裹 persist
   loggerImpl(
     persist(
       (...a) => ({
@@ -85,7 +86,7 @@ export const useGameStore = create<StoreState>()(
         name: 'pixel-life-storage', 
         storage: createJSONStorage(() => localStorage), 
         
-        // --- 持久化白名单 ---
+        // --- 持久化白名单 (Partialize) ---
         partialize: (state) => ({
           // ✅ 1. 核心维生数据
           vitality: state.vitality,
@@ -104,19 +105,22 @@ export const useGameStore = create<StoreState>()(
           faith: state.faith,
           crypto: state.crypto,
           prison: state.prison,
+          
+          // 注意：不要持久化 _hasHydrated 或 UI 临时状态，
+          // 让它们在每次刷新时重置
         }),
         
         version: 1, 
         
-        // --- Hydration 完成回调 ---
+        // 🔥🔥🔥 关键：解决白屏问题的回调 🔥🔥🔥
         onRehydrateStorage: () => (state) => {
+          // 这里的 setTimeout 是为了确保 React 组件已经挂载
           setTimeout(() => {
-            // ⚠️ 请确保你的 createGameSlice.ts 或 createUISlice.ts 里真的有 setHasHydrated 方法
             if (state && state.setHasHydrated) {
-              console.log("💧 Storage Hydrated! System Ready.");
+              console.log("💧 Storage Hydrated! Setting flag to true.");
               state.setHasHydrated(true);
             } else {
-              console.error("❌ 严重错误: Store 中找不到 setHasHydrated 方法，游戏将一直卡在 Loading 界面！请检查 Slice 定义。");
+              console.warn("⚠️ setHasHydrated method missing in store slices!");
             }
           }, 0);
         },

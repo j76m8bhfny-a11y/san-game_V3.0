@@ -1,0 +1,28 @@
+{
+  "vitality": {
+    "hp": 100,
+    "maxHp": 100,
+    "san": 100,
+    "maxSan": 100,
+    "gold": 0,
+    "creditScore": 500,
+    "hunger": 100,
+    "maxHunger": 100,
+    "addiction": 0,
+    "resistance": 0
+  },
+  "identity": {
+    "defaultClass": "HOMELESS",
+    "points": { "red": 0, "wolf": 0, "old": 0 }
+  },
+  "time": {
+    "startTurn": 1
+  },
+  "crypto": {
+    "startPrice": 15000
+  },
+  "flags": {
+    "isHomeless": true,
+    "debtTurns": 0
+  }
+}

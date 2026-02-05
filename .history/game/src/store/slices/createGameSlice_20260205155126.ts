@@ -57,22 +57,7 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
     const { updates, logs } = resolveOption(state, option);
 
     if (Object.keys(updates).length > 0) {
-      set((prev: any) => {
-        // 如果更新中包含 vitality，需要进行深层合并，防止 identity, flags 等丢失
-        const newVitality = updates.vitality ? {
-          ...prev.vitality,
-          ...updates.vitality,
-          metrics: { ...prev.vitality.metrics, ...(updates.vitality.metrics || {}) },
-          identity: { ...prev.vitality.identity, ...(updates.vitality.identity || {}) },
-          flags: { ...prev.vitality.flags, ...(updates.vitality.flags || {}) }
-        } : prev.vitality;
-
-        return { 
-          ...prev, 
-          ...updates, 
-          vitality: newVitality 
-        };
-      });
+      set((prev: any) => ({ ...prev, ...updates }));
     }
 
     if (option.effects.gold) {

@@ -1,0 +1,30 @@
+{
+  "caps": {
+    "minStat": 0,
+    "maxStat": 100,
+    "minCreditScore": 0,
+    "maxCreditScore": 999
+  },
+  "executionOrder": {
+    "housing": 100,
+    "bank": 90,
+    "job": 80,
+    "bill": 70,
+    "faith": 50,
+    "event": 10
+  },
+  "ui": {
+    "notificationDuration": 3000,
+    "titleScreen": {
+      "glitchInterval": 3000,
+      "glitchChance": 0.2,
+      "glitchDuration": 150
+    },
+    "pauseMenu": {
+      "flavorText": "Time is money. Interest is compounding."
+    }
+  },
+  "audio": {
+    "defaultVolume": 50
+  }
+}

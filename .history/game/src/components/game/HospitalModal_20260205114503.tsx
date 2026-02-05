@@ -3,8 +3,6 @@ import { useGameStore } from '@/store/useGameStore';
 import { MedicalService } from '@/types/schema';
 import { calculateMedicalCost, getHospitalTheme } from '@/logic/medical';
 import { Heart, Activity, Shield, CreditCard, AlertTriangle } from 'lucide-react';
-// ✅ 1. 引入医疗规则配置，用于获取全局风险乘数
-import medicalRules from '@/assets/data/rules/medicalRules.json';
 
 export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
   const { 
@@ -12,7 +10,7 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
     currentRegion, 
     gameDataCache, 
     activeInsurance, 
-    performTreatment, 
+    performTreatment, // ✅ 1. 引入新 Action
     addNotification
   } = useGameStore();
 
@@ -34,13 +32,16 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
 
   // 处理治疗点击
   const handleTreatment = (serviceId: string) => {
+    // ✅ 2. 调用 Action 执行治疗
     const result = performTreatment(serviceId);
     
     if (result.success) {
         addNotification(result.msg, 'success');
+        // 治疗成功可以选择关闭弹窗，或者留着让玩家继续操作
         onClose();
     } else {
         addNotification(result.msg, 'error');
+        // 失败不关闭，让玩家看到后果
     }
   };
 
@@ -89,12 +90,7 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
               // 实时计算费用预览
               const costInfo = calculateMedicalCost(selectedService, activeInsurance, vitality.identity.currentClass);
               const canAfford = vitality.metrics.gold >= costInfo.finalCost;
-              
-              // ✅ 2. 修正：计算实际显示的风险率 (应用全局乘数)
-              // 必须与 Slice 中的逻辑保持一致，否则会出现 UI 显示 10% 风险但实际 20% 炸了的情况
-              const baseRisk = selectedService.requirements?.riskRate || 0;
-              const multiplier = medicalRules.settings.baseRiskMultiplier || 1.0;
-              const displayRisk = Math.min(baseRisk * multiplier, 1.0);
+              const riskRate = selectedService.requirements?.riskRate || 0;
 
               return (
                 <>
@@ -111,12 +107,10 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
                         {selectedService.effects?.addiction && (
                             <EffectRow label="成瘾性" value={selectedService.effects.addiction} icon={<AlertTriangle size={14}/>} color="text-purple-500" />
                         )}
-                        
-                        {/* ✅ 使用修正后的 displayRisk */}
-                        {displayRisk > 0 && (
+                        {riskRate > 0 && (
                             <div className="flex justify-between items-center text-red-500">
                                 <div className="flex items-center gap-2"><AlertTriangle size={14}/> 手术风险</div>
-                                <div className="font-mono font-bold">{(displayRisk * 100).toFixed(0)}%</div>
+                                <div className="font-mono font-bold">{(riskRate * 100).toFixed(0)}%</div>
                             </div>
                         )}
                     </div>
@@ -159,7 +153,7 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
                        `}
                      >
                        {canAfford ? (
-                         <>{displayRisk > 0 ? '签署免责协议并手术' : '支付并治疗'}</>
+                         <>{riskRate > 0 ? '签署免责协议并手术' : '支付并治疗'}</>
                        ) : (
                          <><CreditCard size={18}/> 余额不足</>
                        )}

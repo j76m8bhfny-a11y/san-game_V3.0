@@ -114,6 +114,23 @@ export const BankSidebar: React.FC = () => {
           ✕
         </button>
       </div>
+        <button
+          onClick={() => setActiveTab('LOANS')}
+          className={`flex-1 py-4 text-sm font-bold flex items-center justify-center gap-2 transition-colors ${
+            activeTab === 'LOANS' ? 'bg-amber-900/20 text-amber-500' : 'text-gray-500 hover:text-gray-300'
+          }`}
+        >
+          <Landmark size={16} /> LOANS
+        </button>
+        <button
+          onClick={() => setActiveTab('INSURANCE')}
+          className={`flex-1 py-4 text-sm font-bold flex items-center justify-center gap-2 transition-colors ${
+            activeTab === 'INSURANCE' ? 'bg-emerald-900/20 text-emerald-500' : 'text-gray-500 hover:text-gray-300'
+          }`}
+        >
+          <Shield size={16} /> INSURANCE
+        </button>
+      </div>
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar">

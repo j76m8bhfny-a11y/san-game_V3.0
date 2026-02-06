@@ -39,7 +39,7 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
         currentClass: INITIAL_STATE.identity.defaultClass as PlayerClass, 
         points: { ...INITIAL_STATE.identity.points } 
     },
-    time: { ...INITIAL_STATE.time, currentTurn: 1, totalTurns: 1 },
+    time: { ...INITIAL_STATE.time, currentTurn: INITIAL_STATE.time.startTurn, totalTurns: 1 },
     activeDiseases: [],
     ledger: { history: [] },
     flags: { 
@@ -129,11 +129,38 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
   },
 
   modifyStats: (changes) => set((state: any) => {
-    // ✅ 建议：此处也可以引入 SYSTEM_RULES.caps 进行安全钳制
+    // ✅ 使用 SYSTEM_RULES.caps 进行安全钳制
+    const { minStat, maxStat } = SYSTEM_RULES.caps;
+    const metrics = state.vitality.metrics;
+    
+    // 创建新的 metrics，对需要钳制的属性进行边界检查
+    const newMetrics = { ...metrics, ...changes };
+    
+    // 对关键属性进行钳制
+    if (changes.hp !== undefined) {
+      newMetrics.hp = Math.max(minStat, Math.min(metrics.maxHp ?? maxStat, changes.hp));
+    }
+    if (changes.san !== undefined) {
+      newMetrics.san = Math.max(minStat, Math.min(metrics.maxSan ?? maxStat, changes.san));
+    }
+    if (changes.gold !== undefined) {
+      // 金钱通常不设上限，但确保不低于 minStat (通常是 0)
+      newMetrics.gold = Math.max(minStat, changes.gold);
+    }
+    if (changes.addiction !== undefined) {
+      newMetrics.addiction = Math.max(minStat, Math.min(maxStat, changes.addiction));
+    }
+    if (changes.resistance !== undefined) {
+      newMetrics.resistance = Math.max(minStat, Math.min(maxStat, changes.resistance));
+    }
+    if (changes.hunger !== undefined) {
+      newMetrics.hunger = Math.max(minStat, Math.min(metrics.maxHunger ?? maxStat, changes.hunger));
+    }
+    
     return {
       vitality: {
           ...state.vitality,
-          metrics: { ...state.vitality.metrics, ...changes }
+          metrics: newMetrics
       }
     };
   }),

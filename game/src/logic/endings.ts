@@ -1,6 +1,7 @@
 import { GameState, Ending, PlayerClass } from '../types/schema';
 // ✅ 1. 引入配置文件 (核心改动)
 import ENDING_RULES from '@/assets/data/rules/ending_rules.json';
+import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 
 // 通用条件检查器 (保持原有逻辑，仅做少量格式优化)
 const checkCondition = (state: GameState, condition: Ending['conditions']): boolean => {
@@ -53,9 +54,10 @@ export const resolveEnding = (
   
   // ✅ 3. 解构配置项
   const { deathReasons, mappings, ui } = ENDING_RULES;
+  const { minStat } = SYSTEM_RULES.caps;
 
   // --- A. 系统强制死亡判定 ---
-  if (metrics.hp <= 0 || deathReason) {
+  if (metrics.hp <= minStat || deathReason) {
       
       // ✅ 4. 动态死因映射
       // 以前这里是写死的 if (deathReason === 'COP') return 'ED-04'...

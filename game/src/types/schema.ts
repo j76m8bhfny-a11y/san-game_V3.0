@@ -689,17 +689,4 @@ export interface ActiveJobState {
   region: RegionID;
 }
 
-// ✅ 确保导出 Insurance 的运行时状态
-export interface ActiveInsuranceState {
-  id: string;
-  name: string;
-  type: 'MEDICAL' | 'LIFE' | 'PROPERTY';
-  coverage: {
-    copayModifier: number;
-    emergencyCovered: boolean;
-    mentalCovered: boolean;
-    addictionCovered: boolean;
-  };
-  premium: number;
-  renewalTurn: number;
-}
+// ActiveInsuranceState 已在第 675 行定义，此处不再重复

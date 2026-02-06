@@ -28,9 +28,11 @@ export const JobSystem: GameSystem = {
     // ✅ 查找符合当前 SAN 值的配置项 (从小到大排序的 JSON 数组)
     // 逻辑：找到第一个 maxSan 大于等于 currentSan 的配置
 
-    const efficiencyConfig = jobRules.efficiencyCurve.find(
-      config => currentSan <= config.maxSan
-    ) || jobRules.efficiencyCurve[jobRules.efficiencyCurve.length - 1]; // Fallback to last
+    // 防御性检查：确保 efficiencyCurve 配置存在且非空
+    const curve = jobRules.efficiencyCurve || [];
+    const efficiencyConfig = curve.length > 0 
+      ? (curve.find(config => currentSan <= config.maxSan) || curve[curve.length - 1])
+      : { modifier: 1.0, statusText: '正常' }; // 兜底配置
 
     const efficiency = efficiencyConfig.modifier;
     const statusText = efficiencyConfig.statusText;

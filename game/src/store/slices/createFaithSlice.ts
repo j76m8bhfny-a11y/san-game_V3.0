@@ -2,6 +2,7 @@ import { StateCreator } from 'zustand';
 import { FaithID, FaithState, GameState, FaithDebuff } from '@/types/schema';
 import faithsData from '@/assets/data/faiths.json';
 import faithRules from '@/assets/data/rules/faithRules.json';
+import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 import { checkJoinCondition, calculateRiteOutcome } from '@/logic/faith';
 
 export interface FaithSlice {
@@ -124,15 +125,17 @@ export const createFaithSlice: StateCreator<any, [], [], FaithSlice> = (set, get
     if (penaltyConfig) {
       // 1. SAN 变化
       if (penaltyConfig.sanChange !== undefined) {
+        const { minStat } = SYSTEM_RULES.caps;
         const currentSan = state.vitality.metrics.san;
-        const newSan = Math.max(0, Math.min(state.vitality.metrics.maxSan, currentSan + penaltyConfig.sanChange));
+        const newSan = Math.max(minStat, Math.min(state.vitality.metrics.maxSan, currentSan + penaltyConfig.sanChange));
         state.modifyStats({ san: newSan });
       }
 
       // 2. 最大 HP 减少（永久）
       if (penaltyConfig.maxHpChange !== undefined) {
         const currentMaxHp = state.vitality.metrics.maxHp;
-        const newMaxHp = Math.max(1, currentMaxHp + penaltyConfig.maxHpChange); // 至少保留 1
+        // 使用硬编码 1 而非 minStat：保证玩家退出信仰后至少保留 1 HP 上限，不会立即死亡
+        const newMaxHp = Math.max(1, currentMaxHp + penaltyConfig.maxHpChange);
         const currentHp = state.vitality.metrics.hp;
         // 如果当前 HP 超过新的上限，需要同步调整
         const newHp = Math.min(currentHp, newMaxHp);

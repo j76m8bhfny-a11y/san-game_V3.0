@@ -15,6 +15,7 @@ export interface GameSlice {
   isEventOpen: boolean;
   currentEvent: GameEvent | null;
   weeklyReport: WeeklyReport | null;
+  activeBill: any | null;  // 与 UISlice 中的 activeBill 保持同步
 
   // --- Actions ---
   triggerEvent: (event: GameEvent) => void;
@@ -33,6 +34,7 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
   isEventOpen: false,
   currentEvent: null,
   weeklyReport: null,
+  activeBill: null,  // 初始状态
 
   triggerEvent: (event) => {
     set({ isEventOpen: true, currentEvent: event });
@@ -77,7 +79,8 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
       });
     }
 
-    // 3. 处理金钱账本 (保持不变)
+    // 4. 处理金钱账本
+    // 注意：HP/SAN 的变化已在 resolveOption 中处理，不要重复应用
     if (option.effects.gold) {
       if (store.addTransaction) {
         const type = option.effects.gold > 0 ? 'INCOME' : 'MISC';
@@ -85,15 +88,6 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
       } else {
         store.modifyStats({ gold: option.effects.gold });
       }
-    }
-
-    // 4. 处理 HP / SAN 变化通知
-
-    if (option.effects.hp || option.effects.san) {
-      store.modifyStats({ 
-        hp: option.effects.hp || 0, 
-        san: option.effects.san || 0 
-      });
     }
     // 5. 监狱逻辑处理
     if (option.effects.jail) {
@@ -105,7 +99,7 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
         );
       }
     }
-    // 6. ✨ 核心修改：触发吐槽并保持事件状态
+    // 6. 触发吐槽并保持事件状态
     if (option.roast && store.setRoast) {
       // 如果有吐槽，只关闭“手机选项”，不销毁“当前事件”
       store.setRoast(option.roast); 
@@ -130,6 +124,9 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
 
   nextTurn: () => {
     if (get().isMenuOpen) return;
+    
+    // 监狱状态下不执行普通回合结算，由 serveTime 处理
+    if (get().prison?.inJail) return;
 
     const state = get() as GameState;
     const store = get() as any;
@@ -150,13 +147,18 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
     const result = runTurnSettlement(state);
 
     // 3. Crypto 市场结算
-    let cryptoLogs: string[] = [];
     let cryptoNotes: string[] = [];
     
     if (state.crypto && state.crypto.isAccountOpen) {
-      const allNews = state.gameDataCache?.news || [];
-      const cryptoResult = store.processWeeklyMarket(allNews); 
-      cryptoLogs = cryptoResult.logs || [];
+      // 防御性处理：如果 gameDataCache 未加载，使用 crypto 中缓存的上周新闻
+      let allNews = state.gameDataCache?.news;
+      if (!allNews || allNews.length === 0) {
+        console.warn('[Crypto] gameDataCache.news 为空，使用备用新闻数据');
+        // 使用 crypto 中已经缓存的 weeklyNews 作为兜底
+        allNews = state.crypto.weeklyNews ? [state.crypto.weeklyNews] : [];
+      }
+      const cryptoResult = store.processWeeklyMarket(allNews);
+      // crypto 日志通过 processWeeklyMarket 内部的通知系统展示
       cryptoNotes = cryptoResult.notes || [];
     }
 
@@ -191,31 +193,35 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
 
     // 5. 生存熔断机制 (Death Check)
     const freshState = get() as GameState;
-    const { hp } = freshState.vitality.metrics;
+    const { hp, san } = freshState.vitality.metrics;
     
     if (freshState.ending) return; 
 
-    // ✅ Refactor: 如果有配置"死亡阈值"，也可以在这里替换 minStat
+    // 检查 HP 死亡条件
     if (hp <= minStat) {
         store.triggerEnding('ENDING_DEATH_HP'); 
+        return; 
+    }
+    
+    // 检查 SAN 死亡条件（疯狂/精神崩溃）
+    if (san <= minStat) {
+        store.triggerEnding('ENDING_DEATH_SAN'); 
         return; 
     }
     
     // 6. 存储报表并打开 UI
     set({ weeklyReport: result.report });
 
-    const turn = state.vitality.time.currentTurn;
-    store.addNotification(`第 ${turn} 周结算完成`, 'info');
+    const nextTurnNum = state.vitality.time.currentTurn + 1;
+    store.addNotification(`进入第 ${nextTurnNum} 周`, 'info');
     
     [...result.notes, ...cryptoNotes].forEach((n: string) => store.addNotification(n, 'warning'));
   },
 
   closeWeeklyReport: () => {
     const store = get() as any;
-    set({ weeklyReport: null });
     
-    if (store.clearWeeklyLedger) store.clearWeeklyLedger();
-    if (store.tickFaithDebuffs) store.tickFaithDebuffs();
+    // ✅ 调整顺序：先推进回合，再清空账本，避免数据丢失
     if (store.advanceTurn) {
         store.advanceTurn();
     } else {
@@ -226,6 +232,11 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
             }
         }));
     }
+    
+    // 推进回合后再清空 UI 状态和账本
+    set({ weeklyReport: null });
+    if (store.clearWeeklyLedger) store.clearWeeklyLedger();
+    if (store.tickFaithDebuffs) store.tickFaithDebuffs();
   },
 
   // =================================================================

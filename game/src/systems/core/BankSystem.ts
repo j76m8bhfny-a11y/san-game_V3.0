@@ -1,7 +1,8 @@
 import { GameSystem, SystemResult } from '../types';
 import { GameState, PlayerClass } from '@/types/schema';
 import { processTurnInterest } from '@/logic/bank';
-import bankRules from '@/assets/data/rules/bankRules.json'; // ✅ 1. 引入数值配置文件
+import bankRules from '@/assets/data/rules/bankRules.json';
+import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 
 export const BankSystem: GameSystem = {
   id: 'BANK_SYSTEM',
@@ -86,8 +87,9 @@ export const BankSystem: GameSystem = {
           else if (t <= collection.violence.maxTurn) {
             result.logs.push(`【暴力催收】讨债人打断了你的肋骨！`);
             
-            // 读取配置伤害值
+            // 读取配置伤害值和数值下限
             const { hpDamage, sanDamage } = collection.violence;
+            const { minStat } = SYSTEM_RULES.caps;
             
             // 获取当前 HP/SAN（考虑之前系统如 Housing 的修改）
             const currentHp = (result.updates.vitality as any)?.metrics?.hp ?? vitality.metrics.hp;
@@ -97,8 +99,8 @@ export const BankSystem: GameSystem = {
                ...result.updates.vitality,
                metrics: {
                  ...(result.updates.vitality as any)?.metrics,
-                 hp: Math.max(0, currentHp - hpDamage),
-                 san: Math.max(0, currentSan - sanDamage)
+                 hp: Math.max(minStat, currentHp - hpDamage),
+                 san: Math.max(minStat, currentSan - sanDamage)
                }
             } as any;
             

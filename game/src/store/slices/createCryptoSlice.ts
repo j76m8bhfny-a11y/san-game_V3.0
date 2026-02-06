@@ -159,17 +159,31 @@ export const createCryptoSlice: StateCreator<any, [], [], CryptoSlice> = (set, g
       ? allNews[Math.floor(Math.random() * allNews.length)] 
       : null;
 
-    // 4. 更新状态
-    set((s: any) => ({
-      crypto: {
-        ...s.crypto,
-        btcPrice: nextPrice,
-        // 防御性处理：确保 priceHistory 至少有1个元素，否则用当前价格填充
-        priceHistory: [...(s.crypto.priceHistory.length > 0 ? s.crypto.priceHistory.slice(1) : Array(6).fill(btcPrice)), nextPrice],
-        positions: remainingPositions,
-        weeklyNews: nextWeekNews
+    // 4. 更新状态（使用固定长度的环形缓冲区）
+    set((s: any) => {
+      const HISTORY_LENGTH = 7; // 固定保留7周历史
+      const prevHistory = s.crypto.priceHistory || [];
+      
+      // 环形缓冲区：移除最旧的，添加最新的，确保长度始终为 HISTORY_LENGTH
+      let newHistory: number[];
+      if (prevHistory.length >= HISTORY_LENGTH) {
+        newHistory = [...prevHistory.slice(1), nextPrice];
+      } else {
+        // 初始化阶段，填充到固定长度
+        const padding = Array(HISTORY_LENGTH - prevHistory.length - 1).fill(btcPrice);
+        newHistory = [...prevHistory, ...padding, nextPrice];
       }
-    }));
+      
+      return {
+        crypto: {
+          ...s.crypto,
+          btcPrice: nextPrice,
+          priceHistory: newHistory,
+          positions: remainingPositions,
+          weeklyNews: nextWeekNews
+        }
+      };
+    });
 
     // 5. 生成大盘日志
     if (nextPrice !== btcPrice) {

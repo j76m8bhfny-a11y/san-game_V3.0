@@ -6,6 +6,7 @@ import { runTurnSettlement } from '@/systems/SystemRegistry'; // ✅ 引入结�
 
 // ✅ 1. 引入数值配置文件
 import prisonRules from '@/assets/data/rules/prisonRules.json';
+import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 
 export interface PrisonSlice {
   prison: {
@@ -75,9 +76,10 @@ export const createPrisonSlice: StateCreator<any, [], [], PrisonSlice> = (set, g
     };
 
     // 叠加监狱惩罚 (HP/SAN)
+    const { minStat } = SYSTEM_RULES.caps;
     if (nextState.vitality && nextState.vitality.metrics) {
-        nextState.vitality.metrics.hp = Math.max(0, nextState.vitality.metrics.hp + effect.hp);
-        nextState.vitality.metrics.san = Math.max(0, nextState.vitality.metrics.san + effect.san);
+        nextState.vitality.metrics.hp = Math.max(minStat, nextState.vitality.metrics.hp + effect.hp);
+        nextState.vitality.metrics.san = Math.max(minStat, nextState.vitality.metrics.san + effect.san);
     }
 
     // 推进时间与刑期

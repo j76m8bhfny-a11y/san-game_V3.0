@@ -39,7 +39,7 @@ export const createCryptoSlice: StateCreator<any, [], [], CryptoSlice> = (set, g
   },
 
   openCryptoAccount: () => {
-    const state = get() as GameState & { addTransaction: Function; playSfx: Function };
+    const state = get() as GameState & { addTransaction: Function; addNotification: Function };
     const { vitality } = state;
 
     // ✅ 3. 获取配置的开户费 (与 Sidebar UI 保持一致)
@@ -47,7 +47,6 @@ export const createCryptoSlice: StateCreator<any, [], [], CryptoSlice> = (set, g
 
     if (vitality.metrics.gold < FEE) {
       state.addNotification('资金不足，无法支付去中心化网络接入费', 'error');
-      if (state.playSfx) state.playSfx('sfx_deny');
       return;
     }
     
@@ -59,17 +58,15 @@ export const createCryptoSlice: StateCreator<any, [], [], CryptoSlice> = (set, g
     }));
     
     state.addNotification('网络已连接。Welcome to the degenerate future.', 'success');
-    if (state.playSfx) state.playSfx('sfx_cash');
   },
 
   openPosition: (type, principal, leverage) => {
-    const state = get() as GameState & { addTransaction: Function; playSfx: Function };
+    const state = get() as GameState & { addTransaction: Function; addNotification: Function };
     const { crypto, vitality } = state;
     
-    // 1. 检查资金 (这里逻辑正确，是检查本金 principal)
+    // 1. 检查资金
     if (vitality.metrics.gold < principal) {
       state.addNotification('可用资金不足以建立此仓位', 'error');
-      if (state.playSfx) state.playSfx('sfx_deny');
       return;
     }
 
@@ -93,12 +90,11 @@ export const createCryptoSlice: StateCreator<any, [], [], CryptoSlice> = (set, g
       }
     }));
 
-    if (state.playSfx) state.playSfx('sfx_cash');
     state.addNotification(`${type === 'LONG' ? '做多' : '做空'} BTC x${leverage} 成功`, 'success');
   },
 
   closePosition: (id) => {
-    const state = get() as GameState & { addTransaction: Function; playSfx: Function };
+    const state = get() as GameState & { addTransaction: Function; addNotification: Function };
     const { crypto } = state;
     
     const positionIndex = crypto.positions.findIndex(p => p.id === id);
@@ -125,16 +121,14 @@ export const createCryptoSlice: StateCreator<any, [], [], CryptoSlice> = (set, g
     set((s: any) => ({
       crypto: { ...s.crypto, positions: newPositions }
     }));
-
-    if (state.playSfx) state.playSfx('sfx_cash');
     
-    // 根据盈亏显示不同颜色的通知
+    // 4. 根据盈亏显示不同颜色的通知
     const msgType = pnl >= 0 ? 'success' : (pnl > -position.principal ? 'warning' : 'error');
     state.addNotification(`平仓完成。净盈亏: $${pnl}`, msgType);
   },
 
   processWeeklyMarket: (allNews) => {
-    const state = get();
+    const state = get() as GameState & { addTransaction: Function };
     const { btcPrice, weeklyNews, positions } = state.crypto;
     const logs: string[] = [];
     const notes: string[] = [];
@@ -153,6 +147,8 @@ export const createCryptoSlice: StateCreator<any, [], [], CryptoSlice> = (set, g
       if (isLiquidated) {
         logs.push(`BTC爆仓: 损失 $${pos.principal}`);
         notes.push(`[强平通知] 市场剧烈波动，你的 ${pos.leverage}x ${pos.type} 仓位已爆仓，本金归零。`);
+        // 记录爆仓损失到账本
+        state.addTransaction('MISC', -pos.principal, `爆仓强平: ${pos.type} x${pos.leverage} 仓位`);
       } else {
         remainingPositions.push(pos);
       }
@@ -168,7 +164,8 @@ export const createCryptoSlice: StateCreator<any, [], [], CryptoSlice> = (set, g
       crypto: {
         ...s.crypto,
         btcPrice: nextPrice,
-        priceHistory: [...s.crypto.priceHistory.slice(1), nextPrice],
+        // 防御性处理：确保 priceHistory 至少有1个元素，否则用当前价格填充
+        priceHistory: [...(s.crypto.priceHistory.length > 0 ? s.crypto.priceHistory.slice(1) : Array(6).fill(btcPrice)), nextPrice],
         positions: remainingPositions,
         weeklyNews: nextWeekNews
       }

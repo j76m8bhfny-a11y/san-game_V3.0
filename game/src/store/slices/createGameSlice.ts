@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { GameState, GameEvent, EventOption, WeeklyReport, Ending, FaithID } from '@/types/schema';
+import { GameState, GameEvent, EventOption, WeeklyReport, Ending, FaithID, PlayerClass } from '@/types/schema';
 import { resolveOption } from '@/logic/eventResolver';
 import { runTurnSettlement } from '@/systems/SystemRegistry';
 import { resolveEnding } from '@/logic/endings'; 
@@ -295,7 +295,7 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
         currentRegion: 'SLUMS',
         activeHousing: {},
         activeInsurance: null,
-        activeJob: null,
+        activeJobs: [],
         inventory: [],
         
         // 4. Game Loop 重置

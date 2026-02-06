@@ -2,7 +2,6 @@ import { StateCreator } from 'zustand';
 import { 
   PlayerClass, 
   RegionID, 
-  ActiveJobState, 
   ActiveHousingState, 
   ActiveInsuranceState,
   ActiveHousingMap
@@ -14,7 +13,7 @@ export const CLASS_INITIAL_STATS = vitalityRules.classes as Record<PlayerClass, 
 // 2. 初始状态
 const INITIAL_PLAYER_STATE = {
   currentRegion: RegionID.Slums, 
-  activeJob: null as ActiveJobState | null,
+  // 注意: activeJobs 已在 vitality 内部管理，不在此处存储
   activeHousing: {} as ActiveHousingMap,  // 改为对象结构，支持多区域
   activeInsurance: null as ActiveInsuranceState | null,
 
@@ -28,7 +27,7 @@ const INITIAL_PLAYER_STATE = {
 export interface PlayerSlice {
   // --- State ---
   currentRegion: RegionID;
-  activeJob: ActiveJobState | null;
+  // 注意: activeJobs 在 vitality 中管理 (支持多工作)
   activeHousing: ActiveHousingMap;  // 多区域房产
   activeInsurance: ActiveInsuranceState | null;
 
@@ -44,7 +43,6 @@ export interface PlayerSlice {
   resetPlayerState: () => void;
   
   setRegion: (region: RegionID) => void;
-  setJob: (job: ActiveJobState | null) => void;
   setInsurance: (insurance: ActiveInsuranceState | null) => void;
 }
 
@@ -74,6 +72,5 @@ export const createPlayerSlice: StateCreator<any, [], [], PlayerSlice> = (set, g
   },
 
   setRegion: (region) => set({ currentRegion: region }),
-  setJob: (job) => set({ activeJob: job }),
   setInsurance: (insurance) => set({ activeInsurance: insurance }),
 });

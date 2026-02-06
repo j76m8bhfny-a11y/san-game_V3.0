@@ -26,9 +26,9 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
 
   // ✅ [New] 动态计算当前已使用的精力槽位
   const currentUsedSlots = useMemo(() => {
-    if (!gameDataCache?.events) return 0;
+    if (!gameDataCache?.jobs) return 0;
     return vitality.activeJobs.reduce((total, jobId) => {
-      const job = gameDataCache.events.find((j: Job) => j.id === jobId);
+      const job = gameDataCache.jobs.find((j: Job) => j.id === jobId);
       if (!job) return total;
       // 从配置读取消耗，默认为 1
       const cost = jobRules.settings.slotCosts[job.type as keyof typeof jobRules.settings.slotCosts] || 1; 
@@ -39,7 +39,7 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
   if (!isOpen || !gameDataCache) return null;
 
   // 1. 筛选当前区域的工作
-  const availableJobs = (gameDataCache.events || []).filter(
+  const availableJobs = (gameDataCache.jobs || []).filter(
     (job: Job) => job.region === currentRegion
   );
 
@@ -53,11 +53,15 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
       return { ok: false, reason: "需要本区域固定住所" };
     }
     
-    // B. 检查载具/道具 (原有逻辑)
+    // B. 检查载具/道具 (标签匹配逻辑，与 createJobSlice 保持一致)
     if (job.requiredItem) {
       const hasItem = inventory.some(itemId => {
+        // 精确匹配道具ID（兼容性）
+        if (itemId === job.requiredItem) return true;
+        
+        // 标签匹配：requiredItem 作为标签名，如 "VEHICLE"
         const item = gameDataCache.itemMap?.get(itemId);
-        return item?.tags.includes(job.requiredItem!);
+        return item?.tags?.includes(job.requiredItem!);
       });
       if (!hasItem) {
         return { ok: false, reason: `需道具: ${job.requiredItem}` };

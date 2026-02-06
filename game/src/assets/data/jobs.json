@@ -45,7 +45,7 @@
     "hpCost": 10,
     "sanCost": 15,
     "requiresHousing": true,
-    "requiredItem": "VEHICLE_SEDAN",
+    "requiredItem": "VEHICLE",
     "description": "必须有车。经常在后视镜里看到不存在的乘客。"
   },
   {

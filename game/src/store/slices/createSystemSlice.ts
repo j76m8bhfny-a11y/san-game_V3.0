@@ -6,7 +6,8 @@ import {
   createEventMap, 
   createBillMap, 
   createArchiveMap, 
-  createEndingMap 
+  createEndingMap,
+  createJobMap
 } from '@/utils/dataLoader';
 
 export interface SystemSlice {
@@ -43,6 +44,7 @@ export const createSystemSlice: StateCreator<any, [], [], SystemSlice> = (set, g
         billMap: createBillMap(data.bills),
         archiveMap: createArchiveMap(data.archives),
         endingMap: createEndingMap(data.endings),
+        jobMap: createJobMap(data.jobs),
       };
 
       set({ gameDataCache: cache });

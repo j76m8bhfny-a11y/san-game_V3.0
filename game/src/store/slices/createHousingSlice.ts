@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { GameState, Housing, ActiveHousingState, RegionID } from '@/types/schema';
+import { GameState, Housing, ActiveHousingState, RegionID, PlayerClass } from '@/types/schema';
 import housingData from '@/assets/data/housing.json';
 
 
@@ -71,7 +71,7 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
     
     // 2. 检查阶级
     const currentClass = gameState.vitality.identity.currentClass;
-    if (currentClass !== house.requiredClass && house.requiredClass !== 'HOMELESS') {
+    if (currentClass !== house.requiredClass) {
       return { success: false, message: "你的阶级身份不符，房东拒绝签约。" };
     }
     
@@ -131,7 +131,7 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
     
     // 2. 检查阶级
     const currentClass = gameState.vitality.identity.currentClass;
-    if (currentClass !== house.requiredClass) {
+    if (currentClass !== house.requiredClass && house.requiredClass !== PlayerClass.Homeless) {
       return { success: false, message: "你的社会信用等级不足以购买此处的房产。" };
     }
     

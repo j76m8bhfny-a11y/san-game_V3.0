@@ -113,6 +113,7 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
       activeJobs: [],
       inventory: [],
       bank: { activeLoans: [], lifetimeInterestPaid: 0 }
+      // 注意: activeJobs 已在 vitality 内部管理，不需要在此处重复设置
     }));
   },
 

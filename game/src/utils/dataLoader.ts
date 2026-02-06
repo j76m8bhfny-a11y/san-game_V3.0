@@ -92,3 +92,7 @@ export const createArchiveMap = (archives: Archive[]): Map<string, Archive> => {
 export const createEndingMap = (endings: Ending[]): Map<string, Ending> => {
   return new Map(endings.map(ending => [ending.id, ending]));
 };
+
+export const createJobMap = (jobs: Job[]): Map<string, Job> => {
+  return new Map(jobs.map(job => [job.id, job]));
+};

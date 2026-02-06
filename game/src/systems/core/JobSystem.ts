@@ -61,7 +61,7 @@ export const JobSystem: GameSystem = {
     }, 1);
 
     vitality.activeJobs.forEach(jobId => {
-      const job = jobsData.find(j => j.id === jobId) as unknown as Job;
+      const job = jobsData.find(j => j.id === jobId) as Job;
       if (!job) return;
 
       // =================================================================

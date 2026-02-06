@@ -12,13 +12,7 @@ export interface JobSlice {
   getJobSlotsUsed: () => number;
 }
 
-// 阶级权重，用于判断向下兼容
-const CLASS_WEIGHT = {
-  [PlayerClass.Homeless]: 0,
-  [PlayerClass.Worker]: 1,
-  [PlayerClass.Middle]: 2,
-  [PlayerClass.Capitalist]: 3
-};
+
 
 export const createJobSlice: StateCreator<any, [], [], JobSlice> = (set, get) => ({
 
@@ -28,7 +22,7 @@ export const createJobSlice: StateCreator<any, [], [], JobSlice> = (set, get) =>
     let usedSlots = 0;
     
     activeJobIds.forEach(id => {
-      const job = jobsData.find(j => j.id === id) as unknown as Job;
+      const job = jobsData.find(j => j.id === id) as Job;
       if (job) {
         const cost = jobRules.settings.slotCosts[job.type] || 1; 
         usedSlots += cost;
@@ -40,7 +34,7 @@ export const createJobSlice: StateCreator<any, [], [], JobSlice> = (set, get) =>
   acceptJob: (jobId) => {
     const state = get() as GameState;
     const { vitality, activeHousing, inventory } = state;
-    const job = jobsData.find(j => j.id === jobId) as unknown as Job;
+    const job = jobsData.find(j => j.id === jobId) as Job;
 
     if (!job) return { success: false, message: "工作不存在" };
 
@@ -59,8 +53,8 @@ export const createJobSlice: StateCreator<any, [], [], JobSlice> = (set, get) =>
     }
 
     // 3. 检查阶级 (向下兼容)
-    const playerWeight = jobRules.classWeights[vitality.identity.currentClass] ?? 0;
-    const jobWeight = jobRules.classWeights[job.requiredClass] ?? 99;
+    const playerWeight = jobRules.classWeights[vitality.identity.currentClass as keyof typeof jobRules.classWeights] ?? 0;
+    const jobWeight = jobRules.classWeights[job.requiredClass as keyof typeof jobRules.classWeights] ?? 99;
     
     if (playerWeight < jobWeight) {
       return { success: false, message: "你的阶级不够，HR直接把简历扔进了垃圾桶。" };
@@ -74,9 +68,20 @@ export const createJobSlice: StateCreator<any, [], [], JobSlice> = (set, get) =>
       }
     }
 
-    // 5. 检查道具 (如车)
+    // 5. 检查道具 (如车) - 基于标签匹配
     if (job.requiredItem) {
-      const hasItem = inventory.some(itemId => itemId === job.requiredItem || itemId.includes(job.requiredItem!));
+      const gameData = (get() as GameState).gameDataCache;
+      const itemMap = gameData?.itemMap;
+      
+      const hasItem = inventory.some(itemId => {
+        // 精确匹配道具ID（兼容性）
+        if (itemId === job.requiredItem) return true;
+        
+        // 标签匹配：requiredItem 作为标签名，如 "VEHICLE"
+        const item = itemMap?.get(itemId);
+        return item?.tags?.includes(job.requiredItem!);
+      });
+      
       if (!hasItem) {
         return { success: false, message: `缺少必要工具: ${job.requiredItem}` };
       }

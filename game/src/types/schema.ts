@@ -86,6 +86,9 @@ export const HousingSchema = z.object({
   region: z.nativeEnum(RegionID),
   requiredClass: z.nativeEnum(PlayerClass),
   
+  // 房产价值（用于计算净资产）
+  value: z.number().default(0),
+  
   // 租赁配置
   rentConfig: z.object({
     deposit: z.number(),
@@ -458,7 +461,11 @@ export interface ActiveHousingState {
   loanId?: string;      // 关联房贷
   defenseLevel: number;
   regenHp: number;
+  weeklyCosts: HousingCostItem[]; // 该房产的周费用明细
 }
+
+// 多区域房产存储结构: { [regionId]: ActiveHousingState }
+export type ActiveHousingMap = Partial<Record<RegionID, ActiveHousingState>>;
 
 export interface GameState {
   // ✅ 维生核心 (取代原有的 hp, gold, day)
@@ -480,7 +487,7 @@ export interface GameState {
   };
 
   // 资产与库存
-  activeHousing: any; // ✅ 使用新定义的 ActiveHousingState
+  activeHousing: ActiveHousingMap;
   activeInsurance: ActiveInsuranceState | null;
   
   inventory: string[];

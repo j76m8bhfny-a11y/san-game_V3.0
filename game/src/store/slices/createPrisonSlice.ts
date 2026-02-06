@@ -127,7 +127,10 @@ export const createPrisonSlice: StateCreator<any, [], [], PrisonSlice> = (set, g
     if (metrics.gold < cost) return { success: false, msg: "资金不足。" };
 
     // 扣款记账
-    (state as any).addTransaction('MISC', -cost, '支付保释金');
+    const txResult = (state as any).addTransaction('MISC', -cost, '支付保释金');
+    if (!txResult.success) {
+      return { success: false, msg: "资金不足以支付保释金。" };
+    }
 
     set((s: any) => ({
       prison: INITIAL_PRISON
@@ -163,7 +166,10 @@ export const createPrisonSlice: StateCreator<any, [], [], PrisonSlice> = (set, g
     }
 
     // 2. 扣除首付
-    state.addTransaction('MISC', -downPayment, '保释金首付');
+    const txResult = state.addTransaction('MISC', -downPayment, '保释金首付');
+    if (!txResult.success) {
+      return { success: false, msg: "资金不足以支付保释金首付。" };
+    }
 
     // 3. 释放
     set((s: any) => ({

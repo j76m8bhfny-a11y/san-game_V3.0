@@ -67,7 +67,11 @@ export const createShopSlice: StateCreator<any, [], [], ShopSlice> = (set, get) 
     const transactionType = item.price >= 0 ? category : 'INCOME';
     
     // 调用 Vitality Slice 的核心记账 (自动扣减余额 + 记录账本)
-    state.addTransaction(transactionType, -item.price, `购买: ${item.name}`);
+    const txResult = state.addTransaction(transactionType, -item.price, `购买: ${item.name}`);
+    if (!txResult.success) {
+      if (state.playSfx) state.playSfx(shopRules.audio.buyFail);
+      return;
+    }
 
     // 3. 进货
     set((s: any) => ({

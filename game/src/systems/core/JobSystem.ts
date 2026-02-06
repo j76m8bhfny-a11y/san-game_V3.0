@@ -70,7 +70,8 @@ export const JobSystem: GameSystem = {
       
       // 1. 复核房产
       if (job.requiresHousing) {
-        if (!activeHousing || activeHousing.region !== job.region) {
+        const localHousing = activeHousing?.[job.region];
+        if (!localHousing) {
             result.logs.push(`【停薪】${job.title}: 失去固定住所或搬离该区域。`);
             result.notes.push(`工作异常: ${job.title} 因住所问题暂停发放工资。`);
             return; 

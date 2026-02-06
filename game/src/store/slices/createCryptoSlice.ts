@@ -51,7 +51,11 @@ export const createCryptoSlice: StateCreator<any, [], [], CryptoSlice> = (set, g
     }
     
     // 支付开户费
-    state.addTransaction('BANK', -FEE, '开通加密货币账户');
+    const txResult = state.addTransaction('BANK', -FEE, '开通加密货币账户');
+    if (!txResult.success) {
+      state.addNotification('资金不足以支付开户费', 'error');
+      return;
+    }
 
     set((s: any) => ({
       crypto: { ...s.crypto, isAccountOpen: true }
@@ -71,7 +75,11 @@ export const createCryptoSlice: StateCreator<any, [], [], CryptoSlice> = (set, g
     }
 
     // 2. 原子扣款
-    state.addTransaction('BANK', -principal, `开仓: BTC ${type} x${leverage}`);
+    const txResult = state.addTransaction('BANK', -principal, `开仓: BTC ${type} x${leverage}`);
+    if (!txResult.success) {
+      state.addNotification('资金不足以建立仓位', 'error');
+      return;
+    }
 
     // 3. 记录仓位
     const newPosition: CryptoPosition = {

@@ -8,7 +8,7 @@ export const BankSystem: GameSystem = {
   id: 'BANK_SYSTEM',
 
   processTurn: ({ state }) => {
-    const { bank, vitality, activeHousing } = state;
+    const { bank, vitality, activeHousing, currentRegion } = state;
     const result: SystemResult = {
       updates: { bank: { ...bank } } as any,
       newTransactions: [],
@@ -17,6 +17,9 @@ export const BankSystem: GameSystem = {
     };
 
     if (bank.activeLoans.length === 0) return result;
+
+    // 找到当前区域关联的房产（用于法拍）
+    const currentHousing = activeHousing?.[currentRegion];
 
     const currentTurn = vitality.time.currentTurn;
     let totalScoreChange = 0;
@@ -44,11 +47,16 @@ export const BankSystem: GameSystem = {
         if (loan.isMortgage) {
            // 🛑 达到断供阈值 -> 强制收房
            if (t >= mortgage.foreclosureTurns) {
-             result.logs.push(`【法拍执行】房屋 ${activeHousing?.name} 因断供被银行强制收回！`);
+             const foreclosedHouse = currentHousing?.loanId === loan.id ? currentHousing : null;
+             result.logs.push(`【法拍执行】房屋 ${foreclosedHouse?.name || '某处房产'} 因断供被银行强制收回！`);
              result.notes.push("你失去了房子，变回了流浪汉，信用分崩盘。");
              
-             // 移除房产
-             (result.updates as any).activeHousing = null; 
+             // 移除当前区域的房产（如果匹配）
+             if (foreclosedHouse && activeHousing) {
+               const newHousing = { ...activeHousing };
+               delete newHousing[currentRegion];
+               (result.updates as any).activeHousing = newHousing;
+             } 
              
              // 阶级跌落
              result.updates.vitality = {
@@ -68,7 +76,8 @@ export const BankSystem: GameSystem = {
 
            } else {
              // ⚠️ 断供警告
-             result.logs.push(`【房贷警告】逾期 ${t} 周。${mortgage.foreclosureTurns - t}周后将收回房产。`);
+             const houseName = currentHousing?.loanId === loan.id ? currentHousing.name : '某处房产';
+             result.logs.push(`【房贷警告】${houseName} 逾期 ${t} 周。${mortgage.foreclosureTurns - t}周后将收回房产。`);
              totalScoreChange -= mortgage.warningPenalty;
            }
         } 

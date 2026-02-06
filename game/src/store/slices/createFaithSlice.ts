@@ -54,7 +54,10 @@ export const createFaithSlice: StateCreator<any, [], [], FaithSlice> = (set, get
     if (check.success) {
       if (faithConfig.joinCost.gold && faithConfig.joinCost.gold > 0) {
          const category = faithRules.defaults.transactionCategories.join;
-         state.addTransaction(category, -faithConfig.joinCost.gold, `入教奉献: ${faithConfig.name}`);
+         const txResult = state.addTransaction(category, -faithConfig.joinCost.gold, `入教奉献: ${faithConfig.name}`);
+         if (!txResult.success) {
+           return { success: false, message: "资金不足以支付入教费用。" };
+         }
       }
 
       set({ 
@@ -238,7 +241,10 @@ export const createFaithSlice: StateCreator<any, [], [], FaithSlice> = (set, get
            const type = result.goldChange > 0 
               ? faithRules.defaults.transactionCategories.riteIncome 
               : faithRules.defaults.transactionCategories.riteCost;
-           state.addTransaction(type, result.goldChange, `信仰仪式: ${faithConfig.rite.name}`);
+           const txResult = state.addTransaction(type, result.goldChange, `信仰仪式: ${faithConfig.rite.name}`);
+           if (!txResult.success && result.goldChange < 0) {
+             return { success: false, message: "资金不足以支付仪式费用。" };
+           }
        }
 
        set((prev: any) => ({

@@ -160,7 +160,12 @@ export const BankSidebar: React.FC = () => {
 
     try {
       // 扣除首期保费
-      addTransaction('MEDICAL', -plan.weeklyCost, `保险首期: ${plan.name}`);
+      const txResult = addTransaction('MEDICAL', -plan.weeklyCost, `保险首期: ${plan.name}`);
+      if (!txResult.success) {
+        addNotification("资金不足以支付保险费用", "error");
+        setProcessingInsuranceId(null);
+        return;
+      }
 
       playSfx('sfx_cash'); 
       

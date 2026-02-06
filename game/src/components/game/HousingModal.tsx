@@ -21,8 +21,7 @@ export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) =
     vitality,
     rentHousing, // ✅ 使用 Slice Action
     buyHousing,  // ✅ 使用 Slice Action
-    addNotification,
-    setHousing // 仅用于搬离 (handleMoveOut)
+    addNotification
   } = useGameStore();
   
   const gold = vitality.metrics.gold;
@@ -55,10 +54,13 @@ export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) =
     }
   };
 
+  // 获取当前区域的房产状态
+  const currentHousing = activeHousing?.[currentRegion];
+
   const handleMoveOut = () => {
     playSfx('sfx_click');
-    setHousing(housingRules.eviction.fallbackState as any);
-    addNotification("已搬离住所，恢复流浪状态", 'info');
+    // 退租/卖房逻辑由 HousingSlice 处理
+    addNotification("请使用 moveOut 操作退租/卖房", 'info');
   };
 
   return (
@@ -87,8 +89,9 @@ export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) =
             </div>
           ) : (
             availableHousing.map((house: Housing) => {
-              // 判断当前是否住在这里
-              const isCurrent = activeHousing?.definitionId === house.id;
+              // 判断当前是否在该区域有此房产
+              const currentHousing = activeHousing?.[currentRegion];
+              const isCurrent = currentHousing?.definitionId === house.id;
 
               // 提取配置 (优先判断是否拥有买/租配置)
               const rentConfig = house.rentConfig;

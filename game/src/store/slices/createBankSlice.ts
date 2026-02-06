@@ -12,6 +12,7 @@ export interface BankSlice {
   takeLoan: (productId: string, amount: number) => { success: boolean; message: string };
   takeMortgage: (amount: number, termTurns: number, rate: number) => { success: boolean; message: string; loanId?: string };
   makeInstallment: (loanId: string, amount: number) => { success: boolean; message: string; principalPaid: number; interestPaid: number };
+  clearLoan: (loanId: string) => boolean; // 强制结清贷款（如卖房时）
 }
 
 const INITIAL_BANK: BankState = {
@@ -97,7 +98,9 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
   },
 
   makeInstallment: (loanId, amount) => {
-    const state = get() as GameState & { addTransaction: (c: string, a: number, d: string) => void };
+    const state = get() as GameState & { 
+      addTransaction: (c: string, a: number, d: string) => { success: boolean; actualAmount: number } 
+    };
     const { bank, vitality } = state;
     
     if (vitality.metrics.gold < amount) {
@@ -138,7 +141,10 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
       principalPaid += payPrincipal;
     }
 
-    state.addTransaction('BANK', -amount, `偿还贷款: ${loan.id.substring(0, 4)}...`);
+    const txResult = state.addTransaction('BANK', -amount, `偿还贷款: ${loan.id.substring(0, 4)}...`);
+    if (!txResult.success) {
+      return { success: false, message: "资金不足以支付还款", principalPaid: 0, interestPaid: 0 };
+    }
 
     // 更新贷款状态
     const isCleared = loan.principal <= 0 && loan.interest <= 0;
@@ -160,11 +166,14 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
           ...s.vitality,
           metrics: {
               ...s.vitality.metrics,
-              creditScore: Math.min(
-                  bankRules.creditScore.maxScore, // 850
-                  s.vitality.metrics.creditScore + (isCleared 
-                      ? -3  // 结清贷款：失去活跃维度，轻微掉分
-                      : bankRules.creditScore.actions.installmentPaid)  // +1
+              creditScore: Math.max(
+                  bankRules.creditScore.minScore ?? 300, // 设置下限保护
+                  Math.min(
+                      bankRules.creditScore.maxScore, // 850
+                      s.vitality.metrics.creditScore + (isCleared 
+                          ? -3  // 结清贷款：失去活跃维度，轻微掉分
+                          : bankRules.creditScore.actions.installmentPaid)  // +1
+                  )
               )
           }
       }
@@ -176,5 +185,24 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
         principalPaid, 
         interestPaid 
     };
+  },
+
+  clearLoan: (loanId) => {
+    const { bank } = get() as GameState;
+    const loans = [...bank.activeLoans];
+    const loanIndex = loans.findIndex(l => l.id === loanId);
+    
+    if (loanIndex === -1) return false;
+    
+    loans.splice(loanIndex, 1);
+    
+    set((s: GameState) => ({
+      bank: {
+        ...s.bank,
+        activeLoans: loans
+      }
+    }));
+    
+    return true;
   }
 });

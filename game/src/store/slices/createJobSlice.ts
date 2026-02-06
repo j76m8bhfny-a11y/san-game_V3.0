@@ -68,11 +68,9 @@ export const createJobSlice: StateCreator<any, [], [], JobSlice> = (set, get) =>
 
     // 4. 检查房产 (必须在本地有房，流浪汉除外)
     if (job.requiresHousing) {
-      if (!activeHousing) {
-        return { success: false, message: "这份工作需要固定住址。" };
-      }
-      if (activeHousing.region !== job.region) {
-        return { success: false, message: "你住得太远了，通勤不现实。" };
+      const localHousing = activeHousing?.[job.region];
+      if (!localHousing) {
+        return { success: false, message: `这份工作需要你在${job.region}有固定住址。` };
       }
     }
 
@@ -86,7 +84,7 @@ export const createJobSlice: StateCreator<any, [], [], JobSlice> = (set, get) =>
 
     // 成功入职
     set((prev: GameState) => ({
-      // ❌ 修复：不再设置 activeJob: job
+      // 成功入职
       vitality: {
         ...prev.vitality,
         activeJobs: [...prev.vitality.activeJobs, jobId]

@@ -4,6 +4,7 @@
     "name": "漏风集装箱",
     "region": "SLUMS",
     "requiredClass": "HOMELESS",
+    "value": 0,
     "regenHp": 5,
     "defenseLevel": 1,
     "rentConfig": {
@@ -20,6 +21,7 @@
     "name": "工会宿舍",
     "region": "RUST_BELT",
     "requiredClass": "WORKER",
+    "value": 5000,
     "regenHp": 10,
     "defenseLevel": 3,
     "rentConfig": {
@@ -37,6 +39,7 @@
     "name": "橡树街独栋",
     "region": "SUBURBS",
     "requiredClass": "MIDDLE",
+    "value": 500000,
     "regenHp": 25,
     "defenseLevel": 8,
     "buyConfig": {
@@ -52,5 +55,26 @@
       ]
     },
     "description": "标准的中产阶级美梦。白色的栅栏，金毛犬，以及三十年的房贷。"
+  },
+  {
+    "id": "PENTHOUSE_DOWNTOWN_01",
+    "name": "云端 penthouse",
+    "region": "DOWNTOWN",
+    "requiredClass": "CAPITALIST",
+    "value": 3000000,
+    "regenHp": 40,
+    "defenseLevel": 15,
+    "buyConfig": {
+      "price": 3000000,
+      "downPaymentRate": 0.3,
+      "mortgageTermTurns": 520,
+      "interestRate": 0.0015,
+      "weeklyCosts": [
+        { "key": "TAX", "label": "豪宅税", "baseAmount": 5000 },
+        { "key": "CONCIERGE", "label": "管家服务费", "baseAmount": 2000 },
+        { "key": "SECURITY", "label": "私人安保", "baseAmount": 1500 }
+      ]
+    },
+    "description": "俯瞰众生的高度。你终于拥有了推开窗户就能跳下去的自由——当然，你不会的，你的股票还没解套。"
   }
 ]

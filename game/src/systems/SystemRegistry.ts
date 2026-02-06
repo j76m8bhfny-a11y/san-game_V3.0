@@ -137,12 +137,53 @@ export const runTurnSettlement = (currentState: GameState) => {
 
   // --- 结算收尾 ---
 
-  // 3. 统一应用金钱变动
-  // 此时 accumulatedUpdates 已被剥离了 gold，所以我们只基于初始状态 + 账单变动
+  // 3. 统一应用金钱变动 (确保 Gold 不为负)
   if (!accumulatedUpdates.vitality) accumulatedUpdates.vitality = JSON.parse(JSON.stringify(currentState.vitality));
   
   const initialGold = currentState.vitality.metrics.gold;
-  accumulatedUpdates.vitality.metrics.gold = initialGold + turnNetGoldChange;
+  let finalGold = initialGold + turnNetGoldChange;
+  
+  // 🔴 Gold 不能为负数 - 如果为负，回滚部分交易
+  if (finalGold < 0) {
+    // 优先扣除必要费用(HOUSING, BANK)，其他费用(BILL, MISC)按优先级扣除
+    const priorityOrder = ['HOUSING', 'BANK', 'FOOD', 'MEDICAL', 'TAX', 'BILL', 'MISC', 'INCOME'];
+    const sortedLedger = [...currentLedger].sort((a, b) => {
+      const aIdx = priorityOrder.indexOf(a.category);
+      const bIdx = priorityOrder.indexOf(b.category);
+      return (aIdx === -1 ? 999 : aIdx) - (bIdx === -1 ? 999 : bIdx);
+    });
+    
+    // 重新计算，跳过会导致负数的交易
+    let runningGold = initialGold;
+    const allowedTransactions: typeof currentLedger = [];
+    
+    for (const record of sortedLedger) {
+      const projectedGold = runningGold + record.amount;
+      if (projectedGold >= 0) {
+        allowedTransactions.push(record);
+        runningGold = projectedGold;
+      } else if (record.amount > 0) {
+        // 收入总是接受
+        allowedTransactions.push(record);
+        runningGold = projectedGold;
+      }
+      // 支出会导致负数，跳过
+    }
+    
+    // 如果有被跳过的交易，添加警告
+    const skippedCount = currentLedger.length - allowedTransactions.length;
+    if (skippedCount > 0) {
+      logs.push(`【资金不足】${skippedCount} 笔账单因余额不足未支付`);
+      notes.push(`资金告急：部分费用无法支付，请尽快补充资金！`);
+    }
+    
+    // 重新计算变动
+    turnNetGoldChange = allowedTransactions.reduce((sum, t) => sum + t.amount, 0);
+    finalGold = initialGold + turnNetGoldChange;
+    currentLedger = allowedTransactions;
+  }
+  
+  accumulatedUpdates.vitality.metrics.gold = Math.max(0, finalGold);
 
   // 4. 将最终的 Ledger 写入状态
   accumulatedUpdates.vitality.ledger = { history: currentLedger };

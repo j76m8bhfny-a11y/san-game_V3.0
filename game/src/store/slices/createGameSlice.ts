@@ -84,7 +84,12 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
     if (option.effects.gold) {
       if (store.addTransaction) {
         const type = option.effects.gold > 0 ? 'INCOME' : 'MISC';
-        store.addTransaction(type, option.effects.gold, `事件: ${option.label}`);
+        const txResult = store.addTransaction(type, option.effects.gold, `事件: ${option.label}`);
+        // 如果是支出且交易失败，可能需要取消事件效果
+        if (!txResult.success && option.effects.gold < 0) {
+          store.addNotification("资金不足以执行此操作", 'error');
+          return; // 取消事件处理
+        }
       } else {
         store.modifyStats({ gold: option.effects.gold });
       }
@@ -209,7 +214,12 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
         return; 
     }
     
-    // 6. 存储报表并打开 UI
+    // 6. 阶级判定 (回合结算后)
+    if (store.recalculateClass) {
+      store.recalculateClass();
+    }
+    
+    // 7. 存储报表并打开 UI
     set({ weeklyReport: result.report });
 
     const nextTurnNum = state.vitality.time.currentTurn + 1;
@@ -282,9 +292,10 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
         prison: { inJail: false, crime: '', sentenceTurns: 0, turnsServed: 0, bailAmount: 0 },
         
         // 3. Assets 重置
-        activeHousing: null,
+        currentRegion: 'SLUMS',
+        activeHousing: {},
         activeInsurance: null,
-        activeJob: null, 
+        activeJob: null,
         inventory: [],
         
         // 4. Game Loop 重置

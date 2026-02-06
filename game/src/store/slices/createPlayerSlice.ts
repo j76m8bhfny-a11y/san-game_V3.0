@@ -4,18 +4,18 @@ import {
   RegionID, 
   ActiveJobState, 
   ActiveHousingState, 
-  ActiveInsuranceState 
+  ActiveInsuranceState,
+  ActiveHousingMap
 } from '@/types/schema';
 import vitalityRules from '@/assets/data/rules/vitalityRules.json';
 
 export const CLASS_INITIAL_STATS = vitalityRules.classes as Record<PlayerClass, any>;
 
-
 // 2. 初始状态
 const INITIAL_PLAYER_STATE = {
   currentRegion: RegionID.Slums, 
   activeJob: null as ActiveJobState | null,
-  activeHousing: null as ActiveHousingState | null,
+  activeHousing: {} as ActiveHousingMap,  // 改为对象结构，支持多区域
   activeInsurance: null as ActiveInsuranceState | null,
 
   inventory: [] as string[],
@@ -29,7 +29,7 @@ export interface PlayerSlice {
   // --- State ---
   currentRegion: RegionID;
   activeJob: ActiveJobState | null;
-  activeHousing: ActiveHousingState | null;
+  activeHousing: ActiveHousingMap;  // 多区域房产
   activeInsurance: ActiveInsuranceState | null;
 
   inventory: string[];
@@ -45,7 +45,6 @@ export interface PlayerSlice {
   
   setRegion: (region: RegionID) => void;
   setJob: (job: ActiveJobState | null) => void;
-  setHousing: (housing: ActiveHousingState | null) => void;
   setInsurance: (insurance: ActiveInsuranceState | null) => void;
 }
 
@@ -76,6 +75,5 @@ export const createPlayerSlice: StateCreator<any, [], [], PlayerSlice> = (set, g
 
   setRegion: (region) => set({ currentRegion: region }),
   setJob: (job) => set({ activeJob: job }),
-  setHousing: (housing) => set({ activeHousing: housing }),
   setInsurance: (insurance) => set({ activeInsurance: insurance }),
 });

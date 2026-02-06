@@ -8,6 +8,7 @@ import {
 import { CLASS_INITIAL_STATS } from './createPlayerSlice';
 import { calculateMedicalCost } from '@/logic/medical';
 import { checkDailyDisease } from '@/logic/health';
+import { determineClass, hasClassChanged, getClassChangeDesc } from '@/logic/class';
 
 import hospitalData from '@/assets/data/hospital_services.json';
 // ✅ 1. 引入配置文件群 (Configuration Swarm)
@@ -19,7 +20,7 @@ import medicalRules from '@/assets/data/rules/medicalRules.json';
 export interface VitalitySlice {
   vitality: VitalityState;
   initGame: (selectedClass: PlayerClass) => void;
-  addTransaction: (category: LedgerCategory, amount: number, description: string) => void;
+  addTransaction: (category: LedgerCategory, amount: number, description: string) => { success: boolean; actualAmount: number };
   modifyStats: (changes: Partial<VitalityState['metrics']>) => void;
   updateIdentityPoints: (points: { red?: number; wolf?: number; old?: number }) => void;
   contractDisease: (diseaseId: string) => void;
@@ -27,6 +28,13 @@ export interface VitalitySlice {
   advanceTurn: () => void;
   clearWeeklyLedger: () => void;
   performTreatment: (serviceId: string) => { success: boolean; msg: string };
+  recalculateClass: () => { 
+    changed: boolean; 
+    oldClass?: PlayerClass; 
+    newClass?: PlayerClass; 
+    netWorth?: number; 
+    reason?: string;
+  };
 }
 
 const generateId = () => Math.random().toString(36).substring(2, 9);
@@ -99,16 +107,33 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
           weeklyNews: null 
       },
       
-      activeHousing: null,
-      activeInsurance: null, 
-      activeJob: null,
+      currentRegion: 'SLUMS',
+      activeHousing: {},
+      activeInsurance: null,
+      activeJobs: [],
       inventory: [],
       bank: { activeLoans: [], lifetimeInterestPaid: 0 }
     }));
   },
 
   addTransaction: (category, amount, description) => {
+     const result = { success: true, actualAmount: amount };
+     
      set((state: any) => {
+        const currentGold = state.vitality.metrics.gold;
+        const newGold = currentGold + amount;
+        
+        // 🔴 Gold 不能为负数 - 拒绝交易
+        if (newGold < 0) {
+          result.success = false;
+          result.actualAmount = 0;
+          // 发送通知但不执行交易
+          if (state.addNotification) {
+            state.addNotification(`资金不足！需要 $${Math.abs(amount)}，当前 $${currentGold}`, 'error');
+          }
+          return {}; // 不修改状态
+        }
+        
         const newRecord = {
             id: generateId(),
             turn: state.vitality.time.currentTurn,
@@ -117,7 +142,7 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
             description,
             timestamp: Date.now()
         };
-        const newGold = state.vitality.metrics.gold + amount;
+        
         return {
             vitality: {
                 ...state.vitality,
@@ -126,6 +151,55 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
             }
         };
      });
+     
+     return result;
+  },
+  
+  /**
+   * 判定并更新阶级
+   * 返回是否发生了阶级变化
+   */
+  recalculateClass: () => {
+    const state = get() as GameState;
+    const { newClass, netWorth, reason } = determineClass(state);
+    const oldClass = state.vitality.identity.currentClass;
+    
+    if (hasClassChanged(state, newClass)) {
+      // 阶级发生变化
+      const desc = getClassChangeDesc(oldClass, newClass);
+      
+      set((prev: any) => ({
+        vitality: {
+          ...prev.vitality,
+          identity: {
+            ...prev.vitality.identity,
+            currentClass: newClass
+          },
+          flags: {
+            ...prev.vitality.flags,
+            // 跌落时重置债务计数器
+            debtTurns: newClass === PlayerClass.Homeless && oldClass !== PlayerClass.Homeless 
+              ? 0 
+              : prev.vitality.flags.debtTurns
+          }
+        }
+      }));
+      
+      // 发送通知
+      const store = get() as any;
+      if (store.addNotification) {
+        const isUpgrade = 
+          (oldClass === PlayerClass.Homeless && newClass !== PlayerClass.Homeless) ||
+          (oldClass === PlayerClass.Worker && (newClass === PlayerClass.Middle || newClass === PlayerClass.Capitalist)) ||
+          (oldClass === PlayerClass.Middle && newClass === PlayerClass.Capitalist);
+        
+        store.addNotification(`${isUpgrade ? '⬆️' : '⬇️'} ${desc} (${reason})`, isUpgrade ? 'success' : 'warning');
+      }
+      
+      return { changed: true, oldClass, newClass, netWorth, reason };
+    }
+    
+    return { changed: false, oldClass, newClass, netWorth, reason };
   },
 
   modifyStats: (changes) => set((state: any) => {
@@ -196,7 +270,10 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
         return { success: false, msg: "资金不足" };
     }
 
-    state.addTransaction('MEDICAL', -finalCost, `治疗: ${service.name}`);
+    const txResult = state.addTransaction('MEDICAL', -finalCost, `治疗: ${service.name}`);
+    if (!txResult.success) {
+        return { success: false, msg: "资金不足以支付治疗费用" };
+    }
 
     // 计算风险
     const baseRisk = service.requirements?.riskRate || 0;
@@ -260,7 +337,13 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
 
   advanceTurn: () => set((state: any) => {
     const allDiseases = state.gameDataCache?.diseases || [];
+    
+    // 检查是否患上新疾病
     const newDiseaseId = checkDailyDisease(state, allDiseases);
+    
+    // 过滤掉已存在的疾病ID，避免重复
+    const existingDiseases = new Set(state.vitality.activeDiseases);
+    const uniqueNewDiseaseId = newDiseaseId && !existingDiseases.has(newDiseaseId) ? newDiseaseId : null;
 
     let updates: any = {
       time: {
@@ -269,13 +352,11 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
       }
     };
 
-    if (newDiseaseId) {
-      if (!state.vitality.activeDiseases.includes(newDiseaseId)) {
-        updates.activeDiseases = [...state.vitality.activeDiseases, newDiseaseId];
-        const diseaseName = allDiseases.find((d: any) => d.id === newDiseaseId)?.name || newDiseaseId;
-        if (state.addNotification) {
-          state.addNotification(`警告：你患上了 ${diseaseName}`, 'warning');
-        }
+    if (uniqueNewDiseaseId) {
+      updates.activeDiseases = [...state.vitality.activeDiseases, uniqueNewDiseaseId];
+      const diseaseName = allDiseases.find((d: any) => d.id === uniqueNewDiseaseId)?.name || uniqueNewDiseaseId;
+      if (state.addNotification) {
+        state.addNotification(`警告：你患上了 ${diseaseName}`, 'warning');
       }
     }
 

@@ -260,8 +260,8 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
         
         crypto: { 
             isAccountOpen: false, 
-            btcPrice: INITIAL_STATE.crypto.startPrice, // 读取初始币价
-            priceHistory: [INITIAL_STATE.crypto.startPrice], 
+            btcPrice: INITIAL_STATE.crypto.startPrice,
+            priceHistory: Array(7).fill(INITIAL_STATE.crypto.startPrice), 
             positions: [], 
             weeklyNews: null 
         },

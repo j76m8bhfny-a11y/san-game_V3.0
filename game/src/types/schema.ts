@@ -463,7 +463,7 @@ export interface GameState {
     btcPrice: number;
     priceHistory: number[];
     positions: CryptoPosition[];
-    dailyNews: NewsItem | null;
+    weeklyNews: NewsItem | null;
   };
 
   // 资产与库存

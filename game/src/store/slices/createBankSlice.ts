@@ -55,8 +55,8 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
 
     // 硬查询扣分 (从 JSON 读取)
     const penalty = bankRules.creditScore.actions.hardInquiry; 
-    state.modifyVitality({ 
-        metrics: { creditScore: penalty } // 注意: modifyVitality 通常是累加值
+    state.modifyStats({ 
+        creditScore: penalty // modifyStats 会累加数值
     });
 
     // ✅ 修复: 必须把新贷款存入 bank 状态
@@ -110,6 +110,16 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
     if (loanIndex === -1) return { success: false, message: "贷款不存在", principalPaid: 0, interestPaid: 0 };
     
     const loan = { ...loans[loanIndex] };
+    const totalDebt = loan.principal + loan.interest;
+    
+    if (amount > totalDebt) {
+        return { 
+            success: false, 
+            message: `还款金额超额。该贷款剩余债务 $${totalDebt}，请准确还款或选择结清`, 
+            principalPaid: 0, 
+            interestPaid: 0 
+        };
+    }
     let remainingPayment = amount;
     let interestPaid = 0;
     let principalPaid = 0;
@@ -153,7 +163,7 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
               creditScore: Math.min(
                   bankRules.creditScore.maxScore, // 850
                   s.vitality.metrics.creditScore + (isCleared 
-                      ? bankRules.creditScore.actions.loanCleared       // +5
+                      ? -3  // 结清贷款：失去活跃维度，轻微掉分
                       : bankRules.creditScore.actions.installmentPaid)  // +1
               )
           }

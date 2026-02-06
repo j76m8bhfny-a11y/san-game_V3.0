@@ -53,7 +53,7 @@ export const BankSystem: GameSystem = {
              result.updates.vitality = {
                ...result.updates.vitality,
                identity: {
-                 ...vitality.identity,
+                 ...(result.updates.vitality as any)?.identity || vitality.identity,
                  currentClass: PlayerClass.Homeless
                }
              } as any;
@@ -89,10 +89,16 @@ export const BankSystem: GameSystem = {
             // 读取配置伤害值
             const { hpDamage, sanDamage } = collection.violence;
             
+            // 获取当前 HP/SAN（考虑之前系统如 Housing 的修改）
+            const currentHp = (result.updates.vitality as any)?.metrics?.hp ?? vitality.metrics.hp;
+            const currentSan = (result.updates.vitality as any)?.metrics?.san ?? vitality.metrics.san;
+            
             result.updates.vitality = {
+               ...result.updates.vitality,
                metrics: {
-                 hp: Math.max(0, vitality.metrics.hp - hpDamage),
-                 san: Math.max(0, vitality.metrics.san - sanDamage)
+                 ...(result.updates.vitality as any)?.metrics,
+                 hp: Math.max(0, currentHp - hpDamage),
+                 san: Math.max(0, currentSan - sanDamage)
                }
             } as any;
             
@@ -102,7 +108,9 @@ export const BankSystem: GameSystem = {
           // 🛑 阶段 3: 强制划扣 (Seizure)
           else if (t <= collection.seizure.maxTurn) {
              const limit = collection.seizure.limit;
-             const seizeAmount = Math.min(vitality.metrics.gold, limit); 
+             // 获取最新余额（考虑之前系统如 Housing 的扣款）
+             const currentGold = (result.updates.vitality as any)?.metrics?.gold ?? vitality.metrics.gold;
+             const seizeAmount = Math.min(currentGold, limit); 
              
              if (seizeAmount > 0) {
                result.newTransactions!.push({
@@ -139,15 +147,33 @@ export const BankSystem: GameSystem = {
           }
         }
         
-      } else {
-        // 未逾期：信用分微量自然增长
-        totalScoreChange += 1;
       }
     });
 
+    // 有活跃贷款且全部按时还款：按债务比例给予周常加分
+    const hasActiveLoans = processedLoans.length > 0;
+    const hasOverdueLoans = processedLoans.some(l => currentTurn > l.dueTurn);
+    
+    if (hasActiveLoans && !hasOverdueLoans) {
+      // 计算总剩余债务
+      const totalDebt = processedLoans.reduce((sum, l) => sum + l.principal + l.interest, 0);
+      
+      // 债务比例越低（还得多），加分越高 (+5 ~ +10)
+      // 债务 < 5k: +10, < 20k: +8, < 50k: +6, 否则 +5
+      let weeklyBonus = 5;
+      if (totalDebt < 5000) weeklyBonus = 10;
+      else if (totalDebt < 20000) weeklyBonus = 8;
+      else if (totalDebt < 50000) weeklyBonus = 6;
+      
+      totalScoreChange += weeklyBonus;
+    }
+
     // 过滤掉已终止的贷款（如被法拍的房贷）
     const finalLoans = processedLoans.filter(l => !loansToRemove.includes(l.id));
-    (result.updates as any).bank = { activeLoans: finalLoans };
+    (result.updates as any).bank = { 
+      ...bank,
+      activeLoans: finalLoans 
+    };
 
     // 应用信用分变更
     if (totalScoreChange !== 0) {

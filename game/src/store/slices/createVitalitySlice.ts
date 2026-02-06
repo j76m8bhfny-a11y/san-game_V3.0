@@ -92,10 +92,10 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
       // ✅ Fix: Crypto 重置逻辑与 initial_state.json 保持一致
       crypto: { 
           isAccountOpen: false, 
-          btcPrice: startPrice, // 修正：原代码写死 20000 -> 改为读取配置(15000)
+          btcPrice: startPrice,
           positions: [], 
-          priceHistory: [startPrice], // 修正：历史记录应包含初始价格 
-          dailyNews: null 
+          priceHistory: Array(7).fill(startPrice),
+          weeklyNews: null 
       },
       
       activeHousing: null,

@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { GameState, GameEvent, EventOption, WeeklyReport, Ending } from '@/types/schema';
+import { GameState, GameEvent, EventOption, WeeklyReport, Ending, FaithID } from '@/types/schema';
 import { resolveOption } from '@/logic/eventResolver';
 import { runTurnSettlement } from '@/systems/SystemRegistry';
 import { resolveEnding } from '@/logic/endings'; 
@@ -214,7 +214,8 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
     const store = get() as any;
     set({ weeklyReport: null });
     
-    if (store.clearWeeklyLedger) store.clearWeeklyLedger(); 
+    if (store.clearWeeklyLedger) store.clearWeeklyLedger();
+    if (store.tickFaithDebuffs) store.tickFaithDebuffs();
     if (store.advanceTurn) {
         store.advanceTurn();
     } else {
@@ -266,7 +267,7 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
             weeklyNews: null 
         },
         
-        faith: { id: 'NONE', level: 1, hasPerformedRite: false },
+        faith: { id: FaithID.NONE, level: 1, hasPerformedRite: false, debuffs: [], bannedFaiths: [] },
         prison: { inJail: false, crime: '', sentenceTurns: 0, turnsServed: 0, bailAmount: 0 },
         
         // 3. Assets 重置

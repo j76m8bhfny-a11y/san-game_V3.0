@@ -21,6 +21,7 @@ export interface VitalitySlice {
   initGame: (selectedClass: PlayerClass) => void;
   addTransaction: (category: LedgerCategory, amount: number, description: string) => void;
   modifyStats: (changes: Partial<VitalityState['metrics']>) => void;
+  updateIdentityPoints: (points: { red?: number; wolf?: number; old?: number }) => void;
   contractDisease: (diseaseId: string) => void;
   cureDisease: (diseaseId: string) => void;
   advanceTurn: () => void;
@@ -86,7 +87,7 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
         activeJobs: []
       },
       // 重置子系统
-      faith: { id: 'NONE', level: 0, hasPerformedRite: false },
+      faith: { id: 'NONE', level: 1, hasPerformedRite: false, debuffs: [], bannedFaiths: [] },
       prison: { inJail: false, crime: '', sentenceTurns: 0, turnsServed: 0, bailAmount: 0 },
       
       // ✅ Fix: Crypto 重置逻辑与 initial_state.json 保持一致
@@ -133,6 +134,23 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
       vitality: {
           ...state.vitality,
           metrics: { ...state.vitality.metrics, ...changes }
+      }
+    };
+  }),
+
+  updateIdentityPoints: (points) => set((state: any) => {
+    const currentPoints = state.vitality.identity.points;
+    return {
+      vitality: {
+        ...state.vitality,
+        identity: {
+          ...state.vitality.identity,
+          points: {
+            red: points.red !== undefined ? points.red : currentPoints.red,
+            wolf: points.wolf !== undefined ? points.wolf : currentPoints.wolf,
+            old: points.old !== undefined ? points.old : currentPoints.old,
+          }
+        }
       }
     };
   }),

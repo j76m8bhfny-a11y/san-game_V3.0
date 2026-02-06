@@ -326,10 +326,23 @@ export interface FaithData {
   };
 }
 
+export interface FaithDebuff {
+  id: string;
+  name: string;
+  duration: number;
+  remainingTurns: number;
+  effect: {
+    incomeMultiplier?: number;
+    [key: string]: any;
+  };
+}
+
 export interface FaithState {
   id: FaithID;
   level: number;
   hasPerformedRite: boolean;
+  debuffs: FaithDebuff[];
+  bannedFaiths: FaithID[];
 }
 
 // 银行系统接口

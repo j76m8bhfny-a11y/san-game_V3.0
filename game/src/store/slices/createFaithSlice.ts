@@ -1,7 +1,6 @@
 import { StateCreator } from 'zustand';
-import { FaithID, FaithState, GameState } from '@/types/schema';
+import { FaithID, FaithState, GameState, FaithDebuff } from '@/types/schema';
 import faithsData from '@/assets/data/faiths.json';
-// ✅ 新增：导入规则配置
 import faithRules from '@/assets/data/rules/faithRules.json';
 import { checkJoinCondition, calculateRiteOutcome } from '@/logic/faith';
 
@@ -9,44 +8,63 @@ export interface FaithSlice {
   faith: FaithState;
   
   joinFaith: (faithId: FaithID) => { success: boolean; message: string };
-  leaveFaith: () => void;
+  /** 请求退出信仰，返回确认信息（不实际执行） */
+  requestLeaveFaith: () => { canLeave: boolean; confirmation?: { title: string; message: string }; penalty?: unknown };
+  /** 确认并执行退出信仰 */
+  confirmLeaveFaith: () => { success: boolean; message: string };
   performFaithRite: () => { success: boolean; message: string };
   resetDailyFaith: () => void;
+  /** 减少 debuff 持续时间（在 turn 结算时调用） */
+  tickFaithDebuffs: () => void;
 }
 
 export const createFaithSlice: StateCreator<any, [], [], FaithSlice> = (set, get) => ({
   faith: {
     id: FaithID.NONE,
-    // ✅ 清洗：初始等级从配置读取 (原为 1)
     level: faithRules.defaults.initialLevel,
-    hasPerformedRite: false
+    hasPerformedRite: false,
+    debuffs: [],
+    bannedFaiths: []
   },
 
   joinFaith: (faithId) => {
     if (faithId === FaithID.NONE) return { success: false, message: "" };
     
-    // 获取全量 Store 以访问 addTransaction
     const state = get() as GameState & { addTransaction: Function; addNotification: Function };
+    
+    // 检查是否已经在该信仰中
+    if (state.faith.id === faithId) {
+      return { success: false, message: "你已经在此信仰中了。" };
+    }
+    
     const faithConfig = faithsData.find(f => f.id === faithId);
     
     if (!faithConfig) return { success: false, message: "配置缺失" };
+
+    // 检查是否被封禁（防御性处理旧存档）
+    const bannedFaiths = state.faith.bannedFaiths || [];
+    if (bannedFaiths.includes(faithId)) {
+      return { success: false, message: "你被此信仰永久放逐，无法再次加入。" };
+    }
 
     // 逻辑检查
     const check = checkJoinCondition(faithConfig as any, state);
     
     if (check.success) {
-      // ✅ 修复 Bug 1 & 清洗：使用配置定义的交易分类扣款
       if (faithConfig.joinCost.gold && faithConfig.joinCost.gold > 0) {
-         // 使用断言或确保类型匹配
          const category = faithRules.defaults.transactionCategories.join;
          state.addTransaction(category, -faithConfig.joinCost.gold, `入教奉献: ${faithConfig.name}`);
       }
 
       set({ 
         faith: { 
+          ...state.faith,
           id: faithId, 
-          level: faithRules.defaults.initialLevel, // ✅ 保持一致
-          hasPerformedRite: false 
+          level: faithRules.defaults.initialLevel,
+          hasPerformedRite: false,
+          // 确保新字段存在（旧存档兼容）
+          debuffs: state.faith.debuffs || [],
+          bannedFaiths: state.faith.bannedFaiths || []
         } 
       });
       state.addNotification(faithRules.text.joinSuccess.replace('{name}', faithConfig.name), 'success');
@@ -57,20 +75,141 @@ export const createFaithSlice: StateCreator<any, [], [], FaithSlice> = (set, get
     return check;
   },
 
-  leaveFaith: () => {
+  requestLeaveFaith: () => {
     const state = get();
-    set({ 
-      faith: { 
-        id: FaithID.NONE, 
-        level: faithRules.defaults.initialLevel, 
-        hasPerformedRite: false 
-      } 
+    const currentFaithId = state.faith.id;
+    
+    if (currentFaithId === FaithID.NONE) {
+      return { canLeave: false };
+    }
+
+    const penaltyConfig = (faithRules.leavePenalties as any)[currentFaithId];
+    if (!penaltyConfig) {
+      // 没有配置惩罚的信仰，直接允许退出
+      return { 
+        canLeave: true, 
+        confirmation: {
+          title: faithRules.text.leaveConfirmTitle,
+          message: "确定要退出当前信仰吗？"
+        }
+      };
+    }
+
+    return {
+      canLeave: true,
+      confirmation: {
+        title: faithRules.text.leaveConfirmTitle,
+        message: penaltyConfig.confirmMessage
+      },
+      penalty: penaltyConfig
+    };
+  },
+
+  confirmLeaveFaith: () => {
+    const state = get() as GameState & { 
+      addNotification: Function;
+      modifyStats: Function;
+    };
+    const currentFaithId = state.faith.id;
+    
+    if (currentFaithId === FaithID.NONE) {
+      return { success: false, message: "当前没有信仰" };
+    }
+
+    const penaltyConfig = (faithRules.leavePenalties as any)[currentFaithId];
+    const faithConfig = faithsData.find(f => f.id === currentFaithId);
+    const faithName = faithConfig?.name || currentFaithId;
+
+    // 应用惩罚
+    if (penaltyConfig) {
+      // 1. SAN 变化
+      if (penaltyConfig.sanChange !== undefined) {
+        const currentSan = state.vitality.metrics.san;
+        const newSan = Math.max(0, Math.min(state.vitality.metrics.maxSan, currentSan + penaltyConfig.sanChange));
+        state.modifyStats({ san: newSan });
+      }
+
+      // 2. 最大 HP 减少（永久）
+      if (penaltyConfig.maxHpChange !== undefined) {
+        const currentMaxHp = state.vitality.metrics.maxHp;
+        const newMaxHp = Math.max(1, currentMaxHp + penaltyConfig.maxHpChange); // 至少保留 1
+        const currentHp = state.vitality.metrics.hp;
+        // 如果当前 HP 超过新的上限，需要同步调整
+        const newHp = Math.min(currentHp, newMaxHp);
+        state.modifyStats({ maxHp: newMaxHp, hp: newHp });
+      }
+
+      // 3. 添加 Debuff（避免重复，同名 debuff 只刷新持续时间）
+      const currentDebuffs = state.faith.debuffs || [];
+      let newDebuffs = [...currentDebuffs];
+      if (penaltyConfig.debuff) {
+        const existingIndex = newDebuffs.findIndex(d => d.id === penaltyConfig.debuff.id);
+        const debuff: FaithDebuff = {
+          id: penaltyConfig.debuff.id,
+          name: penaltyConfig.debuff.name,
+          duration: penaltyConfig.debuff.duration,
+          remainingTurns: penaltyConfig.debuff.duration,
+          effect: penaltyConfig.debuff.effect
+        };
+        
+        if (existingIndex >= 0) {
+          // 刷新已有 debuff 的持续时间
+          newDebuffs = newDebuffs.map((d, i) => i === existingIndex ? debuff : d);
+        } else {
+          newDebuffs = [...newDebuffs, debuff];
+        }
+      }
+
+      // 4. 永久封禁（使用 Set 去重）
+      const currentBanned = state.faith.bannedFaiths || [];
+      const newBannedFaiths = penaltyConfig.permanentBan
+        ? [...new Set([...currentBanned, currentFaithId])]
+        : [...currentBanned];
+
+      // 执行退出
+      set({
+        faith: {
+          id: FaithID.NONE,
+          level: faithRules.defaults.initialLevel,
+          hasPerformedRite: false,
+          debuffs: newDebuffs,
+          bannedFaiths: newBannedFaiths
+        }
+      });
+
+      // 发送通知
+      const description = penaltyConfig.description || faithRules.text.leaveSuccess;
+      state.addNotification(`${faithName}: ${description}`, 'warning');
+      
+      return { 
+        success: true, 
+        message: `${faithRules.text.leaveSuccess} ${description}` 
+      };
+    }
+
+    // 无惩罚配置，直接退出（保留 debuffs 和 bannedFaiths）
+    set({
+      faith: {
+        ...state.faith,
+        id: FaithID.NONE,
+        level: faithRules.defaults.initialLevel,
+        hasPerformedRite: false,
+        debuffs: state.faith.debuffs || [],
+        bannedFaiths: state.faith.bannedFaiths || []
+      }
     });
     state.addNotification(faithRules.text.leaveSuccess, 'warning');
+    
+    return { success: true, message: faithRules.text.leaveSuccess };
   },
 
   performFaithRite: () => {
-    const state = get() as GameState & { addTransaction: Function; modifyStats: Function; addNotification: Function };
+    const state = get() as GameState & { 
+      addTransaction: Function; 
+      modifyStats: Function; 
+      addNotification: Function;
+      updateIdentityPoints?: (points: { red?: number; wolf?: number; old?: number }) => void;
+    };
     
     if (state.faith.hasPerformedRite) {
       state.addNotification(faithRules.text.riteDone, 'info');
@@ -80,46 +219,33 @@ export const createFaithSlice: StateCreator<any, [], [], FaithSlice> = (set, get
     const faithConfig = faithsData.find(f => f.id === state.faith.id);
     if (!faithConfig) return { success: false, message: faithRules.text.noFaith };
 
-    // 计算结果
     const result = calculateRiteOutcome(faithConfig as any, state);
 
     if (result.success) {
-       // 1. 应用普通属性更新 (HP/SAN)
-       if (result.updates && result.updates.vitality) {
-           // 使用深度合并逻辑 (这里简化为 modifyStats 调用，如果结构复杂可能需要手动 set)
-           // logic/faith.ts 返回的是最终值 (target value)。
-           // 为了兼容，我们直接 set vitality
-           set((prev: any) => ({
-               vitality: {
-                   ...prev.vitality,
-                   metrics: { ...prev.vitality.metrics, ...result.updates.vitality.metrics }
-               }
-           }));
-           
-           // TODO: 如果有 identity.points 更新 (如业力)，也应在此处处理
-           if (result.updates.vitality.identity) {
-              set((prev: any) => ({
-                 vitality: {
-                     ...prev.vitality,
-                     identity: { ...prev.vitality.identity, ...result.updates.vitality.identity }
-                 }
-              }));
-           }
+       if (result.updates?.vitality?.metrics && 
+           Object.keys(result.updates.vitality.metrics).length > 0) {
+           state.modifyStats(result.updates.vitality.metrics);
+       }
+       
+       if (result.updates?.vitality?.identity?.points && state.updateIdentityPoints) {
+           state.updateIdentityPoints(result.updates.vitality.identity.points);
        }
 
-       // ✅ 修复 Bug 2 & 清洗：处理金钱变动并记账
        if (result.goldChange !== 0) {
-           // 根据正负值自动选择配置中的交易类型
            const type = result.goldChange > 0 
               ? faithRules.defaults.transactionCategories.riteIncome 
               : faithRules.defaults.transactionCategories.riteCost;
-              
            state.addTransaction(type, result.goldChange, `信仰仪式: ${faithConfig.rite.name}`);
        }
 
-       // 3. 标记为已完成
        set((prev: any) => ({
-           faith: { ...prev.faith, hasPerformedRite: true }
+           faith: { 
+             ...prev.faith, 
+             hasPerformedRite: true,
+             // 确保新字段存在（旧存档兼容）
+             debuffs: prev.faith.debuffs || [],
+             bannedFaiths: prev.faith.bannedFaiths || []
+           }
        }));
 
        state.addNotification(result.message, 'success');
@@ -132,7 +258,34 @@ export const createFaithSlice: StateCreator<any, [], [], FaithSlice> = (set, get
 
   resetDailyFaith: () => {
       set((state: any) => ({
-          faith: { ...state.faith, hasPerformedRite: false }
+          faith: { 
+            ...state.faith, 
+            hasPerformedRite: false,
+            // 确保新字段存在（旧存档兼容）
+            debuffs: state.faith.debuffs || [],
+            bannedFaiths: state.faith.bannedFaiths || []
+          }
       }));
+  },
+
+  tickFaithDebuffs: () => {
+    set((state: any) => {
+      const currentDebuffs = state.faith?.debuffs || [];
+      const updatedDebuffs = currentDebuffs
+        .map((debuff: FaithDebuff) => ({
+          ...debuff,
+          remainingTurns: debuff.remainingTurns - 1
+        }))
+        .filter((debuff: FaithDebuff) => debuff.remainingTurns > 0);
+
+      return {
+        faith: {
+          ...state.faith,
+          debuffs: updatedDebuffs,
+          // 显式保留封禁列表
+          bannedFaiths: state.faith?.bannedFaiths || []
+        }
+      };
+    });
   }
 });

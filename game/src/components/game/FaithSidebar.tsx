@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { FaithID } from '@/types/schema';
 import faithsData from '@/assets/data/faiths.json';
@@ -7,7 +7,11 @@ import faithRules from '@/assets/data/rules/faithRules.json';
 
 export const FaithSidebar: React.FC = () => {
   // ✅ 2. 解构 vitality 用于计算动态数值 (金钱等)
-  const { isFaithOpen, setFaithOpen, faith, joinFaith, leaveFaith, performFaithRite, vitality, inventory } = useGameStore();
+  const { isFaithOpen, setFaithOpen, faith, joinFaith, requestLeaveFaith, confirmLeaveFaith, performFaithRite, vitality, inventory, addNotification } = useGameStore();
+  
+  // 退出确认弹窗状态
+  const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
+  const [leaveConfirmData, setLeaveConfirmData] = useState<{ title: string; message: string } | null>(null);
 
   const titheConfig = faithRules.mechanics.tithe;
 
@@ -137,13 +141,49 @@ export const FaithSidebar: React.FC = () => {
                 </button>
 
                 <button 
-                  onClick={leaveFaith}
+                  onClick={() => {
+                    const result = requestLeaveFaith();
+                    if (result.canLeave && result.confirmation) {
+                      setLeaveConfirmData(result.confirmation);
+                      setShowLeaveConfirm(true);
+                    }
+                  }}
                   className="w-full py-2 text-xs text-zinc-600 hover:text-red-900 mt-4 border border-transparent hover:border-red-900/30"
                 >
-                  {/* 使用配置中的文本 (如果需要，目前是静态 "背叛信仰") */}
                   背叛信仰
                 </button>
               </div>
+              
+              {/* 退出确认弹窗 */}
+              {showLeaveConfirm && leaveConfirmData && (
+                <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
+                  <div className="bg-zinc-900 border border-red-900/50 p-6 max-w-sm w-full">
+                    <h3 className="text-red-500 font-bold text-lg mb-4">{leaveConfirmData.title}</h3>
+                    <p className="text-zinc-400 text-sm mb-6 whitespace-pre-wrap">{leaveConfirmData.message}</p>
+                    <div className="flex gap-3">
+                      <button
+                        onClick={() => setShowLeaveConfirm(false)}
+                        className="flex-1 py-2 border border-zinc-700 text-zinc-400 hover:bg-zinc-800 text-xs"
+                      >
+                        取消
+                      </button>
+                      <button
+                        onClick={() => {
+                          const result = confirmLeaveFaith();
+                          if (result.success) {
+                            addNotification?.(result.message, 'warning');
+                          }
+                          setShowLeaveConfirm(false);
+                          setLeaveConfirmData(null);
+                        }}
+                        className="flex-1 py-2 border border-red-900/50 text-red-500 hover:bg-red-900/20 text-xs"
+                      >
+                        确认退出
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
         )
       )}

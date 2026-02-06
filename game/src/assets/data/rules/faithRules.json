@@ -21,9 +21,40 @@
       "description": "缴纳 ${amount} 什一税。"
     }
   },
+  "leavePenalties": {
+    "CHURCH": {
+      "sanChange": 15,
+      "description": "摆脱虚伪的救赎，你感到前所未有的清醒。",
+      "confirmMessage": "退出救赎教会将使你获得 +15 SAN（摆脱罪疚感），确定要退出吗？"
+    },
+    "BROTHERHOOD": {
+      "sanChange": 5,
+      "debuff": {
+        "id": "OUTCAST",
+        "name": "被排斥者",
+        "duration": 7,
+        "effect": {
+          "incomeMultiplier": 0.8
+        },
+        "description": "被互助网络放逐，7天内所有工作收入减少20%。"
+      },
+      "confirmMessage": "退出互助兄弟会将使你获得「被排斥者」状态（7天收入-20%），确定要退出吗？"
+    },
+    "CULT": {
+      "maxHpChange": -10,
+      "description": "血肉不再回应你，你的生命力永久流失。",
+      "confirmMessage": "退出血肉神教将永久减少 10 点最大生命值，确定要退出吗？"
+    },
+    "REVOLUTION": {
+      "permanentBan": true,
+      "description": "背叛只有一次机会，革命不再接纳变节者。",
+      "confirmMessage": "⚠️ 警告：退出星星之火后你将永远无法再次加入，确定要退出吗？"
+    }
+  },
   "text": {
     "joinSuccess": "已加入: {name}",
     "leaveSuccess": "你背弃了信仰。",
+    "leaveConfirmTitle": "确认退出信仰",
     "riteDone": "今日已完成仪式，请明日再来。",
     "noFaith": "无信仰",
     "insufficientGold": "无法支付什一税 (需 ${amount})"

@@ -1,5 +1,5 @@
 import { GameSystem, SystemResult } from '../types';
-import { GameState, Job, Item } from '@/types/schema'; // ✅ 确保导入 Item 类型
+import { GameState, Job, Item, FaithDebuff } from '@/types/schema';
 import jobsData from '@/assets/data/jobs.json';
 import itemsData from '@/assets/data/items.json'; 
 import jobRules from '@/assets/data/rules/jobRules.json';
@@ -50,6 +50,14 @@ export const JobSystem: GameSystem = {
     let totalHpCost = 0;
     let totalSanCost = 0;
 
+    // 计算信仰 Debuff 的收入总倍率（防御性处理）
+    const faithDebuffs = (state.faith?.debuffs || []) as FaithDebuff[];
+    const incomeMultiplier = faithDebuffs.reduce((multiplier, debuff) => {
+      // 过滤无效的 debuff 数据（旧存档兼容）
+      if (!debuff || !debuff.effect) return multiplier;
+      return multiplier * (debuff.effect.incomeMultiplier ?? 1);
+    }, 1);
+
     vitality.activeJobs.forEach(jobId => {
       const job = jobsData.find(j => j.id === jobId) as unknown as Job;
       if (!job) return;
@@ -87,16 +95,26 @@ export const JobSystem: GameSystem = {
       totalHpCost += job.hpCost;
       totalSanCost += job.sanCost;
 
-      // 4. 计算工资
-      const actualSalary = Math.floor(job.baseSalary * efficiency);
+      // 4. 计算工资 (效率 × 信仰Debuff倍率)
+      const actualSalary = Math.floor(job.baseSalary * efficiency * incomeMultiplier);
       totalIncome += actualSalary;
       
+      // 构建工资描述（包含Debuff影响提示）
+      let salaryDescription = `工资: ${job.title} [${statusText}]`;
+      if (incomeMultiplier < 1) {
+        const debuffNames = faithDebuffs
+          .filter(d => d.effect?.incomeMultiplier && d.effect.incomeMultiplier < 1)
+          .map(d => d.name)
+          .join(', ');
+        salaryDescription += ` [${debuffNames}: ${Math.round(incomeMultiplier * 100)}%]`;
+      }
+
       result.newTransactions!.push({
         id: Math.random().toString(),
         turn: vitality.time.currentTurn,
         category: 'INCOME',
         amount: actualSalary,
-        description: `工资: ${job.title} [${statusText}]`,
+        description: salaryDescription,
         timestamp: Date.now()
       });
 
@@ -126,6 +144,15 @@ export const JobSystem: GameSystem = {
       } as any;
       
       result.logs.push(`本周工作结算: HP -${totalHpCost}, SAN -${totalSanCost}`);
+    }
+
+    // 添加信仰Debuff影响通知
+    if (incomeMultiplier < 1) {
+      const debuffInfo = faithDebuffs
+        .filter(d => d.effect?.incomeMultiplier && d.effect.incomeMultiplier < 1)
+        .map(d => `${d.name}(${d.remainingTurns}天)`)
+        .join(', ');
+      result.notes.push(`信仰惩罚生效: 工作收入受 [${debuffInfo}] 影响`);
     }
 
     return result;

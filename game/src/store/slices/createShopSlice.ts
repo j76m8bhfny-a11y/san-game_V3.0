@@ -70,10 +70,11 @@ export const createShopSlice: StateCreator<any, [], [], ShopSlice> = (set, get) 
     const txResult = state.addTransaction(transactionType, -item.price, `购买: ${item.name}`);
     if (!txResult.success) {
       if (state.playSfx) state.playSfx(shopRules.audio.buyFail);
+      state.addNotification("交易失败，资金不足", "error");
       return;
     }
 
-    // 3. 进货
+    // 3. 进货（每个物品独立占格，不堆叠）
     set((s: any) => ({
       inventory: [...s.inventory, item.id]
     }));
@@ -87,7 +88,10 @@ export const createShopSlice: StateCreator<any, [], [], ShopSlice> = (set, get) 
     const state = get();
     const item = state.gameDataCache.items.find((i: Item) => i.id === itemId);
     
-    if (!item) return;
+    if (!item) {
+      state.addNotification("物品数据异常", "error");
+      return;
+    }
 
     // 🛡️ 类型防御
     if (item.type === ItemType.PASSIVE || item.type === ItemType.KEY || item.type === ItemType.ENDING) {
@@ -129,17 +133,16 @@ export const createShopSlice: StateCreator<any, [], [], ShopSlice> = (set, get) 
       });
 
       // 2. 应用政治倾向
-      if (item.effects.points) {
-         const currentPoints = state.vitality.identity.points;
+      if (item.effects?.points) {
          set((s: any) => ({
            vitality: {
              ...s.vitality,
              identity: {
                ...s.vitality.identity,
                points: {
-                 red: currentPoints.red + (item.effects.points.red || 0),
-                 wolf: currentPoints.wolf + (item.effects.points.wolf || 0),
-                 old: currentPoints.old + (item.effects.points.old || 0),
+                 red: s.vitality.identity.points.red + (item.effects!.points!.red || 0),
+                 wolf: s.vitality.identity.points.wolf + (item.effects!.points!.wolf || 0),
+                 old: s.vitality.identity.points.old + (item.effects!.points!.old || 0),
                }
              }
            }
@@ -147,7 +150,8 @@ export const createShopSlice: StateCreator<any, [], [], ShopSlice> = (set, get) 
          state.addNotification("你的立场发生了偏移...", "info");
       }
 
-      // 3. 处理复杂 ActiveEffect (彩票逻辑等)
+      // 3. 处理复杂 ActiveEffect (彩票、卖器官、试药等)
+      // ⚠️ 注意：如果有 activeEffect，它接管全部逻辑，不再执行后续消耗品效果
       if (item.activeEffect) {
          if (item.activeEffect.type === 'LOTTERY') {
              const win = Math.random() < item.activeEffect.params.winRate;
@@ -157,10 +161,47 @@ export const createShopSlice: StateCreator<any, [], [], ShopSlice> = (set, get) 
              } else {
                  state.addNotification(item.activeEffect.params.loseMessage, "info");
              }
+         } else if (item.activeEffect.type === 'BLOOD_DONATION') {
+             // 卖血浆：扣血 + 给钱 + 记账（不执行普通消耗品效果）
+             const { gold, hpCost, message } = item.activeEffect.params;
+             state.modifyStats({ hp: -hpCost });
+             state.addTransaction('INCOME', gold, `出售血浆`);
+             state.addNotification(message, "GOLD");
+             
+             // 消耗掉并返回，不再执行后续代码
+             const newInventory = [...state.inventory];
+             const index = newInventory.indexOf(itemId);
+             if (index > -1) {
+               newInventory.splice(index, 1);
+               set({ inventory: newInventory });
+             }
+             if (state.playSfx) state.playSfx(shopRules.audio.useItem);
+             return;
+             
+         } else if (item.activeEffect.type === 'SURGERY') {
+             // 卖器官：扣血 + 清债 + 记账（不执行普通消耗品效果）
+             const { damage, message } = item.activeEffect.params;
+             state.modifyStats({ hp: -damage });
+             // 清空负债（如果有）
+             const currentGold = state.vitality.metrics.gold;
+             if (currentGold < 0) {
+                 state.addTransaction('INCOME', Math.abs(currentGold), `出售器官清偿债务`);
+             }
+             state.addNotification(message, "warning");
+             
+             // 消耗掉并返回，不再执行后续代码
+             const newInventory = [...state.inventory];
+             const index = newInventory.indexOf(itemId);
+             if (index > -1) {
+               newInventory.splice(index, 1);
+               set({ inventory: newInventory });
+             }
+             if (state.playSfx) state.playSfx(shopRules.audio.useItem);
+             return;
          }
       }
 
-      // 4. 消耗掉
+      // 4. 普通消耗品：消耗掉
       const newInventory = [...state.inventory];
       const index = newInventory.indexOf(itemId);
       if (index > -1) {
@@ -171,6 +212,9 @@ export const createShopSlice: StateCreator<any, [], [], ShopSlice> = (set, get) 
       // ✅ 重构 6: 音效读取配置
       if (state.playSfx) state.playSfx(shopRules.audio.useItem);
       state.addNotification(notificationMsg, "success");
+    } else {
+      // 非消耗品且无特殊处理逻辑的物品
+      state.addNotification("此物品无法直接使用", "warning");
     }
   }
 });

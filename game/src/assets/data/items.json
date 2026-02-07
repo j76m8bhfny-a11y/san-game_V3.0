@@ -76,7 +76,6 @@
     "id": "D01",
     "name": "出售血浆",
     "price": 0,
-    "effects": { "hp": 0, "san": 0 },
     "tags": ["DARK_WEB"],
     "activeEffect": {
       "type": "BLOOD_DONATION",
@@ -101,7 +100,6 @@
     "id": "D05",
     "name": "出售左肾",
     "price": 0,
-    "effects": { "hp": 0, "san": 0 },
     "tags": ["DARK_WEB"],
     "activeEffect": {
       "type": "SURGERY",

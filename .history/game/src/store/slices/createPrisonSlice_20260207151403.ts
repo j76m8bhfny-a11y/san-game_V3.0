@@ -12,33 +12,6 @@ import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 // ==================== 辅助函数 ====================
 
 /**
- * 统一错误处理
- * 记录错误日志并返回用户友好的错误消息
- */
-const handlePrisonError = (error: unknown, context: string, defaultMessage?: string): string => {
-  const errorMsg = error instanceof Error ? error.message : String(error);
-  console.error(`[PrisonSystem] ${context}:`, errorMsg, error);
-  
-  // 如果有默认消息，直接返回；否则返回通用错误消息
-  return defaultMessage || getMessage('serveTimeError');
-};
-
-/**
- * 获取配置中的消息，支持模板替换
- */
-const getMessage = (key: keyof typeof prisonRules.messages, params?: Record<string, string | number>): string => {
-  let msg = prisonRules.messages?.[key] || key;
-  if (params) {
-    Object.entries(params).forEach(([k, v]) => {
-      msg = msg.replace(`{${k}}`, String(v));
-    });
-  }
-  return msg;
-};
-
-// ==================== 辅助函数 ====================
-
-/**
  * 应用系统结算（房租、利息、账单等）
  */
 const applySystemSettlement = (state: GameState & { addNotification: Function }) => {
@@ -188,7 +161,7 @@ export const createPrisonSlice: StateCreator<any, [], [], PrisonSlice> = (set, g
 
     // 边界检查：刑期异常
     if (prison.sentenceTurns <= 0) {
-      return { released: true, msg: getMessage('invalidSentence'), died: false };
+      return { released: true, msg: "刑期异常，已释放", died: false };
     }
 
     try {
@@ -227,93 +200,84 @@ export const createPrisonSlice: StateCreator<any, [], [], PrisonSlice> = (set, g
 
       return {
         released,
-        msg: released ? getMessage('released') : jailEffect.log,
+        msg: released ? "刑满释放。你自由了...暂时。" : jailEffect.log,
         died
       };
     } catch (error) {
-      const errorMsg = handlePrisonError(error, 'serveTime');
+      console.error('[PrisonSystem] serveTime error:', error);
       return {
         released: false,
-        msg: errorMsg,
+        msg: "服刑过程中发生错误",
         died: false
       };
     }
   },
 
   payCashBail: () => {
-    try {
-      const state = get() as GameState;
-      const { metrics } = state.vitality;
-      const cost = state.prison.bailAmount;
+    const state = get() as GameState;
+    const { metrics } = state.vitality;
+    const cost = state.prison.bailAmount;
 
-      // 边界检查：保释金异常
-      if (cost <= 0) return { success: false, msg: getMessage('invalidBailAmount') };
-      if (metrics.gold < cost) return { success: false, msg: getMessage('insufficientFunds') };
+    // 边界检查：保释金异常
+    if (cost <= 0) return { success: false, msg: "保释金金额异常。" };
+    if (metrics.gold < cost) return { success: false, msg: "资金不足。" };
 
-      // 扣款记账
-      const txResult = (state as any).addTransaction('MISC', -cost, '支付保释金');
-      if (!txResult.success) {
-        return { success: false, msg: getMessage('insufficientFundsForBail') };
-      }
-
-      set((s: any) => ({
-        prison: INITIAL_PRISON
-      }));
-      return { success: true, msg: getMessage('cashBailSuccess') };
-    } catch (error) {
-      const errorMsg = handlePrisonError(error, 'payCashBail');
-      return { success: false, msg: errorMsg };
+    // 扣款记账
+    const txResult = (state as any).addTransaction('MISC', -cost, '支付保释金');
+    if (!txResult.success) {
+      return { success: false, msg: "资金不足以支付保释金。" };
     }
+
+    set((s: any) => ({
+      prison: INITIAL_PRISON
+    }));
+    return { success: true, msg: "你支付了保释金。有钱真好。" };
   },
 
   // 🔴 逻辑说明: 关联保释贷款 (已重构数值)
   signBailBond: () => {
-    try {
-      const state = get() as GameState & BankSlice & { addTransaction: Function };
-      const { metrics } = state.vitality;
-      const totalBail = state.prison.bailAmount;
-      
-      // ✅ 重构：从配置读取首付比例和产品ID
-      const rate = prisonRules.bail.bondDownPaymentRate;
-      const loanProductId = prisonRules.bail.linkedLoanProductId;
+    const state = get() as GameState & BankSlice & { addTransaction: Function };
+    const { metrics } = state.vitality;
+    const totalBail = state.prison.bailAmount;
+    
+    // ✅ 重构：从配置读取首付比例和产品ID
+    const rate = prisonRules.bail.bondDownPaymentRate;
+    const loanProductId = prisonRules.bail.linkedLoanProductId;
 
-      // 配置验证
-      if (rate < 0 || rate > 1) return { success: false, msg: getMessage('invalidRate') };
-      if (!loanProductId) return { success: false, msg: getMessage('missingLoanProductId') };
+    // 配置验证
+    if (rate < 0 || rate > 1) return { success: false, msg: "配置错误：首付比例异常。" };
+    if (!loanProductId) return { success: false, msg: "配置错误：缺少贷款产品ID。" };
 
-      const downPayment = Math.floor(totalBail * rate);
-      const loanAmount = totalBail - downPayment; // 剩余金额走贷款
+    const downPayment = Math.floor(totalBail * rate);
+    const loanAmount = totalBail - downPayment; // 剩余金额走贷款
 
-      // 边界检查：首付异常
-      if (downPayment <= 0) return { success: false, msg: getMessage('invalidDownPayment') };
-      // 检查首付
-      if (metrics.gold < downPayment) {
-        return { success: false, msg: getMessage('downPaymentFailed', { rate: (rate * 100).toFixed(0), amount: downPayment }) };
-      }
-
-      // 1. 尝试借贷 (贷款产品 ID 从配置读取)
-      const loanResult = state.takeLoan(loanProductId, loanAmount);
-      
-      if (!loanResult.success) {
-          // 如果贷款失败 (比如配置缺失)，给一个兜底提示
-          return { success: false, msg: getMessage('loanRejected', { message: loanResult.message }) };
-      }
-
-      // 2. 扣除首付
-      const txResult = state.addTransaction('MISC', -downPayment, '保释金首付');
-      if (!txResult.success) {
-        return { success: false, msg: getMessage('downPaymentTransactionFailed') };
-      }
-
-      // 3. 释放
-      set((s: any) => ({
-        prison: INITIAL_PRISON
-      }));
-
-      return { success: true, msg: getMessage('bondSuccess') };
-    } catch (error) {
-      const errorMsg = handlePrisonError(error, 'signBailBond');
-      return { success: false, msg: errorMsg };
+    // 边界检查：首付异常
+    if (downPayment <= 0) return { success: false, msg: "首付金额异常。" };
+    // 检查首付
+    if (metrics.gold < downPayment) {
+      // 这里的 100 也可以考虑抽离，或者直接用 rate * 100
+      return { success: false, msg: `甚至付不起 ${(rate * 100)}% 的首付 ($${downPayment})。` };
     }
+
+    // 1. 尝试借贷 (贷款产品 ID 从配置读取)
+    const loanResult = state.takeLoan(loanProductId, loanAmount);
+    
+    if (!loanResult.success) {
+        // 如果贷款失败 (比如配置缺失)，给一个兜底提示
+        return { success: false, msg: `保释行拒绝了你的申请: ${loanResult.message}` };
+    }
+
+    // 2. 扣除首付
+    const txResult = state.addTransaction('MISC', -downPayment, '保释金首付');
+    if (!txResult.success) {
+      return { success: false, msg: "资金不足以支付保释金首付。" };
+    }
+
+    // 3. 释放
+    set((s: any) => ({
+      prison: INITIAL_PRISON
+    }));
+
+    return { success: true, msg: "你签下了高利贷保释单。记得按时还款。" };
   }
 });

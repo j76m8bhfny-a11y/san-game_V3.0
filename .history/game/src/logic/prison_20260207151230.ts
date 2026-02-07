@@ -14,10 +14,18 @@ export const calculateDailyJailEffect = (currentClass: PlayerClass): DailyEffect
 
   // 2. 检查配置类型 - 使用类型守卫
   if (isDailyEffect(config)) {
-    return config;
+    return {
+      hp: config.hpChange,
+      san: config.sanChange,
+      log: config.log
+    };
   }
 
   // 3. 默认回退逻辑
   // 如果配置是 "default" 字符串、未定义、或格式不匹配，则应用默认惩罚 (人间地狱模式)
-  return defaultEffect;
+  return {
+    hp: defaultEffect.hpChange,
+    san: defaultEffect.sanChange,
+    log: defaultEffect.log
+  };
 };

@@ -1,5 +1,5 @@
 import { GameSystem, SystemResult } from '../types';
-import { GameState, PlayerClass } from '@/types/schema';
+import { GameState, PlayerClass, RegionID } from '@/types/schema';
 import { processTurnInterest } from '@/logic/bank';
 import bankRules from '@/assets/data/rules/bankRules.json';
 import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
@@ -8,7 +8,7 @@ export const BankSystem: GameSystem = {
   id: 'BANK_SYSTEM',
 
   processTurn: ({ state }) => {
-    const { bank, vitality, activeHousing, currentRegion } = state;
+    const { bank, vitality, activeHousing } = state;
     const result: SystemResult = {
       updates: { bank: { ...bank } } as any,
       newTransactions: [],
@@ -18,8 +18,8 @@ export const BankSystem: GameSystem = {
 
     if (bank.activeLoans.length === 0) return result;
 
-    // 找到当前区域关联的房产（用于法拍）
-    const currentHousing = activeHousing?.[currentRegion];
+    // 获取当前持有的房产（单一房产）
+    const currentHousing = activeHousing;
 
     const currentTurn = vitality.time.currentTurn;
     let totalScoreChange = 0;
@@ -47,15 +47,14 @@ export const BankSystem: GameSystem = {
         if (loan.isMortgage) {
            // 🛑 达到断供阈值 -> 强制收房
            if (t >= mortgage.foreclosureTurns) {
-             const foreclosedHouse = currentHousing?.loanId === loan.id ? currentHousing : null;
-             result.logs.push(`【法拍执行】房屋 ${foreclosedHouse?.name || '某处房产'} 因断供被银行强制收回！`);
+             const houseName = currentHousing?.loanId === loan.id ? currentHousing.name : '某处房产';
+             
+             result.logs.push(`【法拍执行】房屋 ${houseName} 因断供被银行强制收回！`);
              result.notes.push("你失去了房子，变回了流浪汉，信用分崩盘。");
              
-             // 移除当前区域的房产（如果匹配）
-             if (foreclosedHouse && activeHousing) {
-               const newHousing = { ...activeHousing };
-               delete newHousing[currentRegion];
-               (result.updates as any).activeHousing = newHousing;
+             // 移除房产
+             if (currentHousing?.loanId === loan.id) {
+               (result.updates as any).activeHousing = null;
              } 
              
              // 阶级跌落

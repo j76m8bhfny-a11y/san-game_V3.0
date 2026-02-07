@@ -108,7 +108,7 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
       },
       
       currentRegion: 'SLUMS',
-      activeHousing: {},
+      activeHousing: null,
       activeInsurance: null,
       activeJobs: [],
       inventory: [],

@@ -19,11 +19,10 @@ export const BillSystem: GameSystem = {
     const { metrics, identity } = state.vitality;
     const activeInsurance = state.activeInsurance as ActiveInsuranceState | null;
     
-    // ✅ 修复: 解析房产配置 (从 State 获取当前区域的房产)
-    const activeHousingMap = state.activeHousing as Record<string, ActiveHousingState> | null;
-    const currentRegionHousing = activeHousingMap?.[state.currentRegion];
-    const housingConfig = currentRegionHousing 
-      ? (housingData as unknown as Housing[]).find(h => h.id === currentRegionHousing.definitionId) || null
+    // ✅ 修复: 解析房产配置 (单一房产)
+    const currentHousing = state.activeHousing;
+    const housingConfig = currentHousing 
+      ? (housingData as unknown as Housing[]).find(h => h.id === currentHousing.definitionId) || null
       : null;
 
     // =================================================================

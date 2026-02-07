@@ -40,8 +40,8 @@ export const checkDailyDisease = (state: GameState, allDiseases: Disease[] = [])
   const regionKey = currentRegion as string;
   let risk = (infectionRates as Record<string, number>)[regionKey] || 0.05;
 
-  // -- 修正因子 A: 房产保护 (只要有任意区域的房产即享受保护) --
-  const hasAnyHousing = activeHousing && Object.keys(activeHousing).length > 0;
+  // -- 修正因子 A: 房产保护 (有房产即享受保护) --
+  const hasAnyHousing = activeHousing !== null;
   if (hasAnyHousing) {
     risk *= modifiers.housingBonus; 
   } else {

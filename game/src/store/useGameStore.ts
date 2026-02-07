@@ -92,7 +92,7 @@ export const useGameStore = create<StoreState>()(
 
           // ✅ 2. 玩家资产与位置
           currentRegion: state.currentRegion,
-          activeHousing: state.activeHousing,
+          activeHousing: state.activeHousing,  // 单一房产
           activeInsurance: state.activeInsurance,
           inventory: state.inventory,
           history: state.history,

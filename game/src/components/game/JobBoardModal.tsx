@@ -43,13 +43,13 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
     (job: Job) => job.region === currentRegion
   );
 
-  // 检查当前区域是否有住所
-  const localHousing = activeHousing?.[currentRegion];
+  // 检查当前持有的房产是否在本区域
+  const hasLocalHousing = activeHousing?.region === currentRegion;
 
   // 辅助: 检查申请条件
   const checkRequirements = (job: Job) => {
     // A. 检查房产 (更新：检查当前区域)
-    if (job.requiresHousing && !localHousing) {
+    if (job.requiresHousing && !hasLocalHousing) {
       return { ok: false, reason: "需要本区域固定住所" };
     }
     
@@ -194,8 +194,8 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
                     )}
 
                     {job.requiresHousing && (
-                      <span className={`text-[10px] px-2 py-1 rounded border ${!localHousing ? 'border-red-800 text-red-500' : 'border-gray-600 text-gray-400'}`}>
-                        {localHousing ? '✅ 有固定住所' : '❌ 需要固定住所'}
+                      <span className={`text-[10px] px-2 py-1 rounded border ${!hasLocalHousing ? 'border-red-800 text-red-500' : 'border-gray-600 text-gray-400'}`}>
+                        {hasLocalHousing ? '✅ 有固定住所' : '❌ 需要固定住所'}
                       </span>
                     )}
                     {job.requiredItem && (

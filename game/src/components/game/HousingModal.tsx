@@ -3,7 +3,7 @@ import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import { Housing } from '@/types/schema';
 import { AlertCircle, Home, Key, Shield } from 'lucide-react';
-import housingRules from '@/assets/data/rules/housingRules.json';
+
 import { calculateMortgagePayment } from '@/logic/bank';
 
 interface HousingModalProps {
@@ -19,8 +19,9 @@ export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) =
     currentRegion, 
     activeHousing, 
     vitality,
-    rentHousing, // ✅ 使用 Slice Action
-    buyHousing,  // ✅ 使用 Slice Action
+    rentHousing,
+    buyHousing,
+    moveOut,
     addNotification
   } = useGameStore();
   
@@ -54,14 +55,21 @@ export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) =
     }
   };
 
-  // 获取当前区域的房产状态
-  const currentHousing = activeHousing?.[currentRegion];
+  // 获取当前持有的房产
+  const currentHousing = activeHousing;
+  // 判断是否在当前区域有房
+  const hasHousingInCurrentRegion = currentHousing?.region === currentRegion;
 
   const handleMoveOut = () => {
     playSfx('sfx_click');
-    // 退租/卖房逻辑由 HousingSlice 处理
-    addNotification("请使用 moveOut 操作退租/卖房", 'info');
-  };
+    const result = moveOut();
+    if (result.success) {
+      addNotification(result.message, 'success');
+      onClose();
+    } else {
+      addNotification(result.message, 'error');
+    }
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 animate-in fade-in duration-200" onClick={onClose}>
@@ -89,9 +97,8 @@ export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) =
             </div>
           ) : (
             availableHousing.map((house: Housing) => {
-              // 判断当前是否在该区域有此房产
-              const currentHousing = activeHousing?.[currentRegion];
-              const isCurrent = currentHousing?.definitionId === house.id;
+              // 判断是否持有此房产
+              const isCurrent = hasHousingInCurrentRegion && currentHousing?.definitionId === house.id;
 
               // 提取配置 (优先判断是否拥有买/租配置)
               const rentConfig = house.rentConfig;
@@ -112,19 +119,8 @@ export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) =
               
               if (isSale && buyConfig) {
                 modeLabel = '出售 (FOR SALE)';
-                weeklyCost = buyConfig.weeklyCosts.reduce((s, c) => s + c.baseAmount, 0); // 物业费等
-                const estimatedPrincipal = buyConfig.price * (1 - buyConfig.downPaymentRate);
-                
-                // 调用核心库计算
-                const mortgageResult = calculateMortgagePayment(
-                    estimatedPrincipal, 
-                    buyConfig.interestRate
-                );
-
-                // 🔥 关键修复：定义 variable 'estimatedMortgage'，避免 TS 报错
-                // 这样后续如果有代码用到这个变量名，或者仅仅是逻辑完整性，都能跑通
-                const estimatedMortgage = mortgageResult.total;
-                weeklyCost += estimatedMortgage; 
+                // 显示实际的周开销（物业费/税费等，不包含房贷）
+                weeklyCost = buyConfig.weeklyCosts.reduce((s, c) => s + c.baseAmount, 0);
                 
                 upfrontCost = buyConfig.price * buyConfig.downPaymentRate;
                 canAfford = gold >= upfrontCost;
@@ -172,9 +168,21 @@ export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) =
                         <span className="text-gray-500">周开销 (Weekly)</span>
                         <span className="text-amber-400">
                           ${weeklyCost.toLocaleString()}/wk
-                          {isSale && <span className="text-[10px] text-gray-600 ml-1">(含预估房贷)</span>}
                         </span>
                       </div>
+                      
+                      {isSale && buyConfig && (
+                        <div className="flex justify-between items-center border-b border-white/5 pb-1">
+                          <span className="text-gray-500">预估房贷 (Mortgage)</span>
+                          <span className="text-amber-400">
+                            ${(() => {
+                              const estimatedPrincipal = buyConfig.price * (1 - buyConfig.downPaymentRate);
+                              const result = calculateMortgagePayment(estimatedPrincipal, buyConfig.interestRate);
+                              return result.total.toLocaleString();
+                            })()}/wk
+                          </span>
+                        </div>
+                      )}
 
                       <div className="flex justify-between items-center pt-1">
                         <span className="text-gray-500 flex items-center gap-2">
@@ -200,36 +208,48 @@ export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) =
                       </button>
                     ) : (
                       <>
-                        {/* 如果是租赁房源 */}
-                        {!isSale && rentConfig && (
+                        {/* 如果已在其他区域有房，显示提示 */}
+                        {currentHousing ? (
                           <button 
-                            onClick={() => handleAction(house, 'RENT')}
-                            disabled={!canAfford}
-                            className={`
-                              w-full py-3 text-sm font-bold tracking-wider transition-all flex items-center justify-center gap-2
-                              ${canAfford 
-                                ? 'bg-blue-600 text-white hover:bg-blue-500 hover:shadow-[0_0_15px_rgba(37,99,235,0.4)]' 
-                                : 'bg-gray-800 text-gray-500 cursor-not-allowed border border-gray-700'}
-                            `}
+                            disabled
+                            className="w-full py-3 bg-gray-800 text-gray-500 cursor-not-allowed border border-gray-700 text-sm font-bold tracking-wider"
                           >
-                            签约租赁 (SIGN LEASE)
+                            已有住所 ({currentHousing.region}) - 请先搬离
                           </button>
-                        )}
-                        
-                        {/* 如果是出售房源 */}
-                        {isSale && buyConfig && (
-                          <button 
-                            onClick={() => handleAction(house, 'BUY')}
-                            disabled={!canAfford}
-                            className={`
-                              w-full py-3 text-sm font-bold tracking-wider transition-all flex items-center justify-center gap-2
-                              ${canAfford 
-                                ? 'bg-amber-600 text-black hover:bg-amber-500 hover:shadow-[0_0_15px_rgba(217,119,6,0.4)]' 
-                                : 'bg-gray-800 text-gray-500 cursor-not-allowed border border-gray-700'}
-                            `}
-                          >
-                            购买房产 (PURCHASE)
-                          </button>
+                        ) : (
+                          <>
+                            {/* 如果是租赁房源 */}
+                            {!isSale && rentConfig && (
+                              <button 
+                                onClick={() => handleAction(house, 'RENT')}
+                                disabled={!canAfford}
+                                className={`
+                                  w-full py-3 text-sm font-bold tracking-wider transition-all flex items-center justify-center gap-2
+                                  ${canAfford 
+                                    ? 'bg-blue-600 text-white hover:bg-blue-500 hover:shadow-[0_0_15px_rgba(37,99,235,0.4)]' 
+                                    : 'bg-gray-800 text-gray-500 cursor-not-allowed border border-gray-700'}
+                                `}
+                              >
+                                签约租赁 (SIGN LEASE)
+                              </button>
+                            )}
+                            
+                            {/* 如果是出售房源 */}
+                            {isSale && buyConfig && (
+                              <button 
+                                onClick={() => handleAction(house, 'BUY')}
+                                disabled={!canAfford}
+                                className={`
+                                  w-full py-3 text-sm font-bold tracking-wider transition-all flex items-center justify-center gap-2
+                                  ${canAfford 
+                                    ? 'bg-amber-600 text-black hover:bg-amber-500 hover:shadow-[0_0_15px_rgba(217,119,6,0.4)]' 
+                                    : 'bg-gray-800 text-gray-500 cursor-not-allowed border border-gray-700'}
+                                `}
+                              >
+                                购买房产 (PURCHASE)
+                              </button>
+                            )}
+                          </>
                         )}
                       </>
                     )}

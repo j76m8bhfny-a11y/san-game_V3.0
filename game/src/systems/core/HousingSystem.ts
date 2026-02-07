@@ -18,74 +18,76 @@ export const HousingSystem: GameSystem = {
     };
 
     // 1. 如果无房，跳过
-    const housingEntries = activeHousing ? Object.entries(activeHousing) : [];
-    if (housingEntries.length === 0) {
+    if (!activeHousing) {
       return result;
     }
 
-    let totalHpRegen = 0;
-    let evictedRegions: RegionID[] = [];
+    const housing = activeHousing;
     let updatedLoans = [...bank.activeLoans];
-    let updatedHousing = { ...activeHousing };
+    let updatedHousing: typeof housing | null = housing;
     let hasUpdates = false;
+    let isEvicted = false;
 
-    // 遍历所有区域的房产
-    for (const [region, housing] of housingEntries) {
-      if (!housing) continue;
+    // 查找原始配置
+    const housingConfig = housingData.find(h => h.id === housing.definitionId) as Housing;
+    if (!housingConfig) {
+      return result;
+    }
 
-      // 查找原始配置
-      const housingConfig = housingData.find(h => h.id === housing.definitionId) as Housing;
-      if (!housingConfig) continue;
+    const isOwned = housing.type === 'OWN';
+    const costs: { label: string; baseAmount: number; type: 'RENT' | 'MAINTENANCE' }[] = [];
 
-      const isOwned = housing.type === 'OWN';
-      const costs: { label: string; baseAmount: number; type: 'RENT' | 'MAINTENANCE' }[] = [];
-
-      // 计算本周费用
-      if (!isOwned && housingConfig.rentConfig) {
-        housingConfig.rentConfig.weeklyCosts.forEach(costItem => {
-          costs.push({
-            label: costItem.label,
-            baseAmount: costItem.baseAmount,
-            type: 'RENT'
-          });
+    // 计算本周费用
+    if (!isOwned && housingConfig.rentConfig) {
+      housingConfig.rentConfig.weeklyCosts.forEach(costItem => {
+        costs.push({
+          label: costItem.label,
+          baseAmount: costItem.baseAmount,
+          type: 'RENT'
         });
-      }
+      });
+    }
 
-      if (isOwned && housingConfig.buyConfig) {
-        housingConfig.buyConfig.weeklyCosts.forEach(costItem => {
-          costs.push({
-            label: costItem.label,
-            baseAmount: costItem.baseAmount,
-            type: 'MAINTENANCE'
-          });
+    if (isOwned && housingConfig.buyConfig) {
+      housingConfig.buyConfig.weeklyCosts.forEach(costItem => {
+        costs.push({
+          label: costItem.label,
+          baseAmount: costItem.baseAmount,
+          type: 'MAINTENANCE'
         });
+      });
+    }
+
+    // 驱逐检查 (仅针对租客)
+    const totalCost = costs.reduce((sum, c) => sum + c.baseAmount, 0);
+    
+    // 使用实时余额（考虑前置系统的金钱变动）
+    const currentGold = state.vitality?.metrics?.gold ?? vitality.metrics.gold;
+    
+    if (!isOwned && housingRules.eviction.enableEviction) {
+      if (currentGold < totalCost) {
+        result.logs.push(`【驱逐】因无力支付租金，房东把你赶出了 ${housing.name}！`);
+        result.notes.push(`你失去了住所。`);
+        
+        // SAN 惩罚
+        const penalty = housingRules.eviction.sanPenalty;
+        const currentSan = result.updates.vitality?.metrics?.san ?? vitality.metrics.san;
+        result.updates.vitality = {
+          ...result.updates.vitality,
+          metrics: {
+            ...(result.updates.vitality as any)?.metrics,
+            san: Math.max(0, currentSan - penalty)
+          }
+        } as any;
+        
+        updatedHousing = null;
+        hasUpdates = true;
+        isEvicted = true;
       }
+    }
 
-      // 驱逐检查 (仅针对租客)
-      const totalCost = costs.reduce((sum, c) => sum + c.baseAmount, 0);
-      
-      if (!isOwned && housingRules.eviction.enableEviction) {
-        if (vitality.metrics.gold < totalCost) {
-          result.logs.push(`【驱逐】因无力支付租金，房东把你赶出了 ${housing.name}！`);
-          result.notes.push(`你失去了 ${region} 的住所。`);
-          
-          evictedRegions.push(region as RegionID);
-          delete updatedHousing[region as RegionID];
-          hasUpdates = true;
-
-          // 精神打击
-          const penalty = housingRules.eviction.sanPenalty;
-          result.updates.vitality = {
-            ...result.updates.vitality,
-            metrics: {
-              ...(result.updates.vitality as any)?.metrics,
-              san: Math.max(0, vitality.metrics.san - (evictedRegions.length > 1 ? penalty : penalty))
-            }
-          } as any;
-          continue; // 跳过该房产的其他处理
-        }
-      }
-
+    // 如果未被驱逐，处理费用和收益
+    if (!isEvicted && updatedHousing) {
       // 费用扣除
       costs.forEach(cost => {
         result.newTransactions!.push({
@@ -107,7 +109,7 @@ export const HousingSystem: GameSystem = {
           const payment = calculateMortgagePayment(loan.principal, loan.rate);
           const totalMortgagePayment = payment.total;
 
-          if (vitality.metrics.gold >= totalCost + totalMortgagePayment) {
+          if (currentGold >= totalCost + totalMortgagePayment) {
             result.newTransactions!.push({
               id: Math.random().toString(),
               turn: vitality.time.currentTurn,
@@ -124,7 +126,7 @@ export const HousingSystem: GameSystem = {
               result.logs.push(`【恭喜】${housing.name} 的房贷已全部还清！`);
               updatedLoans.splice(loanIndex, 1);
               
-              updatedHousing[region as RegionID] = {
+              updatedHousing = {
                 ...housing,
                 loanId: undefined
               };
@@ -140,45 +142,25 @@ export const HousingSystem: GameSystem = {
 
       // 居住收益
       if (housing.regenHp > 0) {
-        totalHpRegen += housing.regenHp;
+        const newHp = Math.min(vitality.metrics.maxHp, vitality.metrics.hp + housing.regenHp);
+        result.updates.vitality = {
+          ...result.updates.vitality,
+          metrics: {
+            ...(result.updates.vitality as any)?.metrics,
+            hp: newHp
+          }
+        } as any;
+        result.logs.push(`家中休息: HP +${housing.regenHp}`);
       }
     }
 
     // 应用更新
-    if (evictedRegions.length > 0) {
-      const penalty = housingRules.eviction.sanPenalty * evictedRegions.length;
-      const currentSan = result.updates.vitality?.metrics?.san ?? vitality.metrics.san;
-      
-      result.updates.vitality = {
-        ...result.updates.vitality,
-        metrics: {
-          ...(result.updates.vitality as any)?.metrics,
-          san: Math.max(0, currentSan - penalty)
-        }
-      } as any;
-    }
-
     if (hasUpdates || updatedLoans.length !== bank.activeLoans.length) {
       result.updates.activeHousing = updatedHousing;
       result.updates.bank = {
         ...bank,
         activeLoans: updatedLoans
       };
-    }
-
-    if (totalHpRegen > 0) {
-      const newHp = Math.min(vitality.metrics.maxHp, vitality.metrics.hp + totalHpRegen);
-      result.updates.vitality = {
-        ...result.updates.vitality,
-        metrics: {
-          ...(result.updates.vitality as any)?.metrics,
-          hp: newHp
-        }
-      } as any;
-      
-      if (evictedRegions.length === 0) {
-        result.logs.push(`家中休息: HP +${totalHpRegen} (共${housingEntries.length - evictedRegions.length}处住所)`);
-      }
     }
 
     return result;

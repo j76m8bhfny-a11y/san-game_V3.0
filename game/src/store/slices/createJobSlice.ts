@@ -60,10 +60,9 @@ export const createJobSlice: StateCreator<any, [], [], JobSlice> = (set, get) =>
       return { success: false, message: "你的阶级不够，HR直接把简历扔进了垃圾桶。" };
     }
 
-    // 4. 检查房产 (必须在本地有房，流浪汉除外)
+    // 4. 检查房产 (必须有房且在该区域，流浪汉除外)
     if (job.requiresHousing) {
-      const localHousing = activeHousing?.[job.region];
-      if (!localHousing) {
+      if (!activeHousing || activeHousing.region !== job.region) {
         return { success: false, message: `这份工作需要你在${job.region}有固定住址。` };
       }
     }

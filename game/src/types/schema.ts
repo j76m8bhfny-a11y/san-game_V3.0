@@ -464,8 +464,8 @@ export interface ActiveHousingState {
   weeklyCosts: HousingCostItem[]; // 该房产的周费用明细
 }
 
-// 多区域房产存储结构: { [regionId]: ActiveHousingState }
-export type ActiveHousingMap = Partial<Record<RegionID, ActiveHousingState>>;
+// 单一房产存储结构: 玩家同时只能拥有一处房产（租赁或购买）
+export type ActiveHousing = ActiveHousingState | null;
 
 export interface GameState {
   // ✅ 维生核心 (取代原有的 hp, gold, day)
@@ -487,7 +487,7 @@ export interface GameState {
   };
 
   // 资产与库存
-  activeHousing: ActiveHousingMap;
+  activeHousing: ActiveHousing;
   activeInsurance: ActiveInsuranceState | null;
   
   inventory: string[];

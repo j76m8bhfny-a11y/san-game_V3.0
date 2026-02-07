@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { GameState, Housing, ActiveHousingState, RegionID, PlayerClass } from '@/types/schema';
+import { GameState, Housing, ActiveHousingState, RegionID, PlayerClass, ActiveHousing } from '@/types/schema';
 import housingData from '@/assets/data/housing.json';
 
 
@@ -11,12 +11,11 @@ export interface HousingSlice {
   // Actions
   rentHousing: (housingId: string) => { success: boolean; message: string };
   buyHousing: (housingId: string) => { success: boolean; message: string };
-  moveOut: (region: RegionID) => { success: boolean; message: string; refund?: number };
+  moveOut: () => { success: boolean; message: string; refund?: number };
   
   // Queries
-  getHousingByRegion: (region: RegionID) => ActiveHousingState | undefined;
+  getCurrentHousing: () => ActiveHousingState | undefined;
   getTotalWeeklyHousingCost: () => number;
-  getAllHousings: () => ActiveHousingState[];
   checkRegionAccess: (region: RegionID) => boolean;
 }
 
@@ -24,22 +23,15 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
   
   // ===== Queries =====
   
-  getHousingByRegion: (region) => {
+  getCurrentHousing: () => {
     const { activeHousing } = get() as GameState;
-    return activeHousing?.[region];
-  },
-  
-  getAllHousings: () => {
-    const { activeHousing } = get() as GameState;
-    return activeHousing ? Object.values(activeHousing).filter(Boolean) as ActiveHousingState[] : [];
+    return activeHousing || undefined;
   },
   
   getTotalWeeklyHousingCost: () => {
-    const housings = get().getAllHousings();
-    return housings.reduce((total: number, housing: ActiveHousingState) => {
-      const weeklyCost = housing.weeklyCosts?.reduce((sum: number, item: { baseAmount: number }) => sum + item.baseAmount, 0) || 0;
-      return total + weeklyCost;
-    }, 0);
+    const housing = get().getCurrentHousing();
+    if (!housing) return 0;
+    return housing.weeklyCosts?.reduce((sum: number, item: { baseAmount: number }) => sum + item.baseAmount, 0) || 0;
   },
   
   checkRegionAccess: (_region: RegionID) => {
@@ -57,16 +49,9 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
     const house = housingData.find(h => h.id === housingId) as Housing;
     if (!house || !house.rentConfig) return { success: false, message: "房源无效" };
     
-    const region = house.region;
-    const existingHousing = gameState.activeHousing?.[region];
-    
-    // 1. 检查该区域是否已有房产
-    if (existingHousing) {
-      if (existingHousing.type === 'RENT') {
-        return { success: false, message: `你已在该区域租房 (${existingHousing.name})，请先退租。` };
-      } else {
-        return { success: false, message: `你在该区域有房产 (${existingHousing.name})，请先出售。` };
-      }
+    // 1. 检查是否已有房产
+    if (gameState.activeHousing) {
+      return { success: false, message: `你已有住所 (${gameState.activeHousing.name})，请先退租或出售。` };
     }
     
     // 2. 检查阶级
@@ -89,7 +74,7 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
       return { success: false, message: "资金不足以支付首付。" };
     }
     
-    // 5. 更新状态 (添加到对应区域)
+    // 5. 更新状态
     const newHousing: ActiveHousingState = {
       definitionId: house.id,
       type: 'RENT',
@@ -100,12 +85,7 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
       weeklyCosts: house.rentConfig.weeklyCosts
     };
     
-    set((prev: GameState) => ({
-      activeHousing: {
-        ...prev.activeHousing,
-        [region]: newHousing
-      }
-    }));
+    set({ activeHousing: newHousing });
     
     return { success: true, message: `签约成功！欢迎入住 ${house.name}。` };
   },
@@ -117,16 +97,9 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
     const house = housingData.find(h => h.id === housingId) as Housing;
     if (!house || !house.buyConfig) return { success: false, message: "该房产不可出售" };
     
-    const region = house.region;
-    const existingHousing = gameState.activeHousing?.[region];
-    
-    // 1. 检查该区域是否已有房产
-    if (existingHousing) {
-      if (existingHousing.type === 'RENT') {
-        return { success: false, message: `你已在该区域租房 (${existingHousing.name})，请先退租。` };
-      } else {
-        return { success: false, message: `你在该区域已有房产 (${existingHousing.name})。` };
-      }
+    // 1. 检查是否已有房产
+    if (gameState.activeHousing) {
+      return { success: false, message: `你已有住所 (${gameState.activeHousing.name})，请先退租或出售。` };
     }
     
     // 2. 检查阶级
@@ -135,10 +108,10 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
       return { success: false, message: "你的社会信用等级不足以购买此处的房产。" };
     }
     
-    // 3. 计算首付
-    const downPayment = house.buyConfig.price * house.buyConfig.downPaymentRate;
+    // 3. 计算首付（向上取整，避免浮点精度问题）
+    const downPayment = Math.ceil(house.buyConfig.price * house.buyConfig.downPaymentRate);
     if (gameState.vitality.metrics.gold < downPayment) {
-      return { success: false, message: `首付不足，需要 $${downPayment.toFixed(0)}` };
+      return { success: false, message: `首付不足，需要 $${downPayment}` };
     }
     
     // 4. 申请房贷
@@ -157,9 +130,7 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
     const txResult = state.addTransaction('HOUSING', -downPayment, `购房首付: ${house.name}`);
     if (!txResult.success) {
       // 如果支付失败，需要取消贷款
-      if (state.clearLoan) {
-        state.clearLoan(loanResult.loanId!);
-      }
+      state.clearLoan(loanResult.loanId!);
       return { success: false, message: "资金不足以支付首付，已取消贷款申请。" };
     }
     
@@ -175,23 +146,18 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
       weeklyCosts: house.buyConfig.weeklyCosts
     };
     
-    set((prev: GameState) => ({
-      activeHousing: {
-        ...prev.activeHousing,
-        [region]: newHousing
-      }
-    }));
+    set({ activeHousing: newHousing });
     
     return { success: true, message: `恭喜置业！${house.name} 已加入你的资产组合。` };
   },
   
-  moveOut: (region) => {
+  moveOut: () => {
     const state = get() as any;
     const gameState = state as GameState;
-    const housing = gameState.activeHousing?.[region];
+    const housing = gameState.activeHousing;
     
     if (!housing) {
-      return { success: false, message: "你在该区域没有房产。" };
+      return { success: false, message: "你没有住所。" };
     }
     
     // 查找原始房源数据获取押金信息
@@ -204,16 +170,12 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
         state.addTransaction('HOUSING', deposit, `退租返还押金: ${housing.name}`);
       }
       
-      set((prev: GameState) => {
-        const newHousing = { ...prev.activeHousing };
-        delete newHousing[region];
-        return { activeHousing: newHousing };
-      });
+      set({ activeHousing: null });
       
       return { success: true, message: `已退租 ${housing.name}。`, refund: deposit };
       
     } else {
-      // 卖房：返还剩余价值 (简化逻辑：首付 - 已还本金，不考虑增值)
+      // 卖房：返还剩余价值
       const buyConfig = houseData?.buyConfig;
       if (!buyConfig) {
         return { success: false, message: "房产数据异常。" };
@@ -229,7 +191,6 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
       
       if (netProceeds > 0) {
         const txResult = state.addTransaction('HOUSING', netProceeds, `出售房产: ${housing.name}`);
-        // 收入交易理论上不会失败，但如果失败了也不影响核心逻辑
         if (!txResult.success) {
           console.warn('出售房产收入记账失败');
         }
@@ -246,15 +207,11 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
       }
       
       // 结清房贷
-      if (loan && state.clearLoan) {
+      if (loan) {
         state.clearLoan(housing.loanId);
       }
       
-      set((prev: GameState) => {
-        const newHousing = { ...prev.activeHousing };
-        delete newHousing[region];
-        return { activeHousing: newHousing };
-      });
+      set({ activeHousing: null });
       
       return { success: true, message: `已出售 ${housing.name}。`, refund: Math.max(0, netProceeds) };
     }

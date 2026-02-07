@@ -16,18 +16,16 @@ const NET_WORTH_THRESHOLDS = {
 };
 
 /**
- * 计算净资产 = Gold + 所有房产价值(不考虑负债)
+ * 计算净资产 = Gold + 房产价值(不考虑负债)
  */
 export function calculateNetWorth(state: GameState): number {
   const gold = state.vitality.metrics.gold;
   
-  // 计算所有房产价值
+  // 计算房产价值
   let propertyValue = 0;
-  const housings = state.activeHousing || {};
+  const housing = state.activeHousing;
   
-  for (const housing of Object.values(housings)) {
-    if (!housing) continue;
-    
+  if (housing) {
     // 查找房产配置获取价值
     const config = (housingData as unknown as Housing[]).find(h => h.id === housing.definitionId);
     if (config?.value) {
@@ -55,23 +53,22 @@ export function determineClass(state: GameState): {
   reason: string;
 } {
   const netWorth = calculateNetWorth(state);
-  const housings = state.activeHousing || {};
+  const housing = state.activeHousing;
   
-  // 检查是否有各区域的自有房产
-  const ownedRegions = new Set<RegionID>();
-  const rentedRegions = new Set<RegionID>();
-  
-  for (const [region, housing] of Object.entries(housings)) {
-    if (!housing) continue;
-    if (housing.type === 'OWN') {
-      ownedRegions.add(region as RegionID);
-    } else {
-      rentedRegions.add(region as RegionID);
-    }
+  // 无房产 = 流浪汉
+  if (!housing) {
+    return { 
+      newClass: PlayerClass.Homeless, 
+      netWorth, 
+      reason: `无固定住所，净资产 $${netWorth.toLocaleString()}` 
+    };
   }
   
+  const isOwned = housing.type === 'OWN';
+  const housingRegion = housing.region;
+  
   // 1. 检查资本家 (DOWNTOWN 有房 + 净资产 > 2M)
-  if (ownedRegions.has(RegionID.Downtown)) {
+  if (isOwned && housingRegion === RegionID.Downtown) {
     if (netWorth >= NET_WORTH_THRESHOLDS[PlayerClass.Capitalist]) {
       return { 
         newClass: PlayerClass.Capitalist, 
@@ -88,7 +85,7 @@ export function determineClass(state: GameState): {
   }
   
   // 2. 检查中产 (SUBURBS 有房 + 净资产 >= 100K)
-  if (ownedRegions.has(RegionID.Suburbs)) {
+  if (isOwned && housingRegion === RegionID.Suburbs) {
     if (netWorth >= NET_WORTH_THRESHOLDS[PlayerClass.Middle]) {
       return { 
         newClass: PlayerClass.Middle, 
@@ -105,8 +102,7 @@ export function determineClass(state: GameState): {
   }
   
   // 3. 检查工人 (RUST_BELT 有房/租房 + 净资产 >= 500)
-  const hasWorkerHousing = ownedRegions.has(RegionID.RustBelt) || rentedRegions.has(RegionID.RustBelt);
-  if (hasWorkerHousing) {
+  if (housingRegion === RegionID.RustBelt) {
     if (netWorth >= NET_WORTH_THRESHOLDS[PlayerClass.Worker]) {
       return { 
         newClass: PlayerClass.Worker, 
@@ -123,8 +119,7 @@ export function determineClass(state: GameState): {
   }
   
   // 4. 贫民窟租房且资产<500 = 流浪汉
-  const hasSlumsRent = rentedRegions.has(RegionID.Slums);
-  if (hasSlumsRent && netWorth < NET_WORTH_THRESHOLDS[PlayerClass.Worker]) {
+  if (housingRegion === RegionID.Slums && !isOwned && netWorth < NET_WORTH_THRESHOLDS[PlayerClass.Worker]) {
     return { 
       newClass: PlayerClass.Homeless, 
       netWorth, 
@@ -132,24 +127,15 @@ export function determineClass(state: GameState): {
     };
   }
   
-  // 5. 无任何房产 = 流浪汉
-  if (Object.keys(housings).length === 0) {
-    return { 
-      newClass: PlayerClass.Homeless, 
-      netWorth, 
-      reason: `无固定住所，净资产 $${netWorth.toLocaleString()}` 
-    };
-  }
-  
-  // 兜底：有其他区域房产但不满足上述条件
-  // 如果有任意自有房产，按净资产判定
-  if (ownedRegions.size > 0) {
+  // 兜底：按净资产判定
+  if (isOwned) {
     if (netWorth >= NET_WORTH_THRESHOLDS[PlayerClass.Middle]) {
       return { newClass: PlayerClass.Middle, netWorth, reason: `按净资产判定为中产` };
     }
-    if (netWorth >= NET_WORTH_THRESHOLDS[PlayerClass.Worker]) {
-      return { newClass: PlayerClass.Worker, netWorth, reason: `按净资产判定为工人` };
-    }
+  }
+  
+  if (netWorth >= NET_WORTH_THRESHOLDS[PlayerClass.Worker]) {
+    return { newClass: PlayerClass.Worker, netWorth, reason: `按净资产判定为工人` };
   }
   
   return { 

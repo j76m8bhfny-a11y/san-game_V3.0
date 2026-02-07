@@ -72,8 +72,8 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
   },
 
   takeMortgage: (amount, termTurns, rate) => {
-    const state = get() as GameState;
-    const { vitality } = state;
+    const state = get() as any;
+    const { vitality } = state as GameState;
 
     const newLoan: ActiveLoan = {
       id: generateId(),
@@ -86,13 +86,19 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
       isMortgage: true
     };
 
-    // ✅ 修复: 这里只需要存入贷款，不要写信用分逻辑（或者只扣硬查询分）
+    // 存入贷款
     set((s: GameState) => ({
       bank: {
         ...s.bank,
         activeLoans: [...s.bank.activeLoans, newLoan]
       }
     }));
+
+    // 硬查询扣分（与普通贷款一致）
+    const penalty = bankRules.creditScore.actions.hardInquiry;
+    state.modifyStats({ 
+        creditScore: penalty
+    });
 
     return { success: true, message: "按揭贷款已批复。", loanId: newLoan.id };
   },

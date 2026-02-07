@@ -293,7 +293,7 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
         
         // 3. Assets 重置
         currentRegion: 'SLUMS',
-        activeHousing: {},
+        activeHousing: null,
         activeInsurance: null,
         activeJobs: [],
         inventory: [],

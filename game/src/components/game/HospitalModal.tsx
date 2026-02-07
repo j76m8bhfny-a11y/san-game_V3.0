@@ -1,10 +1,12 @@
 import React, { useMemo, useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
-import { MedicalService } from '@/types/schema';
+import { MedicalService, PlayerClass } from '@/types/schema';
 import { calculateMedicalCost, getHospitalTheme, calculateRiskRate } from '@/logic/medical';
 import { Heart, Activity, Shield, CreditCard, AlertTriangle } from 'lucide-react';
 // ✅ 引入医疗规则配置，用于获取 UI 文案
 import medicalRules from '@/assets/data/rules/medicalRules.json';
+// ✅ 修复：统一使用静态数据源，避免缓存和实际数据不一致
+import hospitalData from '@/assets/data/hospital_services.json';
 
 // 默认 UI 文案兜底
 const defaultUiText = {
@@ -31,16 +33,17 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
   const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
 
   // 获取样式主题
+  // ✅ 修复：主题只依赖 region，减少不必要的重算
   const theme = useMemo(() => 
     getHospitalTheme(currentRegion, gameDataCache), 
-    [currentRegion, gameDataCache]
+    [currentRegion]
   );
 
   // 获取当前区域服务
+  // ✅ 修复：统一使用静态数据源 hospitalData，避免与 performTreatment 逻辑不一致
   const services = useMemo(() => {
-    if (!gameDataCache?.hospitalServices) return [] as MedicalService[];
-    return (gameDataCache.hospitalServices as MedicalService[]).filter((s) => s.region === currentRegion);
-  }, [gameDataCache, currentRegion]);
+    return (hospitalData as MedicalService[]).filter((s) => s.region === currentRegion);
+  }, [currentRegion]);
 
   if (!isOpen) return null;
 
@@ -102,7 +105,8 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
               const currentClass = vitality?.identity?.currentClass;
               const currentGold = vitality?.metrics?.gold ?? 0;
               
-              if (!currentClass) {
+              // ✅ 修复：更严格的类型检查，确保 currentClass 是有效的 PlayerClass
+              if (!currentClass || !Object.values(PlayerClass).includes(currentClass)) {
                 return <div className="text-red-500">玩家状态异常</div>;
               }
               

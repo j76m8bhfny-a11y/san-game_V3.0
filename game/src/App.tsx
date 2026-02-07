@@ -196,10 +196,7 @@ const App: React.FC = () => {
       
       {isShopOpen && <ShopModal isOpen={isShopOpen} onClose={() => setShopOpen(false)} />}
       {isJobBoardOpen && <JobBoardModal isOpen={isJobBoardOpen} onClose={() => setJobBoardOpen(false)} />}
-      {(() => {
-        console.log(`🏠 [DEBUG] App.tsx checking HousingModal render: isHousingOpen=${isHousingOpen}`);
-        return isHousingOpen && <HousingModal isOpen={isHousingOpen} onClose={() => setHousingOpen(false)} />;
-      })()}
+      {isHousingOpen && <HousingModal isOpen={isHousingOpen} onClose={() => setHousingOpen(false)} />}
       {isHospitalOpen && <HospitalModal isOpen={isHospitalOpen} onClose={() => setHospitalOpen(false)} />}
       
       {isArchiveOpen && <BlackBox onClose={() => setArchiveOpen(false)} />}

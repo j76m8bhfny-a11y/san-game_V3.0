@@ -3,6 +3,22 @@ import { GameNotification, Bill } from '@/types/schema';
 // ✅ 1. 引入系统规则配置 (Source of Truth)
 import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 
+// ✅ 2. 通知定时器管理（防止内存泄漏）
+const pendingTimers = new Set<NodeJS.Timeout>();
+let notificationIdCounter = 0;
+
+// ✅ 3. 安全的 ID 生成（时间戳 + 递增计数器，避免重复）
+const generateNotificationId = () => {
+  notificationIdCounter = (notificationIdCounter + 1) % 1000000;
+  return `${Date.now().toString(36)}-${notificationIdCounter.toString(36)}`;
+};
+
+// ✅ 4. 清理所有待处理的定时器（游戏重置时调用）
+export const clearAllNotificationTimers = () => {
+  pendingTimers.forEach(timer => clearTimeout(timer));
+  pendingTimers.clear();
+};
+
 // 定义 UI 切片的状态和方法
 export interface UISlice {
   // --- State ---
@@ -79,12 +95,7 @@ export const createUISlice: StateCreator<any, [], [], UISlice> = (set, get) => (
   
   setMenuOpen: (isOpen) => set({ isMenuOpen: isOpen }),
   setJobBoardOpen: (isOpen) => set({ isJobBoardOpen: isOpen }),
-  setHousingOpen: (isOpen) => {
-    console.log(`🏠 [DEBUG] setHousingOpen called with: ${isOpen}`);
-    console.log(`🏠 [DEBUG] Current isHousingOpen before update: ${get().isHousingOpen}`);
-    set({ isHousingOpen: isOpen });
-    console.log(`🏠 [DEBUG] isHousingOpen updated to: ${isOpen}`);
-  },
+  setHousingOpen: (isOpen) => set({ isHousingOpen: isOpen }),
   setHospitalOpen: (isOpen) => set({ isHospitalOpen: isOpen }),
   setCryptoOpen: (isOpen) => set({ isCryptoOpen: isOpen }),
   setBankOpen: (isOpen) => set({ isBankOpen: isOpen }),
@@ -99,32 +110,53 @@ export const createUISlice: StateCreator<any, [], [], UISlice> = (set, get) => (
 
   dismissRoastAndEndEvent: () => {
     const { viewingArchive } = get();
+    const store = get() as any;
+    
     // 如果当前正在查看档案（比如结局时），关闭 Roast 后保持档案打开
     if (viewingArchive) {
       set({
         currentRoast: null,
-        currentEvent: null, 
         isArchiveOpen: true
       });
     } else {
-      set({
-        currentRoast: null,
-        currentEvent: null
-      });
+      set({ currentRoast: null });
+    }
+    
+    // ✅ 调用 GameSlice 的方法来正确关闭事件
+    if (store.closeEvent) {
+      store.closeEvent();
     }
   },
 
   addNotification: (message, type = 'info') => {
-    const id = Math.random().toString(36).substring(2, 9);
+    // ✅ 使用安全的 ID 生成方式
+    const id = generateNotificationId();
     
-    set((state: any) => ({
-      notifications: [...state.notifications, { id, message, type }]
-    }));
+    // ✅ 限制通知数量上限（防止极端情况内存问题）
+    const MAX_NOTIFICATIONS = 10;
     
-    // ✅ Fix: 使用系统配置的持续时间，不再硬编码 3000ms
+    set((state: any) => {
+      const currentNotifications = state.notifications || [];
+      // 如果超过上限，移除最旧的通知
+      const trimmedNotifications = currentNotifications.length >= MAX_NOTIFICATIONS 
+        ? currentNotifications.slice(currentNotifications.length - MAX_NOTIFICATIONS + 1)
+        : currentNotifications;
+      
+      return {
+        notifications: [...trimmedNotifications, { id, message, type }]
+      };
+    });
+    
+    // ✅ 使用系统配置的持续时间，不再硬编码 3000ms
     const duration = SYSTEM_RULES.ui?.notificationDuration || 3000;
     
-    setTimeout(() => get().removeNotification(id), duration);
+    // ✅ 创建定时器并记录，便于清理
+    const timer = setTimeout(() => {
+      pendingTimers.delete(timer);
+      get().removeNotification(id);
+    }, duration);
+    
+    pendingTimers.add(timer);
   },
 
   removeNotification: (id) => {

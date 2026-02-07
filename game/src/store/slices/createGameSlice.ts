@@ -6,6 +6,9 @@ import { resolveEnding } from '@/logic/endings';
 import endingsData from '@/assets/data/endings.json';
 import ENDING_RULES from '@/assets/data/rules/ending_rules.json';
 
+// ✅ 引入 UI 清理函数
+import { clearAllNotificationTimers } from './createUISlice';
+
 // ✅ 引入配置文件
 import INITIAL_STATE from '@/assets/data/config/initial_state.json';
 import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
@@ -137,7 +140,13 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
   },
 
   resolveBill: () => {
-    set({ activeBill: null });
+    const store = get() as any;
+    // ✅ 调用 UISlice 的 closeBill 来统一管理 activeBill 状态
+    if (store.closeBill) {
+      store.closeBill();
+    } else {
+      set({ activeBill: null });
+    }
   },
 
   nextTurn: () => {
@@ -268,6 +277,9 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
   restartGame: () => {
     const { achievedEndings, unlockedArchives } = get(); // 🔥 仅保留 Meta 数据
     
+    // ✅ 清理所有待处理的通知定时器（防止内存泄漏）
+    clearAllNotificationTimers();
+    
     set({
         // 1. Vitality 重置 (从 JSON 读取)
         vitality: {
@@ -318,7 +330,23 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
         
         // 5. 恢复 Meta 数据
         unlockedArchives,
-        achievedEndings
+        achievedEndings,
+        
+        // 6. 重置所有 UI 状态
+        isShopOpen: false,
+        isInventoryOpen: false,
+        isArchiveOpen: false,
+        isMenuOpen: false,
+        isJobBoardOpen: false,
+        isHousingOpen: false,
+        isHospitalOpen: false,
+        isCryptoOpen: false,
+        isFaithOpen: false,
+        isBankOpen: false,
+        currentRoast: null,
+        notifications: [],
+        viewingArchive: null,
+        activeBill: null
     });
   }
 });

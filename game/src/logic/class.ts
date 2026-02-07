@@ -6,6 +6,7 @@
 
 import { PlayerClass, RegionID, GameState, Housing } from '@/types/schema';
 import housingData from '@/assets/data/housing.json';
+import narrativeRules from '@/assets/data/rules/narrative_rules.json';
 
 // 净资产阶级门槛
 const NET_WORTH_THRESHOLDS = {
@@ -101,19 +102,15 @@ export function hasClassChanged(state: GameState, newClass: PlayerClass): boolea
 
 /**
  * 获取阶级变化描述
+ * 从 narrative_rules.json 读取文案配置
  */
 export function getClassChangeDesc(oldClass: PlayerClass, newClass: PlayerClass): string {
-  const changes: Record<string, string> = {
-    'HOMELESS->WORKER': '你终于有了固定住所，不再是流浪者了。',
-    'WORKER->HOMELESS': '你失去了住所，重回街头。',
-    'WORKER->MIDDLE': '恭喜进入中产，但房贷才刚刚开始。',
-    'MIDDLE->WORKER': '资产缩水，中产梦碎。',
-    'MIDDLE->CAPITALIST': '欢迎来到顶层，这里的空气都弥漫着金钱的味道。',
-    'CAPITALIST->MIDDLE': '从云端跌落，但至少还有房子住。',
-    'CAPITALIST->WORKER': '一夜回到解放前。',
-    'CAPITALIST->HOMELESS': '真正的从零开始。'
-  };
-  
   const key = `${oldClass}->${newClass}`;
-  return changes[key] || `阶级变化: ${oldClass} -> ${newClass}`;
+  
+  // 从配置文件读取文案
+  const descriptions = (narrativeRules as any).classChange?.descriptions || {};
+  const defaultTemplate = (narrativeRules as any).classChange?.defaultTemplate || '阶级变化: {oldClass} -> {newClass}';
+  
+  // 返回配置中的文案，或使用默认模板
+  return descriptions[key] || defaultTemplate.replace('{oldClass}', oldClass).replace('{newClass}', newClass);
 }

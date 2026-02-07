@@ -35,5 +35,18 @@
       { "id": "CAPITALIST", "label": "资本家", "prefix": "No.C" },
       { "id": "ENDING", "label": "结局", "prefix": null }
     ]
+  },
+  "classChange": {
+    "descriptions": {
+      "HOMELESS->WORKER": "你终于有了固定住所，不再是流浪者了。",
+      "WORKER->HOMELESS": "你失去了住所，重回街头。",
+      "WORKER->MIDDLE": "恭喜进入中产，但房贷才刚刚开始。",
+      "MIDDLE->WORKER": "资产缩水，中产梦碎。",
+      "MIDDLE->CAPITALIST": "欢迎来到顶层，这里的空气都弥漫着金钱的味道。",
+      "CAPITALIST->MIDDLE": "从云端跌落，但至少还有房子住。",
+      "CAPITALIST->WORKER": "一夜回到解放前。",
+      "CAPITALIST->HOMELESS": "真正的从零开始。"
+    },
+    "defaultTemplate": "阶级变化: {oldClass} -> {newClass}"
   }
 }

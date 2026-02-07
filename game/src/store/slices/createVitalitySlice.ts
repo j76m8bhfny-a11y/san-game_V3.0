@@ -37,7 +37,7 @@ export interface VitalitySlice {
   };
 }
 
-const generateId = () => Math.random().toString(36).substring(2, 9);
+const generateId = () => `${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 5)}`;
 
 export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (set, get) => ({
   vitality: {
@@ -73,7 +73,7 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
           ...state.vitality.metrics,
           gold: classConfig.gold,
           hp: classConfig.hp,
-          maxHp: classConfig.hp, // 职业初始 HP 即为上限
+          maxHp: classConfig.maxHp ?? classConfig.hp, // 使用配置的 maxHp，若无则回退到 hp
           
           // ✅ Fix: 使用 JSON 配置的值，而非硬编码 100
           san: classConfig.san,
@@ -116,7 +116,9 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
   },
 
   addTransaction: (category, amount, description) => {
-     const result = { success: true, actualAmount: amount };
+     // 使用变量存储结果，避免闭包问题
+     let success = true;
+     let actualAmount = amount;
      
      set((state: any) => {
         const currentGold = state.vitality.metrics.gold;
@@ -124,8 +126,8 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
         
         // 🔴 Gold 不能为负数 - 拒绝交易
         if (newGold < 0) {
-          result.success = false;
-          result.actualAmount = 0;
+          success = false;
+          actualAmount = 0;
           // 发送通知但不执行交易
           if (state.addNotification) {
             state.addNotification(`资金不足！需要 $${Math.abs(amount)}，当前 $${currentGold}`, 'error');
@@ -151,7 +153,7 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
         };
      });
      
-     return result;
+     return { success, actualAmount };
   },
   
   /**
@@ -282,18 +284,18 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
     const isSuccess = Math.random() >= finalRiskRate;
     const effects = service.effects || {};
     
-    // ✅ Fix: 获取全局属性上限配置
-    const { maxStat } = SYSTEM_RULES.caps; 
+    // ✅ Fix: 获取全局属性上下限配置
+    const { minStat, maxStat } = SYSTEM_RULES.caps; 
 
     if (isSuccess) {
         const addictionGain = effects.addiction || 0;
         
-        // ✅ Fix: 使用 metrics.maxHp/maxSan 动态上限，addiction 使用全局 Caps
-        const newHp = Math.min(metrics.maxHp, Math.max(0, metrics.hp + (effects.hpRestore || 0)));
-        const newSan = Math.min(metrics.maxSan, Math.max(0, metrics.san + (effects.sanRestore || 0)));
+        // ✅ Fix: 使用 metrics.maxHp/maxSan 动态上限，HP/SAN 下限使用配置 minStat
+        const newHp = Math.min(metrics.maxHp, Math.max(minStat, metrics.hp + (effects.hpRestore || 0)));
+        const newSan = Math.min(metrics.maxSan, Math.max(minStat, metrics.san + (effects.sanRestore || 0)));
         
         // 修正：成瘾度上限不再写死 100，而是读取配置
-        const newAddiction = Math.min(maxStat, Math.max(0, metrics.addiction + addictionGain));
+        const newAddiction = Math.min(maxStat, Math.max(minStat, metrics.addiction + addictionGain));
 
         state.modifyStats({
             hp: newHp,
@@ -305,8 +307,8 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
         // 失败逻辑
         const failure = rules.medical?.failurePenalty || { hp: -10, san: -5 }; // 防御性读取
         
-        const newHp = Math.max(0, metrics.hp + (failure.hp || -10));
-        const newSan = Math.max(0, metrics.san + (failure.san || -5));
+        const newHp = Math.max(minStat, metrics.hp + (failure.hp || -10));
+        const newSan = Math.max(minStat, metrics.san + (failure.san || -5));
         
         // 失败也会增加成瘾度
         const newAddiction = Math.min(maxStat, metrics.addiction + (effects.addiction || 0));

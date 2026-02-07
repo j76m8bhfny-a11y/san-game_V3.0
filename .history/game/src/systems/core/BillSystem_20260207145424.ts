@@ -1,9 +1,12 @@
 import { GameSystem, SystemResult, SystemContext } from '../types';
 import { triggerBill, calculateBillMitigation } from '@/logic/core';
-import type { VitalityMetrics, ActiveInsuranceState, Housing, ActiveHousingState } from '@/types/schema';
+import type { VitalityMetrics, ActiveInsuranceState, Housing, ActiveHousingState } from '@/types/schema'; 
 
-// 导入数据 - 使用统一配置加载器
-import { Config } from '@/config';
+// 导入数据
+import billsData from '@/assets/data/bills.json';
+import globalData from '@/assets/data/global.json';
+import itemsData from '@/assets/data/items.json';
+import housingData from '@/assets/data/housing.json'; // ✅ 引入房产数据
 
 export const BillSystem: GameSystem = {
   id: 'BILL',
@@ -18,8 +21,8 @@ export const BillSystem: GameSystem = {
     
     // ✅ 修复: 解析房产配置 (单一房产)
     const currentHousing = state.activeHousing;
-    const housingConfig = currentHousing
-      ? (Config.housing as unknown as Housing[]).find(h => h.id === currentHousing.definitionId) || null
+    const housingConfig = currentHousing 
+      ? (housingData as unknown as Housing[]).find(h => h.id === currentHousing.definitionId) || null
       : null;
 
     // =================================================================
@@ -27,19 +30,19 @@ export const BillSystem: GameSystem = {
     // =================================================================
 
     const vehicleTags = (state.inventory || [])
-      .map((id: string) => (Config.items as any[]).find(i => i.id === id)?.tags || [])
+      .map((id: string) => (itemsData as any[]).find(i => i.id === id)?.tags || [])
       .flat()
       .filter((t: string) => t.startsWith('VEHICLE'));
 
     const bill = triggerBill(
-      metrics.gold,
-      metrics.san,
-      identity.currentClass,
-      Config.bills as any,
-      Config.global.billConfig,
-      {
+      metrics.gold, 
+      metrics.san, 
+      identity.currentClass, 
+      billsData as any, 
+      globalData.billConfig,
+      { 
         housing: housingConfig, // ✅ 传入解析后的配置对象
-        vehicleTags
+        vehicleTags 
       }
     );
 

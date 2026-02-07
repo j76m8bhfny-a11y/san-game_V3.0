@@ -25,7 +25,7 @@ export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) =
     addNotification
   } = useGameStore();
   
-  const gold = vitality?.metrics?.gold ?? 0;
+  const gold = vitality.metrics.gold;
 
   const { playSfx } = useAudioStore();
 
@@ -120,15 +120,14 @@ export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) =
               if (isSale && buyConfig) {
                 modeLabel = '出售 (FOR SALE)';
                 // 显示实际的周开销（物业费/税费等，不包含房贷）
-                weeklyCost = buyConfig.weeklyCosts?.reduce((s, c) => s + c.baseAmount, 0) || 0;
+                weeklyCost = buyConfig.weeklyCosts.reduce((s, c) => s + c.baseAmount, 0);
                 
-                // 首付向上取整，与后端一致（验证首付比例有效性）
-                const downPaymentRate = Math.max(0, Math.min(1, buyConfig.downPaymentRate));
-                upfrontCost = Math.ceil(buyConfig.price * downPaymentRate);
+                // 首付向上取整，与后端一致
+                upfrontCost = Math.ceil(buyConfig.price * buyConfig.downPaymentRate);
                 canAfford = gold >= upfrontCost;
               } else if (rentConfig) {
                 modeLabel = '租赁 (FOR RENT)';
-                weeklyCost = rentConfig.weeklyCosts?.reduce((s, c) => s + c.baseAmount, 0) || 0;
+                weeklyCost = rentConfig.weeklyCosts.reduce((s, c) => s + c.baseAmount, 0);
                 upfrontCost = rentConfig.deposit + weeklyCost; // 押金 + 首周
                 canAfford = gold >= upfrontCost;
               }
@@ -182,8 +181,7 @@ export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) =
                               const downPaymentRate = Math.max(0, Math.min(1, buyConfig.downPaymentRate));
                               const estimatedPrincipal = buyConfig.price * (1 - downPaymentRate);
                               const result = calculateMortgagePayment(estimatedPrincipal, buyConfig.interestRate);
-                              // 防止 NaN 导致显示错误
-                              return isNaN(result.total) ? 'N/A' : result.total.toLocaleString();
+                              return result.total.toLocaleString();
                             })()}/wk
                           </span>
                         </div>

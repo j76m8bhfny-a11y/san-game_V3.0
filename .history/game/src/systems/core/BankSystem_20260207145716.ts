@@ -153,7 +153,7 @@ export const BankSystem: GameSystem = {
              
              (result.updates as any).prison = {
                inJail: true,
-               sentenceTurns: collection.jail.sentenceTurns, // 读取配置刑期
+               sentenceTurns: Config.prison.defaultSentence, // 读取配置刑期
                crime: "金融诈骗与恶意欠款",
                bailAmount: 0
              } as any;

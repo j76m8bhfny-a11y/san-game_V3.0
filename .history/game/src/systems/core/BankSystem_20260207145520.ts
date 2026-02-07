@@ -1,7 +1,8 @@
 import { GameSystem, SystemResult } from '../types';
 import { GameState, PlayerClass, RegionID } from '@/types/schema';
 import { processTurnInterest } from '@/logic/bank';
-import { Config } from '@/config';
+import bankRules from '@/assets/data/rules/bankRules.json';
+import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 
 export const BankSystem: GameSystem = {
   id: 'BANK_SYSTEM',
@@ -30,7 +31,7 @@ export const BankSystem: GameSystem = {
     const loansToRemove: string[] = []; 
 
     // ✅ 2. 解构配置项，方便调用
-    const { collection, mortgage } = Config.bank;
+    const { collection, mortgage } = bankRules;
 
     processedLoans.forEach((loan) => {
       // 检查是否当前逾期
@@ -96,7 +97,7 @@ export const BankSystem: GameSystem = {
             
             // 读取配置伤害值和数值下限
             const { hpDamage, sanDamage } = collection.violence;
-            const { minStat } = Config.system.caps;
+            const { minStat } = SYSTEM_RULES.caps;
             
             // 获取当前 HP/SAN（考虑之前系统如 Housing 的修改）
             const currentHp = (result.updates.vitality as any)?.metrics?.hp ?? vitality.metrics.hp;
@@ -155,7 +156,7 @@ export const BankSystem: GameSystem = {
                inJail: true,
                sentenceTurns: collection.jail.sentenceTurns, // 读取配置刑期
                crime: "金融诈骗与恶意欠款",
-               bailAmount: 0
+               bailAmount: 0 
              } as any;
              
              totalScoreChange -= collection.jail.scorePenalty;
@@ -192,7 +193,7 @@ export const BankSystem: GameSystem = {
 
     // 应用信用分变更
     if (totalScoreChange !== 0) {
-      const { minScore, maxScore } = Config.bank.creditScore;
+      const { minScore, maxScore } = bankRules.creditScore;
       const currentScore = vitality.metrics.creditScore;
       
       // 限制信用分范围 [300, 850]

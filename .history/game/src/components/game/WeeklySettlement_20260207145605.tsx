@@ -1,13 +1,15 @@
 import React, { useMemo } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { motion, AnimatePresence } from 'framer-motion';
-import {
+import { 
   ArrowRight, TrendingUp, TrendingDown, DollarSign, Calendar, AlertCircle, Bitcoin
 } from 'lucide-react';
 import { Disease, WeeklyReport } from '@/types/schema';
 
-// ✅ 1. 引入统一配置加载器
-import { Config } from '@/config';
+// ✅ 1. 引入配置文件
+
+import billRules from '@/assets/data/rules/billRules.json';
+import endingRules from '@/assets/data/rules/ending_rules.json';
 
 interface WeeklySettlementProps {
   isOpen: boolean;
@@ -28,8 +30,8 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
   const { ledger, time, activeDiseases } = vitality;
   
   // ✅ 2. 提取配置数值
-  const { maxTurns } = Config.ending.constraints;
-  const { animationScale, modalZIndex } = Config.bill.settlement;
+  const { maxTurns } = endingRules.constraints;
+  const { animationScale, modalZIndex } = billRules.settlement;
 
   // 1. 统一计算汇总 (确保类型符合 WeeklyReport)
   const summary: WeeklyReport = useMemo(() => {

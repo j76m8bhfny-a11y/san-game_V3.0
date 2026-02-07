@@ -96,7 +96,7 @@ export const BankSystem: GameSystem = {
             
             // 读取配置伤害值和数值下限
             const { hpDamage, sanDamage } = collection.violence;
-            const { minStat } = Config.system.caps;
+            const { minStat } = Config.system;
             
             // 获取当前 HP/SAN（考虑之前系统如 Housing 的修改）
             const currentHp = (result.updates.vitality as any)?.metrics?.hp ?? vitality.metrics.hp;

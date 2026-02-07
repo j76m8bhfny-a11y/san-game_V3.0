@@ -38,7 +38,7 @@ export const HousingSystem: GameSystem = {
     const costs: { label: string; baseAmount: number; type: 'RENT' | 'MAINTENANCE' }[] = [];
 
     // 计算本周费用
-    if (!isOwned && housingConfig.rentConfig?.weeklyCosts) {
+    if (!isOwned && housingConfig.rentConfig) {
       housingConfig.rentConfig.weeklyCosts.forEach(costItem => {
         costs.push({
           label: costItem.label,
@@ -48,7 +48,7 @@ export const HousingSystem: GameSystem = {
       });
     }
 
-    if (isOwned && housingConfig.buyConfig?.weeklyCosts) {
+    if (isOwned && housingConfig.buyConfig) {
       housingConfig.buyConfig.weeklyCosts.forEach(costItem => {
         costs.push({
           label: costItem.label,
@@ -62,7 +62,7 @@ export const HousingSystem: GameSystem = {
     const totalCost = costs.reduce((sum, c) => sum + c.baseAmount, 0);
     
     // 使用实时余额（考虑前置系统的金钱变动）
-    const currentGold = state.vitality?.metrics?.gold ?? 0;
+    const currentGold = state.vitality?.metrics?.gold;
     
     if (!isOwned && housingRules.eviction.enableEviction) {
       if (currentGold < totalCost) {
@@ -147,7 +147,7 @@ export const HousingSystem: GameSystem = {
       }
 
       // 居住收益
-      if (housing.regenHp > 0 && vitality.metrics) {
+      if (housing.regenHp > 0) {
         const newHp = Math.min(vitality.metrics.maxHp, vitality.metrics.hp + housing.regenHp);
         result.updates.vitality = {
           ...result.updates.vitality,

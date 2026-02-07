@@ -27,7 +27,7 @@ export const BillSystem: GameSystem = {
     // =================================================================
 
     const vehicleTags = (state.inventory || [])
-      .map((id: string) => (Config.items as any[]).find(i => i.id === id)?.tags || [])
+      .map((id: string) => (itemsData as any[]).find(i => i.id === id)?.tags || [])
       .flat()
       .filter((t: string) => t.startsWith('VEHICLE'));
 

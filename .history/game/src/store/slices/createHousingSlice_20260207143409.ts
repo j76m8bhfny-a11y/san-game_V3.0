@@ -102,18 +102,13 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
       return { success: false, message: `你已有住所 (${gameState.activeHousing.name})，请先退租或出售。` };
     }
     
-    // 2. 验证首付比例
-    if (house.buyConfig.downPaymentRate <= 0 || house.buyConfig.downPaymentRate > 1) {
-      return { success: false, message: "首付比例配置异常" };
-    }
-    
-    // 3. 计算首付（向上取整，避免浮点精度问题）
+    // 2. 计算首付（向上取整，避免浮点精度问题）
     const downPayment = Math.ceil(house.buyConfig.price * house.buyConfig.downPaymentRate);
     if (gameState.vitality.metrics.gold < downPayment) {
       return { success: false, message: `首付不足，需要 $${downPayment}` };
     }
     
-    // 4. 申请房贷（允许负数贷款作为特殊情况处理）
+    // 3. 申请房贷
     const loanAmount = house.buyConfig.price - downPayment;
     const loanResult = state.takeMortgage(
       loanAmount, 
@@ -125,7 +120,7 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
       return { success: false, message: `银行拒绝放贷: ${loanResult.message}` };
     }
     
-    // 5. 支付首付
+    // 4. 支付首付
     const txResult = state.addTransaction('HOUSING', -downPayment, `购房首付: ${house.name}`);
     if (!txResult.success) {
       // 如果支付失败，需要取消贷款
@@ -133,7 +128,7 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
       return { success: false, message: "资金不足以支付首付，已取消贷款申请。" };
     }
     
-    // 6. 更新状态
+    // 5. 更新状态
     const newHousing: ActiveHousingState = {
       definitionId: house.id,
       type: 'OWN',
@@ -168,7 +163,7 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
     
     if (housing.type === 'RENT') {
       // 退租：返还押金
-      const deposit = houseData.rentConfig?.deposit || 0;
+      const deposit = houseData?.rentConfig?.deposit || 0;
       if (deposit > 0) {
         state.addTransaction('HOUSING', deposit, `退租返还押金: ${housing.name}`);
       }
@@ -195,7 +190,7 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
       const remainingDebt = loan ? loan.principal + loan.interest : 0;
       
       // 简化的卖房逻辑：售价 - 剩余债务 = 到手金额
-      const sellPrice = buyConfig.price * (housingRules.sell?.discountRate ?? 0.9); // 从配置读取折扣率，默认9折
+      const sellPrice = buyConfig.price * 0.9; // 9折出售
       const netProceeds = sellPrice - remainingDebt;
       
       if (netProceeds > 0) {

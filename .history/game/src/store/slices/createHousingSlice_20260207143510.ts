@@ -168,7 +168,7 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
     
     if (housing.type === 'RENT') {
       // 退租：返还押金
-      const deposit = houseData.rentConfig?.deposit || 0;
+      const deposit = houseData?.rentConfig?.deposit || 0;
       if (deposit > 0) {
         state.addTransaction('HOUSING', deposit, `退租返还押金: ${housing.name}`);
       }

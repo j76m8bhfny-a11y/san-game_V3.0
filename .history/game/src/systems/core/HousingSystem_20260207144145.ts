@@ -38,7 +38,7 @@ export const HousingSystem: GameSystem = {
     const costs: { label: string; baseAmount: number; type: 'RENT' | 'MAINTENANCE' }[] = [];
 
     // 计算本周费用
-    if (!isOwned && housingConfig.rentConfig?.weeklyCosts) {
+    if (!isOwned && housingConfig.rentConfig) {
       housingConfig.rentConfig.weeklyCosts.forEach(costItem => {
         costs.push({
           label: costItem.label,
@@ -48,7 +48,7 @@ export const HousingSystem: GameSystem = {
       });
     }
 
-    if (isOwned && housingConfig.buyConfig?.weeklyCosts) {
+    if (isOwned && housingConfig.buyConfig) {
       housingConfig.buyConfig.weeklyCosts.forEach(costItem => {
         costs.push({
           label: costItem.label,

@@ -1,14 +1,14 @@
 import { StateCreator } from 'zustand';
-import {
-  PlayerClass,
-  RegionID,
-  ActiveHousingState,
+import { 
+  PlayerClass, 
+  RegionID, 
+  ActiveHousingState, 
   ActiveInsuranceState,
   ActiveHousing
 } from '@/types/schema';
-import { Config } from '@/config';
+import vitalityRules from '@/assets/data/rules/vitalityRules.json';
 
-export const CLASS_INITIAL_STATS = Config.vitality.classes as Record<PlayerClass, any>;
+export const CLASS_INITIAL_STATS = vitalityRules.classes as Record<PlayerClass, any>;
 
 // 2. 初始状态
 const INITIAL_PLAYER_STATE = {

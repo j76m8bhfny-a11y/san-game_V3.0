@@ -54,14 +54,14 @@ export const calculateMedicalCost = (
 ): CostResult => {
   // 参数校验
   if (!service || typeof service.baseCost !== 'number') {
-    return { originalCost: 0, finalCost: 0, coveredAmount: 0, copayRate: 0, reason: getMessage('invalidService') };
+    return { originalCost: 0, finalCost: 0, coveredAmount: 0, copayRate: 0, reason: medicalRules.messages.invalidService };
   }
   
   const cost = service.baseCost;
   
   // 边界检查：处理 NaN 和 Infinity
   if (!isFinite(cost)) {
-    return { originalCost: 0, finalCost: 0, coveredAmount: 0, copayRate: 0, reason: getMessage('invalidCost') };
+    return { originalCost: 0, finalCost: 0, coveredAmount: 0, copayRate: 0, reason: medicalRules.messages.invalidCost };
   }
   
   // 1. 特殊交易（如卖肾赚钱），直接返回
@@ -71,13 +71,13 @@ export const calculateMedicalCost = (
       finalCost: cost,
       coveredAmount: 0,
       copayRate: 0,
-      reason: getMessage('cashTransaction')
+      reason: medicalRules.messages.cashTransaction
     };
   }
 
   // 2. 初始状态：无保险全额自付
   let copayRate = 1.0;
-  let reason = getMessage('noInsurance');
+  let reason = medicalRules.messages.noInsurance;
 
   // 3. 计算商业保险报销 (Standard Insurance Logic)
   if (insurance) {
@@ -99,10 +99,10 @@ export const calculateMedicalCost = (
         copayRate = Math.max(serviceCopay, planCopay);
         reason = `保险报销 ${((1 - copayRate) * 100).toFixed(0)}%`;
       } else {
-        reason = getMessage('planNotCover');
+        reason = medicalRules.messages.planNotCover;
       }
     } else {
-      reason = getMessage('notInCatalog');
+      reason = medicalRules.messages.notInCatalog;
     }
   }
 
@@ -159,14 +159,33 @@ export const getHospitalTheme = (region: RegionID, gameDataCache?: GameDataCache
   }
 
   // 2. ✅ 重构：从 medicalRules.json 读取静态配置
+  // 防御性检查：确保 hospitalThemes 存在
+  if (!medicalRules.hospitalThemes) {
+    return {
+      name: "社区诊所",
+      desc: "基础医疗服务。",
+      bg: "bg-gray-900",
+      accent: "text-white",
+      border: "border-white/10",
+      icon: "✚"
+    };
+  }
+  
   // 使用类型断言处理 JSON 索引
   const themes = medicalRules.hospitalThemes as Record<string, any>;
-  const theme = themes?.[region];
+  const theme = themes[region];
 
   if (theme) {
     return theme;
   }
 
-  // 3. 兜底逻辑 (Fallback) - 优先使用配置中的 DEFAULT，否则使用硬编码默认值
-  return themes?.['DEFAULT'] || defaultTheme;
+  // 3. 兜底逻辑 (Fallback)
+  return themes['DEFAULT'] || {
+    name: "社区诊所",
+    desc: "基础医疗服务。",
+    bg: "bg-gray-900",
+    accent: "text-white",
+    border: "border-white/10",
+    icon: "✚"
+  };
 };

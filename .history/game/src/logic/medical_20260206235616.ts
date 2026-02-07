@@ -99,10 +99,10 @@ export const calculateMedicalCost = (
         copayRate = Math.max(serviceCopay, planCopay);
         reason = `保险报销 ${((1 - copayRate) * 100).toFixed(0)}%`;
       } else {
-        reason = getMessage('planNotCover');
+        reason = medicalRules.messages.planNotCover;
       }
     } else {
-      reason = getMessage('notInCatalog');
+      reason = medicalRules.messages.notInCatalog;
     }
   }
 

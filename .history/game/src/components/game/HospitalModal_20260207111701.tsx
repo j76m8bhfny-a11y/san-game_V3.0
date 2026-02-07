@@ -157,7 +157,7 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
                         </span>
                       </div>
                       {!canAfford && (
-                        <div className="text-right text-xs text-red-500 mt-1">{getUiText('insufficientFunds')} (当前: ${currentGold})</div>
+                        <div className="text-right text-xs text-red-500 mt-1">{medicalRules.uiText.insufficientFunds} (当前: ${currentGold})</div>
                       )}
                     </div>
                   </div>
@@ -176,9 +176,9 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
                        `}
                      >
                        {canAfford ? (
-                         <>{displayRisk > 0 ? getUiText('confirmSurgery') : getUiText('payAndTreat')}</>
+                         <>{displayRisk > 0 ? medicalRules.uiText.confirmSurgery : medicalRules.uiText.payAndTreat}</>
                        ) : (
-                         <><CreditCard size={18}/> {getUiText('insufficientFunds')}</>
+                         <><CreditCard size={18}/> {medicalRules.uiText.insufficientFunds}</>
                        )}
                      </button>
                   </div>

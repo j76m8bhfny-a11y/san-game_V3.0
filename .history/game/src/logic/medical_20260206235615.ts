@@ -99,10 +99,10 @@ export const calculateMedicalCost = (
         copayRate = Math.max(serviceCopay, planCopay);
         reason = `保险报销 ${((1 - copayRate) * 100).toFixed(0)}%`;
       } else {
-        reason = getMessage('planNotCover');
+        reason = medicalRules.messages.planNotCover;
       }
     } else {
-      reason = getMessage('notInCatalog');
+      reason = medicalRules.messages.notInCatalog;
     }
   }
 
@@ -159,14 +159,33 @@ export const getHospitalTheme = (region: RegionID, gameDataCache?: GameDataCache
   }
 
   // 2. ✅ 重构：从 medicalRules.json 读取静态配置
+  // 防御性检查：确保 hospitalThemes 存在
+  if (!medicalRules.hospitalThemes) {
+    return {
+      name: "社区诊所",
+      desc: "基础医疗服务。",
+      bg: "bg-gray-900",
+      accent: "text-white",
+      border: "border-white/10",
+      icon: "✚"
+    };
+  }
+  
   // 使用类型断言处理 JSON 索引
   const themes = medicalRules.hospitalThemes as Record<string, any>;
-  const theme = themes?.[region];
+  const theme = themes[region];
 
   if (theme) {
     return theme;
   }
 
-  // 3. 兜底逻辑 (Fallback) - 优先使用配置中的 DEFAULT，否则使用硬编码默认值
-  return themes?.['DEFAULT'] || defaultTheme;
+  // 3. 兜底逻辑 (Fallback)
+  return themes['DEFAULT'] || {
+    name: "社区诊所",
+    desc: "基础医疗服务。",
+    bg: "bg-gray-900",
+    accent: "text-white",
+    border: "border-white/10",
+    icon: "✚"
+  };
 };

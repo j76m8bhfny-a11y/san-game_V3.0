@@ -6,18 +6,6 @@ import { Heart, Activity, Shield, CreditCard, AlertTriangle } from 'lucide-react
 // ✅ 引入医疗规则配置，用于获取 UI 文案
 import medicalRules from '@/assets/data/rules/medicalRules.json';
 
-// 默认 UI 文案兜底
-const defaultUiText = {
-  confirmSurgery: "签署免责协议并手术",
-  payAndTreat: "支付并治疗",
-  insufficientFunds: "余额不足"
-};
-
-// 安全获取 UI 文案
-const getUiText = (key: keyof typeof defaultUiText): string => {
-  return medicalRules.uiText?.[key] ?? defaultUiText[key];
-};
-
 export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
   const { 
     vitality, 
@@ -98,17 +86,9 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
         <div className="flex-1 p-8 flex flex-col relative">
           {selectedService ? (
             (() => {
-              // 防御性检查：确保 vitality 状态存在
-              const currentClass = vitality?.identity?.currentClass;
-              const currentGold = vitality?.metrics?.gold ?? 0;
-              
-              if (!currentClass) {
-                return <div className="text-red-500">玩家状态异常</div>;
-              }
-              
               // 实时计算费用预览
-              const costInfo = calculateMedicalCost(selectedService, activeInsurance, currentClass);
-              const canAfford = currentGold >= costInfo.finalCost;
+              const costInfo = calculateMedicalCost(selectedService, activeInsurance, vitality.identity.currentClass);
+              const canAfford = vitality.metrics.gold >= costInfo.finalCost;
               
               // ✅ 使用统一的风险率计算函数
               const displayRisk = calculateRiskRate(selectedService);
@@ -157,7 +137,7 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
                         </span>
                       </div>
                       {!canAfford && (
-                        <div className="text-right text-xs text-red-500 mt-1">{getUiText('insufficientFunds')} (当前: ${currentGold})</div>
+                        <div className="text-right text-xs text-red-500 mt-1">{medicalRules.uiText.insufficientFunds} (当前: ${vitality.metrics.gold})</div>
                       )}
                     </div>
                   </div>
@@ -176,9 +156,9 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
                        `}
                      >
                        {canAfford ? (
-                         <>{displayRisk > 0 ? getUiText('confirmSurgery') : getUiText('payAndTreat')}</>
+                         <>{displayRisk > 0 ? medicalRules.uiText.confirmSurgery : medicalRules.uiText.payAndTreat}</>
                        ) : (
-                         <><CreditCard size={18}/> {getUiText('insufficientFunds')}</>
+                         <><CreditCard size={18}/> {medicalRules.uiText.insufficientFunds}</>
                        )}
                      </button>
                   </div>
@@ -215,12 +195,10 @@ interface EffectRowProps {
 
 const EffectRow = ({ label, value, icon, color }: EffectRowProps) => {
     if (value === undefined || value === null || value === 0) return null;
-    // 显示符号：正数显示 +，负数显示 -，0 不显示
-    const sign = value > 0 ? '+' : '';
     return (
         <div className={`flex justify-between items-center ${color}`}>
             <div className="flex items-center gap-2">{icon} {label}</div>
-            <div className="font-mono font-bold">{sign}{value}</div>
+            <div className="font-mono font-bold">{value > 0 ? '+' : ''}{value}</div>
         </div>
     );
 };

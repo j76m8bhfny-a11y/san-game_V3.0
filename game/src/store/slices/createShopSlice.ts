@@ -3,6 +3,17 @@ import { Item, RegionID, LedgerCategory, ItemType } from '@/types/schema';
 // ✅ 1. 引入配置文件 (请确保路径正确)
 import shopRules from '@/assets/data/rules/shopRules.json';
 
+// ✅ 辅助函数：消耗物品并播放音效（提取重复代码）
+const consumeItemAndFinish = (itemId: string, state: any, set: Function) => {
+  const newInventory = [...state.inventory];
+  const index = newInventory.indexOf(itemId);
+  if (index > -1) {
+    newInventory.splice(index, 1);
+    set({ inventory: newInventory });
+  }
+  if (state.playSfx) state.playSfx(shopRules.audio.useItem);
+};
+
 export interface ShopSlice {
   // Selectors
   getRegionItems: (region: RegionID) => Item[];
@@ -167,15 +178,7 @@ export const createShopSlice: StateCreator<any, [], [], ShopSlice> = (set, get) 
              state.modifyStats({ hp: -hpCost });
              state.addTransaction('INCOME', gold, `出售血浆`);
              state.addNotification(message, "GOLD");
-             
-             // 消耗掉并返回，不再执行后续代码
-             const newInventory = [...state.inventory];
-             const index = newInventory.indexOf(itemId);
-             if (index > -1) {
-               newInventory.splice(index, 1);
-               set({ inventory: newInventory });
-             }
-             if (state.playSfx) state.playSfx(shopRules.audio.useItem);
+             consumeItemAndFinish(itemId, state, set);
              return;
              
          } else if (item.activeEffect.type === 'SURGERY') {
@@ -188,29 +191,13 @@ export const createShopSlice: StateCreator<any, [], [], ShopSlice> = (set, get) 
                  state.addTransaction('INCOME', Math.abs(currentGold), `出售器官清偿债务`);
              }
              state.addNotification(message, "warning");
-             
-             // 消耗掉并返回，不再执行后续代码
-             const newInventory = [...state.inventory];
-             const index = newInventory.indexOf(itemId);
-             if (index > -1) {
-               newInventory.splice(index, 1);
-               set({ inventory: newInventory });
-             }
-             if (state.playSfx) state.playSfx(shopRules.audio.useItem);
+             consumeItemAndFinish(itemId, state, set);
              return;
          }
       }
 
       // 4. 普通消耗品：消耗掉
-      const newInventory = [...state.inventory];
-      const index = newInventory.indexOf(itemId);
-      if (index > -1) {
-        newInventory.splice(index, 1);
-        set({ inventory: newInventory });
-      }
-      
-      // ✅ 重构 6: 音效读取配置
-      if (state.playSfx) state.playSfx(shopRules.audio.useItem);
+      consumeItemAndFinish(itemId, state, set);
       state.addNotification(notificationMsg, "success");
     } else {
       // 非消耗品且无特殊处理逻辑的物品

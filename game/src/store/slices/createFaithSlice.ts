@@ -228,6 +228,19 @@ export const createFaithSlice: StateCreator<any, [], [], FaithSlice> = (set, get
     const result = calculateRiteOutcome(faithConfig as any, state);
 
     if (result.success) {
+       // ✅ 先处理金钱支出（如果是支出）
+       if (typeof result.goldChange === 'number' && result.goldChange < 0) {
+           const txResult = state.addTransaction(
+               faithRules.defaults.transactionCategories.riteCost, 
+               result.goldChange, 
+               `信仰仪式: ${faithConfig.rite.name}`
+           );
+           if (!txResult.success) {
+             return { success: false, message: "资金不足以支付仪式费用。" };
+           }
+       }
+       
+       // 再应用其他效果（HP/SAN等）
        if (result.updates?.vitality?.metrics && 
            Object.keys(result.updates.vitality.metrics).length > 0) {
            state.modifyStats(result.updates.vitality.metrics);
@@ -237,14 +250,13 @@ export const createFaithSlice: StateCreator<any, [], [], FaithSlice> = (set, get
            state.updateIdentityPoints(result.updates.vitality.identity.points);
        }
 
-       if (result.goldChange !== 0) {
-           const type = result.goldChange > 0 
-              ? faithRules.defaults.transactionCategories.riteIncome 
-              : faithRules.defaults.transactionCategories.riteCost;
-           const txResult = state.addTransaction(type, result.goldChange, `信仰仪式: ${faithConfig.rite.name}`);
-           if (!txResult.success && result.goldChange < 0) {
-             return { success: false, message: "资金不足以支付仪式费用。" };
-           }
+       // 处理金钱收入
+       if (typeof result.goldChange === 'number' && result.goldChange > 0) {
+           state.addTransaction(
+               faithRules.defaults.transactionCategories.riteIncome, 
+               result.goldChange, 
+               `信仰仪式: ${faithConfig.rite.name}`
+           );
        }
 
        set((prev: any) => ({

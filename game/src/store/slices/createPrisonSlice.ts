@@ -245,6 +245,13 @@ export const createPrisonSlice: StateCreator<any, [], [], PrisonSlice> = (set, g
       if (died) {
         nextState.vitality.metrics.hp = Math.max(0, nextState.vitality.metrics.hp);
         nextState.vitality.metrics.san = Math.max(0, nextState.vitality.metrics.san);
+        // ✅ 修复：保存死亡状态
+        set(nextState);
+      }
+
+      // ✅ 新增：出狱时自动发送通知
+      if (released && !died) {
+        state.addNotification(getMessage('released'), 'success');
       }
 
       return {

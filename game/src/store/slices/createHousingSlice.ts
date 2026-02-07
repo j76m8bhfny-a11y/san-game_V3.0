@@ -113,7 +113,18 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
       return { success: false, message: `首付不足，需要 $${downPayment}` };
     }
     
-    // 4. 申请房贷（允许负数贷款作为特殊情况处理）
+    // 4. 先检查首付资金是否充足
+    if (gameState.vitality.metrics.gold < downPayment) {
+      return { success: false, message: `首付不足，需要 $${downPayment}` };
+    }
+    
+    // 5. 先支付首付，成功后再申请房贷（避免有房无贷或有贷无房）
+    const txResult = state.addTransaction('HOUSING', -downPayment, `购房首付: ${house.name}`);
+    if (!txResult.success) {
+      return { success: false, message: "资金不足以支付首付。" };
+    }
+    
+    // 6. 首付成功后再申请房贷
     const loanAmount = house.buyConfig.price - downPayment;
     const loanResult = state.takeMortgage(
       loanAmount, 
@@ -122,15 +133,9 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
     );
     
     if (!loanResult.success) {
-      return { success: false, message: `银行拒绝放贷: ${loanResult.message}` };
-    }
-    
-    // 5. 支付首付
-    const txResult = state.addTransaction('HOUSING', -downPayment, `购房首付: ${house.name}`);
-    if (!txResult.success) {
-      // 如果支付失败，需要取消贷款
-      state.clearLoan(loanResult.loanId!);
-      return { success: false, message: "资金不足以支付首付，已取消贷款申请。" };
+      // 房贷申请失败，回滚首付（这种情况极少见）
+      state.addTransaction('HOUSING', downPayment, `购房首付退款: ${house.name}`);
+      return { success: false, message: `银行拒绝放贷: ${loanResult.message}，首付已退回。` };
     }
     
     // 6. 更新状态

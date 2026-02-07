@@ -56,6 +56,26 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
     const state = get() as GameState; 
     const store = get() as any;      
 
+    // ✅ 修复【问题1-A】：先扣钱，再执行效果（防止"免费回血"漏洞）
+    // 1. 先处理金钱支出（如果是支出的话）
+    if (option.effects.gold && option.effects.gold < 0) {
+      if (store.addTransaction) {
+        const txResult = store.addTransaction('MISC', option.effects.gold, `事件: ${option.label}`);
+        if (!txResult.success) {
+          store.addNotification("资金不足以执行此操作", 'error');
+          return; // 钱不够，直接返回，不执行任何效果
+        }
+      } else {
+        // 兜底：如果没有addTransaction，检查余额
+        if (state.vitality.metrics.gold < Math.abs(option.effects.gold)) {
+          store.addNotification("资金不足以执行此操作", 'error');
+          return;
+        }
+        store.modifyStats({ gold: option.effects.gold });
+      }
+    }
+
+    // 2. 计算并应用其他效果（HP/SAN/物品等）
     const { updates, logs } = resolveOption(state, option);
 
     // ✅ 修复：深合并 Vitality，防止抹除 time, identity 等数据
@@ -79,17 +99,10 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
       });
     }
 
-    // 4. 处理金钱账本
-    // 注意：HP/SAN 的变化已在 resolveOption 中处理，不要重复应用
-    if (option.effects.gold) {
+    // 3. 处理金钱收入（收入不需要检查余额）
+    if (option.effects.gold && option.effects.gold > 0) {
       if (store.addTransaction) {
-        const type = option.effects.gold > 0 ? 'INCOME' : 'MISC';
-        const txResult = store.addTransaction(type, option.effects.gold, `事件: ${option.label}`);
-        // 如果是支出且交易失败，可能需要取消事件效果
-        if (!txResult.success && option.effects.gold < 0) {
-          store.addNotification("资金不足以执行此操作", 'error');
-          return; // 取消事件处理
-        }
+        store.addTransaction('INCOME', option.effects.gold, `事件: ${option.label}`);
       } else {
         store.modifyStats({ gold: option.effects.gold });
       }
@@ -295,7 +308,6 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
         currentRegion: 'SLUMS',
         activeHousing: null,
         activeInsurance: null,
-        activeJobs: [],
         inventory: [],
         
         // 4. Game Loop 重置

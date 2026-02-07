@@ -41,6 +41,10 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
       return { success: false, message: `超过该产品最大额度 $${rawProduct.maxAmount}` };
     }
 
+    // ✅ 先扣信用分（与 takeMortgage 保持一致）
+    const penalty = bankRules.creditScore.actions.hardInquiry; 
+    state.modifyStats({ creditScore: penalty });
+
     const newLoan: ActiveLoan = {
       id: generateId(), 
       productId: rawProduct.id,
@@ -52,18 +56,7 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
       isMortgage: false
     };
 
-    const txResult = state.addTransaction('BANK', amount, `贷款发放: ${rawProduct.name}`);
-    if (!txResult.success) {
-      return { success: false, message: "资金操作异常，贷款未能发放" };
-    }
-
-    // 硬查询扣分 (从 JSON 读取)
-    const penalty = bankRules.creditScore.actions.hardInquiry; 
-    state.modifyStats({ 
-        creditScore: penalty // modifyStats 会累加数值
-    });
-
-    // ✅ 修复: 必须把新贷款存入 bank 状态
+    // 存入贷款
     set((s: GameState) => ({
       bank: {
         ...s.bank,
@@ -71,12 +64,31 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
       }
     }));
 
+    // 发放贷款资金
+    const txResult = state.addTransaction('BANK', amount, `贷款发放: ${rawProduct.name}`);
+    if (!txResult.success) {
+      // 如果发放失败，移除已添加的贷款记录（理论上不应发生）
+      set((s: GameState) => ({
+        bank: {
+          ...s.bank,
+          activeLoans: s.bank.activeLoans.filter(l => l.id !== newLoan.id)
+        }
+      }));
+      return { success: false, message: "资金操作异常，贷款未能发放" };
+    }
+
     return { success: true, message: `贷款 $${amount} 已发放。` };
   },
 
   takeMortgage: (amount, termTurns, rate) => {
     const state = get() as any;
     const { vitality } = state as GameState;
+
+    // ✅ 【问题4-A】先扣信用分，再存贷款（原子性优化）
+    const penalty = bankRules.creditScore.actions.hardInquiry;
+    state.modifyStats({ 
+        creditScore: penalty
+    });
 
     const newLoan: ActiveLoan = {
       id: generateId(),
@@ -96,12 +108,6 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
         activeLoans: [...s.bank.activeLoans, newLoan]
       }
     }));
-
-    // 硬查询扣分（与普通贷款一致）
-    const penalty = bankRules.creditScore.actions.hardInquiry;
-    state.modifyStats({ 
-        creditScore: penalty
-    });
 
     return { success: true, message: "按揭贷款已批复。", loanId: newLoan.id };
   },

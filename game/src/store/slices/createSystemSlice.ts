@@ -13,6 +13,7 @@ import {
 export interface SystemSlice {
   _hasHydrated: boolean;
   gameDataCache: any; 
+  gameDataLoadFailed: boolean; // ✅ 新增：数据加载失败标志
   
   setHydrated: () => void;
   initializeData: (data?: any) => Promise<void>;
@@ -22,6 +23,7 @@ export interface SystemSlice {
 export const createSystemSlice: StateCreator<any, [], [], SystemSlice> = (set, get) => ({
   _hasHydrated: false,
   gameDataCache: null,
+  gameDataLoadFailed: false, // ✅ 新增：初始为false
 
   setHydrated: () => set({ _hasHydrated: true }),
 
@@ -47,10 +49,12 @@ export const createSystemSlice: StateCreator<any, [], [], SystemSlice> = (set, g
         jobMap: createJobMap(data.jobs),
       };
 
-      set({ gameDataCache: cache });
+      set({ gameDataCache: cache, gameDataLoadFailed: false });
       console.log('[System] Data initialized successfully');
     } catch (error) {
       console.error('[System] Failed to load game data:', error);
+      // ✅ 设置失败标志，UI可以据此显示错误页面
+      set({ gameDataLoadFailed: true });
     }
   },
 
@@ -63,13 +67,12 @@ export const createSystemSlice: StateCreator<any, [], [], SystemSlice> = (set, g
     if (!gameDataCache) return [];
 
     return gameDataCache.items.filter((item: Item) => {
-      // ✅ 逻辑修复：Item 类型已不再包含 unlockCondition
-      // 如果该字段已迁移到 tags 或 flags，请相应调整。
-      // 这里暂时移除报错的属性访问，仅保留价格检查
+      // ✅ 【问题3-A】穷人专属商品逻辑：
+      // 带有 POOR_ONLY 标签的商品（高利贷等），只有余额<0时才显示
+      // 这是设计意图：你越穷，越能接触到非法贷款
       if (item.price < 0) {
-          // 如果有特殊的“负债商店”逻辑，建议通过 tags 判定
-          const isDebtItem = item.tags.includes('DEBT_ONLY');
-          if (isDebtItem && gold >= 0) return false;
+          const isPoorOnlyItem = item.tags.includes('POOR_ONLY') || item.tags.includes('DEBT_ONLY');
+          if (isPoorOnlyItem && gold >= 0) return false; // 有钱就看不到
       }
       return true; 
     });

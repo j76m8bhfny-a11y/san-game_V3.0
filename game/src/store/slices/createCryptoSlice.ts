@@ -114,10 +114,12 @@ export const createCryptoSlice: StateCreator<any, [], [], CryptoSlice> = (set, g
     const { pnl, totalValue } = calculatePnL(position, crypto.btcPrice);
     
     // 2. 资金回笼 (本金 + 盈亏)
-    // 注意：totalValue 已经是 (principal + pnl) 了
+    // totalValue = principal + pnl，如果亏损超过本金，理论上可能为负
+    // 但实际爆仓已在 processWeeklyMarket 中处理，此处做防御性保护
     const returnAmount = Math.max(0, totalValue);
 
-    if (returnAmount > 0) {
+    if (returnAmount > 0 || pnl < 0) {
+        // 有资金回笼或亏损都需要记账
         const sign = pnl >= 0 ? '+' : '';
         state.addTransaction('INCOME', returnAmount, `平仓结算 (PnL: ${sign}$${pnl})`);
     }

@@ -1,9 +1,14 @@
 import { StateCreator } from 'zustand';
-import { GameState } from '@/types/schema';
+import { GameState, LedgerCategory } from '@/types/schema';
 import { calculateDailyJailEffect } from '@/logic/prison';
 import { BankSlice } from './createBankSlice';
+import { VitalitySlice } from './createVitalitySlice';
+import { UISlice } from './createUISlice';
 import { runTurnSettlement } from '@/systems/SystemRegistry';
 import { DailyEffect } from '@/types/prisonRules';
+
+// ✅ 定义完整的 Store 类型，避免使用 as any
+type PrisonStoreState = GameState & VitalitySlice & BankSlice & UISlice;
 
 // ✅ 1. 引入数值配置文件
 import prisonRules from '@/assets/data/rules/prisonRules.json';
@@ -11,17 +16,7 @@ import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 
 // ==================== 辅助函数 ====================
 
-/**
- * 统一错误处理
- * 记录错误日志并返回用户友好的错误消息
- */
-const handlePrisonError = (error: unknown, context: string, defaultMessage?: string): string => {
-  const errorMsg = error instanceof Error ? error.message : String(error);
-  console.error(`[PrisonSystem] ${context}:`, errorMsg, error);
-  
-  // 如果有默认消息，直接返回；否则返回通用错误消息
-  return defaultMessage || getMessage('serveTimeError');
-};
+// ==================== 辅助函数 ====================
 
 /**
  * 获取配置中的消息，支持模板替换
@@ -34,6 +29,18 @@ const getMessage = (key: keyof typeof prisonRules.messages, params?: Record<stri
     });
   }
   return msg;
+};
+
+/**
+ * 统一错误处理
+ * 记录错误日志并返回用户友好的错误消息
+ */
+const handlePrisonError = (error: unknown, context: string, defaultMessage?: string): string => {
+  const errorMsg = error instanceof Error ? error.message : String(error);
+  console.error(`[PrisonSystem] ${context}:`, errorMsg, error);
+  
+  // 如果有默认消息，直接返回；否则返回通用错误消息
+  return defaultMessage || getMessage('serveTimeError');
 };
 
 // ==================== 辅助函数 ====================
@@ -122,16 +129,24 @@ const updatePrisonStatus = (
 };
 
 /**
- * 显示系统结算通知
+ * 显示系统结算通知（限制最多显示3条，避免UI淹没）
  */
 const showSettlementNotifications = (
-  state: GameState & { addNotification: Function },
+  state: PrisonStoreState,
   logs: string[]
 ) => {
-  logs.forEach(log => {
-    if (log.includes('扣款') || log.includes('利息') || log.includes('租金')) {
-      state.addNotification(log, 'warning');
-    }
+  const importantLogs = logs.filter(log => 
+    log.includes('扣款') || log.includes('利息') || log.includes('租金')
+  );
+  
+  // 最多显示3条，合并其余
+  const displayLogs = importantLogs.slice(0, 3);
+  if (importantLogs.length > 3) {
+    displayLogs.push(`...还有 ${importantLogs.length - 3} 笔费用未显示`);
+  }
+  
+  displayLogs.forEach(log => {
+    state.addNotification(log, 'warning');
   });
 };
 
@@ -183,7 +198,7 @@ export const createPrisonSlice: StateCreator<any, [], [], PrisonSlice> = (set, g
 
   // 🔴 逻辑说明: 坐牢期间触发系统结算
   serveTime: () => {
-    const state = get() as GameState & { addNotification: Function };
+    const state = get() as PrisonStoreState;
     const { vitality, prison } = state;
 
     // 边界检查：刑期异常
@@ -202,14 +217,16 @@ export const createPrisonSlice: StateCreator<any, [], [], PrisonSlice> = (set, g
       // 3. 合并状态更新
       let nextState = mergeStateUpdates(state, settlementResult, jailPenalty);
 
-      // 4. 推进时间
+      // 4. 推进时间（修复：同时更新 totalTurns）
       const nextTurn = vitality.time.currentTurn + 1;
+      const nextTotalTurns = vitality.time.totalTurns + 1;
       const turnsServed = prison.turnsServed + 1;
       const released = turnsServed >= prison.sentenceTurns;
 
       nextState.vitality.time = {
         ...state.vitality.time,
-        currentTurn: nextTurn
+        currentTurn: nextTurn,
+        totalTurns: nextTotalTurns
       };
 
       // 5. 更新监狱状态
@@ -222,8 +239,13 @@ export const createPrisonSlice: StateCreator<any, [], [], PrisonSlice> = (set, g
       // 7. 显示结算通知
       showSettlementNotifications(state, settlementResult.logs);
 
-      // 8. 检查死亡
+      // 8. 检查死亡（强制钳制到0，避免显示负数）
       const died = checkDeathCondition(nextState);
+      // 死亡时强制钳制HP/SAN为0，避免UI显示负数
+      if (died) {
+        nextState.vitality.metrics.hp = Math.max(0, nextState.vitality.metrics.hp);
+        nextState.vitality.metrics.san = Math.max(0, nextState.vitality.metrics.san);
+      }
 
       return {
         released,
@@ -242,7 +264,7 @@ export const createPrisonSlice: StateCreator<any, [], [], PrisonSlice> = (set, g
 
   payCashBail: () => {
     try {
-      const state = get() as GameState;
+      const state = get() as PrisonStoreState;
       const { metrics } = state.vitality;
       const cost = state.prison.bailAmount;
 
@@ -251,12 +273,12 @@ export const createPrisonSlice: StateCreator<any, [], [], PrisonSlice> = (set, g
       if (metrics.gold < cost) return { success: false, msg: getMessage('insufficientFunds') };
 
       // 扣款记账
-      const txResult = (state as any).addTransaction('MISC', -cost, '支付保释金');
+      const txResult = state.addTransaction('MISC' as LedgerCategory, -cost, '支付保释金');
       if (!txResult.success) {
         return { success: false, msg: getMessage('insufficientFundsForBail') };
       }
 
-      set((s: any) => ({
+      set((s: PrisonStoreState) => ({
         prison: INITIAL_PRISON
       }));
       return { success: true, msg: getMessage('cashBailSuccess') };
@@ -269,7 +291,7 @@ export const createPrisonSlice: StateCreator<any, [], [], PrisonSlice> = (set, g
   // 🔴 逻辑说明: 关联保释贷款 (已重构数值)
   signBailBond: () => {
     try {
-      const state = get() as GameState & BankSlice & { addTransaction: Function };
+      const state = get() as PrisonStoreState;
       const { metrics } = state.vitality;
       const totalBail = state.prison.bailAmount;
       
@@ -291,22 +313,23 @@ export const createPrisonSlice: StateCreator<any, [], [], PrisonSlice> = (set, g
         return { success: false, msg: getMessage('downPaymentFailed', { rate: (rate * 100).toFixed(0), amount: downPayment }) };
       }
 
-      // 1. 尝试借贷 (贷款产品 ID 从配置读取)
-      const loanResult = state.takeLoan(loanProductId, loanAmount);
-      
-      if (!loanResult.success) {
-          // 如果贷款失败 (比如配置缺失)，给一个兜底提示
-          return { success: false, msg: getMessage('loanRejected', { message: loanResult.message }) };
-      }
-
-      // 2. 扣除首付
-      const txResult = state.addTransaction('MISC', -downPayment, '保释金首付');
+      // ✅ 方案A：先扣首付，再发贷款（保证原子性）
+      // 1. 扣除首付
+      const txResult = state.addTransaction('MISC' as LedgerCategory, -downPayment, '保释金首付');
       if (!txResult.success) {
         return { success: false, msg: getMessage('downPaymentTransactionFailed') };
       }
 
+      // 2. 发放贷款
+      const loanResult = state.takeLoan(loanProductId, loanAmount);
+      if (!loanResult.success) {
+        // 贷款失败时回滚首付（通过反向交易）
+        state.addTransaction('MISC' as LedgerCategory, downPayment, '保释金首付退款');
+        return { success: false, msg: getMessage('loanRejected', { message: loanResult.message }) };
+      }
+
       // 3. 释放
-      set((s: any) => ({
+      set((s: PrisonStoreState) => ({
         prison: INITIAL_PRISON
       }));
 

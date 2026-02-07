@@ -52,7 +52,10 @@ export const createBankSlice: StateCreator<any, [], [], BankSlice> = (set, get) 
       isMortgage: false
     };
 
-    state.addTransaction('BANK', amount, `贷款发放: ${rawProduct.name}`);
+    const txResult = state.addTransaction('BANK', amount, `贷款发放: ${rawProduct.name}`);
+    if (!txResult.success) {
+      return { success: false, message: "资金操作异常，贷款未能发放" };
+    }
 
     // 硬查询扣分 (从 JSON 读取)
     const penalty = bankRules.creditScore.actions.hardInquiry; 

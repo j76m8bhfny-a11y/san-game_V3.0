@@ -122,7 +122,8 @@ export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) =
                 // 显示实际的周开销（物业费/税费等，不包含房贷）
                 weeklyCost = buyConfig.weeklyCosts.reduce((s, c) => s + c.baseAmount, 0);
                 
-                upfrontCost = buyConfig.price * buyConfig.downPaymentRate;
+                // 首付向上取整，与后端一致
+                upfrontCost = Math.ceil(buyConfig.price * buyConfig.downPaymentRate);
                 canAfford = gold >= upfrontCost;
               } else if (rentConfig) {
                 modeLabel = '租赁 (FOR RENT)';

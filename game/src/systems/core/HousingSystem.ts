@@ -1,5 +1,5 @@
 import { GameSystem, SystemResult } from '../types';
-import { Housing, LedgerRecord, PlayerClass, RegionID, ActiveHousingState } from '@/types/schema';
+import { Housing, ActiveHousingState } from '@/types/schema';
 import housingData from '@/assets/data/housing.json';
 import bankRules from '@/assets/data/rules/bankRules.json';
 import housingRules from '@/assets/data/rules/housingRules.json';

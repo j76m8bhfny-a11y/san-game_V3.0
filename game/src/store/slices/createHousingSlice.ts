@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { GameState, Housing, ActiveHousingState, RegionID, PlayerClass, ActiveHousing } from '@/types/schema';
+import { GameState, Housing, ActiveHousingState, RegionID, ActiveHousing } from '@/types/schema';
 import housingData from '@/assets/data/housing.json';
 
 
@@ -54,10 +54,9 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
       return { success: false, message: `你已有住所 (${gameState.activeHousing.name})，请先退租或出售。` };
     }
     
-    // 2. 检查阶级
-    const currentClass = gameState.vitality.identity.currentClass;
-    if (currentClass !== house.requiredClass) {
-      return { success: false, message: "你的阶级身份不符，房东拒绝签约。" };
+    // 2. 资本家区域不支持租赁
+    if (house.region === RegionID.Downtown) {
+      return { success: false, message: "金融核心区的房产只售不租。" };
     }
     
     // 3. 检查资金 (首周租金 + 押金)
@@ -102,19 +101,13 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
       return { success: false, message: `你已有住所 (${gameState.activeHousing.name})，请先退租或出售。` };
     }
     
-    // 2. 检查阶级
-    const currentClass = gameState.vitality.identity.currentClass;
-    if (currentClass !== house.requiredClass && house.requiredClass !== PlayerClass.Homeless) {
-      return { success: false, message: "你的社会信用等级不足以购买此处的房产。" };
-    }
-    
-    // 3. 计算首付（向上取整，避免浮点精度问题）
+    // 2. 计算首付（向上取整，避免浮点精度问题）
     const downPayment = Math.ceil(house.buyConfig.price * house.buyConfig.downPaymentRate);
     if (gameState.vitality.metrics.gold < downPayment) {
       return { success: false, message: `首付不足，需要 $${downPayment}` };
     }
     
-    // 4. 申请房贷
+    // 3. 申请房贷
     const loanAmount = house.buyConfig.price - downPayment;
     const loanResult = state.takeMortgage(
       loanAmount, 
@@ -126,7 +119,7 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
       return { success: false, message: `银行拒绝放贷: ${loanResult.message}` };
     }
     
-    // 5. 支付首付
+    // 4. 支付首付
     const txResult = state.addTransaction('HOUSING', -downPayment, `购房首付: ${house.name}`);
     if (!txResult.success) {
       // 如果支付失败，需要取消贷款
@@ -134,7 +127,7 @@ export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set,
       return { success: false, message: "资金不足以支付首付，已取消贷款申请。" };
     }
     
-    // 6. 更新状态
+    // 5. 更新状态
     const newHousing: ActiveHousingState = {
       definitionId: house.id,
       type: 'OWN',

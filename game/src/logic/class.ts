@@ -41,11 +41,14 @@ export function calculateNetWorth(state: GameState): number {
 
 /**
  * 判定当前阶级
- * 规则：
- * 1. 必须有对应区域的房产(OWN)才能进入该阶级
- * 2. 净资产必须达到该阶级门槛
- * 3. 租房(RENT)只能进入工人阶级(且需满足资产门槛)
- * 4. 不满足任何条件则为流浪汉
+ * 规则：纯净资产判定
+ * - 净资产 >= 200万: 资本家
+ * - 净资产 >= 10万: 中产
+ * - 净资产 >= 500: 工人
+ * - 净资产 < 500: 流浪汉
+ * 
+ * 注：自有房产计入净资产，租房不计入。
+ *    玩家可以通过攒钱买房来跨越阶级，不受区域限制。
  */
 export function determineClass(state: GameState): { 
   newClass: PlayerClass; 
@@ -53,95 +56,39 @@ export function determineClass(state: GameState): {
   reason: string;
 } {
   const netWorth = calculateNetWorth(state);
-  const housing = state.activeHousing;
   
-  // 无房产 = 流浪汉
-  if (!housing) {
+  // 1. 检查资本家 (净资产 >= 200万)
+  if (netWorth >= NET_WORTH_THRESHOLDS[PlayerClass.Capitalist]) {
     return { 
-      newClass: PlayerClass.Homeless, 
+      newClass: PlayerClass.Capitalist, 
       netWorth, 
-      reason: `无固定住所，净资产 $${netWorth.toLocaleString()}` 
+      reason: `净资产 $${netWorth.toLocaleString()}，达到资本家门槛` 
     };
   }
   
-  const isOwned = housing.type === 'OWN';
-  const housingRegion = housing.region;
-  
-  // 1. 检查资本家 (DOWNTOWN 有房 + 净资产 > 2M)
-  if (isOwned && housingRegion === RegionID.Downtown) {
-    if (netWorth >= NET_WORTH_THRESHOLDS[PlayerClass.Capitalist]) {
-      return { 
-        newClass: PlayerClass.Capitalist, 
-        netWorth, 
-        reason: `DOWNTOWN房产 + 净资产 $${netWorth.toLocaleString()}` 
-      };
-    }
-    // 有高档房产但资产不够，降级处理
+  // 2. 检查中产 (净资产 >= 10万)
+  if (netWorth >= NET_WORTH_THRESHOLDS[PlayerClass.Middle]) {
     return { 
       newClass: PlayerClass.Middle, 
       netWorth, 
-      reason: `虽有DOWNTOWN房产，但净资产 $${netWorth.toLocaleString()} 不足200万，降级中产` 
+      reason: `净资产 $${netWorth.toLocaleString()}，达到中产门槛` 
     };
   }
   
-  // 2. 检查中产 (SUBURBS 有房 + 净资产 >= 100K)
-  if (isOwned && housingRegion === RegionID.Suburbs) {
-    if (netWorth >= NET_WORTH_THRESHOLDS[PlayerClass.Middle]) {
-      return { 
-        newClass: PlayerClass.Middle, 
-        netWorth, 
-        reason: `SUBURBS房产 + 净资产 $${netWorth.toLocaleString()}` 
-      };
-    }
-    // 有中产房产但资产不够，降级工人
+  // 3. 检查工人 (净资产 >= 500)
+  if (netWorth >= NET_WORTH_THRESHOLDS[PlayerClass.Worker]) {
     return { 
       newClass: PlayerClass.Worker, 
       netWorth, 
-      reason: `虽有SUBURBS房产，但净资产 $${netWorth.toLocaleString()} 不足10万，降级工人` 
+      reason: `净资产 $${netWorth.toLocaleString()}，达到工人门槛` 
     };
   }
   
-  // 3. 检查工人 (RUST_BELT 有房/租房 + 净资产 >= 500)
-  if (housingRegion === RegionID.RustBelt) {
-    if (netWorth >= NET_WORTH_THRESHOLDS[PlayerClass.Worker]) {
-      return { 
-        newClass: PlayerClass.Worker, 
-        netWorth, 
-        reason: `RUST_BELT住所 + 净资产 $${netWorth.toLocaleString()}` 
-      };
-    }
-    // 有住所但资产太少，降级流浪汉
-    return { 
-      newClass: PlayerClass.Homeless, 
-      netWorth, 
-      reason: `虽有RUST_BELT住所，但净资产 $${netWorth.toLocaleString()} 不足500，仍属流浪` 
-    };
-  }
-  
-  // 4. 贫民窟租房且资产<500 = 流浪汉
-  if (housingRegion === RegionID.Slums && !isOwned && netWorth < NET_WORTH_THRESHOLDS[PlayerClass.Worker]) {
-    return { 
-      newClass: PlayerClass.Homeless, 
-      netWorth, 
-      reason: `贫民窟租房 + 净资产 $${netWorth.toLocaleString()} < 500` 
-    };
-  }
-  
-  // 兜底：按净资产判定
-  if (isOwned) {
-    if (netWorth >= NET_WORTH_THRESHOLDS[PlayerClass.Middle]) {
-      return { newClass: PlayerClass.Middle, netWorth, reason: `按净资产判定为中产` };
-    }
-  }
-  
-  if (netWorth >= NET_WORTH_THRESHOLDS[PlayerClass.Worker]) {
-    return { newClass: PlayerClass.Worker, netWorth, reason: `按净资产判定为工人` };
-  }
-  
+  // 4. 流浪汉 (净资产 < 500)
   return { 
     newClass: PlayerClass.Homeless, 
     netWorth, 
-    reason: `不满足任何阶级条件` 
+    reason: `净资产 $${netWorth.toLocaleString()} < 500` 
   };
 }
 

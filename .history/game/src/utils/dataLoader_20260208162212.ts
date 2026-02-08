@@ -40,10 +40,10 @@ const loadJsonData = async <T>(path: string): Promise<T> => {
 // ------------------------------------------------------------------
 export const loadAllGameData = async () => {
   const [
-    items,
-    events,
-    bills,
-    archives,
+    items, 
+    events, 
+    bills, 
+    archives, 
     endings,
     classes,
     global,
@@ -51,26 +51,24 @@ export const loadAllGameData = async () => {
     jobs,
     housing,
     insurance,
-    news,
-    diseases
+    news
   ] = await Promise.all([
     loadJsonData<Item[]>('/src/assets/data/items.json'),
     loadJsonData<GameEvent[]>('/src/assets/data/events.json'),
     loadJsonData<Bill[]>('/src/assets/data/bills.json'),
     loadJsonData<Archive[]>('/src/assets/data/archives.json'),
     loadJsonData<Ending[]>('/src/assets/data/endings.json'),
-    loadJsonData<any[]>('/src/assets/data/classes.json'),
+    loadJsonData<any[]>('/src/assets/data/classes.json'), 
     loadJsonData<any>('/src/assets/data/global.json'),
     // 👇 新增路径
     loadJsonData<Job[]>('/src/assets/data/jobs.json'),
     loadJsonData<Housing[]>('/src/assets/data/housing.json'),
     loadJsonData<Insurance[]>('/src/assets/data/insurance.json'),
     loadJsonData<NewsItem[]>('/src/assets/data/news.json'),
-    loadJsonData<Disease[]>('/src/assets/data/diseases.json'),
   ]);
 
   // 返回扩展后的数据包
-  return { items, events, bills, archives, endings, classes, global, jobs, housing, insurance, news, diseases };
+  return { items, events, bills, archives, endings, classes, global, jobs, housing, insurance , news};
 };
 
 // ------------------------------------------------------------------

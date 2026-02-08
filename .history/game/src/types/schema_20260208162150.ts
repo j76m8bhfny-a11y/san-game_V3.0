@@ -564,20 +564,15 @@ export interface GameDataCache {
   housing: Housing[];
   insurance: Insurance[];
   news: NewsItem[];
-  diseases: Disease[];
-  regions?: Array<{
-    id: string;
-    hospitalTheme?: any;
-  }>;
   
-  // 索引映射（用于快速查找，可选字段）
-  classMap?: Record<string, any>;
-  itemMap?: Map<string, Item>;
-  eventMap?: Map<string, GameEvent>;
-  billMap?: Map<string, Bill>;
-  archiveMap?: Map<string, Archive>;
-  endingMap?: Map<string, Ending>;
-  jobMap?: Map<string, Job>;
+  // 索引映射（用于快速查找）
+  classMap: Record<string, any>;
+  itemMap: Map<string, Item>;
+  eventMap: Map<string, GameEvent>;
+  billMap: Map<string, Bill>;
+  archiveMap: Map<string, Archive>;
+  endingMap: Map<string, Ending>;
+  jobMap: Map<string, Job>;
 }
 
 export interface WeeklyReport {

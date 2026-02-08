@@ -53,25 +53,7 @@ export type HousingType = 'RENT' | 'OWN';
 // ==========================================
 
 // --- 通用动作 Schema ---
-// 定义 GameAction 的基础结构（用于递归引用）
-interface GameActionBase {
-  code: ActionCode;
-  params: {
-    target?: 'hp' | 'san' | 'gold' | 'maxHp';
-    value?: number;
-    min?: number;
-    max?: number;
-    itemId?: string;
-    archiveId?: string;
-    rate?: number;
-    successActions?: GameAction[];
-    failActions?: GameAction[];
-    endingId?: string;
-    [key: string]: unknown; // 允许额外字段
-  };
-}
-
-export const GameActionSchema: z.ZodType<GameActionBase> = z.lazy(() => z.object({
+export const GameActionSchema = z.lazy(() => z.object({
   code: z.nativeEnum(ActionCode),
   params: z.object({
     target: z.enum(['hp', 'san', 'gold', 'maxHp']).optional(),
@@ -87,7 +69,7 @@ export const GameActionSchema: z.ZodType<GameActionBase> = z.lazy(() => z.object
   }).passthrough()
 }));
 
-export type GameAction = GameActionBase;
+export type GameAction = z.infer<typeof GameActionSchema>;
 
 // --- ✅ 新增：房产系统 Schema (适配新设计) ---
 
@@ -348,24 +330,15 @@ export interface FaithData {
   };
 }
 
-/**
- * 信仰 Debuff 效果类型
- *
- * 注意：使用 Record 类型替代索引签名，避免与可选属性冲突
- */
-export type FaithDebuffEffect = {
-  incomeMultiplier?: number;
-  hpDrain?: number;
-  sanDrain?: number;
-  goldDrain?: number;
-} & Record<string, number | boolean | string>;
-
 export interface FaithDebuff {
   id: string;
   name: string;
   duration: number;
   remainingTurns: number;
-  effect: FaithDebuffEffect;
+  effect: {
+    incomeMultiplier?: number;
+    [key: string]: any;
+  };
 }
 
 export interface FaithState {
@@ -429,12 +402,6 @@ export interface LedgerRecord {
   timestamp: number;
 }
 
-/**
- * 维生指标
- *
- * 注意：移除了索引签名，所有属性必须显式声明
- * 如需添加新属性，请在此接口中定义
- */
 export interface VitalityMetrics {
   hp: number;
   maxHp: number;
@@ -447,6 +414,7 @@ export interface VitalityMetrics {
   resistance: number;
   hunger: number;
   maxHunger: number;
+  [key: string]: number;
 }
 
 export interface VitalityIdentity {
@@ -548,38 +516,6 @@ export interface GameState {
   
   _hasHydrated: boolean;
 }
-/**
- * 游戏数据缓存类型（运行时，不持久化）
- */
-export interface GameDataCache {
-  // 原始数据
-  items: Item[];
-  events: GameEvent[];
-  bills: Bill[];
-  archives: Archive[];
-  endings: Ending[];
-  classes: any[];
-  global: any;
-  jobs: Job[];
-  housing: Housing[];
-  insurance: Insurance[];
-  news: NewsItem[];
-  diseases: Disease[];
-  regions?: Array<{
-    id: string;
-    hospitalTheme?: any;
-  }>;
-  
-  // 索引映射（用于快速查找，可选字段）
-  classMap?: Record<string, any>;
-  itemMap?: Map<string, Item>;
-  eventMap?: Map<string, GameEvent>;
-  billMap?: Map<string, Bill>;
-  archiveMap?: Map<string, Archive>;
-  endingMap?: Map<string, Ending>;
-  jobMap?: Map<string, Job>;
-}
-
 export interface WeeklyReport {
   turn: number;
   totalIncome: number;

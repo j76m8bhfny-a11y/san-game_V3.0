@@ -97,16 +97,12 @@ export const createShopSlice: StateCreator<StoreState, [], [], ShopSlice> = (set
     }));
 
     // ✅ 重构 4: 音效读取配置
-    // if (state.playSfx) state.playSfx(shopRules.audio.buySuccess);
+    if (state.playSfx) state.playSfx(shopRules.audio.buySuccess);
     state.addNotification(`获得: ${item.name}`, "success");
   },
 
   useItem: (itemId) => {
     const state = get();
-    if (!state.gameDataCache) {
-      state.addNotification("游戏数据未加载", "error");
-      return;
-    }
     const item = state.gameDataCache.items.find((i: Item) => i.id === itemId);
     
     if (!item) {

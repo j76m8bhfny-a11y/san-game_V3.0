@@ -548,38 +548,6 @@ export interface GameState {
   
   _hasHydrated: boolean;
 }
-/**
- * 游戏数据缓存类型（运行时，不持久化）
- */
-export interface GameDataCache {
-  // 原始数据
-  items: Item[];
-  events: GameEvent[];
-  bills: Bill[];
-  archives: Archive[];
-  endings: Ending[];
-  classes: any[];
-  global: any;
-  jobs: Job[];
-  housing: Housing[];
-  insurance: Insurance[];
-  news: NewsItem[];
-  diseases: Disease[];
-  regions?: Array<{
-    id: string;
-    hospitalTheme?: any;
-  }>;
-  
-  // 索引映射（用于快速查找，可选字段）
-  classMap?: Record<string, any>;
-  itemMap?: Map<string, Item>;
-  eventMap?: Map<string, GameEvent>;
-  billMap?: Map<string, Bill>;
-  archiveMap?: Map<string, Archive>;
-  endingMap?: Map<string, Ending>;
-  jobMap?: Map<string, Job>;
-}
-
 export interface WeeklyReport {
   turn: number;
   totalIncome: number;

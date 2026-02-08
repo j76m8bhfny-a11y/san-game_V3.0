@@ -23,7 +23,7 @@ export const createSystemSlice: StateCreator<StoreState, [], [], SystemSlice> = 
   gameDataCache: null,
   gameDataLoadFailed: false, // ✅ 新增：初始为false
 
-  initializeData: async (preloadedData?: GameDataCache) => {
+  initializeData: async (preloadedData?: any) => {
     if (get().gameDataCache) {
       console.log('[System] Data already initialized, skipping...');
       return;
@@ -37,7 +37,7 @@ export const createSystemSlice: StateCreator<StoreState, [], [], SystemSlice> = 
         return acc;
       }, {});
 
-      const cache: GameDataCache = {
+      const cache = {
         ...data,
         classMap,
         itemMap: createItemMap(data.items),

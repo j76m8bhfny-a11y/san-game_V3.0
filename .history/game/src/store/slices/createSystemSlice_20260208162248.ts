@@ -15,7 +15,7 @@ export interface SystemSlice {
   gameDataCache: GameDataCache | null;
   gameDataLoadFailed: boolean; // ✅ 新增：数据加载失败标志
   
-  initializeData: (data?: GameDataCache) => Promise<void>;
+  initializeData: (data?: Partial<GameDataCache>) => Promise<void>;
   getShopItems: () => Item[];
 }
 

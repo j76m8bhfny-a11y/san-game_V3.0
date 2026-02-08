@@ -350,15 +350,14 @@ export interface FaithData {
 
 /**
  * 信仰 Debuff 效果类型
- *
- * 注意：使用 Record 类型替代索引签名，避免与可选属性冲突
  */
-export type FaithDebuffEffect = {
+export interface FaithDebuffEffect {
   incomeMultiplier?: number;
   hpDrain?: number;
   sanDrain?: number;
   goldDrain?: number;
-} & Record<string, number | boolean | string>;
+  [key: string]: number | boolean | string; // 限制为基本类型，避免复杂对象
+}
 
 export interface FaithDebuff {
   id: string;
@@ -429,12 +428,6 @@ export interface LedgerRecord {
   timestamp: number;
 }
 
-/**
- * 维生指标
- *
- * 注意：移除了索引签名，所有属性必须显式声明
- * 如需添加新属性，请在此接口中定义
- */
 export interface VitalityMetrics {
   hp: number;
   maxHp: number;
@@ -447,6 +440,7 @@ export interface VitalityMetrics {
   resistance: number;
   hunger: number;
   maxHunger: number;
+  [key: string]: number;
 }
 
 export interface VitalityIdentity {
@@ -548,38 +542,6 @@ export interface GameState {
   
   _hasHydrated: boolean;
 }
-/**
- * 游戏数据缓存类型（运行时，不持久化）
- */
-export interface GameDataCache {
-  // 原始数据
-  items: Item[];
-  events: GameEvent[];
-  bills: Bill[];
-  archives: Archive[];
-  endings: Ending[];
-  classes: any[];
-  global: any;
-  jobs: Job[];
-  housing: Housing[];
-  insurance: Insurance[];
-  news: NewsItem[];
-  diseases: Disease[];
-  regions?: Array<{
-    id: string;
-    hospitalTheme?: any;
-  }>;
-  
-  // 索引映射（用于快速查找，可选字段）
-  classMap?: Record<string, any>;
-  itemMap?: Map<string, Item>;
-  eventMap?: Map<string, GameEvent>;
-  billMap?: Map<string, Bill>;
-  archiveMap?: Map<string, Archive>;
-  endingMap?: Map<string, Ending>;
-  jobMap?: Map<string, Job>;
-}
-
 export interface WeeklyReport {
   turn: number;
   totalIncome: number;

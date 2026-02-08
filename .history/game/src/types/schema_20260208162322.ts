@@ -565,10 +565,6 @@ export interface GameDataCache {
   insurance: Insurance[];
   news: NewsItem[];
   diseases: Disease[];
-  regions?: Array<{
-    id: string;
-    hospitalTheme?: any;
-  }>;
   
   // 索引映射（用于快速查找，可选字段）
   classMap?: Record<string, any>;

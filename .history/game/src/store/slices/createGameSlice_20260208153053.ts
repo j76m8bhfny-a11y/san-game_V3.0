@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { GameState, GameEvent, EventOption, WeeklyReport, Ending, FaithID, PlayerClass, RegionID, Bill } from '@/types/schema';
+import { GameState, GameEvent, EventOption, WeeklyReport, Ending, FaithID, PlayerClass, RegionID } from '@/types/schema';
 import { resolveOption } from '@/logic/eventResolver';
 import { runTurnSettlement } from '@/systems/SystemRegistry';
 import { resolveEnding } from '@/logic/endings';
@@ -225,7 +225,7 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
     
     if (state.crypto && state.crypto.isAccountOpen) {
       // 防御性处理：如果 gameDataCache 未加载，使用 crypto 中缓存的上周新闻
-      let allNews = store.gameDataCache?.news;
+      let allNews = state.gameDataCache?.news;
       if (!allNews || allNews.length === 0) {
         console.warn('[Crypto] gameDataCache.news 为空，使用备用新闻数据');
         // 使用 crypto 中已经缓存的 weeklyNews 作为兜底

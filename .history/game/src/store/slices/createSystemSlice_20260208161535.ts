@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { Item } from '@/types/schema';
+import { Item, GameState } from '@/types/schema';
 import { StoreState } from '@/types/store';
 import {
   loadAllGameData,

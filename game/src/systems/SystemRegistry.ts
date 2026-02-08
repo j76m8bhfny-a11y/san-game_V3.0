@@ -14,6 +14,11 @@ import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 const { priorities } = systemRules;
 const { executionOrder } = SYSTEM_RULES;
 
+// ✅ 防御性编程：安全获取监狱阻断系统列表
+const getBlockedSystems = (): string[] => {
+  return prisonRules?.settings?.blockedSystems ?? ['JOB_SYSTEM', 'EVENT_SYSTEM', 'BILL_SYSTEM'];
+};
+
 // ✅ 按照优先级注册系统
 // 核心生存(100) -> 金融(90) -> 工作(80) -> 账单(70)
 const activeSystems: GameSystem[] = [
@@ -66,7 +71,7 @@ export const runTurnSettlement = (currentState: GameState) => {
     // 🔴 修复漏洞 1：监狱拦截逻辑 (Prison Interception)
     // 如果玩家在坐牢，强制跳过工作系统 (无收入)
     // 但保留 Housing (扣房租) 和 Bank (算利息/房贷)，实现“坐吃山空”的惩罚
-    if (currentState.prison.inJail && prisonRules.settings.blockedSystems.includes(system.id)) {
+    if (currentState.prison.inJail && getBlockedSystems().includes(system.id)) {
         logs.push(`【狱中】无法访问 ${system.id}，系统已挂起。`);
         continue; 
     }

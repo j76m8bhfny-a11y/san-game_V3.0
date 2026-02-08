@@ -77,16 +77,10 @@ export const resolveOption = (state: GameState, option: EventOption): { updates:
     if (option.effects.points) {
       const currentPoints = draft.vitality.identity.points;
       
-      // ✅ 防御性编程：限制政治倾向数值范围，防止溢出
-      const clampPoints = (val: number): number => {
-        // 限制在 -1000 到 +1000 范围内，防止数值溢出
-        return Math.max(-1000, Math.min(1000, val));
-      };
-      
       draft.vitality.identity.points = {
-        red: clampPoints(currentPoints.red + (option.effects.points.red || 0)),
-        wolf: clampPoints(currentPoints.wolf + (option.effects.points.wolf || 0)),
-        old: clampPoints(currentPoints.old + (option.effects.points.old || 0))
+        red: currentPoints.red + (option.effects.points.red || 0),
+        wolf: currentPoints.wolf + (option.effects.points.wolf || 0),
+        old: currentPoints.old + (option.effects.points.old || 0)
       };
       
       if (option.effects.points.red) logs.push(`红方倾向 ${option.effects.points.red > 0 ? '+' : ''}${option.effects.points.red}`);

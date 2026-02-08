@@ -13,13 +13,14 @@ const JailOverlay: React.FC = () => {
 
   const currentClass = vitality.identity.currentClass;
   
-  // ✅ Refactor: 从 JSON 配置读取保释金比率
-  const bondRate = prisonRules.bail.bondDownPaymentRate;
+  // ✅ Refactor: 从 JSON 配置读取保释金比率（带防御性默认值）
+  const bondRate = prisonRules?.bail?.bondDownPaymentRate ?? 0.1;
   const bailDownPayment = Math.floor(prison.bailAmount * bondRate);
 
   // ✅ Refactor: 动态判断是否是特权阶级 (不再硬编码 'CAPITALIST')
   // 逻辑：如果该职业在配置中有 override 且 hpChange > 0，则视为 VIP
-  const classConfig = (prisonRules.dailyRoutine.classOverrides as any)[currentClass];
+  // ✅ 防御性编程：使用可选链防止配置缺失
+  const classConfig = (prisonRules?.dailyRoutine?.classOverrides as any)?.[currentClass];
   const isVipTreatment = classConfig && classConfig.hpChange > 0;
 
   const handleServe = () => {

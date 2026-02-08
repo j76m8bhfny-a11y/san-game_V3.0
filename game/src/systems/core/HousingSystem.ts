@@ -64,13 +64,15 @@ export const HousingSystem: GameSystem = {
     // 使用实时余额（考虑前置系统的金钱变动）
     const currentGold = state.vitality?.metrics?.gold ?? 0;
     
-    if (!isOwned && housingRules.eviction.enableEviction) {
+    // ✅ 防御性编程：使用可选链和默认值
+    const evictionConfig = housingRules?.eviction;
+    if (!isOwned && (evictionConfig?.enableEviction ?? true)) {
       if (currentGold < totalCost) {
         result.logs.push(`【驱逐】因无力支付租金，房东把你赶出了 ${housing.name}！`);
         result.notes.push(`你失去了住所。`);
         
-        // SAN 惩罚
-        const penalty = housingRules.eviction.sanPenalty;
+        // SAN 惩罚（带默认值）
+        const penalty = evictionConfig?.sanPenalty ?? 20;
         const currentSan = result.updates.vitality?.metrics?.san ?? vitality.metrics.san;
         result.updates.vitality = {
           ...result.updates.vitality,

@@ -104,13 +104,43 @@ export const triggerBill = (
 // ------------------------------------------------------------------
 // 阶级更新检查
 // ------------------------------------------------------------------
+
+// ✅ 安全的 PlayerClass 枚举值集合
+const VALID_PLAYER_CLASSES: Set<string> = new Set([
+  PlayerClass.Homeless,
+  PlayerClass.Worker,
+  PlayerClass.Middle,
+  PlayerClass.Capitalist
+]);
+
+/**
+ * 验证并获取安全的流浪汉阶级ID
+ * 如果配置无效，返回硬编码的安全兜底值
+ */
+const getSafeHomelessClassId = (): PlayerClass => {
+  const configId = housingRules?.access?.homelessClassId;
+  
+  // 运行时校验：确保配置值是有效的 PlayerClass
+  if (configId && VALID_PLAYER_CLASSES.has(configId)) {
+    return configId as PlayerClass;
+  }
+  
+  // ⚠️ 配置异常警告：使用安全兜底值
+  console.warn(
+    `[Config Error] housingRules.access.homelessClassId="${configId}" is invalid. ` +
+    `Falling back to "${PlayerClass.Homeless}". ` +
+    `Valid values: ${Array.from(VALID_PLAYER_CLASSES).join(', ')}`
+  );
+  return PlayerClass.Homeless;
+};
+
 export const checkClassUpdate = (gold: number, classDefinitions: any[]): PlayerClass => {
   const matched = classDefinitions.find((cls: any) => 
     gold >= cls.thresholdMin && gold <= cls.thresholdMax
   );
-  // ✅ 修复: 使用配置中的 Homeless ID，不再写死枚举 'HOMELESS'
-  // 注意：需要确保 housingRules.access.homelessClassId 与 PlayerClass 枚举值一致 (通常是 "HOMELESS")
-  return matched ? (matched.id as PlayerClass) : (housingRules.access.homelessClassId as PlayerClass);
+  
+  // ✅ 修复: 使用配置中的 Homeless ID，带运行时校验
+  return matched ? (matched.id as PlayerClass) : getSafeHomelessClassId();
 };
 
 export const clamp = (num: number, min: number, max: number) => 
@@ -121,8 +151,8 @@ export const humanDismantlementCheck = (
   currentClass: PlayerClass,
   debtDayCounter: number,
 ) => {
-  // ✅ 修复: 使用配置判断是否为流浪汉
-  const isHomeless = currentClass === housingRules.access.homelessClassId;
+  // ✅ 修复: 使用配置判断是否为流浪汉（带运行时校验）
+  const isHomeless = currentClass === getSafeHomelessClassId();
   const passiveTrigger = isHomeless && debtDayCounter >= 3;
   
   if (passiveTrigger) {
@@ -147,7 +177,8 @@ export const checkMovePermission = (
 ): { allowed: boolean; reason?: string } => {
   
   // 1. 优先检查监狱状态 (读取 JSON 配置)
-  if (inPrison && prisonRules.settings.blockMovement) {
+  // ✅ 防御性编程：使用可选链，默认阻断移动
+  if (inPrison && (prisonRules?.settings?.blockMovement ?? true)) {
     return { 
       allowed: false, 
       reason: "你正在服刑中，无法离开监狱区域。" // 这里的文案也可以提取到 JSON
@@ -155,7 +186,9 @@ export const checkMovePermission = (
   }
 
   // 2. 检查流浪汉允许区域 (原有逻辑优化)
-  if (housingRules.access.homelessAllowedRegions.includes(targetRegion)) {
+  // ✅ 防御性编程：使用可选链和空数组兜底
+  const allowedRegions = housingRules?.access?.homelessAllowedRegions ?? [];
+  if (allowedRegions.includes(targetRegion)) {
     return { allowed: true };
   }
 

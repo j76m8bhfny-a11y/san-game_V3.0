@@ -324,7 +324,7 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
     { id: 'D', label: event.options.D?.label || '', type: 'awakening' },
   ].filter(opt => opt.label);
 
-  const descriptionText = san < 50 ? event.text.lowSan : event.text.highSan;
+  const descriptionText = event.text;
   const bgImg = event.bgImage || event.eventImage || '/assets/scenes/default_bg.png';
   const eventImg = event.eventImage || '/assets/events/default_event.png';
 

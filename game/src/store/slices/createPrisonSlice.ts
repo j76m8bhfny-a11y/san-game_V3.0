@@ -297,9 +297,9 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
       const { metrics } = state.vitality;
       const totalBail = state.prison.bailAmount;
       
-      // ✅ 重构：从配置读取首付比例和产品ID
-      const rate = prisonRules.bail.bondDownPaymentRate;
-      const loanProductId = prisonRules.bail.linkedLoanProductId;
+      // ✅ 重构：从配置读取首付比例和产品ID（带防御性默认值）
+      const rate = prisonRules?.bail?.bondDownPaymentRate ?? 0.1;
+      const loanProductId = prisonRules?.bail?.linkedLoanProductId ?? 'LOAN_BAIL_BOND';
 
       // 配置验证
       if (rate < 0 || rate > 1) return { success: false, msg: getMessage('invalidRate') };

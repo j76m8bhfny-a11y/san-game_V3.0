@@ -7,7 +7,10 @@ import prisonRules from '@/assets/data/rules/prisonRules.json';
  * 逻辑：根据玩家阶级读取配置文件中的每日例程 (dailyRoutine)
  */
 export const calculateDailyJailEffect = (currentClass: PlayerClass): DailyEffect => {
-  const { default: defaultEffect, classOverrides } = prisonRules.dailyRoutine;
+  // ✅ 防御性编程：使用可选链和默认配置兜底
+  const dailyRoutine = prisonRules?.dailyRoutine;
+  const defaultEffect = dailyRoutine?.default ?? { hpChange: -20, sanChange: -25, log: '这是地狱。' };
+  const classOverrides = dailyRoutine?.classOverrides ?? {};
   
   // 1. 获取该阶级的配置
   const config = classOverrides[currentClass];

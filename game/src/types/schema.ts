@@ -246,10 +246,7 @@ export const EventSchema = z.object({
   title: z.string(),
   bgImage: z.string().optional(),
   eventImage: z.string().optional(),
-  text: z.object({
-    lowSan: z.string(),
-    highSan: z.string(),
-  }),
+  text: z.string(), // 单一题干文本，不再区分高低 SAN
   conditions: z.object({
     minSan: z.number().optional(),
     maxSan: z.number().optional(),

@@ -1,14 +1,13 @@
 import { StateCreator } from 'zustand';
-import { FaithID, FaithState, GameState, FaithDebuff, FaithData } from '@/types/schema';
+import { FaithID, FaithState, GameState, FaithDebuff } from '@/types/schema';
 import { StoreState } from '@/types/store';
-import faithsDataUntyped from '@/assets/data/faiths.json';
+import faithsData from '@/assets/data/faiths.json';
 import faithRulesUntyped from '@/assets/data/rules/faithRules.json';
 import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 import { checkJoinCondition, calculateRiteOutcome } from '@/logic/faith';
 import type { FaithRules, LeavePenalty } from '@/types/faithRules';
 
-// 类型断言：确保 JSON 符合类型接口
-const faithsData = faithsDataUntyped as FaithData[];
+// 类型断言：确保 JSON 符合 FaithRules 接口
 const faithRules = faithRulesUntyped as FaithRules;
 
 export interface FaithSlice {
@@ -55,7 +54,7 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
     }
 
     // 逻辑检查
-    const check = checkJoinCondition(faithConfig, state);
+    const check = checkJoinCondition(faithConfig as any, state);
     
     if (check.success) {
       if (faithConfig.joinCost.gold && faithConfig.joinCost.gold > 0) {
@@ -93,7 +92,7 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
       return { canLeave: false };
     }
 
-    const penaltyConfig: LeavePenalty | undefined = faithRules.leavePenalties[currentFaithId];
+    const penaltyConfig = (faithRules.leavePenalties as any)[currentFaithId];
     if (!penaltyConfig) {
       // 没有配置惩罚的信仰，直接允许退出
       return { 
@@ -109,7 +108,7 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
       canLeave: true,
       confirmation: {
         title: faithRules.text.leaveConfirmTitle,
-        message: penaltyConfig.confirmMessage ?? "确定要退出当前信仰吗？"
+        message: penaltyConfig.confirmMessage
       },
       penalty: penaltyConfig
     };
@@ -126,7 +125,7 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
       return { success: false, message: "当前没有信仰" };
     }
 
-    const penaltyConfig: LeavePenalty | undefined = faithRules.leavePenalties[currentFaithId];
+    const penaltyConfig = (faithRules.leavePenalties as any)[currentFaithId];
     const faithConfig = faithsData.find(f => f.id === currentFaithId);
     const faithName = faithConfig?.name || currentFaithId;
 
@@ -155,14 +154,13 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
       const currentDebuffs = state.faith.debuffs || [];
       let newDebuffs = [...currentDebuffs];
       if (penaltyConfig.debuff) {
-        const debuffConfig = penaltyConfig.debuff;
-        const existingIndex = newDebuffs.findIndex(d => d.id === debuffConfig.id);
+        const existingIndex = newDebuffs.findIndex(d => d.id === penaltyConfig.debuff.id);
         const debuff: FaithDebuff = {
-          id: debuffConfig.id,
-          name: debuffConfig.name,
-          duration: debuffConfig.duration,
-          remainingTurns: debuffConfig.duration,
-          effect: debuffConfig.effect
+          id: penaltyConfig.debuff.id,
+          name: penaltyConfig.debuff.name,
+          duration: penaltyConfig.debuff.duration,
+          remainingTurns: penaltyConfig.debuff.duration,
+          effect: penaltyConfig.debuff.effect
         };
         
         if (existingIndex >= 0) {
@@ -232,7 +230,7 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
     const faithConfig = faithsData.find(f => f.id === state.faith.id);
     if (!faithConfig) return { success: false, message: faithRules.text.noFaith };
 
-    const result = calculateRiteOutcome(faithConfig, state);
+    const result = calculateRiteOutcome(faithConfig as any, state);
 
     if (result.success) {
        // ✅ 先处理金钱支出（如果是支出）

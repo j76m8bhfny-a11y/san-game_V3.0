@@ -22,13 +22,14 @@ export const GlitchText: React.FC<GlitchTextProps> = ({ text, san, className = "
       return;
     }
 
+    // ✅ 优化：降低更新频率从 150ms 到 800ms，大幅减少重渲染
     const interval = setInterval(() => {
-      // 80% 的概率保持原样，20% 的概率这一帧发生跳变
-      if (Math.random() > 0.8) {
+      // 70% 的概率保持原样，30% 的概率这一帧发生跳变
+      if (Math.random() > 0.7) {
         const scrambled = text.split('').map((char) => {
           if (char === ' ') return ' ';
-          // 每个字符有 15% 的概率被替换为乱码
-          if (Math.random() < 0.15) {
+          // 每个字符有 20% 的概率被替换为乱码
+          if (Math.random() < 0.2) {
             return GLITCH_CHARS[Math.floor(Math.random() * GLITCH_CHARS.length)];
           }
           return char;
@@ -37,7 +38,7 @@ export const GlitchText: React.FC<GlitchTextProps> = ({ text, san, className = "
       } else {
         setDisplayText(text);
       }
-    }, 150); // 每 150ms 刷新一次，模拟旧显示器的刷新率
+    }, 800); // ✅ 从 150ms 提升到 800ms
 
     return () => clearInterval(interval);
   }, [text, san, isGlitching]);

@@ -24,13 +24,15 @@ export const NewsTicker: React.FC = () => {
       </div>
       
       {/* ✅ 动态 CSS 动画速度 */}
+      {/* ✅ 优化：使用 will-change 和 transform 优化渲染性能 */}
       <style>{`
         @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
+          0% { transform: translate3d(0, 0, 0); }
+          100% { transform: translate3d(-50%, 0, 0); }
         }
         .animate-marquee {
           animation: marquee ${speedSeconds}s linear infinite;
+          will-change: transform;
         }
       `}</style>
     </div>

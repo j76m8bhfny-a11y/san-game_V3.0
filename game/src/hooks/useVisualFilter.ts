@@ -7,12 +7,11 @@ export const useVisualFilter = () => {
   // 路径对齐至 vitality.metrics.san
   const san = useGameStore((state) => state.vitality.metrics.san);
 
-  // ✅ 2. 解构配置项
-  const { phases } = vitalityRules.visuals;
+  // ✅ 优化：使用静态引用避免每次渲染创建新对象
+  const phases = vitalityRules.visuals.phases;
 
   return useMemo(() => {
     // Phase 1: 蓝药丸 - 美好假象
-    // ✅ 替换 hardcoded '70' (逻辑上改为 >= phases.bluePillMin，比如 71)
     if (san >= phases.bluePillMin) {
       return {
         className: 'theme-blue-pill',
@@ -22,7 +21,6 @@ export const useVisualFilter = () => {
     }
     
     // Phase 2: 裂痕 - 现实剥落
-    // ✅ 替换 hardcoded '30' (逻辑上改为 >= phases.cracksMin，比如 31)
     if (san >= phases.cracksMin) {
       return {
         className: 'theme-cracks',
@@ -44,5 +42,5 @@ export const useVisualFilter = () => {
       },
       fontClass: 'font-creepster' 
     };
-  }, [san, phases]); // ✅ 添加 phases 到依赖列表
+  }, [san]); // ✅ 只依赖 san，phases 是静态的
 };

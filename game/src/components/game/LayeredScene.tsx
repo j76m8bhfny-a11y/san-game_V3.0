@@ -1,7 +1,6 @@
 // src/components/game/LayeredScene.tsx
 
-import React, { useEffect, useMemo, useState } from 'react';
-import { motion, useSpring, useTransform } from 'framer-motion';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { BankSidebar } from './BankSidebar'; // ✅ 确保是命名导出
 import { FaithSidebar } from './FaithSidebar';
@@ -29,21 +28,31 @@ export const LayeredScene: React.FC<LayeredSceneProps> = ({
 
   const [bgLoaded, setBgLoaded] = useState(false);
 
-  // 视差逻辑保持不变
-  const springConfig = { damping: 30, stiffness: 200 };
-  const x = useSpring(0, springConfig);
-  const y = useSpring(0, springConfig);
+  // ✅ 优化：使用节流减少更新频率，降低 CPU 占用
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const throttleRef = useRef<number | null>(null);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      const xPct = (e.clientX / window.innerWidth) - 0.5;
-      const yPct = (e.clientY / window.innerHeight) - 0.5;
-      x.set(xPct * 20); 
-      y.set(yPct * 20);
+      if (throttleRef.current) return; // 节流：如果已在等待帧中，跳过
+      
+      throttleRef.current = requestAnimationFrame(() => {
+        const xPct = (e.clientX / window.innerWidth) - 0.5;
+        const yPct = (e.clientY / window.innerHeight) - 0.5;
+        setMousePos({ x: xPct * 15, y: yPct * 15 }); // 减少移动幅度
+        throttleRef.current = null;
+      });
     };
     window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, [x, y]);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+      if (throttleRef.current) cancelAnimationFrame(throttleRef.current);
+    };
+  }, []);
+  
+  // ✅ 使用简单的 transform 替代 useSpring + useTransform，大幅降低 CPU 占用
+  const bgTransform = { x: -mousePos.x, y: -mousePos.y };
+  const fgTransform = { x: mousePos.x * 0.3, y: mousePos.y * 0.3 };
 
   // 查找当前阶级的数据配置
   const currentClassData = useMemo(() => {
@@ -61,22 +70,19 @@ export const LayeredScene: React.FC<LayeredSceneProps> = ({
     return `${base} ${isGlitch ? 'blur(2px) contrast(2)' : ''}`;
   }, [currentClassData, isGlitch]);
 
-  // 视差转换
-  const bgX = useTransform(x, v => -v);
-  const bgY = useTransform(y, v => -v);
-  const fgX = useTransform(x, v => v * 0.5); 
-  const fgY = useTransform(y, v => v * 0.5);
+  // ✅ 移除：不再使用 useSpring + useTransform，改用简单的 state + CSS transform
 
   return (
     <div className="relative w-full h-full overflow-hidden bg-black">
       
       {/* Layer 0: Background */}
-      <motion.div 
-        className="absolute inset-[-5%] w-[110%] h-[110%] bg-cover bg-center transition-all duration-1000"
+      <div 
+        className="absolute inset-[-5%] w-[110%] h-[110%] bg-cover bg-center transition-transform duration-200 ease-out"
         style={{ 
-          x: bgX, y: bgY, 
+          transform: `translate(${bgTransform.x}px, ${bgTransform.y}px)`,
           background: bgLoaded ? `url(${bgImage})` : fallbackGradient,
-          filter: filterStyle
+          filter: filterStyle,
+          willChange: 'transform'
         }}
       >
         <img 
@@ -85,19 +91,22 @@ export const LayeredScene: React.FC<LayeredSceneProps> = ({
           onLoad={() => setBgLoaded(true)} 
           onError={() => setBgLoaded(false)} 
         />
-      </motion.div>
+      </div>
 
       {/* Layer 1: Vignette */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)] pointer-events-none" />
       
       {/* Layer 1.5: Event Image */}
       {eventImage && (
-         <motion.div
+         <div
             key={eventImage} 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="absolute inset-0 bg-contain bg-center bg-no-repeat pointer-events-none"
-            style={{ x: fgX, y: fgY, backgroundImage: `url(${eventImage})`, zIndex: 10 }}
+            className="absolute inset-0 bg-contain bg-center bg-no-repeat pointer-events-none transition-transform duration-200 ease-out"
+            style={{ 
+              transform: `translate(${fgTransform.x}px, ${fgTransform.y}px)`, 
+              backgroundImage: `url(${eventImage})`, 
+              zIndex: 10,
+              willChange: 'transform'
+            }}
           />
       )}
 
@@ -110,9 +119,14 @@ export const LayeredScene: React.FC<LayeredSceneProps> = ({
       
       {/* Layer 3: Player Silhouette */}
       {playerImage && (
-        <motion.div 
-          className="absolute -bottom-10 left-10 w-[400px] h-[600px] bg-contain bg-no-repeat bg-bottom pointer-events-none opacity-80"
-          style={{ x: fgX, y: fgY, backgroundImage: `url(${playerImage})`, zIndex: 20 }}
+        <div 
+          className="absolute -bottom-10 left-10 w-[400px] h-[600px] bg-contain bg-no-repeat bg-bottom pointer-events-none opacity-80 transition-transform duration-200 ease-out"
+          style={{ 
+            transform: `translate(${fgTransform.x}px, ${fgTransform.y}px)`, 
+            backgroundImage: `url(${playerImage})`, 
+            zIndex: 20,
+            willChange: 'transform'
+          }}
         />
       )}
 

@@ -28,18 +28,40 @@ const CLASS_CONFIG: Record<PlayerClass, { label: string; bg: string; text: strin
   }
 };
 
+// ✅ 优化：使用防抖避免频繁的状态更新
 const useValueChange = (value: number) => {
   const prev = useRef(value);
   const [change, setChange] = useState<'UP' | 'DOWN' | 'NONE'>('NONE');
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   useEffect(() => {
-    if (value > prev.current) setChange('UP');
-    else if (value < prev.current) setChange('DOWN');
-    else setChange('NONE');
+    // 如果值没有变化，不触发更新
+    if (value === prev.current) {
+      setChange('NONE');
+      return;
+    }
     
+    // 清除之前的定时器
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    
+    // 设置新的变化状态
+    const newChange = value > prev.current ? 'UP' : 'DOWN';
+    setChange(newChange);
     prev.current = value;
-    const timer = setTimeout(() => setChange('NONE'), 1000);
-    return () => clearTimeout(timer);
+    
+    // 1秒后重置状态
+    timeoutRef.current = setTimeout(() => {
+      setChange('NONE');
+      timeoutRef.current = null;
+    }, 1000);
+    
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
   }, [value]);
   
   return change;

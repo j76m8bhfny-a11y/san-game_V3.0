@@ -3,9 +3,7 @@ import {
   VitalityState,
   PlayerClass,
   LedgerCategory,
-  GameState,
-  RegionID,
-  FaithID
+  GameState
 } from '@/types/schema';
 import { CLASS_INITIAL_STATS } from './createPlayerSlice';
 import { calculateMedicalCost } from '@/logic/medical';
@@ -42,7 +40,7 @@ export interface VitalitySlice {
 
 const generateId = () => `${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 5)}`;
 
-export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice> = (set, get) => ({
+export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (set, get) => ({
   vitality: {
     // ✅ Use Spread from JSON
     metrics: { ...INITIAL_STATE.vitality },
@@ -69,7 +67,7 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
     const { startPrice } = INITIAL_STATE.crypto;
     const { creditScore } = rules.defaults; // 或从 rules 读取
 
-    set((state) => ({
+    set((state: any) => ({
       vitality: {
         ...state.vitality,
         metrics: {
@@ -99,19 +97,19 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
         activeJobs: []
       },
       // 重置子系统
-      faith: { id: FaithID.NONE, level: 1, hasPerformedRite: false, debuffs: [], bannedFaiths: [] },
+      faith: { id: 'NONE', level: 1, hasPerformedRite: false, debuffs: [], bannedFaiths: [] },
       prison: { inJail: false, crime: '', sentenceTurns: 0, turnsServed: 0, bailAmount: 0 },
       
       // ✅ Fix: Crypto 重置逻辑与 initial_state.json 保持一致
-      crypto: {
-          isAccountOpen: false,
+      crypto: { 
+          isAccountOpen: false, 
           btcPrice: startPrice,
-          positions: [],
+          positions: [], 
           priceHistory: Array(7).fill(startPrice),
-          weeklyNews: null
+          weeklyNews: null 
       },
       
-      currentRegion: RegionID.Slums,
+      currentRegion: 'SLUMS',
       activeHousing: null,
       activeInsurance: null,
       inventory: [],

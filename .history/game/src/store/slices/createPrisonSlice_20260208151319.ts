@@ -331,7 +331,7 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
       }
 
       // 3. 释放
-      set((s) => ({
+      set((s: PrisonStoreState) => ({
         prison: INITIAL_PRISON
       }));
 

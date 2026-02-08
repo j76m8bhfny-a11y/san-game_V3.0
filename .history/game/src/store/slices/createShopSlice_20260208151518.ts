@@ -24,7 +24,7 @@ export interface ShopSlice {
   useItem: (itemId: string) => void;
 }
 
-export const createShopSlice: StateCreator<StoreState, [], [], ShopSlice> = (set, get) => ({
+export const createShopSlice: StateCreator<any, [], [], ShopSlice> = (set, get) => ({
 
   getRegionItems: (region) => {
     const allItems: Item[] = get().gameDataCache?.items || [];

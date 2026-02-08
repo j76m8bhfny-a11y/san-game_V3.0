@@ -19,7 +19,7 @@ export interface SystemSlice {
   getShopItems: () => Item[]; 
 }
 
-export const createSystemSlice: StateCreator<StoreState, [], [], SystemSlice> = (set, get) => ({
+export const createSystemSlice: StateCreator<any, [], [], SystemSlice> = (set, get) => ({
   gameDataCache: null,
   gameDataLoadFailed: false, // ✅ 新增：初始为false
 

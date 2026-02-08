@@ -52,7 +52,7 @@ export interface PlayerSlice {
   setInsurance: (insurance: ActiveInsuranceState | null) => void;
 }
 
-export const createPlayerSlice: StateCreator<StoreState, [], [], PlayerSlice> = (set, get) => ({
+export const createPlayerSlice: StateCreator<any, [], [], PlayerSlice> = (set, get) => ({
   ...INITIAL_PLAYER_STATE,
 
   /**

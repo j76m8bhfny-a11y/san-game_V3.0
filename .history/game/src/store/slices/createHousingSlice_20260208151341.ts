@@ -21,7 +21,7 @@ export interface HousingSlice {
   checkRegionAccess: (region: RegionID) => boolean;
 }
 
-export const createHousingSlice: StateCreator<StoreState, [], [], HousingSlice> = (set, get) => ({
+export const createHousingSlice: StateCreator<any, [], [], HousingSlice> = (set, get) => ({
   
   // ===== Queries =====
   

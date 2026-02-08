@@ -20,7 +20,7 @@ export interface FaithSlice {
   tickFaithDebuffs: () => void;
 }
 
-export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (set, get) => ({
+export const createFaithSlice: StateCreator<any, [], [], FaithSlice> = (set, get) => ({
   faith: {
     id: FaithID.NONE,
     level: faithRules.defaults.initialLevel,

@@ -69,7 +69,7 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
     const { startPrice } = INITIAL_STATE.crypto;
     const { creditScore } = rules.defaults; // 或从 rules 读取
 
-    set((state) => ({
+    set((state: any) => ({
       vitality: {
         ...state.vitality,
         metrics: {

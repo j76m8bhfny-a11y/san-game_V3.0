@@ -293,7 +293,7 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
   // 🔴 逻辑说明: 关联保释贷款 (已重构数值)
   signBailBond: () => {
     try {
-      const state = get();
+      const state = get() as PrisonStoreState;
       const { metrics } = state.vitality;
       const totalBail = state.prison.bailAmount;
       
@@ -331,7 +331,7 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
       }
 
       // 3. 释放
-      set((s) => ({
+      set((s: PrisonStoreState) => ({
         prison: INITIAL_PRISON
       }));
 

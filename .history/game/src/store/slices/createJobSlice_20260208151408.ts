@@ -15,7 +15,7 @@ export interface JobSlice {
 
 
 
-export const createJobSlice: StateCreator<StoreState, [], [], JobSlice> = (set, get) => ({
+export const createJobSlice: StateCreator<any, [], [], JobSlice> = (set, get) => ({
 
   getJobSlotsUsed: () => {
     const state = get() as GameState;

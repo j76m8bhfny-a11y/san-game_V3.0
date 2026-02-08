@@ -25,7 +25,7 @@ export interface CryptoSlice {
   processWeeklyMarket: (allNews: NewsItem[]) => { logs: string[]; notes: string[] };
 }
 
-export const createCryptoSlice: StateCreator<StoreState, [], [], CryptoSlice> = (set, get) => ({
+export const createCryptoSlice: StateCreator<any, [], [], CryptoSlice> = (set, get) => ({
   crypto: {
     isAccountOpen: false,
     // ✅ 2. 使用配置的初始价格

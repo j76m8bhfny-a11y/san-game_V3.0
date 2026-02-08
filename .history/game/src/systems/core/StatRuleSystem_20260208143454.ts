@@ -4,7 +4,7 @@ import { GameSystem, SystemResult } from '../types';
 import { checkDailyDisease } from '@/logic/health';
 import { checkClassUpdate } from '@/logic/core';
 import diseasesData from '@/assets/data/diseases.json';
-import { ActiveInsuranceState, Disease } from '@/types/schema';
+import { ActiveInsuranceState } from '@/types/schema';
 import vitalityRules from '@/assets/data/rules/vitalityRules.json';
 import classesData from '@/assets/data/classes.json'; // ✨ 引入阶级定义
 
@@ -175,9 +175,8 @@ export const StatRuleSystem: GameSystem = {
         // 初始化 vitality 更新对象
         if (!result.updates.vitality) result.updates.vitality = {};
         
-        // 更新阶级 ID，保留其他 identity 字段
+        // 更新阶级 ID
         result.updates.vitality.identity = {
-            ...state.vitality.identity,
             currentClass: newClassId
         };
         

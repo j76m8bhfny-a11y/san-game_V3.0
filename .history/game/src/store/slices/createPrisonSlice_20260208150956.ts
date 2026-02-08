@@ -127,7 +127,7 @@ const updatePrisonStatus = (
  * 显示系统结算通知（限制最多显示3条，避免UI淹没）
  */
 const showSettlementNotifications = (
-  state: StoreState,
+  state: PrisonStoreState,
   logs: string[]
 ) => {
   const importantLogs = logs.filter(log => 
@@ -176,7 +176,7 @@ const INITIAL_PRISON = {
   bailAmount: 0
 };
 
-export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = (set, get) => ({
+export const createPrisonSlice: StateCreator<any, [], [], PrisonSlice> = (set, get) => ({
   prison: INITIAL_PRISON,
 
   imprison: (reason, turns, bail) => {
@@ -193,7 +193,7 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
 
   // 🔴 逻辑说明: 坐牢期间触发系统结算
   serveTime: () => {
-    const state = get();
+    const state = get() as PrisonStoreState;
     const { vitality, prison } = state;
 
     // 边界检查：刑期异常
@@ -266,7 +266,7 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
 
   payCashBail: () => {
     try {
-      const state = get();
+      const state = get() as PrisonStoreState;
       const { metrics } = state.vitality;
       const cost = state.prison.bailAmount;
 
@@ -280,7 +280,7 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
         return { success: false, msg: getMessage('insufficientFundsForBail') };
       }
 
-      set((s) => ({
+      set((s: PrisonStoreState) => ({
         prison: INITIAL_PRISON
       }));
       return { success: true, msg: getMessage('cashBailSuccess') };
@@ -293,7 +293,7 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
   // 🔴 逻辑说明: 关联保释贷款 (已重构数值)
   signBailBond: () => {
     try {
-      const state = get();
+      const state = get() as PrisonStoreState;
       const { metrics } = state.vitality;
       const totalBail = state.prison.bailAmount;
       
@@ -331,7 +331,7 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
       }
 
       // 3. 释放
-      set((s) => ({
+      set((s: PrisonStoreState) => ({
         prison: INITIAL_PRISON
       }));
 

@@ -66,7 +66,7 @@ export interface UISlice {
   setHasHydrated: (state: boolean) => void; // 👈 必须有这个
 }
 
-export const createUISlice: StateCreator<StoreState, [], [], UISlice> = (set, get) => ({
+export const createUISlice: StateCreator<any, [], [], UISlice> = (set, get) => ({
   // --- Initial State ---
   isShopOpen: false,
   isInventoryOpen: false,

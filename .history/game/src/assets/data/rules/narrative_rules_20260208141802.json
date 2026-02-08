@@ -39,15 +39,6 @@
       "optionRevealDelay": 500,
       "stageTransitionDelay": 400,
       "typingSoundFrequency": 2
-    },
-    "toastStyles": {
-      "success": "bg-green-900/80 border-green-500 text-green-100",
-      "warning": "bg-yellow-900/80 border-yellow-500 text-yellow-100",
-      "error": "bg-red-900/80 border-red-500 text-red-100",
-      "info": "bg-blue-900/80 border-blue-500 text-blue-100",
-      "GOLD": "bg-yellow-600/90 border-yellow-300 text-yellow-50 font-bold",
-      "HP": "bg-red-600/90 border-red-300 text-red-50 font-bold",
-      "SAN": "bg-purple-600/90 border-purple-300 text-purple-50 font-bold"
     }
   },
   "archives": {

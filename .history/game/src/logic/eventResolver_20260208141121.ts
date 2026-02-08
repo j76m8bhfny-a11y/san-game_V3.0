@@ -2,6 +2,17 @@ import { GameState, GameEvent, EventOption, ActionCode, GameAction } from '@/typ
 import { executeAction } from './ActionExecutor';
 import { produce } from 'immer';
 
+// 辅助：统一获取属性值的 Helper (适配 Vitality 结构)
+const getStat = (state: GameState, key: string): any => {
+  if (key === 'hp') return state.vitality.metrics.hp;
+  if (key === 'maxHp') return state.vitality.metrics.maxHp;
+  if (key === 'san') return state.vitality.metrics.san;
+  if (key === 'maxSan') return state.vitality.metrics.maxSan;
+  if (key === 'gold') return state.vitality.metrics.gold;
+  if (key === 'currentClass') return state.vitality.identity.currentClass;
+  return 0;
+};
+
 // 检查事件触发条件
 export const checkCondition = (state: GameState, condition: GameEvent['conditions']): boolean => {
   if (!condition) return true;
@@ -28,14 +39,16 @@ export const checkCondition = (state: GameState, condition: GameEvent['condition
 export const resolveOption = (state: GameState, option: EventOption): { updates: any; logs: string[]; nextEventId?: string } => {
   const logs: string[] = [];
   
-  // 使用 Immer 的 produce 函数，基于 state 创建 draft，Immer 会自动生成不可变更新
-  const updates = produce(state, (draft) => {
+  // 使用 Immer 的 produce 函数，直接修改 draft，Immer 会自动生成不可变更新
+  const updates = produce<Partial<GameState>>({}, (draft) => {
     // 1. 基础数值变动 (HP, SAN)
     if (option.effects.hp) {
       const action: GameAction = { code: ActionCode.MODIFY_STAT, params: { target: 'hp', value: option.effects.hp } };
       const res = executeAction(state, action);
       
       if (res.updates.vitality?.metrics) {
+        if (!draft.vitality) draft.vitality = {};
+        if (!draft.vitality.metrics) draft.vitality.metrics = {};
         Object.assign(draft.vitality.metrics, res.updates.vitality.metrics);
       }
       logs.push(...res.logs);
@@ -46,6 +59,8 @@ export const resolveOption = (state: GameState, option: EventOption): { updates:
       const res = executeAction(state, action);
       
       if (res.updates.vitality?.metrics) {
+        if (!draft.vitality) draft.vitality = {};
+        if (!draft.vitality.metrics) draft.vitality.metrics = {};
         Object.assign(draft.vitality.metrics, res.updates.vitality.metrics);
       }
       logs.push(...res.logs);
@@ -59,29 +74,40 @@ export const resolveOption = (state: GameState, option: EventOption): { updates:
           console.warn('Invalid item effect:', item);
           return;
         }
+        // 获取当前最新的 inventory (如果已有更新则用最新的，否则用 state 的)
+        const currentInv = draft.inventory || state.inventory;
         const newItems = Array(item.count).fill(item.itemId);
-        draft.inventory.push(...newItems);
+        draft.inventory = [...currentInv, ...newItems];
         logs.push(`获得物品: ${item.itemId} x${item.count}`);
       });
     }
 
     // 3. 触发后续 (Archive)
     if (option.archiveId) {
-      if (!draft.unlockedArchives.includes(option.archiveId)) {
-        draft.unlockedArchives.push(option.archiveId);
+      const currentArchives = draft.unlockedArchives || state.unlockedArchives;
+      if (!currentArchives.includes(option.archiveId)) {
+        draft.unlockedArchives = [...currentArchives, option.archiveId];
         logs.push(`解锁档案`);
       }
     }
 
     // 4. 政治倾向 (Points)
     if (option.effects.points) {
-      const currentPoints = draft.vitality.identity.points;
+      const currentIdentity = draft.vitality?.identity || state.vitality.identity;
+      const currentPoints = currentIdentity.points;
       
-      draft.vitality.identity.points = {
+      const newPoints = {
         red: currentPoints.red + (option.effects.points.red || 0),
         wolf: currentPoints.wolf + (option.effects.points.wolf || 0),
         old: currentPoints.old + (option.effects.points.old || 0)
       };
+
+      if (!draft.vitality) draft.vitality = {};
+      if (!draft.vitality.identity) {
+        draft.vitality.identity = { points: newPoints };
+      } else {
+        draft.vitality.identity.points = newPoints;
+      }
       
       if (option.effects.points.red) logs.push(`红方倾向 ${option.effects.points.red > 0 ? '+' : ''}${option.effects.points.red}`);
       if (option.effects.points.wolf) logs.push(`蓝方倾向 ${option.effects.points.wolf > 0 ? '+' : ''}${option.effects.points.wolf}`);

@@ -6,7 +6,6 @@ import ARCHIVES from '@/assets/data/archives.json';
 import ENDINGS from '@/assets/data/endings.json';
 // ✅ 1. 引入配置文件
 import NARRATIVE_RULES from '@/assets/data/rules/narrative_rules.json';
-import { random } from '@/utils/random';
 
 interface BlackBoxProps {
   onClose: () => void;
@@ -118,16 +117,8 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
         <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]" />
         <motion.div
           // ✅ 4. 使用配置中的动画参数
-          initial={{
-            scale: impactAnimation.initialScale,
-            opacity: 0,
-            rotate: random() * (impactAnimation.randomRotationRange[1] - impactAnimation.randomRotationRange[0]) + impactAnimation.randomRotationRange[0]
-          }}
-          animate={{
-            scale: 1,
-            opacity: 1,
-            rotate: random() * (impactAnimation.settleRotationRange[1] - impactAnimation.settleRotationRange[0]) + impactAnimation.settleRotationRange[0]
-          }}
+          initial={{ scale: impactAnimation.initialScale, opacity: 0, rotate: Math.random() * 10 - 5 }}
+          animate={{ scale: 1, opacity: 1, rotate: Math.random() * 4 - 2 }}
           transition={{ type: "spring", stiffness: impactAnimation.stiffness, damping: impactAnimation.damping }}
           className="relative w-[90vw] max-w-md bg-[#f0f0f0] shadow-2xl p-6 md:p-10 rotate-1 border border-gray-300"
           style={{ backgroundImage: `url("/assets/textures/paper_texture.png")` }} 

@@ -94,7 +94,7 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
     // ✅ Refactor: 使用配置中的时间间隔
     const interval = setInterval(() => {
       // ✅ Refactor: 使用配置中的概率 (假设 glitchChance 为 0.2)
-      if (random() < uiConfig.glitchChance) {
+      if (Math.random() < uiConfig.glitchChance) {
         setGlitchTrigger(true);
         // ✅ Refactor: 使用配置中的持续时间
         setTimeout(() => setGlitchTrigger(false), uiConfig.glitchDuration);

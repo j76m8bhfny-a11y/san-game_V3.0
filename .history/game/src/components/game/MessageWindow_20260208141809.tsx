@@ -59,7 +59,7 @@ const PixelSMSBubble: React.FC<{
   
   // 根据颜色生成对应的 Tailwind 类 (使用配置文件)
   const getBubbleStyles = (color: string) => {
-    return (ui.bubbleStyles as Record<string, { bg: string; text: string; shadow: string }>)[color] || (ui.bubbleStyles as Record<string, { bg: string; text: string; shadow: string }>)['#E9E9EB'];
+    return ui.bubbleStyles[color] || ui.bubbleStyles['#E9E9EB'];
   };
   const theme = getBubbleStyles(color);
 

@@ -2,6 +2,17 @@ import { GameState, GameEvent, EventOption, ActionCode, GameAction } from '@/typ
 import { executeAction } from './ActionExecutor';
 import { produce } from 'immer';
 
+// 辅助：统一获取属性值的 Helper (适配 Vitality 结构)
+const getStat = (state: GameState, key: string): any => {
+  if (key === 'hp') return state.vitality.metrics.hp;
+  if (key === 'maxHp') return state.vitality.metrics.maxHp;
+  if (key === 'san') return state.vitality.metrics.san;
+  if (key === 'maxSan') return state.vitality.metrics.maxSan;
+  if (key === 'gold') return state.vitality.metrics.gold;
+  if (key === 'currentClass') return state.vitality.identity.currentClass;
+  return 0;
+};
+
 // 检查事件触发条件
 export const checkCondition = (state: GameState, condition: GameEvent['conditions']): boolean => {
   if (!condition) return true;

@@ -3,7 +3,6 @@ import { GameState, GameEvent } from '@/types/schema';
 import eventsData from '@/assets/data/events.json';
 import { checkCondition } from '@/logic/eventResolver';
 import NARRATIVE_RULES from '@/assets/data/rules/narrative_rules.json';
-import { random } from '@/utils/random';
 
 // 获取事件权重 (配置驱动)
 // 优先使用事件自定义权重，否则使用全局默认权重
@@ -53,8 +52,8 @@ const getRandomEvent = (state: GameState): GameEvent | null => {
   // 计算总权重
   const totalWeight = candidates.reduce((sum, event) => sum + getEventWeight(event), 0);
   
-  // 生成随机数 (使用依赖注入的 random 函数)
-  let randomValue = random() * totalWeight;
+  // 生成随机数
+  let randomValue = Math.random() * totalWeight;
 
   // 遍历寻找命中区间
   for (const event of candidates) {

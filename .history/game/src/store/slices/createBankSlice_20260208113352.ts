@@ -105,7 +105,7 @@ export const createBankSlice: StateCreator<StoreState, [], [], BankSlice> = (set
     };
 
     // 存入贷款
-    set((s: StoreState) => ({
+    set((s: GameState) => ({
       bank: {
         ...s.bank,
         activeLoans: [...s.bank.activeLoans, newLoan]
@@ -116,8 +116,8 @@ export const createBankSlice: StateCreator<StoreState, [], [], BankSlice> = (set
   },
 
   makeInstallment: (loanId, amount) => {
-    const state = get() as StoreState & {
-      addTransaction: (c: string, a: number, d: string) => { success: boolean; actualAmount: number }
+    const state = get() as GameState & { 
+      addTransaction: (c: string, a: number, d: string) => { success: boolean; actualAmount: number } 
     };
     const { bank, vitality } = state;
     
@@ -173,7 +173,7 @@ export const createBankSlice: StateCreator<StoreState, [], [], BankSlice> = (set
       loans[loanIndex] = loan;
     }
 
-    set((s: StoreState) => ({
+    set((s: GameState) => ({
       bank: {
         ...s.bank,
         activeLoans: loans,

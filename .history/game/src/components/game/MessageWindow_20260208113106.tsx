@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
@@ -40,28 +40,17 @@ const TypewriterText: React.FC<{ text: string; onComplete?: () => void }> = ({ t
 };
 
 // --- ✨ 组件：iOS 像素短信气泡 ---
-const PixelSMSBubble: React.FC<{
-  label: string;
-  id: string;
-  type: string;
-  onClick: () => void;
+const PixelSMSBubble: React.FC<{ 
+  label: string; 
+  id: string; 
+  type: string; 
+  onClick: () => void; 
 }> = ({ label, id, type, onClick }) => {
   
-  // ✅ 类型安全：使用类型守卫获取气泡颜色
-  const getBubbleColor = (type: string): string => {
-    const validTypes = ['safe', 'risk', 'special', 'awakening'] as const;
-    if (validTypes.includes(type as any)) {
-      return ui.bubbleColors[type as keyof typeof ui.bubbleColors];
-    }
-    return ui.bubbleColors.default;
-  };
-  const color = getBubbleColor(type);
-  
-  // 根据颜色生成对应的 Tailwind 类 (使用配置文件)
-  const getBubbleStyles = (color: string) => {
-    return (ui.bubbleStyles as Record<string, { bg: string; text: string; shadow: string }>)[color] || (ui.bubbleStyles as Record<string, { bg: string; text: string; shadow: string }>)['#E9E9EB'];
-  };
-  const theme = getBubbleStyles(color);
+  // ✅ 修复类型错误的核心：
+  // 1. 使用 (ui.bubbleColors as any) 允许使用字符串 type 进行索引
+  // 2. 添加 || ui.bubbleColors.default 作为兜底，防止 crash
+  const theme = (ui.bubbleColors as any)[type] || ui.bubbleColors.default;
 
   return (
     <div className="flex justify-end items-end gap-2 group w-full pl-2">
@@ -253,16 +242,12 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void;
 export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
   if (!event || !event.options) return null;
   const { resolveEventOption, vitality } = useGameStore();
-  const { san } = vitality.metrics;
+  const { san } = vitality.metrics; 
   const { playSfx } = useAudioStore();
   
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [stage, setStage] = useState<'INIT' | 'TYPING_TITLE' | 'TYPING_BODY' | 'INTERACTIVE'>('INIT');
   const [selectedOptId, setSelectedOptId] = useState<string | null>(null);
-  
-  // 用于清理定时器的 ref，防止内存泄漏
-  const bodyCompleteTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const optionClickTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     setStage('INIT');
@@ -271,29 +256,13 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
     }, pacing.delayTitleToBodyMs); // ✅ 替换: 读取配置
     return () => clearTimeout(timer);
   }, [event.id]);
-  
-  // 组件卸载时清理所有定时器，防止内存泄漏
-  useEffect(() => {
-    return () => {
-      if (bodyCompleteTimerRef.current) {
-        clearTimeout(bodyCompleteTimerRef.current);
-      }
-      if (optionClickTimerRef.current) {
-        clearTimeout(optionClickTimerRef.current);
-      }
-    };
-  }, []);
 
   const handleTitleComplete = useCallback(() => {
     setStage('TYPING_BODY');
   }, []);
 
   const handleBodyComplete = useCallback(() => {
-    // 清理之前的定时器，避免重复触发
-    if (bodyCompleteTimerRef.current) {
-      clearTimeout(bodyCompleteTimerRef.current);
-    }
-    bodyCompleteTimerRef.current = setTimeout(() => {
+    setTimeout(() => {
       setStage('INTERACTIVE');
       playSfx('sfx_cash');
     }, ui.animationTimings.stageTransitionDelay); // ✅ 使用配置中的阶段转换延迟
@@ -301,13 +270,9 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
 
   const handleOptionClick = (id: string) => {
     playSfx('sfx_click');
-    setSelectedOptId(id);
+    setSelectedOptId(id); 
     
-    // 清理之前的定时器，防止快速点击导致状态混乱
-    if (optionClickTimerRef.current) {
-      clearTimeout(optionClickTimerRef.current);
-    }
-    optionClickTimerRef.current = setTimeout(() => {
+    setTimeout(() => {
       if (resolveEventOption) {
         resolveEventOption(id as 'A' | 'B' | 'C' | 'D');
       } else {

@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { GameState, GameEvent, EventOption, WeeklyReport, Ending, FaithID, PlayerClass, RegionID } from '@/types/schema';
+import { GameState, GameEvent, EventOption, WeeklyReport, Ending, FaithID, PlayerClass } from '@/types/schema';
 import { resolveOption } from '@/logic/eventResolver';
 import { runTurnSettlement } from '@/systems/SystemRegistry';
 import { resolveEnding } from '@/logic/endings';
@@ -61,9 +61,7 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
     const option = currentEvent.options[optionId];
     if (!option) return;
 
-    // ✅ 内部 slice 调用使用 any，因为 selectOption 在当前 slice 定义中
-    // 这是 Zustand 类型系统的已知限制
-    (get() as any).selectOption(option);
+    (get() as GameSlice & StoreState).selectOption(option);
   },
 
   selectOption: (option: EventOption) => {
@@ -331,10 +329,10 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
         // 1. Vitality 重置 (从 JSON 读取)
         vitality: {
             metrics: { ...INITIAL_STATE.vitality }, // 读取 hp, san, gold, creditScore 等
-            identity: {
-                // ✅ 类型断言：JSON 中的 string 需要转换为 PlayerClass enum
-                currentClass: INITIAL_STATE.identity.defaultClass as PlayerClass,
-                points: { ...INITIAL_STATE.identity.points }
+            identity: { 
+                // 注意：这里类型可能需要根据 Schema 调整，确保 JSON 里的 string 能对应 enum
+                currentClass: INITIAL_STATE.identity.defaultClass, 
+                points: { ...INITIAL_STATE.identity.points } 
             },
             time: { 
                 currentTurn: INITIAL_STATE.time.startTurn, 
@@ -365,7 +363,7 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
         prison: { inJail: false, crime: '', sentenceTurns: 0, turnsServed: 0, bailAmount: 0 },
         
         // 3. Assets 重置
-        currentRegion: 'SLUMS' as RegionID,
+        currentRegion: 'SLUMS',
         activeHousing: null,
         activeInsurance: null,
         inventory: [],

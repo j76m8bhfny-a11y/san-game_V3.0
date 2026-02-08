@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { GameState, GameEvent, EventOption, WeeklyReport, Ending, FaithID, PlayerClass, RegionID } from '@/types/schema';
+import { GameState, GameEvent, EventOption, WeeklyReport, Ending, FaithID, PlayerClass } from '@/types/schema';
 import { resolveOption } from '@/logic/eventResolver';
 import { runTurnSettlement } from '@/systems/SystemRegistry';
 import { resolveEnding } from '@/logic/endings';

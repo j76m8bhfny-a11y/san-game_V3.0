@@ -21,13 +21,6 @@
       "awakening": "#AF52DE",
       "default": "#E9E9EB"
     },
-    "bubbleStyles": {
-      "#007AFF": { "bg": "bg-blue-500", "text": "text-white", "shadow": "shadow-blue-500/50" },
-      "#FF3B30": { "bg": "bg-red-500", "text": "text-white", "shadow": "shadow-red-500/50" },
-      "#FFCC00": { "bg": "bg-yellow-500", "text": "text-black", "shadow": "shadow-yellow-500/50" },
-      "#AF52DE": { "bg": "bg-purple-500", "text": "text-white", "shadow": "shadow-purple-500/50" },
-      "#E9E9EB": { "bg": "bg-gray-200", "text": "text-black", "shadow": "shadow-gray-200/50" }
-    },
     "impactAnimation": {
       "initialScale": 3,
       "stiffness": 300,
@@ -39,15 +32,6 @@
       "optionRevealDelay": 500,
       "stageTransitionDelay": 400,
       "typingSoundFrequency": 2
-    },
-    "toastStyles": {
-      "success": "bg-green-900/80 border-green-500 text-green-100",
-      "warning": "bg-yellow-900/80 border-yellow-500 text-yellow-100",
-      "error": "bg-red-900/80 border-red-500 text-red-100",
-      "info": "bg-blue-900/80 border-blue-500 text-blue-100",
-      "GOLD": "bg-yellow-600/90 border-yellow-300 text-yellow-50 font-bold",
-      "HP": "bg-red-600/90 border-red-300 text-red-50 font-bold",
-      "SAN": "bg-purple-600/90 border-purple-300 text-purple-50 font-bold"
     }
   },
   "archives": {

@@ -53,8 +53,8 @@ const getRandomEvent = (state: GameState): GameEvent | null => {
   // 计算总权重
   const totalWeight = candidates.reduce((sum, event) => sum + getEventWeight(event), 0);
   
-  // 生成随机数 (使用依赖注入的 random 函数)
-  let randomValue = random() * totalWeight;
+  // 生成随机数
+  let randomValue = Math.random() * totalWeight;
 
   // 遍历寻找命中区间
   for (const event of candidates) {

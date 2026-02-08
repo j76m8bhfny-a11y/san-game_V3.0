@@ -128,8 +128,7 @@ export const createShopSlice: StateCreator<StoreState, [], [], ShopSlice> = (set
 
       // === 💊 耐药性计算逻辑 (重构) ===
       // ✅ 重构 5: 提取算法参数到 JSON，实现完全数据驱动
-      // 防御性检查：确保 drugResistance 配置存在且启用
-      if (item.tags?.includes('DRUG') && finalHpGain > 0 && shopRules.drugResistance?.enable) {
+      if (item.tags.includes('DRUG') && finalHpGain > 0 && shopRules.drugResistance.enable) {
         const { divisor, minEffectiveness, thresholds, messages } = shopRules.drugResistance;
         const currentResistance = state.vitality.metrics.resistance || 0;
         

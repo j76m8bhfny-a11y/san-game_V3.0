@@ -44,7 +44,13 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
   },
 
   resolveEventOption: (optionId) => {
-    if (get().isMenuOpen) return;
+    if (get().isMenuOpen) {
+      const store = get() as any;
+      if (store.addNotification) {
+        store.addNotification("请关闭菜单后再做选择", 'warning');
+      }
+      return;
+    }
 
     const { currentEvent } = get();
     if (!currentEvent) return;
@@ -57,24 +63,60 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
 
   selectOption: (option: EventOption) => {
     const state = get() as GameState; 
-    const store = get() as any;      
+    const store = get() as any;
+    
+    // ✅ 计算动态金钱效果（根据 scaling 模式）
+    let actualGoldChange = option.effects.gold || 0;
+    const scaling = option.effects.scaling;
+    const currentClass = state.vitality.identity.currentClass;
+    
+    if (scaling && option.effects.gold) {
+      const baseAmount = option.effects.gold;
+      
+      switch (scaling) {
+        case 'LEVERAGE': {
+          // 阶级杠杆：不同阶级获得不同倍数的收益/损失
+          const leverageMap: Record<string, number> = {
+            'HOMELESS': 1,
+            'WORKER': 1.5,
+            'MIDDLE': 2,
+            'CAPITALIST': 3
+          };
+          const multiplier = leverageMap[currentClass] || 1;
+          actualGoldChange = Math.floor(baseAmount * multiplier);
+          break;
+        }
+        case 'INCOME': {
+          // 收入比例：基于当前金钱的比例（用于大额损失）
+          // baseAmount 是小数，如 -0.2 表示损失 20% 的当前金钱
+          actualGoldChange = Math.floor(state.vitality.metrics.gold * baseAmount);
+          break;
+        }
+        case 'FIXED':
+        default: {
+          // 固定值：直接使用配置的值
+          actualGoldChange = baseAmount;
+          break;
+        }
+      }
+    }
 
     // ✅ 修复【问题1-A】：先扣钱，再执行效果（防止"免费回血"漏洞）
     // 1. 先处理金钱支出（如果是支出的话）
-    if (option.effects.gold && option.effects.gold < 0) {
+    if (actualGoldChange < 0) {
       if (store.addTransaction) {
-        const txResult = store.addTransaction('MISC', option.effects.gold, `事件: ${option.label}`);
+        const txResult = store.addTransaction('MISC', actualGoldChange, `事件: ${option.label}`);
         if (!txResult.success) {
           store.addNotification("资金不足以执行此操作", 'error');
           return; // 钱不够，直接返回，不执行任何效果
         }
       } else {
         // 兜底：如果没有addTransaction，检查余额
-        if (state.vitality.metrics.gold < Math.abs(option.effects.gold)) {
+        if (state.vitality.metrics.gold < Math.abs(actualGoldChange)) {
           store.addNotification("资金不足以执行此操作", 'error');
           return;
         }
-        store.modifyStats({ gold: option.effects.gold });
+        store.modifyStats({ gold: actualGoldChange });
       }
     }
 
@@ -103,11 +145,11 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
     }
 
     // 3. 处理金钱收入（收入不需要检查余额）
-    if (option.effects.gold && option.effects.gold > 0) {
+    if (actualGoldChange > 0) {
       if (store.addTransaction) {
-        store.addTransaction('INCOME', option.effects.gold, `事件: ${option.label}`);
+        store.addTransaction('INCOME', actualGoldChange, `事件: ${option.label}`);
       } else {
-        store.modifyStats({ gold: option.effects.gold });
+        store.modifyStats({ gold: actualGoldChange });
       }
     }
     // 5. 监狱逻辑处理
@@ -297,7 +339,8 @@ export const createGameSlice: StateCreator<any, [], [], GameSlice> = (set, get) 
             ledger: { history: [] },
             flags: { 
                 ...INITIAL_STATE.flags, // 读取 isHomeless, debtTurns 等
-                hiddenTags: [] 
+                hiddenTags: [],
+                triggeredEvents: [] // ✅ 重置已触发事件列表（新游戏可重新触发所有事件）
             },
             activeJobs: []
         },

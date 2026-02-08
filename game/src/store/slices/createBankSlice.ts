@@ -3,7 +3,7 @@ import { BankState, LoanProduct, GameState, ActiveLoan } from '@/types/schema';
 import loansData from '@/assets/data/loans.json';
 import bankRules from '@/assets/data/rules/bankRules.json';
 
-const generateId = () => Math.random().toString(36).substring(2, 9);
+const generateId = () => `${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 5)}`;
 
 export interface BankSlice {
   bank: BankState;

@@ -285,7 +285,7 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
     { id: 'A', label: event.options.A.label, type: 'risk' },
     { id: 'B', label: event.options.B.label, type: 'safe' },
     { id: 'C', label: event.options.C.label, type: 'special' },
-    { id: 'D', label: event.options.D?.label, type: 'awakening' },
+    { id: 'D', label: event.options.D?.label || '', type: 'awakening' },
   ].filter(opt => opt.label);
 
   const descriptionText = san < 50 ? event.text.lowSan : event.text.highSan;

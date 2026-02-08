@@ -12,15 +12,23 @@ const getEventWeight = (event: GameEvent): number => {
   return typeof w === 'number' ? w : NARRATIVE_RULES.system.defaults.eventWeight;
 };
 
-// 随机获取符合条件的事件
+// 随机获取符合条件的事件（排除本轮已触发过的）
 const getRandomEvent = (state: GameState): GameEvent | null => {
   // 1. 类型断言
   const allEvents = eventsData as unknown as GameEvent[];
   const currentClass = state.vitality.identity.currentClass;
+  
+  // 获取本轮已触发的事件ID列表
+  const triggeredEvents = state.vitality.flags?.triggeredEvents || [];
 
   // 2. 筛选候选池 (Pool Filter)
   const candidates = allEvents.filter(event => {
-    // A. 阶级过滤 (Class Filter) - 核心逻辑
+    // A. 排除已触发过的事件（本轮游戏不重复）
+    if (triggeredEvents.includes(event.id)) {
+      return false;
+    }
+    
+    // B. 阶级过滤 (Class Filter) - 核心逻辑
     // 如果事件定义了 requiredClass，则必须包含当前阶级
     // 如果没定义，视为通用事件
     if (event.conditions?.requiredClass) {
@@ -29,7 +37,7 @@ const getRandomEvent = (state: GameState): GameEvent | null => {
         }
     }
 
-    // B. 条件检查 (Condition Check)
+    // C. 条件检查 (Condition Check)
     // 检查属性、区域、前置事件等
     return checkCondition(state, event.conditions);
   });
@@ -76,9 +84,19 @@ export const EventSystem: GameSystem = {
     if (event) {
       // ✅ 修复 2: 使用正确的状态字段名 currentEvent
       // 同时设置 isEventOpen: true 以打开 UI
+      // ✅ 新增: 将事件ID添加到已触发列表，防止本轮重复
+      const triggeredEvents = state.vitality.flags?.triggeredEvents || [];
+      
       result.updates = {
         currentEvent: event,
-        isEventOpen: true
+        isEventOpen: true,
+        vitality: {
+          ...state.vitality,
+          flags: {
+            ...state.vitality.flags,
+            triggeredEvents: [...triggeredEvents, event.id]
+          }
+        }
       } as any;
 
       result.logs.push(`触发事件: ${event.title}`);

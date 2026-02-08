@@ -123,7 +123,7 @@ export const BankSystem: GameSystem = {
              
              if (seizeAmount > 0) {
                result.newTransactions!.push({
-                 id: `${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 9)}`,
+                 id: `${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 5)}`,
                  turn: currentTurn,
                  category: 'BANK',
                  amount: -seizeAmount,

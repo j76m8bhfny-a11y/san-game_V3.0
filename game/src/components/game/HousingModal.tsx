@@ -12,7 +12,11 @@ interface HousingModalProps {
 }
 
 export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) => {
-  console.log(`🏠 [DEBUG] HousingModal rendering with isOpen: ${isOpen}`);
+  // [DEBUG] 仅在开发环境输出日志
+  // @ts-ignore - Vite 环境变量
+  if (import.meta.env?.DEV) {
+    console.log(`🏠 [DEBUG] HousingModal rendering with isOpen: ${isOpen}`);
+  }
   
   const {
     gameDataCache, 
@@ -55,10 +59,9 @@ export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) =
     }
   };
 
-  // 获取当前持有的房产
-  const currentHousing = activeHousing;
+  // 直接使用 activeHousing（已从 store 中解构）
   // 判断是否在当前区域有房
-  const hasHousingInCurrentRegion = currentHousing?.region === currentRegion;
+  const hasHousingInCurrentRegion = activeHousing?.region === currentRegion;
 
   const handleMoveOut = () => {
     playSfx('sfx_click');
@@ -98,7 +101,7 @@ export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) =
           ) : (
             availableHousing.map((house: Housing) => {
               // 判断是否持有此房产
-              const isCurrent = hasHousingInCurrentRegion && currentHousing?.definitionId === house.id;
+              const isCurrent = hasHousingInCurrentRegion && activeHousing?.definitionId === house.id;
 
               // 提取配置 (优先判断是否拥有买/租配置)
               const rentConfig = house.rentConfig;
@@ -214,12 +217,12 @@ export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) =
                     ) : (
                       <>
                         {/* 如果已在其他区域有房，显示提示 */}
-                        {currentHousing ? (
+                        {activeHousing ? (
                           <button 
                             disabled
                             className="w-full py-3 bg-gray-800 text-gray-500 cursor-not-allowed border border-gray-700 text-sm font-bold tracking-wider"
                           >
-                            已有住所 ({currentHousing.region}) - 请先搬离
+                            已有住所 ({activeHousing.region}) - 请先搬离
                           </button>
                         ) : (
                           <>

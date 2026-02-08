@@ -7,7 +7,7 @@ import newsData from '@/assets/data/news.json';
 // ✅ 1. 引入配置文件 (Source of Truth)
 import marketRules from '@/assets/data/rules/marketRules.json';
 
-const generateId = () => Math.random().toString(36).substring(2, 9);
+const generateId = () => `${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 5)}`;
 
 export interface CryptoSlice {
   crypto: {

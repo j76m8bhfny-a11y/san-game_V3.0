@@ -27,7 +27,7 @@ export const BillSystem: GameSystem = {
     // =================================================================
 
     const vehicleTags = (state.inventory || [])
-      .map((id: string) => (Config.items as any[]).find(i => i.id === id)?.tags || [])
+      .map((id: string) => (Config.items as unknown as Array<{id: string; tags: string[]}>).find(i => i.id === id)?.tags || [])
       .flat()
       .filter((t: string) => t.startsWith('VEHICLE'));
 
@@ -57,15 +57,7 @@ export const BillSystem: GameSystem = {
     }
     logs.push(`收到账单: ${bill.name} (${finalAmount} Gold)`);
 
-    newTransactions.push({
-      id: `${Date.now().toString(36)}-${Math.random().toString(36).substring(2, 9)}`,
-      turn: state.vitality.time.currentTurn,
-      category: 'BILL',
-      amount: finalAmount,
-      description: `账单: ${bill.name}`,
-      timestamp: Date.now()
-    });
-
+    // ✅ 修复变量顺序：先构建 result，再引用
     const result: SystemResult = {
       updates: {
         activeBill: bill,
@@ -76,10 +68,35 @@ export const BillSystem: GameSystem = {
           } as Partial<VitalityMetrics>
         } as any 
       },
-      newTransactions, 
+      newTransactions: [], // 先空数组，后面再添加
       logs,
       notes
     };
+    
+    // ✅ 获取前置系统可能已更新的 HP/SAN 最新值
+    const currentHp = (result.updates?.vitality?.metrics?.hp as number) ?? metrics.hp;
+    const currentSan = (result.updates?.vitality?.metrics?.san as number) ?? metrics.san;
+    
+    // 更新 HP/SAN（累加模式）
+    result.updates.vitality = {
+      metrics: {
+        hp: currentHp + (bill.effects?.hp || 0),
+        san: currentSan + (bill.effects?.san || 0),
+      } as Partial<VitalityMetrics>
+    } as any;
+    
+    // ✅ 修复：奖励账单（正数金额）使用 INCOME 分类，扣款账单使用 BILL 分类
+    const isReward = finalAmount > 0;
+    newTransactions.push({
+      id: `${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 5)}`,
+      turn: state.vitality.time.currentTurn,
+      category: isReward ? 'INCOME' : 'BILL',
+      amount: finalAmount,
+      description: isReward ? `奖励: ${bill.name}` : `账单: ${bill.name}`,
+      timestamp: Date.now()
+    });
+    
+    result.newTransactions = newTransactions;
 
     return result;
   }

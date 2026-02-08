@@ -11,24 +11,22 @@ import {
 } from '@/utils/dataLoader';
 
 export interface SystemSlice {
-  _hasHydrated: boolean;
   gameDataCache: any; 
   gameDataLoadFailed: boolean; // ✅ 新增：数据加载失败标志
   
-  setHydrated: () => void;
   initializeData: (data?: any) => Promise<void>;
   getShopItems: () => Item[]; 
 }
 
 export const createSystemSlice: StateCreator<any, [], [], SystemSlice> = (set, get) => ({
-  _hasHydrated: false,
   gameDataCache: null,
   gameDataLoadFailed: false, // ✅ 新增：初始为false
 
-  setHydrated: () => set({ _hasHydrated: true }),
-
   initializeData: async (preloadedData?: any) => {
-    if (get().gameDataCache) return;
+    if (get().gameDataCache) {
+      console.log('[System] Data already initialized, skipping...');
+      return;
+    }
     
     try {
       const data = preloadedData || await loadAllGameData();
@@ -71,7 +69,7 @@ export const createSystemSlice: StateCreator<any, [], [], SystemSlice> = (set, g
       // 带有 POOR_ONLY 标签的商品（高利贷等），只有余额<0时才显示
       // 这是设计意图：你越穷，越能接触到非法贷款
       if (item.price < 0) {
-          const isPoorOnlyItem = item.tags.includes('POOR_ONLY') || item.tags.includes('DEBT_ONLY');
+          const isPoorOnlyItem = item.tags?.includes('POOR_ONLY') || item.tags?.includes('DEBT_ONLY');
           if (isPoorOnlyItem && gold >= 0) return false; // 有钱就看不到
       }
       return true; 

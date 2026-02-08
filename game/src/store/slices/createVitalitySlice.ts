@@ -89,8 +89,9 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
         activeDiseases: [],
         ledger: { history: [] },
         flags: { 
-        ...INITIAL_STATE.flags, 
-        hiddenTags: [] 
+          ...INITIAL_STATE.flags, 
+          hiddenTags: [],
+          triggeredEvents: [] // ✅ 新游戏重置已触发事件列表
         },
         activeJobs: []
       },
@@ -194,7 +195,7 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
           (oldClass === PlayerClass.Worker && (newClass === PlayerClass.Middle || newClass === PlayerClass.Capitalist)) ||
           (oldClass === PlayerClass.Middle && newClass === PlayerClass.Capitalist);
         
-        store.addNotification(`${isUpgrade ? '⬆️' : '⬇️'} ${desc} (${reason})`, isUpgrade ? 'success' : 'warning');
+        store.addNotification(`${isUpgrade ? '⬆️' : '⬇️'} ${desc} (资产: $${netWorth.toLocaleString()})`, isUpgrade ? 'success' : 'warning');
       }
       
       return { changed: true, oldClass, newClass, netWorth, reason };
@@ -337,6 +338,10 @@ export const createVitalitySlice: StateCreator<any, [], [], VitalitySlice> = (se
   })),
 
   advanceTurn: () => set((state: any) => {
+    // 防御性检查：确保疾病数据已加载
+    if (!state.gameDataCache?.diseases) {
+      console.warn('[Vitality] gameDataCache.diseases 未初始化，跳过疾病检查');
+    }
     const allDiseases = state.gameDataCache?.diseases || [];
     
     // 检查是否患上新疾病

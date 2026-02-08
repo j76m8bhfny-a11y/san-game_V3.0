@@ -38,6 +38,11 @@ export interface PlayerSlice {
   ending: string | null;
 
   // --- Actions ---
+  /**
+   * 更新玩家状态（浅合并）
+   * ⚠️ 注意：此方法只合并第一层属性，嵌套对象会被完全覆盖
+   * 如需更新深层属性（如 vitality.metrics），请使用专门的 Slice 方法
+   */
   updatePlayerStats: (updates: Partial<PlayerSlice>) => void;
   triggerEnding: (endingId: string) => void;
   resetPlayerState: () => void;
@@ -49,12 +54,27 @@ export interface PlayerSlice {
 export const createPlayerSlice: StateCreator<any, [], [], PlayerSlice> = (set, get) => ({
   ...INITIAL_PLAYER_STATE,
 
-  // 使用深度合并更新状态，避免意外覆盖嵌套对象
+  /**
+   * 安全更新 PlayerSlice 的状态字段
+   * ⚠️ 只允许更新 PlayerSlice 定义的字段，禁止传入 vitality、bank 等其他 Slice 的字段
+   */
   updatePlayerStats: (updates) => set((state: any) => {
+    // 定义 PlayerSlice 允许的字段白名单
+    const allowedKeys = [
+      'currentRegion', 'activeHousing', 'activeInsurance', 
+      'inventory', 'history', 'unlockedArchives', 'achievedEndings', 'ending'
+    ];
+    
     const merged = { ...state };
     for (const key in updates) {
+      // 安全检查：只允许更新 PlayerSlice 的字段
+      if (!allowedKeys.includes(key)) {
+        console.warn(`[PlayerSlice] 禁止通过 updatePlayerStats 更新 '${key}'，请使用对应的 Slice 方法`);
+        continue;
+      }
+      
       const value = (updates as any)[key];
-      // 如果是对象且不是数组，则深度合并
+      // 如果是对象且不是数组，则浅合并
       if (value && typeof value === 'object' && !Array.isArray(value) &&
           merged[key] && typeof merged[key] === 'object' && !Array.isArray(merged[key])) {
         merged[key] = { ...merged[key], ...value };

@@ -91,7 +91,7 @@ export const HousingSystem: GameSystem = {
       // 费用扣除
       costs.forEach((cost, index) => {
         result.newTransactions!.push({
-          id: `${Date.now()}-${index}-${Math.random().toString(36).substr(2, 9)}`,
+          id: `${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 5)}_${index}`,
           turn: vitality.time.currentTurn,
           category: 'HOUSING',
           amount: -cost.baseAmount,
@@ -117,7 +117,7 @@ export const HousingSystem: GameSystem = {
 
           if (currentGold >= totalCost + totalMortgagePayment) {
             result.newTransactions!.push({
-              id: `${Date.now()}-mortgage-${Math.random().toString(36).substr(2, 9)}`,
+              id: `${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 5)}_mortgage`,
               turn: vitality.time.currentTurn,
               category: 'BANK',
               amount: -totalMortgagePayment,

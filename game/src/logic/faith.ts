@@ -80,10 +80,10 @@ export const calculateRiteOutcome = (
   // ==========================
   // 1. 消耗判定 (Pre-check)
   // ==========================
-  if (rite.hpCost && metrics.hp <= rite.hpCost) {
+  if (rite.hpCost && metrics.hp < rite.hpCost) {
     return { success: false, message: "体力不足，无法进行仪式。", goldChange: 0 };
   }
-  if (rite.sanCost && metrics.san <= rite.sanCost) {
+  if (rite.sanCost && metrics.san < rite.sanCost) {
     return { success: false, message: "精神状态不佳，无法集中精力。", goldChange: 0 };
   }
 

@@ -205,6 +205,11 @@ export const calculateBillMitigation = (
   let reason = '';
   let mitigated = false;
 
+  // ✅ 奖励账单（正数金额）不适用减免逻辑
+  if (finalAmount > 0) {
+    return { finalAmount, mitigated: false };
+  }
+
   if (bill.type === 'MEDICAL' && insurance) {
     const { copayModifier } = insurance.coverage;
     

@@ -112,7 +112,7 @@ export const JobSystem: GameSystem = {
       }
 
       result.newTransactions!.push({
-        id: Math.random().toString(),
+        id: `${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 5)}`,
         turn: vitality.time.currentTurn,
         category: 'INCOME',
         amount: actualSalary,
@@ -126,7 +126,7 @@ export const JobSystem: GameSystem = {
       if (currentSan > highSanThreshold && Math.random() < probability) {
         const penalty = Math.floor(job.baseSalary * penaltyRate);
         result.newTransactions!.push({
-          id: Math.random().toString(),
+          id: `${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 5)}`,
           turn: vitality.time.currentTurn,
           category: 'MISC',
           amount: -penalty,

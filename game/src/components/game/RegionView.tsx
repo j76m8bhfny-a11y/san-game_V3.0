@@ -31,7 +31,7 @@ export const RegionView: React.FC = () => {
       <LayeredScene 
         bgImage={bgImage}
         eventImage={currentEvent?.eventImage}
-        isGlitch={currentEvent?.options?.D?.isGlitched}
+        isGlitch={currentEvent?.options?.D?.isGlitched ?? false}
       />
 
       {!currentEvent && (

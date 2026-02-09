@@ -24,7 +24,7 @@ export const SceneManager: React.FC = () => {
     case RegionID.RustBelt:
       return <RustBeltScene />;
     case RegionID.Suburbs:
-      return <SuburbsScene />;
+      return <PlaceholderScene name="SUBURBS" />;
     case RegionID.Downtown:
       return <PlaceholderScene name="DOWNTOWN" />;
       

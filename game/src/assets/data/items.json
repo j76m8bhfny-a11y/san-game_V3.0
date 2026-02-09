@@ -147,8 +147,58 @@
     "type": "PASSIVE",
     "price": 2000,
     "regions": ["SUBURBS"],
-    "tags": ["VEHICLE"],
+    "tags": ["VEHICLE_T2"],
     "flavorText": "自由的象征，或者只是堵在路上的资格。"
+  },
+  {
+    "id": "CAR_JUNK",
+    "name": "破皮卡",
+    "type": "PASSIVE",
+    "price": 800,
+    "regions": ["RUST_BELT", "SLUMS"],
+    "effects": { "san": -2 },
+    "tags": ["VEHICLE_T1"],
+    "flavorText": "锈迹斑斑，但至少四个轮子还能转。每次启动都像是在赌博。"
+  },
+  {
+    "id": "CAR_USED",
+    "name": "二手轿车",
+    "type": "PASSIVE",
+    "price": 3500,
+    "regions": ["RUST_BELT", "SUBURBS"],
+    "effects": { "san": 3 },
+    "tags": ["VEHICLE_T2"],
+    "flavorText": "前任车主可能死在里面了，但你宁愿相信只是烟味。"
+  },
+  {
+    "id": "CAR_SUV",
+    "name": "家用SUV",
+    "type": "PASSIVE",
+    "price": 8000,
+    "regions": ["SUBURBS"],
+    "effects": { "san": 8 },
+    "tags": ["VEHICLE_T2"],
+    "flavorText": "中产阶级的标准配置。空间大到能装下你的全部梦想和债务。"
+  },
+  {
+    "id": "CAR_SPORTS",
+    "name": "跑车",
+    "type": "PASSIVE",
+    "price": 25000,
+    "regions": ["DOWNTOWN"],
+    "effects": { "san": 15 },
+    "tags": ["VEHICLE_T3"],
+    "flavorText": "速度可以杀死烦恼，也可以杀死你。但你只关心路人羡慕的目光。"
+  },
+  {
+    "id": "CAR_LUXURY",
+    "name": "豪华轿车",
+    "type": "PASSIVE",
+    "price": 50000,
+    "regions": ["DOWNTOWN"],
+    "effects": { "san": 25 },
+    "tags": ["VEHICLE_T4"],
+    "flavorText": "真皮座椅，车载香槟，还有你无处安放的优越感。"
   },
   {
     "id": "FOOD_CAN",

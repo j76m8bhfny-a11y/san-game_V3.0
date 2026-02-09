@@ -72,7 +72,14 @@ export const createShopSlice: StateCreator<StoreState, [], [], ShopSlice> = (set
       return;
     }
 
-    // 2. 执行交易 (核心：走账本)
+    // 2. 检查车辆唯一性（已拥有的车辆不能重复购买）
+    const isVehicle = item.tags?.some((tag: string) => tag.startsWith('VEHICLE'));
+    if (isVehicle && state.inventory.includes(item.id)) {
+      state.addNotification("你已经拥有这辆车了", "warning");
+      return;
+    }
+
+    // 3. 执行交易 (核心：走账本)
     // ✅ 重构 3: 动态账本分类映射 (代替硬编码的 if-else)
     let category: LedgerCategory = 'MISC';
     // 遍历配置规则，找到第一个匹配 Item Tag 的分类

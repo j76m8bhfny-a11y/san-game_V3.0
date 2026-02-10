@@ -9,8 +9,8 @@ import hospitalData from '@/assets/data/hospital_services.json';
 // ✅ 1. 引入特定阶级的医疗组件
 import { SlumsMedical } from './medical/SlumsMedical';
 import { RustBeltMedical } from './medical/RustBeltMedical'; // (待开发)
-import { SuburbsMedical } from './medical/SuburbsMedical'; // (待开发)
-import { DowntownMedical } from './medical/DowntownMedical'; // (待开发)
+// import { SuburbsMedical } from './medical/SuburbsMedical'; // (待开发)
+// import { DowntownMedical } from './medical/DowntownMedical'; // (待开发)
 
 // ==========================================
 // 主入口组件 (路由分发器)
@@ -29,10 +29,10 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
     // 后续开发完成后解开注释：
     case RegionID.RustBelt:
       return <RustBeltMedical onClose={onClose} />;
-    case RegionID.Suburbs:
-      return <SuburbsMedical onClose={onClose} />;
-    case RegionID.Downtown:
-      return <DowntownMedical onClose={onClose} />;
+    // case RegionID.Suburbs:
+    //   return <SuburbsMedical onClose={onClose} />;
+    // case RegionID.Downtown:
+    //   return <DowntownMedical onClose={onClose} />;
 
     default:
       // 其他区域（或未开发的区域）使用通用的默认医院界面

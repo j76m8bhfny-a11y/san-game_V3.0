@@ -7,8 +7,9 @@ import { SlumsHousing } from './housing/SlumsHousing';
 import { RustBeltHousing } from './housing/RustBeltHousing'; // 引入组件
 
 // 如果你以后做好了其他区域的组件，就在这里引入
-import { SuburbsHousing } from './housing/SuburbsHousing';
-import { DowntownHousing } from './housing/DowntownHousing';
+// import { RustBeltHousing } from './housing/RustBeltHousing';
+// import { SuburbsHousing } from './housing/SuburbsHousing';
+// import { DowntownHousing } from './housing/DowntownHousing';
 
 interface HousingModalProps {
   isOpen: boolean;
@@ -30,11 +31,11 @@ export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) =
     case RegionID.RustBelt:
        return <RustBeltHousing onClose={onClose} />;
 
-    case RegionID.Suburbs:
-      return <SuburbsHousing onClose={onClose} />;
+    // case RegionID.Suburbs:
+    //   return <SuburbsHousing onClose={onClose} />;
 
-    case RegionID.Downtown:
-      return <DowntownHousing onClose={onClose} />;
+    // case RegionID.Downtown:
+    //   return <DowntownHousing onClose={onClose} />;
     
     default:
       // 对于还没完成 UI 设计的区域，显示一个临时占位符

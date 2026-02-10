@@ -9,7 +9,6 @@ interface InteractableProps {
   baseImage: string;
   hoverImage: string;
   onClick: () => void;
-  soundEffect?: string;
 }
 
 const InteractableObject: React.FC<InteractableProps> = ({ 

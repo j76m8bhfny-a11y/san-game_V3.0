@@ -14,12 +14,14 @@ export const BaseScene: React.FC<BaseSceneProps> = ({ children, className = '', 
     const handleMouseMove = (e: MouseEvent) => {
       if (!containerRef.current) return;
       
-      const { innerWidth } = window;
+      const { innerWidth, innerHeight } = window;
       // 计算鼠标相对于屏幕中心的偏移量 (-0.5 到 0.5)
       const xOffset = (e.clientX / innerWidth) - 0.5;
+      const yOffset = (e.clientY / innerHeight) - 0.5;
       
       // 更新 CSS 变量
       containerRef.current.style.setProperty('--mouse-x', xOffset.toString());
+      containerRef.current.style.setProperty('--mouse-y', yOffset.toString());
     };
 
     window.addEventListener('mousemove', handleMouseMove);
@@ -48,8 +50,11 @@ export const ParallaxLayer: React.FC<{
     <div 
       className={`absolute inset-0 flex items-center justify-center transition-transform duration-100 ease-out will-change-transform ${className}`}
       style={{
-        // 核心公式：偏移量 = 鼠标位置 * 深度 * 基础强度 * 像素系数
-        transform: `translateX(calc(var(--mouse-x, 0) * ${depth * -150}px))`
+        // 核心公式：偏移量 = 鼠标位置 * 深度 * 强度系数
+        transform: `translate(
+          calc(var(--mouse-x, 0) * ${depth * -150 * (depth > 0.5 ? 1.2 : 1)}px),
+          calc(var(--mouse-y, 0) * ${depth * -50}px)
+        )`
       }}
     >
       {children}

@@ -1,0 +1,251 @@
+import React, { useState } from 'react';
+import { LoanProduct, ActiveLoan } from '@/types/schema';
+import { RustBeltLoanClipboard } from './RustBeltLoanClipboard';
+
+interface Props {
+  gold: number;
+  products: LoanProduct[];
+  activeLoans: ActiveLoan[];
+  currentTurn: number;
+  onTakeLoan: (productId: string) => void;
+  onRepayLoan: (loanId: string) => void;
+  onMakeInstallment: (loanId: string, amount: number) => { success: boolean; message: string; };
+  onClose: () => void;
+}
+
+export const RustBeltBankInterior: React.FC<Props> = ({ 
+  gold, products, activeLoans, currentTurn, onTakeLoan, onRepayLoan, onMakeInstallment, onClose 
+}) => {
+  const [stampAnim, setStampAnim] = useState(false);
+  const [cashAnim, setCashAnim] = useState(false);
+  const [repayAmount, setRepayAmount] = useState<Record<string, number>>({});
+
+  const handleSign = (id: string) => {
+    setStampAnim(true);
+    setTimeout(() => {
+      onTakeLoan(id);
+      setStampAnim(false);
+    }, 600);
+  };
+
+  const handleRepay = (id: string) => {
+    setCashAnim(true);
+    setTimeout(() => {
+      onRepayLoan(id);
+      setCashAnim(false);
+    }, 800);
+  };
+
+  // 获取贷款状态
+  const getLoanStatus = (loan: ActiveLoan) => {
+    const weeksLeft = loan.dueTurn - currentTurn;
+    const isOverdue = weeksLeft < 0;
+    const overdueWeeks = isOverdue ? Math.abs(weeksLeft) : 0;
+    
+    if (isOverdue) {
+      if (loan.isMortgage && overdueWeeks >= 4) {
+        return { label: '即将收房', color: 'text-red-600', bgColor: 'bg-red-100', borderColor: 'border-red-400' };
+      }
+      if (overdueWeeks <= 1) return { label: `逾期 ${overdueWeeks} 周`, color: 'text-yellow-700', bgColor: 'bg-yellow-50', borderColor: 'border-yellow-300' };
+      if (overdueWeeks <= 3) return { label: '暴力催收中', color: 'text-orange-700', bgColor: 'bg-orange-50', borderColor: 'border-orange-300' };
+      return { label: '强制划扣风险', color: 'text-red-600', bgColor: 'bg-red-50', borderColor: 'border-red-400' };
+    }
+    if (weeksLeft <= 2) return { label: `${weeksLeft} 周后到期`, color: 'text-amber-700', bgColor: 'bg-amber-50', borderColor: 'border-amber-300' };
+    return { label: `${weeksLeft} 周后到期`, color: 'text-gray-600', bgColor: 'bg-gray-50', borderColor: 'border-gray-300' };
+  };
+
+  // 获取逾期警告文本
+  const getSkipWarning = (loan: ActiveLoan) => {
+    const weeksLeft = loan.dueTurn - currentTurn;
+    const isOverdue = weeksLeft < 0;
+    const overdueWeeks = isOverdue ? Math.abs(weeksLeft) : 0;
+    
+    if (!isOverdue) {
+      if (weeksLeft === 0) return '⚠️ 今天到期！请尽快还款';
+      if (weeksLeft <= 2) return `⚠️ 还剩 ${weeksLeft} 周到期`;
+      return null;
+    }
+    
+    if (loan.isMortgage) {
+      if (overdueWeeks >= 4) return '🔴 房贷严重逾期！银行将收回您的房产';
+      if (overdueWeeks >= 2) return '🟠 房贷逾期！请立即联系银行';
+      return '🟡 房贷逾期！避免信用受损';
+    }
+    
+    if (overdueWeeks >= 8) return '🔴 严重逾期！可能面临法律诉讼';
+    if (overdueWeeks >= 4) return '🟠 银行可能直接从账户划扣资金';
+    if (overdueWeeks >= 2) return '🟠 催收部门已介入，将影响身心健康';
+    return '🟡 首次逾期！请尽快还款避免进一步措施';
+  };
+
+  // 处理部分还款
+  const handlePartialRepay = (loan: ActiveLoan) => {
+    const amount = repayAmount[loan.id] || 0;
+    if (amount <= 0) return;
+    setCashAnim(true);
+    setTimeout(() => {
+      const result = onMakeInstallment(loan.id, amount);
+      if (result.success) {
+        setRepayAmount(prev => ({ ...prev, [loan.id]: 0 }));
+      }
+      setCashAnim(false);
+    }, 800);
+  };
+
+  // 计算总欠款
+  const getTotalOwed = (loan: ActiveLoan) => loan.principal + loan.interest;
+
+  return (
+    <div className="relative w-full h-full flex flex-col items-center justify-center select-none bg-[#e5e7eb] overflow-hidden">
+      
+      {/* 1. 背景：柜台 */}
+      <div 
+        className="absolute inset-0 z-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/assets/bank/rust_bank_interior.jpg')" }}
+      >
+        <div className="absolute inset-0 bg-white/20" />
+      </div>
+
+      {/* 2. 柜台玻璃隔断 */}
+      <div className="absolute bottom-0 w-full h-1/2 bg-gradient-to-t from-black/10 to-transparent pointer-events-none z-10" />
+
+      {/* 3. 核心交互区：两个窗口 */}
+      <div className="relative z-20 w-full max-w-5xl h-full flex pt-20 px-10 gap-20">
+        
+        {/* 左侧：申请区 (Forms) */}
+        <div className="flex-1 flex flex-col">
+          <div className="bg-blue-900 text-white px-4 py-2 w-fit mb-4 shadow-md font-bold text-sm transform -rotate-1">
+            LOAN APPLICATIONS
+          </div>
+          
+          <div className="flex-1 overflow-y-auto custom-scrollbar p-2 space-y-4 pb-20">
+            {products.map(product => (
+              <RustBeltLoanClipboard
+                key={product.id}
+                product={product}
+                canAfford={true}
+                onSign={() => handleSign(product.id)}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* 右侧：还款区 (Teller Window) */}
+        <div className="flex-1 flex flex-col items-end">
+          <div className="bg-red-800 text-white px-4 py-2 w-fit mb-4 shadow-md font-bold text-sm transform rotate-1">
+            PAYMENTS & TELLER
+          </div>
+
+          <div className="w-full bg-white/80 backdrop-blur-sm border-4 border-gray-300 p-4 rounded-lg shadow-xl h-[60%] overflow-y-auto custom-scrollbar relative">
+             <h3 className="text-xs font-bold text-gray-500 uppercase mb-2 border-b border-gray-300 pb-1">
+               Outstanding Debts
+             </h3>
+             
+             {activeLoans.length === 0 ? (
+               <div className="text-center text-gray-400 mt-10 text-sm">No active debts.</div>
+             ) : (
+               <div className="space-y-3">
+                 {activeLoans.map(loan => {
+                   const status = getLoanStatus(loan);
+                   const warning = getSkipWarning(loan);
+                   const totalOwed = getTotalOwed(loan);
+                   return (
+                     <div key={loan.id} className={`${status.bgColor} border ${status.borderColor} p-3 shadow-sm relative`}>
+                       {/* 头部：产品名称、状态和金额 */}
+                       <div className="flex justify-between font-mono text-sm font-bold text-gray-800">
+                         <span>{loan.productId}</span>
+                         <span>${totalOwed.toLocaleString()}</span>
+                       </div>
+                       
+                       {/* 状态标签 */}
+                       <div className={`text-[10px] ${status.color} mt-1 font-bold`}>
+                         {status.label}
+                       </div>
+                       
+                       {/* 本金利息明细 */}
+                       <div className="text-[10px] text-gray-500 mt-1">
+                         Principal: ${loan.principal.toLocaleString()} | Interest: ${loan.interest.toLocaleString()}
+                       </div>
+                       
+                       {/* 警告提示 */}
+                       {warning && (
+                         <div className="text-[10px] text-red-600 mt-2 bg-red-50 p-1.5 border border-red-200">
+                           {warning}
+                         </div>
+                       )}
+                       
+                       {/* 部分还款输入 */}
+                       <div className="flex gap-2 mt-2">
+                         <input
+                           type="number"
+                           value={repayAmount[loan.id] || ''}
+                           onChange={(e) => setRepayAmount(prev => ({ ...prev, [loan.id]: Math.max(0, parseInt(e.target.value) || 0) }))}
+                           placeholder="Payment Amount"
+                           className="flex-1 bg-white border border-gray-300 text-gray-800 text-xs px-2 py-1 focus:outline-none focus:border-blue-500 font-mono"
+                         />
+                         <button
+                           onClick={() => setRepayAmount(prev => ({ ...prev, [loan.id]: Math.min(gold, totalOwed) }))}
+                           className="text-[10px] text-blue-600 hover:text-blue-800 underline font-bold px-1"
+                         >
+                           FULL
+                         </button>
+                       </div>
+                       
+                       {/* 还款按钮 */}
+                       <div className="flex gap-2 mt-2">
+                         <button
+                           onClick={() => handlePartialRepay(loan)}
+                           disabled={gold < (repayAmount[loan.id] || 0) || (repayAmount[loan.id] || 0) <= 0}
+                           className="flex-1 bg-blue-700 hover:bg-blue-600 disabled:bg-gray-400 text-white text-[10px] font-bold py-1 uppercase"
+                         >
+                           Partial Pay
+                         </button>
+                         <button
+                           onClick={() => handleRepay(loan.id)}
+                           disabled={gold < totalOwed}
+                           className="flex-1 bg-green-700 hover:bg-green-600 disabled:bg-gray-400 text-white text-[10px] font-bold py-1 uppercase"
+                         >
+                           Pay Full
+                         </button>
+                       </div>
+                     </div>
+                   );
+                 })}
+               </div>
+             )}
+             
+             {/* 现金放入动画 */}
+             {cashAnim && (
+               <div className="absolute inset-0 flex items-center justify-center z-50 bg-white/50">
+                 <img src="/assets/bank/ui_money_hand.png" className="w-32 animate-slide-out-up" />
+               </div>
+             )}
+          </div>
+        </div>
+      </div>
+
+      {/* 4. 全局动画层 (印章) */}
+      {stampAnim && (
+        <div className="absolute inset-0 flex items-center justify-center z-50 pointer-events-none">
+          <div className="text-red-600 font-black text-6xl border-8 border-red-600 px-8 py-4 transform -rotate-12 opacity-0 animate-stamp">
+            APPROVED
+          </div>
+        </div>
+      )}
+
+      {/* 5. 底部栏 */}
+      <div className="absolute bottom-0 w-full h-16 bg-[#333] border-t-4 border-gray-500 flex items-center justify-between px-8 z-30">
+        <div className="text-white font-mono text-xs">
+          WALLET: <span className="text-green-400">${gold}</span>
+        </div>
+        <button 
+          onClick={onClose}
+          className="text-gray-400 hover:text-white text-xs font-bold uppercase"
+        >
+          Exit Lobby
+        </button>
+      </div>
+
+    </div>
+  );
+};

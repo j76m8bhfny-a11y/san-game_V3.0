@@ -1,0 +1,52 @@
+import React from 'react';
+import { LoanProduct } from '@/types/schema';
+
+interface Props {
+  product: LoanProduct;
+  canAfford: boolean; // 这里指是否有资格申请（虽然贫民窟通常无视信用）
+  onSign: () => void;
+}
+
+export const SlumsLoanPaper: React.FC<Props> = ({ product, canAfford, onSign }) => {
+  return (
+    <div 
+      onClick={canAfford ? onSign : undefined}
+      className={`
+        relative w-full h-32 bg-[#f3e5ab] shadow-md transform rotate-1 cursor-pointer transition-all duration-200 group
+        ${canAfford ? 'hover:scale-105 hover:-rotate-1 hover:shadow-xl' : 'opacity-60 grayscale cursor-not-allowed'}
+      `}
+    >
+      {/* 纸张污渍 */}
+      <div className="absolute top-2 right-4 w-8 h-8 bg-yellow-900/10 rounded-full blur-md" />
+      <div className="absolute bottom-4 left-10 w-12 h-4 bg-black/5 rotate-3" />
+
+      {/* 胶带固定 */}
+      <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-4 bg-yellow-600/50 rotate-2" />
+
+      <div className="p-3 font-mono text-xs text-gray-800 flex flex-col h-full justify-between">
+        <div className="border-b-2 border-black pb-1 mb-1 flex justify-between items-center">
+          <span className="font-bold uppercase text-red-800">QUICK CASH</span>
+          <span className="bg-black text-white px-1 text-[8px]">INSTANT</span>
+        </div>
+
+        <div className="text-center">
+          <div className="text-[10px] text-gray-600">GET</div>
+          <div className="text-2xl font-black text-green-800 leading-none">${product.amount}</div>
+        </div>
+
+        <div className="flex justify-between items-end mt-1 text-[9px] leading-tight">
+          <div>
+            <div>PAY BACK: <span className="font-bold text-red-700">${Math.ceil(product.amount * (1 + product.interestRate))}</span></div>
+            <div className="text-gray-500">in {product.termDays} days</div>
+          </div>
+          <div className={`
+            font-bold px-2 py-1 border border-black transform -rotate-6
+            ${canAfford ? 'bg-red-600 text-white group-hover:bg-red-500' : 'bg-gray-400 text-gray-200'}
+          `}>
+            {canAfford ? 'TAKE IT' : 'DENIED'}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};

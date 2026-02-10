@@ -6,9 +6,9 @@ import { RegionID } from '@/types/schema';
 import { SlumsFaith } from './faith/SlumsFaith';
 
 // 引入其他阶级的组件 (占位符，后续逐步实现)
-import { RustBeltFaith } from './faith/RustBeltFaith';
-import { SuburbsFaith } from './faith/SuburbsFaith';
-import { DowntownFaith } from './faith/DowntownFaith';
+// import { RustBeltFaith } from './faith/RustBeltFaith';
+// import { SuburbsFaith } from './faith/SuburbsFaith';
+// import { DowntownFaith } from './faith/DowntownFaith';
 
 export const FaithSidebar: React.FC = () => {
   const { isFaithOpen, setFaithOpen, currentRegion } = useGameStore();
@@ -26,16 +26,18 @@ export const FaithSidebar: React.FC = () => {
       
       case RegionID.RustBelt:
         // 工人区 -> 路边福音堂 (狂热与捐献)
-        return <RustBeltFaith onClose={handleClose} />;
-        
+        // return <RustBeltFaith onClose={handleClose} />;
+        return <PlaceholderFaith region="RUST BELT" name="路边福音堂" />;
 
       case RegionID.Suburbs:
         // 中产区 -> 现代社区教会 (社交与订阅)
-        return <SuburbsFaith onClose={handleClose} />;
+        // return <SuburbsFaith onClose={handleClose} />;
+        return <PlaceholderFaith region="SUBURBS" name="社区团契中心" />;
 
       case RegionID.Downtown:
         // 核心区 -> 精英兄弟会 (契约与权力)
-        return <DowntownFaith onClose={handleClose} />;
+        // return <DowntownFaith onClose={handleClose} />;
+        return <PlaceholderFaith region="DOWNTOWN" name="精英兄弟会" />;
 
       default:
         return <div className="text-white p-4">此处没有宗教场所。</div>;

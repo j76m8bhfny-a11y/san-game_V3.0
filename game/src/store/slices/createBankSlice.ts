@@ -15,6 +15,7 @@ export interface BankSlice {
   takeLoan: (productId: string, amount: number) => { success: boolean; message: string };
   takeMortgage: (amount: number, termTurns: number, rate: number) => { success: boolean; message: string; loanId?: string };
   makeInstallment: (loanId: string, amount: number) => { success: boolean; message: string; principalPaid: number; interestPaid: number };
+  repayLoan: (loanId: string) => { success: boolean; message: string }; // 全额结清贷款
   clearLoan: (loanId: string) => boolean; // 强制结清贷款（如卖房时）
 }
 
@@ -203,6 +204,23 @@ export const createBankSlice: StateCreator<StoreState, [], [], BankSlice> = (set
         principalPaid, 
         interestPaid 
     };
+  },
+
+  repayLoan: (loanId) => {
+    const state = get() as StoreState;
+    const { bank, vitality } = state;
+    
+    const loan = bank.activeLoans.find(l => l.id === loanId);
+    if (!loan) return { success: false, message: "贷款不存在" };
+    
+    const totalDebt = loan.principal + loan.interest;
+    
+    if (vitality.metrics.gold < totalDebt) {
+      return { success: false, message: "资金不足，无法结清贷款" };
+    }
+    
+    // 调用 makeInstallment 全额还款
+    return state.makeInstallment(loanId, totalDebt);
   },
 
   clearLoan: (loanId) => {

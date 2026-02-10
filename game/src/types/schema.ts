@@ -385,6 +385,7 @@ export interface LoanProduct {
   termTurns: number;
   color: string;
   riskLevel: string;
+  region?: RegionID; // 贷款所属区域，用于区域银行筛选
 }
 
 export interface ActiveLoan {
@@ -560,6 +561,7 @@ export interface GameDataCache {
   jobs: Job[];
   housing: Housing[];
   insurance: Insurance[];
+  loans: LoanProduct[];
   news: NewsItem[];
   diseases: Disease[];
   regions?: Array<{

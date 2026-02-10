@@ -9,7 +9,8 @@
     "maxAmount": 2000,
     "termTurns": 2,
     "color": "red",
-    "riskLevel": "EXTREME"
+    "riskLevel": "EXTREME",
+    "region": "SLUMS"
   },
   {
     "id": "LOAN_PAYDAY",
@@ -21,7 +22,8 @@
     "maxAmount": 5000,
     "termTurns": 4,
     "color": "orange",
-    "riskLevel": "HIGH"
+    "riskLevel": "HIGH",
+    "region": "RUST_BELT"
   },
   {
     "id": "LOAN_PERSONAL",
@@ -33,7 +35,8 @@
     "maxAmount": 20000,
     "termTurns": 12,
     "color": "blue",
-    "riskLevel": "MEDIUM"
+    "riskLevel": "MEDIUM",
+    "region": "SUBURBS"
   },
   {
     "id": "LOAN_BUSINESS",
@@ -45,18 +48,20 @@
     "maxAmount": 1000000,
     "termTurns": 24,
     "color": "gold",
-    "riskLevel": "LOW"
+    "riskLevel": "LOW",
+    "region": "DOWNTOWN"
   },
   {
     "id": "LOAN_BAIL_BOND",
     "name": "自由契约 (保释贷)",
     "provider": "铁窗金融",
     "description": "专为急需自由的人士设计。无需信用，只需签字。",
-    "minScore": 0,           
-    "weeklyRate": 0.15,      
-    "maxAmount": 100000,     
-    "termTurns": 24,         
+    "minScore": 0,
+    "weeklyRate": 0.15,
+    "maxAmount": 100000,
+    "termTurns": 24,
     "color": "text-purple-500",
-    "riskLevel": "PREDATORY" 
+    "riskLevel": "PREDATORY",
+    "region": "SLUMS"
   }
 ]

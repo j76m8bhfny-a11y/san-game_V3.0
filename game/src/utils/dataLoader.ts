@@ -8,7 +8,8 @@ import {
   Housing,
   Insurance,
   NewsItem,
-  Disease
+  Disease,
+  LoanProduct
 } from '../types/schema';
 
 // ------------------------------------------------------------------
@@ -51,6 +52,7 @@ export const loadAllGameData = async () => {
     jobs,
     housing,
     insurance,
+    loans,
     news,
     diseases
   ] = await Promise.all([
@@ -65,12 +67,13 @@ export const loadAllGameData = async () => {
     loadJsonData<Job[]>('/src/assets/data/jobs.json'),
     loadJsonData<Housing[]>('/src/assets/data/housing.json'),
     loadJsonData<Insurance[]>('/src/assets/data/insurance.json'),
+    loadJsonData<LoanProduct[]>('/src/assets/data/loans.json'),
     loadJsonData<NewsItem[]>('/src/assets/data/news.json'),
     loadJsonData<Disease[]>('/src/assets/data/diseases.json'),
   ]);
 
   // 返回扩展后的数据包
-  return { items, events, bills, archives, endings, classes, global, jobs, housing, insurance, news, diseases };
+  return { items, events, bills, archives, endings, classes, global, jobs, housing, insurance, loans, news, diseases };
 };
 
 // ------------------------------------------------------------------

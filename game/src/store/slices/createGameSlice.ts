@@ -361,7 +361,18 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
             weeklyNews: null 
         },
         
-        faith: { id: FaithID.NONE, level: 1, hasPerformedRite: false, debuffs: [], bannedFaiths: [] },
+        faith: { 
+            id: FaithID.NONE, 
+            level: 1, 
+            hasPerformedRite: false, 
+            debuffs: [], 
+            bannedFaiths: [],
+            behaviorState: {
+                lastAction: null,
+                currentStreak: 0,
+                hasReceivedInvitation: false
+            }
+        },
         prison: { inJail: false, crime: '', sentenceTurns: 0, turnsServed: 0, bailAmount: 0 },
         
         // 3. Assets 重置

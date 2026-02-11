@@ -1,0 +1,68 @@
+[
+  {
+    "id": "CHURCH",
+    "name": "救赎教会",
+    "baseRegion": "SUBURBS",
+    "uiTemplate": "SUBSCRIPTION_PAD",
+    "description": "富人的麻醉剂。只需一点奉献，主就宽恕你的罪。",
+    "color": "text-yellow-400",
+    "rite": {
+      "name": "白金会员订阅",
+      "description": "消耗 $200 换取 25 SAN。只有被选中的人才能享受平静。",
+      "goldCost": 200,
+      "baseSanReward": 25,
+      "effect": {
+        "creditScore": 10
+      }
+    }
+  },
+  {
+    "id": "BROTHERHOOD",
+    "name": "共济兄弟会",
+    "baseRegion": "DOWNTOWN",
+    "uiTemplate": "SECRET_SOCIETY",
+    "description": "掌控世界的隐形之手。互助不仅是义务，更是投资。",
+    "color": "text-blue-600",
+    "rite": {
+      "name": "情报交换会议",
+      "description": "消耗 10 HP (精力) 换取 $150 与 5 狼性点数。信息就是金钱。",
+      "hpCost": 10,
+      "goldReward": 150,
+      "redPointReward": 0,
+      "effect": {
+        "wolf": 5
+      }
+    }
+  },
+  {
+    "id": "CULT",
+    "name": "血肉神教",
+    "baseRegion": "SLUMS",
+    "uiTemplate": "BLOOD_ALTAR",
+    "description": "疯子的狂欢。理智是枷锁，痛苦是通用的货币。",
+    "color": "text-purple-500",
+    "rite": {
+      "name": "高阶肢体献祭",
+      "description": "消耗 30 HP 换取 $300。神不仅仅要祭品，神要你的全部。",
+      "hpCost": 30,
+      "goldReward": 300,
+      "baseSanReward": -10
+    }
+  },
+  {
+    "id": "REVOLUTION",
+    "name": "星星之火",
+    "baseRegion": "RUST_BELT",
+    "uiTemplate": "GOSPEL_STAGE",
+    "description": "觉醒者的道路。在铁锈与灰烬中重铸秩序。",
+    "color": "text-red-600",
+    "rite": {
+      "name": "地下动员集会",
+      "description": "消耗 10 SAN (面对残酷真相) 换取 10 革命点数与 5 HP (士气)。",
+      "sanCost": 10,
+      "redPointReward": 10,
+      "baseHpReward": 5,
+      "goldReward": 0
+    }
+  }
+]

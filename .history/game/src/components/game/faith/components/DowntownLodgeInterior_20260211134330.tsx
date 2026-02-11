@@ -8,7 +8,7 @@ interface Props {
 }
 
 export const DowntownLodgeInterior: React.FC<Props> = ({ onClose }) => {
-  const { performNoviceAction, performFaithRite, getFaithMode } = useGameStore();
+  const { vitality, performNoviceAction, performFaithRite, getFaithMode } = useGameStore();
   const [isSigning, setIsSigning] = useState(false);
   const [progress, setProgress] = useState(0);
 

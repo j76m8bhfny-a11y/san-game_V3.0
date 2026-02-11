@@ -11,6 +11,10 @@ export interface FaithDefaults {
   initialLevel: number;
   dailyReset: boolean;
   transactionCategories: {
+    actionCost?: string;
+    actionReward?: string;
+    noviceIncome?: string;
+    noviceCost?: string;
     join: string;
     riteCost: string;
     riteIncome: string;
@@ -23,7 +27,53 @@ export interface FaithConstraints {
 }
 
 // ==========================================
-// 2. 什一税机制
+// 2. 新手行为机制
+// ==========================================
+
+export interface RegionFlavor {
+  label: string;
+  description: string;
+}
+
+export interface NoviceMechanic {
+  id: string;
+  targetFaithId: string;
+  unlockStreak: number;
+  requiredItemId?: string;
+  cost: {
+    gold?: number;
+    hp?: number;
+    san?: number;
+  };
+  reward: {
+    gold?: number;
+    hp?: number;
+    san?: number;
+    points?: {
+      red?: number;
+      wolf?: number;
+      old?: number;
+    };
+  };
+  regionFlavor: {
+    SLUMS?: RegionFlavor;
+    RUST_BELT?: RegionFlavor;
+    SUBURBS?: RegionFlavor;
+    DOWNTOWN?: RegionFlavor;
+    DEFAULT: RegionFlavor;
+  };
+  successMessage?: string;
+}
+
+export interface NoviceMechanics {
+  DEDICATE: NoviceMechanic;
+  AID: NoviceMechanic;
+  SACRIFICE: NoviceMechanic;
+  REJECT: NoviceMechanic;
+}
+
+// ==========================================
+// 3. 什一税机制
 // ==========================================
 
 export interface TitheMechanic {
@@ -35,11 +85,11 @@ export interface TitheMechanic {
 }
 
 export interface FaithMechanics {
-  tithe: TitheMechanic;
+  tithe?: TitheMechanic;
 }
 
 // ==========================================
-// 3. Debuff 效果类型
+// 4. Debuff 效果类型
 // ==========================================
 
 // DebuffEffect 必须与 FaithDebuffEffect 兼容
@@ -60,7 +110,7 @@ export interface DebuffConfig {
 }
 
 // ==========================================
-// 4. 退出惩罚配置
+// 5. 退出惩罚配置
 // ==========================================
 
 export interface LeavePenalty {
@@ -75,26 +125,35 @@ export interface LeavePenalty {
 export type LeavePenalties = Record<string, LeavePenalty>;
 
 // ==========================================
-// 5. 文本配置
+// 6. 文本配置
 // ==========================================
 
 export interface FaithText {
-  joinSuccess: string;
-  leaveSuccess: string;
-  leaveConfirmTitle: string;
-  riteDone: string;
-  noFaith: string;
-  insufficientGold: string;
+  joinSuccess?: string;
+  leaveSuccess?: string;
+  leaveConfirmTitle?: string;
+  riteDone?: string;
+  noFaith?: string;
+  insufficientGold?: string;
+  insufficientResource?: string;
+  streakBroken?: string;
+  streakProgress?: string;
+  unlockTitle?: string;
+  unlockMessage?: string;
+  resourceInsufficient?: string;
+  itemMissing?: string;
+  unlockPrompt?: string;
 }
 
 // ==========================================
-// 6. 完整规则对象
+// 7. 完整规则对象
 // ==========================================
 
 export interface FaithRules {
   defaults: FaithDefaults;
   constraints: FaithConstraints;
-  mechanics: FaithMechanics;
+  noviceMechanics: NoviceMechanics;
+  mechanics?: FaithMechanics;
   leavePenalties: LeavePenalties;
   text: FaithText;
 }

@@ -25,10 +25,9 @@ export const DowntownBank: React.FC<Props> = ({ onClose }) => {
   
   const { playSfx } = useAudioStore();
 
-  // 筛选核心区的高端贷款产品
-  // 假设核心区只提供高额度贷款
+  // 筛选核心区的贷款产品
   const loanProducts = gameDataCache?.loans?.filter(l => 
-    l.region === RegionID.Downtown || l.maxAmount >= 50000
+    l.region === RegionID.Downtown
   ) || [];
 
   const handleEnter = () => {
@@ -82,6 +81,7 @@ export const DowntownBank: React.FC<Props> = ({ onClose }) => {
         {hasEntered ? (
           <DowntownBankInterior 
             gold={vitality.metrics.gold}
+            creditScore={vitality.metrics.creditScore}
             products={loanProducts}
             activeLoans={bank.activeLoans}
             currentTurn={currentTurn}

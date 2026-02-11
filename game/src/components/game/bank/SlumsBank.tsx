@@ -79,6 +79,7 @@ export const SlumsBank: React.FC<Props> = ({ onClose }) => {
         {hasEntered ? (
           <SlumsBankInterior 
             gold={vitality.metrics.gold}
+            creditScore={vitality.metrics.creditScore}
             products={loanProducts}
             activeLoans={bank.activeLoans}
             currentTurn={currentTurn}

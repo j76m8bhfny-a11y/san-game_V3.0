@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { LoanProduct, ActiveLoan } from '@/types/schema';
 import { SlumsLoanPaper } from './SlumsLoanPaper';
+import { useBankUI } from '../hooks/useBankUI';
 
 interface Props {
   gold: number;
+  creditScore: number;
   products: LoanProduct[];
   activeLoans: ActiveLoan[];
   currentTurn: number;
@@ -14,10 +16,17 @@ interface Props {
 }
 
 export const SlumsBankInterior: React.FC<Props> = ({ 
-  gold, products, activeLoans, currentTurn, onTakeLoan, onRepayLoan, onMakeInstallment, onClose 
+  gold, creditScore, products, activeLoans, currentTurn, onTakeLoan, onRepayLoan, onMakeInstallment, onClose 
 }) => {
   const [transactionAnim, setTransactionAnim] = useState<'NONE' | 'TAKE' | 'GIVE'>('NONE');
-  const [repayAmount, setRepayAmount] = useState<Record<string, number>>({});
+  const { 
+    getLoanStatus, 
+    getSkipWarning, 
+    getTotalOwed, 
+    repayAmount, 
+    setRepayAmount, 
+    handlePartialRepay 
+  } = useBankUI();
 
   const handleTake = (id: string) => {
     setTransactionAnim('TAKE');
@@ -35,55 +44,14 @@ export const SlumsBankInterior: React.FC<Props> = ({
     }, 1000);
   };
 
-  // 获取贷款状态
-  const getLoanStatus = (loan: ActiveLoan) => {
-    const weeksLeft = loan.dueTurn - currentTurn;
-    const isOverdue = weeksLeft < 0;
-    const overdueWeeks = isOverdue ? Math.abs(weeksLeft) : 0;
-    
-    if (isOverdue) {
-      if (overdueWeeks <= 1) return { label: `逾期 ${overdueWeeks} 周`, color: 'text-yellow-500', bgColor: 'bg-yellow-900', borderColor: 'border-yellow-600' };
-      if (overdueWeeks <= 3) return { label: '暴力催收中', color: 'text-orange-500', bgColor: 'bg-orange-900', borderColor: 'border-orange-600' };
-      return { label: '强制划扣风险', color: 'text-red-500', bgColor: 'bg-red-900', borderColor: 'border-red-600' };
-    }
-    if (weeksLeft <= 2) return { label: `${weeksLeft} 周后到期`, color: 'text-amber-500', bgColor: 'bg-amber-900', borderColor: 'border-amber-600' };
-    return { label: `${weeksLeft} 周后到期`, color: 'text-gray-400', bgColor: 'bg-gray-800', borderColor: 'border-gray-600' };
-  };
-
-  // 获取逾期警告文本
-  const getSkipWarning = (loan: ActiveLoan) => {
-    const weeksLeft = loan.dueTurn - currentTurn;
-    const isOverdue = weeksLeft < 0;
-    const overdueWeeks = isOverdue ? Math.abs(weeksLeft) : 0;
-    
-    if (!isOverdue) {
-      if (weeksLeft === 0) return '⚠️ 今天到期！';
-      if (weeksLeft <= 2) return `⚠️ 还剩 ${weeksLeft} 周`;
-      return null;
-    }
-    
-    if (overdueWeeks >= 8) return '🔴 弟兄们正在找你...';
-    if (overdueWeeks >= 4) return '🟠 老板很不高兴！';
-    if (overdueWeeks >= 2) return '🟠 有人要挨揍了！';
-    return '🟡 别躲了，出来谈谈';
-  };
-
-  // 处理部分还款
-  const handlePartialRepay = (loan: ActiveLoan) => {
+  const onPartialRepay = (loan: ActiveLoan) => {
     const amount = repayAmount[loan.id] || 0;
-    if (amount <= 0) return;
     setTransactionAnim('GIVE');
     setTimeout(() => {
-      const result = onMakeInstallment(loan.id, amount);
-      if (result.success) {
-        setRepayAmount(prev => ({ ...prev, [loan.id]: 0 }));
-      }
+      handlePartialRepay(loan, amount, onMakeInstallment);
       setTransactionAnim('NONE');
     }, 800);
   };
-
-  // 计算总欠款
-  const getTotalOwed = (loan: ActiveLoan) => loan.principal + loan.interest;
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center select-none bg-black overflow-hidden">
@@ -149,7 +117,7 @@ export const SlumsBankInterior: React.FC<Props> = ({
             <SlumsLoanPaper
               key={product.id}
               product={product}
-              canAfford={true}
+              creditScore={creditScore}
               onSign={() => handleTake(product.id)}
             />
           ))}
@@ -163,8 +131,8 @@ export const SlumsBankInterior: React.FC<Props> = ({
             <div className="text-gray-500 text-xs font-mono bg-black/50 p-2">No debts... yet.</div>
           ) : (
             activeLoans.map(loan => {
-              const status = getLoanStatus(loan);
-              const warning = getSkipWarning(loan);
+              const status = getLoanStatus(loan, currentTurn);
+              const warning = getSkipWarning(loan, currentTurn);
               const totalOwed = getTotalOwed(loan);
               return (
                 <div key={loan.id} className={`${status.bgColor} border ${status.borderColor} p-3 w-full max-w-[240px] shadow-lg relative group rotate-1 hover:rotate-0 transition-transform`}>
@@ -194,7 +162,7 @@ export const SlumsBankInterior: React.FC<Props> = ({
                     <input
                       type="number"
                       value={repayAmount[loan.id] || ''}
-                      onChange={(e) => setRepayAmount(prev => ({ ...prev, [loan.id]: Math.max(0, parseInt(e.target.value) || 0) }))}
+                      onChange={(e) => setRepayAmount(prev => ({ ...prev, [loan.id]: Math.max(0, parseInt(e.target.value, 10) || 0) }))}
                       placeholder="金额"
                       className="flex-1 bg-black/50 border border-gray-600 text-white text-xs px-2 py-1 focus:outline-none focus:border-yellow-500"
                     />
@@ -209,7 +177,7 @@ export const SlumsBankInterior: React.FC<Props> = ({
                   {/* 还款按钮 */}
                   <div className="flex gap-1">
                     <button 
-                      onClick={() => handlePartialRepay(loan)}
+                      onClick={() => onPartialRepay(loan)}
                       disabled={gold < (repayAmount[loan.id] || 0) || (repayAmount[loan.id] || 0) <= 0}
                       className="flex-1 bg-yellow-700 hover:bg-yellow-600 disabled:opacity-50 disabled:bg-gray-600 text-white text-[10px] font-bold py-1"
                     >

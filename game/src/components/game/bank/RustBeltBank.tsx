@@ -27,7 +27,7 @@ export const RustBeltBank: React.FC<Props> = ({ onClose }) => {
 
   // 筛选属于 RUST_BELT 区域的贷款产品
   const loanProducts = gameDataCache?.loans?.filter(l => 
-    l.region === RegionID.RustBelt || (!l.region && l.weeklyRate > 0.05 && l.weeklyRate < 0.2)
+    l.region === RegionID.RustBelt
   ) || [];
 
   const handleEnter = () => {
@@ -36,22 +36,20 @@ export const RustBeltBank: React.FC<Props> = ({ onClose }) => {
   };
 
   const handleTakeLoan = (productId: string) => {
-    // 播放盖章声
-    playSfx('sfx_click'); 
-    
     const product = loanProducts.find(p => p.id === productId);
     const amount = product?.maxAmount || 0;
     
-    setTimeout(() => {
-      const result = takeLoan(productId, amount);
-      if (result.success) {
-        playSfx('sfx_cash');
-        addNotification('Application approved. Cash dispensed.', 'success');
-      } else {
-        playSfx('sfx_deny');
-        addNotification(result.message, 'error');
-      }
-    }, 200);
+    // 播放盖章声
+    playSfx('sfx_click'); 
+    
+    const result = takeLoan(productId, amount);
+    if (result.success) {
+      playSfx('sfx_cash');
+      addNotification('Application approved. Cash dispensed.', 'success');
+    } else {
+      playSfx('sfx_deny');
+      addNotification(result.message, 'error');
+    }
   };
 
   const handleRepayLoan = (loanId: string) => {
@@ -86,6 +84,7 @@ export const RustBeltBank: React.FC<Props> = ({ onClose }) => {
         {hasEntered ? (
           <RustBeltBankInterior 
             gold={vitality.metrics.gold}
+            creditScore={vitality.metrics.creditScore}
             products={loanProducts}
             activeLoans={bank.activeLoans}
             currentTurn={currentTurn}

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { LoanProduct, ActiveLoan } from '@/types/schema';
 import { RustBeltLoanClipboard } from './RustBeltLoanClipboard';
+import { useBankUI } from '../hooks/useBankUI';
 
 interface Props {
   gold: number;
+  creditScore: number;
   products: LoanProduct[];
   activeLoans: ActiveLoan[];
   currentTurn: number;
@@ -14,11 +16,18 @@ interface Props {
 }
 
 export const RustBeltBankInterior: React.FC<Props> = ({ 
-  gold, products, activeLoans, currentTurn, onTakeLoan, onRepayLoan, onMakeInstallment, onClose 
+  gold, creditScore, products, activeLoans, currentTurn, onTakeLoan, onRepayLoan, onMakeInstallment, onClose 
 }) => {
   const [stampAnim, setStampAnim] = useState(false);
   const [cashAnim, setCashAnim] = useState(false);
-  const [repayAmount, setRepayAmount] = useState<Record<string, number>>({});
+  const { 
+    getLoanStatus, 
+    getSkipWarning, 
+    getTotalOwed, 
+    repayAmount, 
+    setRepayAmount, 
+    handlePartialRepay 
+  } = useBankUI();
 
   const handleSign = (id: string) => {
     setStampAnim(true);
@@ -36,64 +45,15 @@ export const RustBeltBankInterior: React.FC<Props> = ({
     }, 800);
   };
 
-  // 获取贷款状态
-  const getLoanStatus = (loan: ActiveLoan) => {
-    const weeksLeft = loan.dueTurn - currentTurn;
-    const isOverdue = weeksLeft < 0;
-    const overdueWeeks = isOverdue ? Math.abs(weeksLeft) : 0;
-    
-    if (isOverdue) {
-      if (loan.isMortgage && overdueWeeks >= 4) {
-        return { label: '即将收房', color: 'text-red-600', bgColor: 'bg-red-100', borderColor: 'border-red-400' };
-      }
-      if (overdueWeeks <= 1) return { label: `逾期 ${overdueWeeks} 周`, color: 'text-yellow-700', bgColor: 'bg-yellow-50', borderColor: 'border-yellow-300' };
-      if (overdueWeeks <= 3) return { label: '暴力催收中', color: 'text-orange-700', bgColor: 'bg-orange-50', borderColor: 'border-orange-300' };
-      return { label: '强制划扣风险', color: 'text-red-600', bgColor: 'bg-red-50', borderColor: 'border-red-400' };
-    }
-    if (weeksLeft <= 2) return { label: `${weeksLeft} 周后到期`, color: 'text-amber-700', bgColor: 'bg-amber-50', borderColor: 'border-amber-300' };
-    return { label: `${weeksLeft} 周后到期`, color: 'text-gray-600', bgColor: 'bg-gray-50', borderColor: 'border-gray-300' };
-  };
-
-  // 获取逾期警告文本
-  const getSkipWarning = (loan: ActiveLoan) => {
-    const weeksLeft = loan.dueTurn - currentTurn;
-    const isOverdue = weeksLeft < 0;
-    const overdueWeeks = isOverdue ? Math.abs(weeksLeft) : 0;
-    
-    if (!isOverdue) {
-      if (weeksLeft === 0) return '⚠️ 今天到期！请尽快还款';
-      if (weeksLeft <= 2) return `⚠️ 还剩 ${weeksLeft} 周到期`;
-      return null;
-    }
-    
-    if (loan.isMortgage) {
-      if (overdueWeeks >= 4) return '🔴 房贷严重逾期！银行将收回您的房产';
-      if (overdueWeeks >= 2) return '🟠 房贷逾期！请立即联系银行';
-      return '🟡 房贷逾期！避免信用受损';
-    }
-    
-    if (overdueWeeks >= 8) return '🔴 严重逾期！可能面临法律诉讼';
-    if (overdueWeeks >= 4) return '🟠 银行可能直接从账户划扣资金';
-    if (overdueWeeks >= 2) return '🟠 催收部门已介入，将影响身心健康';
-    return '🟡 首次逾期！请尽快还款避免进一步措施';
-  };
-
-  // 处理部分还款
-  const handlePartialRepay = (loan: ActiveLoan) => {
+  const onPartialRepay = (loan: ActiveLoan) => {
     const amount = repayAmount[loan.id] || 0;
     if (amount <= 0) return;
     setCashAnim(true);
     setTimeout(() => {
-      const result = onMakeInstallment(loan.id, amount);
-      if (result.success) {
-        setRepayAmount(prev => ({ ...prev, [loan.id]: 0 }));
-      }
+      handlePartialRepay(loan, amount, onMakeInstallment);
       setCashAnim(false);
     }, 800);
   };
-
-  // 计算总欠款
-  const getTotalOwed = (loan: ActiveLoan) => loan.principal + loan.interest;
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center select-none bg-[#e5e7eb] overflow-hidden">
@@ -123,7 +83,7 @@ export const RustBeltBankInterior: React.FC<Props> = ({
               <RustBeltLoanClipboard
                 key={product.id}
                 product={product}
-                canAfford={true}
+                creditScore={creditScore}
                 onSign={() => handleSign(product.id)}
               />
             ))}
@@ -146,8 +106,8 @@ export const RustBeltBankInterior: React.FC<Props> = ({
              ) : (
                <div className="space-y-3">
                  {activeLoans.map(loan => {
-                   const status = getLoanStatus(loan);
-                   const warning = getSkipWarning(loan);
+                   const status = getLoanStatus(loan, currentTurn);
+                   const warning = getSkipWarning(loan, currentTurn);
                    const totalOwed = getTotalOwed(loan);
                    return (
                      <div key={loan.id} className={`${status.bgColor} border ${status.borderColor} p-3 shadow-sm relative`}>
@@ -179,7 +139,7 @@ export const RustBeltBankInterior: React.FC<Props> = ({
                          <input
                            type="number"
                            value={repayAmount[loan.id] || ''}
-                           onChange={(e) => setRepayAmount(prev => ({ ...prev, [loan.id]: Math.max(0, parseInt(e.target.value) || 0) }))}
+                           onChange={(e) => setRepayAmount(prev => ({ ...prev, [loan.id]: Math.max(0, parseInt(e.target.value, 10) || 0) }))}
                            placeholder="Payment Amount"
                            className="flex-1 bg-white border border-gray-300 text-gray-800 text-xs px-2 py-1 focus:outline-none focus:border-blue-500 font-mono"
                          />
@@ -194,7 +154,7 @@ export const RustBeltBankInterior: React.FC<Props> = ({
                        {/* 还款按钮 */}
                        <div className="flex gap-2 mt-2">
                          <button
-                           onClick={() => handlePartialRepay(loan)}
+                           onClick={() => onPartialRepay(loan)}
                            disabled={gold < (repayAmount[loan.id] || 0) || (repayAmount[loan.id] || 0) <= 0}
                            className="flex-1 bg-blue-700 hover:bg-blue-600 disabled:bg-gray-400 text-white text-[10px] font-bold py-1 uppercase"
                          >

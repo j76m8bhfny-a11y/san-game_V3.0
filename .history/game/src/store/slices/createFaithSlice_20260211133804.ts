@@ -15,13 +15,13 @@ import faithsDataUntyped from '@/assets/data/faiths.json';
 import faithRulesUntyped from '@/assets/data/rules/faithRules.json';
 import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 
-// 引入逻辑计算 (纯函数)
-import { calculateRiteOutcome, calculateNoviceActionOutcome } from '@/logic/faith';
-import type { LeavePenalty } from '@/types/faithRules';
+// 引入逻辑计算
+import { calculateRiteOutcome } from '@/logic/faith';
+import type { FaithRules, LeavePenalty } from '@/types/faithRules';
 
 // 类型断言与转换
 const faithsData = faithsDataUntyped as FaithData[];
-const faithRules = faithRulesUntyped as any; // 暂时使用 any 以适配 JSON 结构
+const faithRules = faithRulesUntyped as any; // 暂时使用 any，等待 types/faithRules.ts 完善
 
 export interface FaithSlice {
   faith: FaithState;
@@ -72,7 +72,7 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
     // 2. 有信仰，判断是否为主场
     const currentFaithConfig = faithsData.find(f => f.id === faith.id);
     
-    // 如果当前区域是该信仰的大本营 (baseRegion)
+    // 如果当前区域是该信仰的大本营 (baseRegion)，或者是兄弟会在 RustBelt/Downtown 的特殊据点
     if (currentFaithConfig?.baseRegion === region) return 'NATIVE';
     
     // 特殊处理：兄弟会可能在 RustBelt 和 Downtown 都有据点
@@ -85,11 +85,10 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
   },
 
   performNoviceAction: (actionType) => {
-    // 获取完整的 Store 上下文
+    // 获取完整的 Store 上下文以访问 addTransaction 等方法
     const state = get() as GameState & { 
         addTransaction: Function; 
         modifyStats: Function; 
-        updateIdentityPoints: Function;
         addNotification: Function;
         inventory: string[];
     };
@@ -97,66 +96,82 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
     const config = faithRules.noviceMechanics?.[actionType];
     if (!config) return { success: false, message: "未知行为配置" };
 
-    // === 1. 调用纯函数计算结果 (Resources & Requirements) ===
-    const outcome = calculateNoviceActionOutcome(actionType, state);
-
-    if (!outcome.success) {
-        state.addNotification(outcome.message, 'warning');
-        return { success: false, message: outcome.message };
-    }
-
-    // === 2. 执行状态更新 (Apply Changes) ===
+    // === 1. 资源检查与扣除 ===
+    const { cost } = config;
     
-    // 2.1 处理金钱流水 (Transaction)
-    // 根据 goldChange 的正负决定分类
-    if (outcome.goldChange !== 0) {
-        // 获取当前区域的 Flavor Text 用于账单描述
+    // 1.1 检查物品 (例如 REJECT 需要宣言)
+    if (config.requiredItemId && !state.inventory.includes(config.requiredItemId)) {
+        const msg = "缺少必要物品，无法进行此操作。";
+        state.addNotification(msg, 'warning');
+        return { success: false, message: msg };
+    }
+
+    // 1.2 扣钱 (通过 addTransaction 处理，自带余额检查)
+    if (cost.gold && cost.gold > 0) {
+        // 从 regionFlavor 获取当前区域的文案，如果找不到则用默认
         const flavor = config.regionFlavor?.[state.currentRegion] || config.regionFlavor?.['DEFAULT'];
-        const label = flavor?.label || actionType;
+        const actionLabel = flavor?.label || actionType;
 
-        const category = outcome.goldChange > 0 
-            ? (faithRules.defaults.transactionCategories.noviceIncome || 'INCOME')
-            : (faithRules.defaults.transactionCategories.noviceCost || 'MISC');
-        
-        const txDesc = outcome.goldChange > 0 
-            ? `回馈: ${label}` 
-            : `行为: ${label}`;
-
-        // addTransaction 会处理余额不足的边缘情况(虽然 calculate 已经检查过)
-        const tx = state.addTransaction(category, outcome.goldChange, txDesc);
-        if (!tx.success) {
-            return { success: false, message: "交易失败: 资金变动异常" };
-        }
+        const tx = state.addTransaction(
+            faithRules.defaults.transactionCategories.noviceCost || 'MISC',
+            -cost.gold,
+            `行为: ${actionLabel}`
+        );
+        if (!tx.success) return { success: false, message: "资金不足" };
     }
 
-    // 2.2 应用属性变更 (HP, SAN)
-    if (outcome.updates?.vitality?.metrics && Object.keys(outcome.updates.vitality.metrics).length > 0) {
-        state.modifyStats(outcome.updates.vitality.metrics);
+    // 1.3 扣 HP/San (预检查，防止扣死)
+    if (cost.hp && state.vitality.metrics.hp <= cost.hp) {
+        const msg = "体力不足，无法支撑此行为。";
+        state.addNotification(msg, 'warning');
+        return { success: false, message: msg };
     }
 
-    // 2.3 应用身份点数变更 (Red/Wolf/Old)
-    if (outcome.updates?.vitality?.identity?.points && Object.keys(outcome.updates.vitality.identity.points).length > 0) {
-        state.updateIdentityPoints(outcome.updates.vitality.identity.points);
+    // === 2. 执行属性变更 (消耗 + 奖励) ===
+    let hpChange = -(cost.hp || 0);
+    let sanChange = -(cost.san || 0);
+    let goldReward = 0;
+
+    // 叠加奖励
+    if (config.reward) {
+        if (config.reward.hp) hpChange += config.reward.hp;
+        if (config.reward.san) sanChange += config.reward.san;
+        if (config.reward.gold) goldReward += config.reward.gold;
+    }
+
+    // 应用数值更新
+    const metricsUpdates: any = {};
+    if (hpChange !== 0) metricsUpdates.hp = state.vitality.metrics.hp + hpChange;
+    if (sanChange !== 0) metricsUpdates.san = state.vitality.metrics.san + sanChange;
+    
+    if (Object.keys(metricsUpdates).length > 0) {
+        state.modifyStats(metricsUpdates);
+    }
+
+    if (goldReward > 0) {
+        const flavor = config.regionFlavor?.[state.currentRegion] || config.regionFlavor?.['DEFAULT'];
+        state.addTransaction(
+            faithRules.defaults.transactionCategories.noviceIncome || 'INCOME',
+            goldReward,
+            `回馈: ${flavor?.label || actionType}`
+        );
     }
 
     // === 3. 处理连击 (Streak) 逻辑 ===
-    // 这部分属于 Store 的状态管理，不在纯函数中
     const { behaviorState } = state.faith;
     let newStreak = 1;
-    let msg = outcome.message || "行为已完成。";
+    let msg = "你试探性地迈出了一步。";
 
     if (behaviorState.lastAction === actionType) {
         // 动作相同，连击 +1
         newStreak = behaviorState.currentStreak + 1;
-        // 只有在连击增加时才提示进度，避免刷屏
-        if (newStreak > 1 && newStreak < config.unlockStreak) {
-             msg = `${msg} (信念: ${newStreak}/${config.unlockStreak})`;
-        }
+        msg = `你的信念在增强 (${newStreak}/${config.unlockStreak})`;
     } else {
         // 动作打断，重置为 1
         if (behaviorState.currentStreak > 1) {
-            state.addNotification(faithRules.text.streakBroken || "你的意志动摇了，之前的积累已消散。", 'warning');
+            state.addNotification(faithRules.text.streakBreak || "你的意志动摇了，之前的积累已消散。", 'warning');
         }
+        msg = "你改变了行为方式，重新开始积累。";
     }
 
     // 更新 Store 状态
@@ -183,7 +198,7 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
             // 检查是否被封禁
             if (state.faith.bannedFaiths.includes(targetFaithId)) {
                 state.addNotification(`该教派拒绝了你的加入 (已封禁)。`, "error");
-                return { success: true, message: msg }; 
+                return { success: true, message: msg }; // 行为成功，但入教失败
             }
 
             const promptMsg = faithRules.text.unlockPrompt?.replace('{name}', targetFaith.name) || `你的行为引起了 ${targetFaith.name} 的注意...`;
@@ -199,11 +214,12 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
                     behaviorState: {
                         ...prev.faith.behaviorState,
                         hasReceivedInvitation: true,
-                        currentStreak: 0 // 重置连击
+                        currentStreak: 0 // 重置连击，避免重复触发
                     }
                 }
             }));
             
+            // 可以在此处弹出一个特殊的 Modal 或剧情对话
             return { success: true, message: "信仰觉醒", unlockedFaith: targetFaithId };
         }
     }
@@ -212,6 +228,7 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
   },
 
   joinFaith: (faithId) => {
+      // 这是一个调试用或强制入教的接口
       const faithConfig = faithsData.find(f => f.id === faithId);
       if (!faithConfig) return { success: false, message: "配置缺失" };
       
@@ -221,6 +238,7 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
               id: faithId,
               level: 1,
               hasPerformedRite: false,
+              // 确保新字段初始化
               behaviorState: {
                   lastAction: null,
                   currentStreak: 0,
@@ -238,6 +256,7 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
 
     const penaltyConfig: LeavePenalty | undefined = faithRules.leavePenalties?.[currentFaithId];
     
+    // 如果没有配惩罚，直接允许
     if (!penaltyConfig) {
       return { 
         canLeave: true, 
@@ -298,6 +317,7 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
           remainingTurns: debuffConfig.duration,
           effect: debuffConfig.effect
         };
+        // 简单的去重/刷新逻辑
         const otherDebuffs = currentDebuffs.filter((d: FaithDebuff) => d.id !== debuff.id);
         state.faith.debuffs = [...otherDebuffs, debuff];
       }
@@ -317,7 +337,7 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
     // === 执行退出 ===
     set((prev: any) => ({
         faith: {
-            ...prev.faith, 
+            ...prev.faith, // 保留 debuffs 和 bannedFaiths
             id: FaithID.NONE,
             level: 1,
             hasPerformedRite: false,
@@ -334,25 +354,28 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
   },
 
   performFaithRite: () => {
+    // 获取完整的 Store 上下文
     const state = get() as any;
     
     if (state.faith.id === FaithID.NONE) {
         return { success: false, message: faithRules.text.noFaith || "无信仰" };
     }
     
+    // 获取当前信仰配置
     const faithConfig = faithsData.find(f => f.id === state.faith.id);
     if (!faithConfig) return { success: false, message: "配置错误" };
     
+    // 检查每日限制
     if (state.faith.hasPerformedRite) {
         state.addNotification(faithRules.text.riteDone || "今日已完成仪式。", 'info');
         return { success: false, message: "今日已完成" };
     }
 
-    // 调用纯函数计算仪式结果
+    // 计算仪式结果 (logic/faith.ts)
     const result = calculateRiteOutcome(faithConfig, state);
 
     if (result.success) {
-        // 1. 处理支出 (Gold < 0)
+        // 1. 处理金钱支出 (如果有)
         if (typeof result.goldChange === 'number' && result.goldChange < 0) {
             const txResult = state.addTransaction(
                 faithRules.defaults.transactionCategories.riteCost || 'TAX', 
@@ -364,8 +387,9 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
             }
         }
         
-        // 2. 应用属性效果 (HP/SAN)
-        if (result.updates?.vitality?.metrics && Object.keys(result.updates.vitality.metrics).length > 0) {
+        // 2. 应用其他属性效果 (HP/SAN)
+        if (result.updates?.vitality?.metrics && 
+            Object.keys(result.updates.vitality.metrics).length > 0) {
             state.modifyStats(result.updates.vitality.metrics);
         }
         
@@ -374,7 +398,7 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
             state.updateIdentityPoints(result.updates.vitality.identity.points);
         }
 
-        // 4. 处理收入 (Gold > 0)
+        // 4. 处理金钱收入 (如果有)
         if (typeof result.goldChange === 'number' && result.goldChange > 0) {
             state.addTransaction(
                 faithRules.defaults.transactionCategories.riteIncome || 'INCOME', 
@@ -383,7 +407,7 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
             );
         }
 
-        // 5. 更新状态 (完成仪式)
+        // 5. 更新状态
         set((prev: any) => ({
             faith: { 
               ...prev.faith, 

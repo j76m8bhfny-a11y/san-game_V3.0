@@ -176,7 +176,7 @@ export const calculateRiteOutcome = (
     if (metrics.gold < tithe) {
         return { 
           success: false, 
-          message: (faithRules.text.insufficientGold || '资金不足: ${amount}').replace('${amount}', tithe.toString()), 
+          message: faithRules.text.insufficientGold.replace('${amount}', tithe.toString()), 
           goldChange: 0,
           updates: {}
         };

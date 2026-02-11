@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { LoanProduct, ActiveLoan } from '@/types/schema';
 import { DowntownLedger } from './DowntownLedger';
+import { useBankUI } from '../hooks/useBankUI';
 
 interface Props {
   gold: number;
+  creditScore: number;
   products: LoanProduct[];
   activeLoans: ActiveLoan[];
   currentTurn: number;
@@ -14,17 +16,24 @@ interface Props {
 }
 
 export const DowntownBankInterior: React.FC<Props> = ({ 
-  gold, products, activeLoans, currentTurn, onTakeLoan, onRepayLoan, onMakeInstallment, onClose 
+  gold, creditScore, products, activeLoans, currentTurn, onTakeLoan, onRepayLoan, onMakeInstallment, onClose 
 }) => {
   const [signAnim, setSignAnim] = useState(false);
-  const [repayAmount, setRepayAmount] = useState<Record<string, number>>({});
+  const { 
+    getLoanStatus, 
+    getSkipWarning, 
+    getTotalOwed, 
+    repayAmount, 
+    setRepayAmount, 
+    handlePartialRepay 
+  } = useBankUI();
 
   const handleSign = (id: string) => {
     setSignAnim(true);
     setTimeout(() => {
       onTakeLoan(id);
       setSignAnim(false);
-    }, 1000); // 签字动画时间
+    }, 1000);
   };
 
   // 根据金钱数量决定金条堆的图片
@@ -32,63 +41,8 @@ export const DowntownBankInterior: React.FC<Props> = ({
     if (gold > 100000) return '/assets/bank/ui_gold_large.png';
     if (gold > 10000) return '/assets/bank/ui_gold_medium.png';
     if (gold > 1000) return '/assets/bank/ui_gold_small.png';
-    return null; // 穷光蛋没有金条
+    return null;
   };
-
-  // 获取贷款状态
-  const getLoanStatus = (loan: ActiveLoan) => {
-    const weeksLeft = loan.dueTurn - currentTurn;
-    const isOverdue = weeksLeft < 0;
-    const overdueWeeks = isOverdue ? Math.abs(weeksLeft) : 0;
-    
-    if (isOverdue) {
-      if (loan.isMortgage && overdueWeeks >= 4) {
-        return { label: '即将收房', color: 'text-red-500', bgColor: 'bg-red-900/20', borderColor: 'border-red-500/50' };
-      }
-      if (overdueWeeks <= 1) return { label: `逾期 ${overdueWeeks} 周`, color: 'text-yellow-500', bgColor: 'bg-yellow-900/20', borderColor: 'border-yellow-500/30' };
-      if (overdueWeeks <= 3) return { label: '暴力催收中', color: 'text-orange-500', bgColor: 'bg-orange-900/20', borderColor: 'border-orange-500/30' };
-      return { label: '强制划扣风险', color: 'text-red-500', bgColor: 'bg-red-900/20', borderColor: 'border-red-500/50' };
-    }
-    if (weeksLeft <= 2) return { label: `${weeksLeft} 周后到期`, color: 'text-amber-500', bgColor: 'bg-amber-900/10', borderColor: 'border-amber-500/20' };
-    return { label: `${weeksLeft} 周后到期`, color: 'text-gray-400', bgColor: 'bg-gray-900/20', borderColor: 'border-gray-500/20' };
-  };
-
-  // 获取逾期警告文本
-  const getSkipWarning = (loan: ActiveLoan) => {
-    const weeksLeft = loan.dueTurn - currentTurn;
-    const isOverdue = weeksLeft < 0;
-    const overdueWeeks = isOverdue ? Math.abs(weeksLeft) : 0;
-    
-    if (!isOverdue) {
-      if (weeksLeft === 0) return '⚠️ 今天到期！逾期将产生警告';
-      if (weeksLeft <= 2) return `⚠️ 即将到期，请及时还款`;
-      return null;
-    }
-    
-    if (loan.isMortgage) {
-      if (overdueWeeks >= 4) return '🔴 房贷严重逾期！银行将启动收房程序';
-      if (overdueWeeks >= 2) return '🟠 房贷逾期！信用受损，面临收房风险';
-      return '🟡 房贷逾期！请立即还款避免进一步损失';
-    }
-    
-    if (overdueWeeks >= 8) return '🔴 严重逾期！即将面临法律诉讼和入狱风险';
-    if (overdueWeeks >= 4) return '🟠 强制划扣风险！银行可能直接扣除您的存款';
-    if (overdueWeeks >= 2) return '🟠 暴力催收中！将损失 HP/SAN 值';
-    return '🟡 首次逾期警告！请尽快还款避免催收';
-  };
-
-  // 处理部分还款
-  const handlePartialRepay = (loan: ActiveLoan) => {
-    const amount = repayAmount[loan.id] || 0;
-    if (amount <= 0) return;
-    const result = onMakeInstallment(loan.id, amount);
-    if (result.success) {
-      setRepayAmount(prev => ({ ...prev, [loan.id]: 0 }));
-    }
-  };
-
-  // 计算总欠款
-  const getTotalOwed = (loan: ActiveLoan) => loan.principal + loan.interest;
 
   return (
     <div className="relative w-full h-full flex items-center justify-center select-none bg-[#0a0a0a] overflow-hidden">
@@ -119,6 +73,7 @@ export const DowntownBankInterior: React.FC<Props> = ({
               <DowntownLedger
                 key={product.id}
                 product={product}
+                creditScore={creditScore}
                 onSign={() => handleSign(product.id)}
               />
             ))}
@@ -144,8 +99,8 @@ export const DowntownBankInterior: React.FC<Props> = ({
              ) : (
                <div className="space-y-4">
                  {activeLoans.map(loan => {
-                   const status = getLoanStatus(loan);
-                   const warning = getSkipWarning(loan);
+                   const status = getLoanStatus(loan, currentTurn);
+                   const warning = getSkipWarning(loan, currentTurn);
                    const totalOwed = getTotalOwed(loan);
                    return (
                      <div key={loan.id} className={`border ${status.borderColor} ${status.bgColor} p-3 rounded`}>
@@ -175,7 +130,7 @@ export const DowntownBankInterior: React.FC<Props> = ({
                          <input
                            type="number"
                            value={repayAmount[loan.id] || ''}
-                           onChange={(e) => setRepayAmount(prev => ({ ...prev, [loan.id]: Math.max(0, parseInt(e.target.value) || 0) }))}
+                           onChange={(e) => setRepayAmount(prev => ({ ...prev, [loan.id]: Math.max(0, parseInt(e.target.value, 10) || 0) }))}
                            placeholder="还款金额"
                            className="flex-1 bg-black/50 border border-[#d4af37]/30 text-white text-xs px-2 py-1.5 rounded focus:outline-none focus:border-[#d4af37]"
                          />
@@ -190,7 +145,7 @@ export const DowntownBankInterior: React.FC<Props> = ({
                        {/* 还款按钮 */}
                        <div className="flex gap-2">
                          <button 
-                           onClick={() => handlePartialRepay(loan)}
+                           onClick={() => handlePartialRepay(loan, repayAmount[loan.id] || 0, onMakeInstallment)}
                            disabled={gold < (repayAmount[loan.id] || 0) || (repayAmount[loan.id] || 0) <= 0}
                            className="flex-1 bg-[#d4af37]/20 hover:bg-[#d4af37]/30 disabled:opacity-30 disabled:cursor-not-allowed text-[#d4af37] text-xs font-mono py-1.5 rounded border border-[#d4af37]/50"
                          >

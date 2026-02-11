@@ -3,14 +3,20 @@ import { LoanProduct } from '@/types/schema';
 
 interface Props {
   product: LoanProduct;
+  creditScore: number;
   onSign: () => void;
 }
 
-export const DowntownLedger: React.FC<Props> = ({ product, onSign }) => {
+export const DowntownLedger: React.FC<Props> = ({ product, creditScore, onSign }) => {
+  const canAfford = creditScore >= product.minScore;
+  
   return (
     <div 
-      onClick={onSign}
-      className="relative w-full h-32 bg-[#fdf5e6] shadow-md border-l-4 border-[#8b4513] mb-4 cursor-pointer group transition-all duration-300 hover:pl-2 overflow-hidden"
+      onClick={canAfford ? onSign : undefined}
+      className={`
+        relative w-full h-32 bg-[#fdf5e6] shadow-md border-l-4 border-[#8b4513] mb-4 cursor-pointer group transition-all duration-300 hover:pl-2 overflow-hidden
+        ${!canAfford ? 'opacity-50 grayscale' : ''}
+      `}
     >
       {/* 纸张纹理 */}
       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cream-paper.png')] opacity-50" />
@@ -23,6 +29,11 @@ export const DowntownLedger: React.FC<Props> = ({ product, onSign }) => {
           <div className="text-xs text-gray-500 mt-1 font-mono uppercase tracking-wide">
             Liquidity Injection
           </div>
+          {!canAfford && (
+            <div className="text-xs text-red-600 font-bold mt-1">
+              Requires {product.minScore} Credit Score
+            </div>
+          )}
         </div>
 
         <div className="flex gap-8 text-right font-mono">
@@ -37,9 +48,18 @@ export const DowntownLedger: React.FC<Props> = ({ product, onSign }) => {
         </div>
 
         {/* 签字区域 (Hover显示) */}
-        <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#d4af37]/20 to-transparent flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <div className={`absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#d4af37]/20 to-transparent flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${!canAfford ? '!opacity-0' : ''}`}>
            <span className="font-handwriting text-2xl text-[#8b4513] -rotate-12">Sign Here</span>
         </div>
+        
+        {/* 不可用时显示锁 */}
+        {!canAfford && (
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+          </div>
+        )}
       </div>
       
       {/* 底部装饰线 */}

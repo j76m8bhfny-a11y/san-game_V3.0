@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { RegionID, NoviceActionType } from '@/types/schema';
-import { placeholderBackgrounds } from '../utils/placeholderAssets';
+import { placeholderBackgrounds, placeholderIcons } from '../utils/placeholderAssets';
 
 interface Props {
   onClose: () => void;
 }
 
 export const RustBeltChurchInterior: React.FC<Props> = ({ onClose }) => {
-  const { performNoviceAction, performFaithRite, getFaithMode } = useGameStore();
+  const { faith, performNoviceAction, performFaithRite, getFaithMode, addNotification } = useGameStore();
   const [isPreaching, setIsPreaching] = useState(false);
 
   const mode = getFaithMode(RegionID.RustBelt);

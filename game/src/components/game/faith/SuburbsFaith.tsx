@@ -1,5 +1,4 @@
 import React, { useState, useCallback } from 'react';
-import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import { SuburbsChurchExterior } from './components/SuburbsChurchExterior';
 import { SuburbsChurchInterior } from './components/SuburbsChurchInterior';
@@ -10,43 +9,13 @@ interface Props {
 
 export const SuburbsFaith: React.FC<Props> = ({ onClose }) => {
   const [hasEntered, setHasEntered] = useState(false);
-  const { 
-    vitality, 
-    addNotification,
-    addTransaction 
-  } = useGameStore();
-  
   const { playSfx } = useAudioStore();
 
   const handleEnter = useCallback(() => {
-    playSfx('sfx_automatic_door'); // 自动门声
-    setTimeout(() => playSfx('sfx_mall_ambience'), 500); // 商场环境音
+    // 使用现有音效作为替代
+    playSfx('sfx_hover');
     setHasEntered(true);
   }, [playSfx]);
-
-  const handleSubscribe = useCallback((tier: 'BASIC' | 'PREMIUM') => {
-    const amount = tier === 'BASIC' ? 50 : 200;
-    const result = addTransaction('MISC', -amount, `GraceLife ${tier} Plan`);
-    
-    if (result.success) {
-      playSfx('sfx_payment_success'); // 支付成功音效
-      if (tier === 'PREMIUM') {
-        addNotification('Kingdom Builder status active. Reputation +++', 'SAN');
-        // TODO: 增加声望或解锁特定工作机会
-      } else {
-        addNotification('Subscription active. You feel socially secure.', 'SAN');
-      }
-    } else {
-      playSfx('sfx_payment_fail');
-      addNotification('Transaction declined. Insufficient funds.', 'error');
-    }
-  }, [addTransaction, addNotification, playSfx]);
-
-  const handleAttendSeminar = useCallback(() => {
-    playSfx('sfx_presentation_applause'); // 掌声
-    addNotification('You networked with local leaders. Job prospects improved.', 'SAN');
-    // TODO: 消耗时间或增加找工作的成功率
-  }, [addNotification, playSfx]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md" onClick={onClose}>
@@ -55,12 +24,7 @@ export const SuburbsFaith: React.FC<Props> = ({ onClose }) => {
         onClick={e => e.stopPropagation()}
       >
         {hasEntered ? (
-          <SuburbsChurchInterior 
-            gold={vitality.metrics.gold}
-            onSubscribe={handleSubscribe}
-            onAttendSeminar={handleAttendSeminar}
-            onClose={onClose}
-          />
+          <SuburbsChurchInterior onClose={onClose} />
         ) : (
           <SuburbsChurchExterior 
             onEnter={handleEnter}

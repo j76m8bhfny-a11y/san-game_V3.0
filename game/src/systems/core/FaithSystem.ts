@@ -1,4 +1,4 @@
-import { GameSystem, SystemResult } from '../types';
+import { GameSystem } from '../types';
 
 export const FaithSystem: GameSystem = {
   id: 'FAITH_SYSTEM',

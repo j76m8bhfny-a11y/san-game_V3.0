@@ -4,7 +4,6 @@
     "name": "救赎教会",
     "description": "富人的麻醉剂。只需一点奉献，主就宽恕你的罪。",
     "color": "text-yellow-400",
-    "baseRegion": "SUBURBS",
     "joinCost": { "gold": 100 },
     "rite": {
       "name": "缴纳什一税",
@@ -17,7 +16,6 @@
     "name": "互助兄弟会",
     "description": "穷人的避难所。严守戒律，团结互助。",
     "color": "text-green-500",
-    "baseRegion": "RUST_BELT",
     "joinCost": { "cleanInventory": true },
     "rite": {
       "name": "参加聚礼",
@@ -31,7 +29,6 @@
     "name": "血肉神教",
     "description": "疯子的狂欢。理智是枷锁，痛苦是货币。",
     "color": "text-purple-500",
-    "baseRegion": "SLUMS",
     "joinCost": { "maxSan": 40 },
     "rite": {
       "name": "进行血祭",
@@ -45,7 +42,6 @@
     "name": "星星之火",
     "description": "觉醒者的道路。只有这里才有真正的未来。",
     "color": "text-red-600",
-    "baseRegion": "DOWNTOWN",
     "joinCost": { "minHp": 80, "minSan": 80 },
     "rite": {
       "name": "理论学习",

@@ -2,10 +2,8 @@ import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { RegionID } from '@/types/schema';
 
-// 引入各区域的完整功能组件
-// 这些组件内部已经封装了：
-// 1. Exterior (门外) vs Interior (门内) 的切换
-// 2. Interior 内部的 Novice (新手) vs Native (主场) vs Guest (客场) 逻辑
+// 引入区域宗教容器组件
+// 这些组件内部会自动处理 Novice / Native / Guest 模式
 import { SlumsFaith } from './faith/SlumsFaith';
 import { RustBeltFaith } from './faith/RustBeltFaith';
 import { SuburbsFaith } from './faith/SuburbsFaith';
@@ -18,29 +16,30 @@ export const FaithModal: React.FC = () => {
 
   const handleClose = () => setFaithOpen(false);
 
-  // 渲染逻辑：根据当前所在的地图区域，加载对应的区域宗教模块
+  // 渲染逻辑：直接路由到对应区域的宗教组件
+  // 不再在这一层做 "isNovice" 的判断，避免阻断新设计的 UI
   const renderContent = () => {
     switch (currentRegion) {
       case RegionID.Slums:
-        // 贫民窟 -> 街头祭坛
+        // 贫民窟 -> 街头祭坛 (自动处理：扔钱/献祭/冥想)
         return <SlumsFaith onClose={handleClose} />;
       
       case RegionID.RustBelt:
-        // 铁锈区 -> 福音堂/工会大厅
+        // 工人区 -> 路边福音堂 (自动处理：传单勾选/狂热布道)
         return <RustBeltFaith onClose={handleClose} />;
 
       case RegionID.Suburbs:
-        // 郊区 -> 社区教会
+        // 郊区 -> 社区教会 (自动处理：iPad App/会员订阅)
         return <SuburbsFaith onClose={handleClose} />;
 
       case RegionID.Downtown:
-        // 核心区 -> 兄弟会会所
+        // 核心区 -> 兄弟会 (自动处理：意向书/血契/访客登记)
         return <DowntownFaith onClose={handleClose} />;
 
       default:
         return (
-          <div className="flex items-center justify-center h-full text-white/50 font-mono">
-            [NO_FAITH_SITE_FOUND_IN_THIS_REGION]
+          <div className="flex items-center justify-center w-full h-full text-white font-mono">
+            [ERROR: UNKNOWN REGION FAITH]
           </div>
         );
     }
@@ -52,13 +51,9 @@ export const FaithModal: React.FC = () => {
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm" 
       onClick={handleClose}
     >
-       {/* 内容容器 
-         aspect-video 保持 16:9 的电影感比例
-         max-w-5xl 限制最大宽度，避免在大屏上太散
-       */}
        <div 
          className="w-full max-w-5xl aspect-video relative overflow-hidden shadow-2xl border border-gray-800 bg-black"
-         onClick={e => e.stopPropagation()} // 防止点击内部触发关闭
+         onClick={e => e.stopPropagation()} // 防止点击内部关闭
        >
          {renderContent()}
        </div>

@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const SlumsShrineInterior: React.FC<Props> = ({ onClose }) => {
-  const { inventory, gameDataCache, performNoviceAction, performFaithRite, updatePlayerStats, getFaithMode } = useGameStore();
+  const { faith, inventory, gameDataCache, performNoviceAction, performFaithRite, updatePlayerStats, modifyStats, addNotification, getFaithMode } = useGameStore();
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [ratVisible, setRatVisible] = useState(false);
@@ -21,7 +21,7 @@ export const SlumsShrineInterior: React.FC<Props> = ({ onClose }) => {
     if (mode !== 'NATIVE' || !gameDataCache?.items) return [];
     return inventory
       .map(id => gameDataCache.items.find(item => item.id === id))
-      .filter((item): item is Item => item !== undefined);
+      .filter((item): item is Item => !!item);
   }, [inventory, gameDataCache, mode]);
 
   const uniqueItems = useMemo(() => {

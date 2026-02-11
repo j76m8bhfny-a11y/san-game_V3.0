@@ -29,7 +29,7 @@ export const createBankSlice: StateCreator<StoreState, [], [], BankSlice> = (set
 
   takeLoan: (productId, amount) => {
     const state = get() as StoreState;
-    const { vitality } = state as GameState;
+    const { vitality } = state;
     const currentScore = vitality.metrics.creditScore;
 
     const rawProduct = (loansData as unknown as LoanProduct[]).find(p => p.id === productId);
@@ -45,7 +45,13 @@ export const createBankSlice: StateCreator<StoreState, [], [], BankSlice> = (set
       return { success: false, message: `超过该产品最大额度 $${rawProduct.maxAmount}` };
     }
 
-    // ✅ 先扣信用分（与 takeMortgage 保持一致）
+    // 发放贷款资金（先尝试扣款/放款）
+    const txResult = state.addTransaction('BANK', amount, `贷款发放: ${rawProduct.name}`);
+    if (!txResult.success) {
+      return { success: false, message: "资金操作异常，贷款未能发放" };
+    }
+
+    // ✅ 资金成功后，扣信用分 + 创建贷款（原子操作）
     const penalty = bankRules.creditScore.actions.hardInquiry; 
     state.modifyStats({ creditScore: penalty });
 
@@ -60,7 +66,6 @@ export const createBankSlice: StateCreator<StoreState, [], [], BankSlice> = (set
       isMortgage: false
     };
 
-    // 存入贷款
     set((s: StoreState) => ({
       bank: {
         ...s.bank,
@@ -68,25 +73,12 @@ export const createBankSlice: StateCreator<StoreState, [], [], BankSlice> = (set
       }
     }));
 
-    // 发放贷款资金
-    const txResult = state.addTransaction('BANK', amount, `贷款发放: ${rawProduct.name}`);
-    if (!txResult.success) {
-      // 如果发放失败，移除已添加的贷款记录（理论上不应发生）
-      set((s: StoreState) => ({
-        bank: {
-          ...s.bank,
-          activeLoans: s.bank.activeLoans.filter(l => l.id !== newLoan.id)
-        }
-      }));
-      return { success: false, message: "资金操作异常，贷款未能发放" };
-    }
-
     return { success: true, message: `贷款 $${amount} 已发放。` };
   },
 
   takeMortgage: (amount, termTurns, rate) => {
-    const state = get() as any;
-    const { vitality } = state as GameState;
+    const state = get() as StoreState;
+    const { vitality } = state;
 
     // ✅ 【问题4-A】先扣信用分，再存贷款（原子性优化）
     const penalty = bankRules.creditScore.actions.hardInquiry;
@@ -224,7 +216,7 @@ export const createBankSlice: StateCreator<StoreState, [], [], BankSlice> = (set
   },
 
   clearLoan: (loanId) => {
-    const { bank } = get() as GameState;
+    const { bank } = get() as StoreState;
     const loans = [...bank.activeLoans];
     const loanIndex = loans.findIndex(l => l.id === loanId);
     
@@ -232,7 +224,7 @@ export const createBankSlice: StateCreator<StoreState, [], [], BankSlice> = (set
     
     loans.splice(loanIndex, 1);
     
-    set((s: GameState) => ({
+    set((s: StoreState) => ({
       bank: {
         ...s.bank,
         activeLoans: loans

@@ -9,7 +9,7 @@ interface Props {
 }
 
 export const SlumsShrineInterior: React.FC<Props> = ({ onClose }) => {
-  const { inventory, gameDataCache, performNoviceAction, performFaithRite, updatePlayerStats, getFaithMode } = useGameStore();
+  const { faith, inventory, gameDataCache, performNoviceAction, performFaithRite, updatePlayerStats, modifyStats, addNotification, getFaithMode } = useGameStore();
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [ratVisible, setRatVisible] = useState(false);

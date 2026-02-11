@@ -3,11 +3,13 @@ import { LoanProduct } from '@/types/schema';
 
 interface Props {
   product: LoanProduct;
-  canAfford: boolean; // 这里指是否有资格申请（虽然贫民窟通常无视信用）
+  creditScore: number;
   onSign: () => void;
 }
 
-export const SlumsLoanPaper: React.FC<Props> = ({ product, canAfford, onSign }) => {
+export const SlumsLoanPaper: React.FC<Props> = ({ product, creditScore, onSign }) => {
+  const canAfford = creditScore >= product.minScore;
+  
   return (
     <div 
       onClick={canAfford ? onSign : undefined}
@@ -38,6 +40,9 @@ export const SlumsLoanPaper: React.FC<Props> = ({ product, canAfford, onSign }) 
           <div>
             <div>PAY BACK: <span className="font-bold text-red-700">${Math.ceil(product.maxAmount * (1 + product.weeklyRate * product.termTurns))}</span></div>
             <div className="text-gray-500">in {product.termTurns} turns</div>
+            {!canAfford && (
+              <div className="text-red-600 font-bold mt-1">Need {product.minScore} Credit</div>
+            )}
           </div>
           <div className={`
             font-bold px-2 py-1 border border-black transform -rotate-6

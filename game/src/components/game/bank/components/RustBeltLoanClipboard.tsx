@@ -3,17 +3,19 @@ import { LoanProduct } from '@/types/schema';
 
 interface Props {
   product: LoanProduct;
-  canAfford: boolean;
+  creditScore: number;
   onSign: () => void;
 }
 
-export const RustBeltLoanClipboard: React.FC<Props> = ({ product, canAfford, onSign }) => {
+export const RustBeltLoanClipboard: React.FC<Props> = ({ product, creditScore, onSign }) => {
+  const canAfford = creditScore >= product.minScore;
+  
   return (
     <div 
       onClick={canAfford ? onSign : undefined}
       className={`
         relative w-full h-40 bg-[#5c4033] rounded-t-lg shadow-lg cursor-pointer transition-transform duration-200 group
-        ${canAfford ? 'hover:-translate-y-2' : 'opacity-70 grayscale cursor-not-allowed'}
+        ${canAfford ? 'hover:-translate-y-2' : 'opacity-60 grayscale cursor-not-allowed'}
       `}
     >
       {/* 夹子 */}
@@ -40,6 +42,12 @@ export const RustBeltLoanClipboard: React.FC<Props> = ({ product, canAfford, onS
             <span>Term:</span>
             <span className="font-mono">{product.termTurns} Turns</span>
           </div>
+          
+          {!canAfford && (
+            <div className="text-red-600 font-bold text-center mt-1">
+              Requires {product.minScore} Credit Score
+            </div>
+          )}
           
           <div className="mt-2 text-[8px] text-gray-500 leading-tight text-justify">
             I hereby agree to wage garnishment in case of default.

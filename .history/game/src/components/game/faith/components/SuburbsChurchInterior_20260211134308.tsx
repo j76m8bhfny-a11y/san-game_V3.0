@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { RegionID, NoviceActionType } from '@/types/schema';
-import { placeholderBackgrounds } from '../utils/placeholderAssets';
+import { placeholderBackgrounds, placeholderIcons, placeholderEffects } from '../utils/placeholderAssets';
 
 interface Props {
   onClose: () => void;
@@ -186,7 +186,7 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
           {/* 3. 客场模式：简易界面 */}
           {mode === 'GUEST' && (
              <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
-                <div className="text-4xl grayscale opacity-30 mb-4">✝️</div>
+                <div className="text-4xl grayscale opacity-30 mb-4">{placeholderIcons.logo_small}</div>
                 <h3 className="text-gray-600 font-bold mb-2">Ecumenical Service</h3>
                 <p className="text-xs text-gray-400 max-w-[200px] mb-6">
                   You may perform your own rites here using our secure facility.

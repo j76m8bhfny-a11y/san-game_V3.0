@@ -24,10 +24,8 @@ export const SuburbsBank: React.FC<Props> = ({ onClose }) => {
   const { playSfx } = useAudioStore();
 
   // 筛选属于 SUBURBS 区域的贷款产品
-  // 假设贷款数据里有 region 字段，或者根据 ID 规则筛选
-  // 如果没有 region 字段，可以根据 creditScore 要求来硬筛选（中产通常要求 > 600）
   const loanProducts = gameDataCache?.loans?.filter(l => 
-    l.region === RegionID.Suburbs || (l.minScore >= 600 && l.minScore < 800)
+    l.region === RegionID.Suburbs
   ) || [];
 
   const handleEnter = () => {

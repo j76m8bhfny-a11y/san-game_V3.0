@@ -17,7 +17,7 @@ import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 
 // 引入逻辑计算 (纯函数)
 import { calculateRiteOutcome, calculateNoviceActionOutcome } from '@/logic/faith';
-import type { LeavePenalty } from '@/types/faithRules';
+import type { FaithRules, LeavePenalty } from '@/types/faithRules';
 
 // 类型断言与转换
 const faithsData = faithsDataUntyped as FaithData[];
@@ -155,7 +155,7 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
     } else {
         // 动作打断，重置为 1
         if (behaviorState.currentStreak > 1) {
-            state.addNotification(faithRules.text.streakBroken || "你的意志动摇了，之前的积累已消散。", 'warning');
+            state.addNotification(faithRules.text.streakBreak || "你的意志动摇了，之前的积累已消散。", 'warning');
         }
     }
 

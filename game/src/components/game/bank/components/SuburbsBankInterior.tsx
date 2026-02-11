@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { LoanProduct, ActiveLoan } from '@/types/schema';
 import { useAudioStore } from '@/store/useAudioStore';
+import { getCreditRating } from '@/logic/bank';
+import { useBankUI } from '../hooks/useBankUI';
 
 interface Props {
   gold: number;
@@ -22,17 +24,18 @@ export const SuburbsBankInterior: React.FC<Props> = ({
   const [view, setView] = useState<ScreenView>('MENU');
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [receiptAnim, setReceiptAnim] = useState(false);
-  const [repayAmount, setRepayAmount] = useState<Record<string, number>>({});
   const { playSfx } = useAudioStore();
+  
+  const { 
+    getLoanStatus, 
+    getSkipWarning, 
+    getTotalOwed, 
+    repayAmount, 
+    setRepayAmount, 
+    handlePartialRepay 
+  } = useBankUI();
 
-  // 根据信用分计算评级
-  const getCreditRating = (score: number) => {
-    if (score >= 750) return { label: 'EXCELLENT', color: 'text-green-400' };
-    if (score >= 650) return { label: 'GOOD', color: 'text-blue-400' };
-    if (score >= 550) return { label: 'FAIR', color: 'text-yellow-400' };
-    return { label: 'POOR', color: 'text-red-500 animate-pulse' };
-  };
-
+  // 使用统一的信用分评级
   const rating = getCreditRating(creditScore);
 
   const handleAction = (action: () => void, isTakingLoan = false) => {
@@ -49,65 +52,16 @@ export const SuburbsBankInterior: React.FC<Props> = ({
     }, 1000);
   };
 
-  // 获取贷款状态
-  const getLoanStatus = (loan: ActiveLoan) => {
-    const weeksLeft = loan.dueTurn - currentTurn;
-    const isOverdue = weeksLeft < 0;
-    const overdueWeeks = isOverdue ? Math.abs(weeksLeft) : 0;
-    
-    if (isOverdue) {
-      if (loan.isMortgage && overdueWeeks >= 4) {
-        return { label: 'FORECLOSURE RISK', color: 'text-red-400', bgColor: 'bg-red-900/40' };
-      }
-      if (overdueWeeks <= 1) return { label: `OVERDUE ${overdueWeeks} WK`, color: 'text-yellow-400', bgColor: 'bg-yellow-900/30' };
-      if (overdueWeeks <= 3) return { label: 'COLLECTIONS', color: 'text-orange-400', bgColor: 'bg-orange-900/30' };
-      return { label: 'GARNISH RISK', color: 'text-red-400', bgColor: 'bg-red-900/40' };
-    }
-    if (weeksLeft <= 2) return { label: `DUE IN ${weeksLeft} WK`, color: 'text-amber-400', bgColor: 'bg-amber-900/20' };
-    return { label: `DUE IN ${weeksLeft} WK`, color: 'text-blue-300', bgColor: 'bg-blue-900/20' };
-  };
-
-  // 获取逾期警告文本
-  const getSkipWarning = (loan: ActiveLoan) => {
-    const weeksLeft = loan.dueTurn - currentTurn;
-    const isOverdue = weeksLeft < 0;
-    const overdueWeeks = isOverdue ? Math.abs(weeksLeft) : 0;
-    
-    if (!isOverdue) {
-      if (weeksLeft === 0) return 'DUE TODAY';
-      if (weeksLeft <= 2) return `DUE IN ${weeksLeft} WEEK(S)`;
-      return null;
-    }
-    
-    if (loan.isMortgage) {
-      if (overdueWeeks >= 4) return 'FORECLOSURE PROCEEDING';
-      if (overdueWeeks >= 2) return 'MORTGAGE DELINQUENT';
-      return 'MORTGAGE PAST DUE';
-    }
-    
-    if (overdueWeeks >= 8) return 'LEGAL ACTION PENDING';
-    if (overdueWeeks >= 4) return 'GARNISHMENT WARNING';
-    if (overdueWeeks >= 2) return 'COLLECTIONS ACTIVE';
-    return 'PAST DUE - ACT NOW';
-  };
-
-  // 处理部分还款
-  const handlePartialRepay = (loan: ActiveLoan) => {
+  const onPartialRepay = (loan: ActiveLoan) => {
     const amount = repayAmount[loan.id] || 0;
     if (amount <= 0) return;
     setProcessingId(loan.id);
     playSfx('sfx_click');
     setTimeout(() => {
-      const result = onMakeInstallment(loan.id, amount);
-      if (result.success) {
-        setRepayAmount(prev => ({ ...prev, [loan.id]: 0 }));
-      }
+      handlePartialRepay(loan, amount, onMakeInstallment);
       setProcessingId(null);
     }, 1000);
   };
-
-  // 计算总欠款
-  const getTotalOwed = (loan: ActiveLoan) => loan.principal + loan.interest;
 
   return (
     <div className="relative w-full h-full flex items-center justify-center select-none bg-[#111] overflow-hidden">
@@ -216,8 +170,8 @@ export const SuburbsBankInterior: React.FC<Props> = ({
               <div className="space-y-4">
                 <h3 className="text-blue-300 border-b border-blue-300/30 pb-1 mb-2">OUTSTANDING DEBTS</h3>
                 {activeLoans.map(l => {
-                  const status = getLoanStatus(l);
-                  const warning = getSkipWarning(l);
+                  const status = getLoanStatus(l, currentTurn, true);
+                  const warning = getSkipWarning(l, currentTurn, true);
                   const totalOwed = getTotalOwed(l);
                   return (
                     <div key={l.id} className={`${status.bgColor} p-3 border border-blue-400/30`}>
@@ -249,7 +203,7 @@ export const SuburbsBankInterior: React.FC<Props> = ({
                         <input
                           type="number"
                           value={repayAmount[l.id] || ''}
-                          onChange={(e) => setRepayAmount(prev => ({ ...prev, [l.id]: Math.max(0, parseInt(e.target.value) || 0) }))}
+                          onChange={(e) => setRepayAmount(prev => ({ ...prev, [l.id]: Math.max(0, parseInt(e.target.value, 10) || 0) }))}
                           placeholder="AMOUNT"
                           className="flex-1 bg-[#002b55] border border-blue-400/50 text-white text-xs px-2 py-1 focus:outline-none focus:border-blue-300"
                         />
@@ -264,7 +218,7 @@ export const SuburbsBankInterior: React.FC<Props> = ({
                       {/* 还款按钮 */}
                       <div className="flex gap-2">
                         <button 
-                          onClick={() => handlePartialRepay(l)}
+                          onClick={() => onPartialRepay(l)}
                           disabled={gold < (repayAmount[l.id] || 0) || (repayAmount[l.id] || 0) <= 0}
                           className="flex-1 bg-blue-700 hover:bg-blue-600 disabled:bg-gray-700 disabled:text-gray-500 text-white py-1 text-xs font-bold"
                         >

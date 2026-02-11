@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import { Job, RegionID } from '@/types/schema';
-import { JobPaper, JobTheme } from './Jobs/JobPaper'; // 确保路径正确
+import { JobPaper, JobTheme } from './jobs/JobPaper'; // 确保路径正确
 
 // 映射 Region 到主题
 const THEME_MAP: Record<RegionID, JobTheme> = {
@@ -78,9 +78,15 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
     playSfx('sfx_paper_rustle'); // 播放音效
     const result = acceptJob(job.id);
     if (result.success) {
-      addNotification(`成功入职: ${job.title}`, 'success');
+      addNotification({ 
+        message: `成功入职: ${job.title}`, 
+        type: 'SUCCESS' 
+      });
     } else {
-      addNotification( result.message, 'error');
+      addNotification({ 
+        message: result.message, 
+        type: 'ERROR' 
+      });
     }
   };
 
@@ -88,7 +94,10 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
     playSfx('sfx_click');
     const result = quitJob(jobId);
     if (result.success) {
-      addNotification( '已离职',  'info');
+      addNotification({ 
+        message: '已离职', 
+        type: 'INFO' 
+      });
     }
   };
 

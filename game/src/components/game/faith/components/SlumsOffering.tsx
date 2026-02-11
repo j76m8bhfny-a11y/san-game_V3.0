@@ -3,11 +3,12 @@ import { Item } from '@/types/schema';
 
 interface Props {
   item: Item;
+  count: number;
   isSelected: boolean;
   onClick: () => void;
 }
 
-export const SlumsOffering: React.FC<Props> = ({ item, isSelected, onClick }) => {
+export const SlumsOffering: React.FC<Props> = ({ item, count, isSelected, onClick }) => {
   // 简单的图标映射
   const getIcon = (tags: string[]) => {
     if (tags.includes('FOOD')) return '🥩'; 
@@ -39,7 +40,7 @@ export const SlumsOffering: React.FC<Props> = ({ item, isSelected, onClick }) =>
 
       {/* 数量标签 */}
       <div className="absolute bottom-0 right-0 bg-black/80 text-gray-300 text-[10px] font-mono px-1 border border-gray-600">
-        x1
+        x{count}
       </div>
 
       {/* 选中时的箭头 */}

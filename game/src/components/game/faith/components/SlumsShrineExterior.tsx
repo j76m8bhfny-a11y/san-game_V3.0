@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { placeholderBackgrounds, placeholderIcons, placeholderEffects } from '../utils/placeholderAssets';
 
 interface Props {
   onEnter: () => void;
@@ -15,7 +16,7 @@ export const SlumsShrineExterior: React.FC<Props> = ({ onEnter, onClose }) => {
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center transition-all duration-1000"
         style={{ 
-          backgroundImage: "url('/assets/faith/slums_shrine_exterior.jpg')",
+          background: placeholderBackgrounds.slums_shrine_exterior,
           filter: isHovered ? 'brightness(1.1) contrast(1.2)' : 'brightness(0.6) sepia(0.5)'
         }}
       >
@@ -25,8 +26,8 @@ export const SlumsShrineExterior: React.FC<Props> = ({ onEnter, onClose }) => {
       {/* 2. 交互区：祭坛主体 */}
       <div 
         className="absolute inset-0 flex items-center justify-center z-10 cursor-pointer group"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseEnter={useCallback(() => setIsHovered(true), [])}
+        onMouseLeave={useCallback(() => setIsHovered(false), [])}
         onClick={onEnter}
       >
         {/* 烛光特效 (Hover时变强) */}
@@ -42,7 +43,9 @@ export const SlumsShrineExterior: React.FC<Props> = ({ onEnter, onClose }) => {
           absolute top-[30%] left-[50%] -translate-x-1/2 w-64 opacity-0 transition-opacity duration-1000
           ${isHovered ? 'opacity-80' : 'opacity-0'}
         `}>
-          <img src="/assets/faith/ui_graffiti_eye.png" className="w-full drop-shadow-[0_0_10px_rgba(255,0,0,0.8)]" />
+          <div className="text-8xl text-center drop-shadow-[0_0_10px_rgba(255,0,0,0.8)]">
+            {placeholderIcons.graffiti_eye}
+          </div>
         </div>
 
         {/* 提示文字 */}
@@ -60,7 +63,10 @@ export const SlumsShrineExterior: React.FC<Props> = ({ onEnter, onClose }) => {
       </div>
 
       {/* 氛围粒子：漂浮的尘埃 */}
-      <div className="absolute inset-0 pointer-events-none bg-[url('/assets/fx/dust_particles.png')] opacity-20 animate-float" />
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-20 animate-float"
+        style={{ backgroundImage: placeholderEffects.dust_particles, backgroundSize: '30px 30px' }}
+      />
 
       <button 
         onClick={onClose}

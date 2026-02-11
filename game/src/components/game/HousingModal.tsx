@@ -25,7 +25,7 @@ export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) =
     case RegionID.Slums:
       return <SlumsHousing onClose={onClose} />;
     
-    // TODO: 下面这些区域的组件等你之后做好了，把注释解开即可
+
     
     case RegionID.RustBelt:
        return <RustBeltHousing onClose={onClose} />;

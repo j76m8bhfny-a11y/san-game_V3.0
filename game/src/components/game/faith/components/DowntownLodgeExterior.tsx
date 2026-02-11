@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { placeholderBackgrounds } from '../utils/placeholderAssets';
 
 interface Props {
   onEnter: () => void;
@@ -15,7 +16,7 @@ export const DowntownLodgeExterior: React.FC<Props> = ({ onEnter, onClose }) => 
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center transition-all duration-1000"
         style={{ 
-          backgroundImage: "url('/assets/faith/downtown_lodge_exterior.jpg')",
+          background: placeholderBackgrounds.downtown_lodge_exterior,
           transform: isHovered ? 'scale(1.02)' : 'scale(1)',
           filter: isHovered ? 'brightness(0.8) contrast(1.2)' : 'brightness(0.6) sepia(0.2)'
         }}
@@ -26,8 +27,8 @@ export const DowntownLodgeExterior: React.FC<Props> = ({ onEnter, onClose }) => 
       {/* 2. 核心视觉：全视之眼 (The Eye) */}
       <div 
         className="absolute top-1/3 left-1/2 -translate-x-1/2 z-10 cursor-pointer group"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseEnter={useCallback(() => setIsHovered(true), [])}
+        onMouseLeave={useCallback(() => setIsHovered(false), [])}
         onClick={onEnter}
       >
         <div className="relative w-64 h-64 flex items-center justify-center">

@@ -26,6 +26,7 @@ export interface VitalitySlice {
   addTransaction: (category: LedgerCategory, amount: number, description: string) => { success: boolean; actualAmount: number };
   modifyStats: (changes: Partial<VitalityState['metrics']>) => void;
   updateIdentityPoints: (points: { red?: number; wolf?: number; old?: number }) => void;
+  updateFlags: (changes: Partial<VitalityState['flags']>) => void;
   contractDisease: (diseaseId: string) => void;
   cureDisease: (diseaseId: string) => void;
   advanceTurn: () => void;
@@ -260,6 +261,16 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
       }
     };
   }),
+
+  updateFlags: (changes) => set((state: any) => ({
+    vitality: {
+      ...state.vitality,
+      flags: {
+        ...state.vitality.flags,
+        ...changes
+      }
+    }
+  })),
 
   performTreatment: (serviceId) => {
     const state = get() as GameState & VitalitySlice;

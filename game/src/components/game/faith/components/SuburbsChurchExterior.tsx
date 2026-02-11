@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { placeholderBackgrounds, placeholderEffects } from '../utils/placeholderAssets';
 
 interface Props {
   onEnter: () => void;
@@ -15,7 +16,7 @@ export const SuburbsChurchExterior: React.FC<Props> = ({ onEnter, onClose }) => 
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center transition-all duration-700"
         style={{ 
-          backgroundImage: "url('/assets/faith/suburbs_church_exterior.jpg')",
+          background: placeholderBackgrounds.suburbs_church_exterior,
           transform: isHovered ? 'scale(1.02)' : 'scale(1)',
           filter: isHovered ? 'brightness(1.05)' : 'brightness(1)'
         }}
@@ -33,7 +34,10 @@ export const SuburbsChurchExterior: React.FC<Props> = ({ onEnter, onClose }) => 
           </div>
         </div>
         {/* 扫描线效果 */}
-        <div className="absolute inset-0 bg-[url('/assets/fx/scanlines.png')] opacity-20 pointer-events-none" />
+        <div 
+          className="absolute inset-0 opacity-20 pointer-events-none"
+          style={{ backgroundImage: placeholderEffects.scanlines, backgroundSize: '100% 4px' }}
+        />
       </div>
 
       {/* 3. 品牌 Logo */}
@@ -52,8 +56,8 @@ export const SuburbsChurchExterior: React.FC<Props> = ({ onEnter, onClose }) => 
       {/* 4. 交互区：自动感应玻璃门 */}
       <div 
         className="absolute inset-0 top-1/3 flex items-center justify-center z-20 cursor-pointer group"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseEnter={useCallback(() => setIsHovered(true), [])}
+        onMouseLeave={useCallback(() => setIsHovered(false), [])}
         onClick={onEnter}
       >
         <div className={`

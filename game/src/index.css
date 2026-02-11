@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Permanent+Marker&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -109,6 +111,37 @@ body {
   
   .font-pixel {
     font-family: var(--font-pixel);
+  }
+
+  /* 住房 UI 字体类 */
+  .font-marker {
+    /* 手写马克笔风格 */
+    font-family: 'Permanent Marker', 'Courier New', cursive;
+    font-weight: bold;
+    letter-spacing: 0.02em;
+  }
+  
+  .font-handwriting {
+    /* 自然手写体 */
+    font-family: 'Caveat', 'Brush Script MT', cursive;
+    font-weight: normal;
+  }
+
+  /* 住房 UI 特效类 */
+  .text-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  }
+  
+  .radial-vignette {
+    background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.8) 100%);
+  }
+  
+  .clip-tape {
+    /* 胶带贴纸效果 */
+    clip-path: polygon(
+      2% 0%, 98% 0%, 100% 5%, 100% 95%, 98% 100%, 2% 100%, 0% 95%, 0% 5%
+    );
+    box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
   }
 }
 

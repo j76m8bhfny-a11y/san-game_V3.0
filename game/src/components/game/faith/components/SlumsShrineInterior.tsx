@@ -1,18 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Item } from '@/types/schema';
 import { SlumsOffering } from './SlumsOffering';
+import { placeholderBackgrounds, placeholderIcons } from '../utils/placeholderAssets';
 
 interface Props {
   inventory: Item[];
+  hasPrayed: boolean;
   onSacrifice: (itemId: string) => void;
   onPray: () => void;
   onClose: () => void;
 }
 
-export const SlumsShrineInterior: React.FC<Props> = ({ inventory, onSacrifice, onPray, onClose }) => {
+export const SlumsShrineInterior: React.FC<Props> = ({ inventory, hasPrayed, onSacrifice, onPray, onClose }) => {
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [ratVisible, setRatVisible] = useState(false);
+
+  // 去重并计算物品数量
+  const itemCounts = useMemo(() => {
+    const counts = new Map<string, number>();
+    inventory.forEach(item => {
+      counts.set(item.id, (counts.get(item.id) || 0) + 1);
+    });
+    return counts;
+  }, [inventory]);
+
+  // 获取去重后的物品列表（只保留唯一物品）
+  const uniqueItems = useMemo(() => {
+    const seen = new Set<string>();
+    return inventory.filter(item => {
+      if (seen.has(item.id)) return false;
+      seen.add(item.id);
+      return true;
+    });
+  }, [inventory]);
 
   const handleSacrifice = () => {
     if (!selectedItemId) return;
@@ -38,7 +59,7 @@ export const SlumsShrineInterior: React.FC<Props> = ({ inventory, onSacrifice, o
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center"
         style={{ 
-          backgroundImage: "url('/assets/faith/slums_shrine_interior.jpg')",
+          background: placeholderBackgrounds.slums_shrine_interior,
         }}
       >
         <div className="absolute inset-0 bg-black/40 radial-vignette" />
@@ -56,7 +77,9 @@ export const SlumsShrineInterior: React.FC<Props> = ({ inventory, onSacrifice, o
         `}>
           {/* 默认状态：断头圣像 */}
           {!selectedItemId && !isAnimating && (
-            <img src="/assets/faith/prop_broken_statue.png" className="w-40 opacity-80 drop-shadow-2xl" />
+            <div className="text-[120px] opacity-80 drop-shadow-2xl">
+              {placeholderIcons.broken_statue}
+            </div>
           )}
 
           {/* 选中状态：显示的供品 */}
@@ -69,7 +92,9 @@ export const SlumsShrineInterior: React.FC<Props> = ({ inventory, onSacrifice, o
           {/* 动画：老鼠叼走供品 */}
           {ratVisible && (
             <div className="absolute inset-0 flex items-center justify-center z-20">
-              <img src="/assets/faith/fx_rat_snatch.png" className="w-48 animate-slide-out-right" />
+              <div className="text-[150px] animate-slide-out-right">
+                {placeholderIcons.rat}
+              </div>
             </div>
           )}
         </div>
@@ -99,25 +124,31 @@ export const SlumsShrineInterior: React.FC<Props> = ({ inventory, onSacrifice, o
           {/* 祈祷按钮 (无物品时的低保) */}
           <button 
             onClick={onPray}
-            className="w-20 h-20 border border-white/20 flex flex-col items-center justify-center opacity-60 hover:opacity-100 hover:bg-white/10 transition-all"
+            disabled={hasPrayed}
+            className={`w-20 h-20 border border-white/20 flex flex-col items-center justify-center transition-all ${
+              hasPrayed 
+                ? 'opacity-30 cursor-not-allowed' 
+                : 'opacity-60 hover:opacity-100 hover:bg-white/10'
+            }`}
           >
-            <span className="text-2xl">🙏</span>
-            <span className="text-[10px] mt-1 font-mono">PRAY</span>
+            <span className="text-2xl">{hasPrayed ? '✓' : '🙏'}</span>
+            <span className="text-[10px] mt-1 font-mono">{hasPrayed ? 'DONE' : 'PRAY'}</span>
           </button>
 
           <div className="w-[1px] bg-white/20 mx-2" />
 
           {/* 物品列表 */}
-          {inventory.slice(0, 5).map(item => ( // 只显示前5个，避免太乱
+          {uniqueItems.slice(0, 5).map(item => ( // 只显示前5种，避免太乱
             <SlumsOffering
               key={item.id}
               item={item}
+              count={itemCounts.get(item.id) || 1}
               isSelected={selectedItemId === item.id}
               onClick={() => !isAnimating && setSelectedItemId(item.id === selectedItemId ? null : item.id)}
             />
           ))}
           
-          {inventory.length === 0 && (
+          {uniqueItems.length === 0 && (
              <div className="text-gray-600 font-mono text-xs flex items-center">
                (No offerings available)
              </div>

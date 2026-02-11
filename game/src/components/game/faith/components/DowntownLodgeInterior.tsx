@@ -1,35 +1,54 @@
 import React, { useState, useEffect } from 'react';
+import faithRules from '@/assets/data/rules/faithRules.json';
+import { placeholderBackgrounds } from '../utils/placeholderAssets';
 
 interface Props {
   sanity: number;
+  maxSanity: number;
+  hasSigned: boolean;
   onSignPact: () => void;
   onClose: () => void;
 }
 
-export const DowntownLodgeInterior: React.FC<Props> = ({ sanity, onSignPact, onClose }) => {
+export const DowntownLodgeInterior: React.FC<Props> = ({ 
+  sanity, 
+  maxSanity, 
+  hasSigned: hasSignedProp, 
+  onSignPact, 
+  onClose 
+}) => {
   const [isSigning, setIsSigning] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [hasSigned, setHasSigned] = useState(false);
+  const [localHasSigned, setLocalHasSigned] = useState(false);
+
+  // 同步父组件的签署状态
+  useEffect(() => {
+    setLocalHasSigned(hasSignedProp);
+  }, [hasSignedProp]);
 
   // 长按签字逻辑
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    if (isSigning && !hasSigned) {
+    if (isSigning && !localHasSigned) {
       interval = setInterval(() => {
         setProgress(prev => {
           if (prev >= 100) {
-            setHasSigned(true);
+            setLocalHasSigned(true);
             onSignPact();
             return 100;
           }
           return prev + 2; // 签字速度
         });
       }, 30);
-    } else if (!isSigning && !hasSigned) {
+    } else if (!isSigning && !localHasSigned) {
       setProgress(0);
     }
     return () => clearInterval(interval);
-  }, [isSigning, hasSigned, onSignPact]);
+  }, [isSigning, localHasSigned, onSignPact]);
+
+  // 获取契约配置
+  const pactConfig = (faithRules as any).regionalFaiths?.downtown?.pact;
+  const cost = pactConfig?.cost?.maxSan || 20;
 
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center select-none bg-[#050505] overflow-hidden">
@@ -38,7 +57,7 @@ export const DowntownLodgeInterior: React.FC<Props> = ({ sanity, onSignPact, onC
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center opacity-40"
         style={{ 
-          backgroundImage: "url('/assets/faith/downtown_lodge_interior.jpg')",
+          background: placeholderBackgrounds.downtown_lodge_interior,
         }}
       >
         {/* 烛光摇曳效果 */}
@@ -69,23 +88,28 @@ export const DowntownLodgeInterior: React.FC<Props> = ({ sanity, onSignPact, onC
 
             <div className="flex-1 flex flex-col items-center justify-center gap-4">
               <div className="text-xs text-red-900 font-bold uppercase tracking-widest">
-                Cost: -20 Max Sanity
+                Cost: -{cost} Max Sanity (Current: {maxSanity})
               </div>
               <div className="text-xs text-[#d4af37] font-bold uppercase tracking-widest">
                 Gain: Influence & Insider Info
               </div>
+              {localHasSigned && (
+                <div className="text-xs text-green-600 font-bold uppercase tracking-widest mt-2">
+                  ✓ You are one of Us
+                </div>
+              )}
             </div>
 
             {/* 签字区域 */}
             <div 
-              className="mt-auto relative w-full h-32 border-b-2 border-[#d4af37]/50 flex items-end justify-center cursor-pointer group"
-              onMouseDown={() => !hasSigned && setIsSigning(true)}
+              className={`mt-auto relative w-full h-32 border-b-2 border-[#d4af37]/50 flex items-end justify-center ${localHasSigned ? '' : 'cursor-pointer group'}`}
+              onMouseDown={() => !localHasSigned && setIsSigning(true)}
               onMouseUp={() => setIsSigning(false)}
               onMouseLeave={() => setIsSigning(false)}
-              onTouchStart={() => !hasSigned && setIsSigning(true)}
+              onTouchStart={() => !localHasSigned && setIsSigning(true)}
               onTouchEnd={() => setIsSigning(false)}
             >
-              {!hasSigned ? (
+              {!localHasSigned ? (
                 <>
                   <div className="text-gray-500 text-xs mb-2 group-hover:text-[#d4af37] transition-colors">
                     {isSigning ? "Signing..." : "Hold to Sign in Blood"}

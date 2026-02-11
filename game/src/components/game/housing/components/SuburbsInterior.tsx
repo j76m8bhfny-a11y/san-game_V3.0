@@ -40,7 +40,7 @@ export const SuburbsInterior: React.FC<Props> = ({ housing, onRest, onPayBills, 
           </div>
           <div className="flex justify-between">
             <span>Weekly Cost:</span>
-            <span className="font-bold text-red-500">-${housing.weeklyCosts.reduce((a, b) => a + b.baseAmount, 0)}</span>
+            <span className="font-bold text-red-500">-${housing.weeklyCosts.reduce((a, b) => a + b.baseAmount, 0) || 0}</span>
           </div>
         </div>
       </div>

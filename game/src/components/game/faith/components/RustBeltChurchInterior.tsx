@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { placeholderBackgrounds, placeholderIcons } from '../utils/placeholderAssets';
 
 interface Props {
   gold: number;
@@ -35,7 +36,7 @@ export const RustBeltChurchInterior: React.FC<Props> = ({ gold, onTithe, onListe
       <div 
         className={`absolute inset-0 z-0 bg-cover bg-center transition-all duration-500 ${isPreaching ? 'scale-110 blur-md brightness-150 saturate-200' : 'blur-sm'}`}
         style={{ 
-          backgroundImage: "url('/assets/faith/rust_church_interior.jpg')",
+          background: placeholderBackgrounds.rust_church_interior,
         }}
       >
         {/* 动态灯光：模拟舞台灯 */}
@@ -79,7 +80,9 @@ export const RustBeltChurchInterior: React.FC<Props> = ({ gold, onTithe, onListe
 
           {/* 奉献按钮 */}
           <div className="mt-auto w-full cursor-pointer group" onClick={handleDonationClick}>
-             <img src="/assets/faith/ui_icon_handshake.png" className="w-12 h-12 mx-auto mb-2 opacity-80 group-hover:scale-110 transition-transform" />
+             <div className="text-5xl mx-auto mb-2 opacity-80 group-hover:scale-110 transition-transform">
+               {placeholderIcons.handshake}
+             </div>
              <h2 className="font-bold text-lg uppercase group-hover:text-green-700">Tithing & Offering</h2>
              <p className="text-[10px] text-gray-500">Give, and you shall receive.</p>
           </div>
@@ -95,8 +98,10 @@ export const RustBeltChurchInterior: React.FC<Props> = ({ gold, onTithe, onListe
         absolute bottom-0 right-0 w-[400px] h-[300px] z-20 transition-transform duration-500 ease-out
         ${showDonationBag ? 'translate-y-0 translate-x-0' : 'translate-y-full translate-x-full'}
       `}>
-        {/* 红丝绒袋子图片 */}
-        <img src="/assets/faith/ui_donation_bag.png" className="absolute bottom-0 right-0 w-full drop-shadow-[-20px_-20px_50px_rgba(0,0,0,0.5)]" />
+        {/* 红丝绒袋子占位 */}
+        <div className="absolute bottom-0 right-0 text-[200px] drop-shadow-[-20px_-20px_50px_rgba(0,0,0,0.5)]">
+          {placeholderIcons.donation_bag}
+        </div>
         
         {/* 投币选项 */}
         <div className="absolute top-1/3 left-1/4 flex flex-col gap-2">

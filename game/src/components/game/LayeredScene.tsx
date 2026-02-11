@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 // ❌ [移除] 旧的侧边栏
 // import { BankSidebar } from './BankSidebar'; 
-import { FaithSidebar } from './FaithSidebar'; // (注：如果宗教也改完了，这里应该换成 FaithModal)
+import { FaithModal } from './FaithModal';
 import CLASSES_DATA from '@/assets/data/classes.json';
 
 // ✅ [新增] 引入新的独立模态框
@@ -173,8 +173,8 @@ export const LayeredScene: React.FC<LayeredSceneProps> = ({
 
       {/* Layer 5: Modals & Sidebars */}
       
-      {/* 旧的 Sidebar (如果还没迁移完可以先留着，否则建议替换) */}
-      <FaithSidebar /> 
+      {/* 宗教模态框 (根据区域渲染不同场景) */}
+      <FaithModal /> 
       
       {/* ✅ [新增] 银行模态框 (内部根据 RegionID 渲染不同场景) */}
       <BankModal isOpen={isBankOpen} onClose={() => setBankOpen(false)} />

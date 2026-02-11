@@ -10,7 +10,7 @@ import { RustBeltFaith } from './faith/RustBeltFaith';
 import { SuburbsFaith } from './faith/SuburbsFaith';
 import { DowntownFaith } from './faith/DowntownFaith';
 
-export const FaithSidebar: React.FC = () => {
+export const FaithModal: React.FC = () => {
   const { isFaithOpen, setFaithOpen, currentRegion } = useGameStore();
 
   if (!isFaithOpen) return null;
@@ -51,21 +51,3 @@ export const FaithSidebar: React.FC = () => {
   );
 };
 
-// --- 临时占位组件 (用于还未开发的区域) ---
-const PlaceholderFaith: React.FC<{ region: string; name: string }> = ({ region, name }) => (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm">
-    <div className="border border-zinc-700 bg-zinc-900 p-8 max-w-md text-center">
-      <h2 className="text-2xl font-bold text-zinc-400 mb-2">{name}</h2>
-      <p className="text-zinc-600 font-mono text-sm mb-6">
-        LOCATION: {region}<br/>
-        STATUS: UNDER RENOVATION
-      </p>
-      <button 
-        onClick={() => useGameStore.getState().setFaithOpen(false)}
-        className="px-6 py-2 border border-zinc-600 hover:bg-zinc-800 text-zinc-300"
-      >
-        [ 离开 ]
-      </button>
-    </div>
-  </div>
-);

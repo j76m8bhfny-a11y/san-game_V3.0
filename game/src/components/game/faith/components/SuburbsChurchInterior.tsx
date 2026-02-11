@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { placeholderBackgrounds, placeholderIcons, placeholderEffects } from '../utils/placeholderAssets';
 
 interface Props {
   gold: number;
@@ -26,7 +27,7 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ gold, onSubscribe, onAt
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center blur-sm opacity-80"
         style={{ 
-          backgroundImage: "url('/assets/faith/suburbs_church_interior.jpg')",
+          background: placeholderBackgrounds.suburbs_church_interior,
         }}
       >
         <div className="absolute inset-0 bg-white/40" />
@@ -115,7 +116,10 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ gold, onSubscribe, onAt
                 onClick={() => handleAction(() => onSubscribe('PREMIUM'))}
                 className="bg-gradient-to-r from-blue-600 to-indigo-600 p-4 rounded-xl shadow-md cursor-pointer transform hover:scale-[1.02] transition-all flex justify-between items-center text-white relative overflow-hidden"
               >
-                <div className="absolute inset-0 bg-[url('/assets/fx/sparkles.png')] opacity-20 animate-pulse-slow" />
+                <div 
+                  className="absolute inset-0 opacity-20 animate-pulse-slow"
+                  style={{ backgroundImage: placeholderEffects.sparkles, backgroundSize: '20px 20px' }}
+                />
                 <div className="relative z-10 flex items-center gap-3">
                   <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-lg">💎</div>
                   <div>
@@ -132,8 +136,10 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ gold, onSubscribe, onAt
           ) : (
             <div className="space-y-4 h-full flex flex-col">
                <div className="bg-white rounded-xl overflow-hidden border border-gray-200 shadow-sm flex-1">
-                 <div className="h-24 bg-orange-100 relative">
-                   <img src="/assets/faith/ui_seminar_banner.jpg" className="w-full h-full object-cover opacity-80" />
+                 <div className="h-24 bg-orange-100 relative flex items-center justify-center">
+                   <div className="text-6xl">
+                     {placeholderIcons.seminar_banner}
+                   </div>
                    <div className="absolute inset-0 flex items-center justify-center">
                      <span className="bg-white/90 px-3 py-1 rounded text-xs font-bold uppercase text-orange-600 shadow-sm">
                        Featured Event
@@ -159,7 +165,9 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ gold, onSubscribe, onAt
 
         {/* 底部 Logo */}
         <div className="p-3 bg-white border-t border-gray-100 flex justify-center">
-          <img src="/assets/faith/ui_logo_small.png" className="h-4 opacity-30 grayscale" />
+          <div className="text-xl opacity-30 grayscale">
+            {placeholderIcons.logo_small}
+          </div>
         </div>
 
       </div>

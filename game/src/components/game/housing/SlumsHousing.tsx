@@ -2,7 +2,7 @@ import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import { RegionID } from '@/types/schema';
-// 确保引用路径正确，指向刚才创建的文件
+
 import { SlumsExterior } from './components/SlumsExterior';
 import { SlumsInterior } from './components/SlumsInterior';
 
@@ -22,19 +22,19 @@ export const SlumsHousing: React.FC<Props> = ({ onClose }) => {
   
   const { playSfx } = useAudioStore();
 
-  // 1. 获取贫民窟的房源数据
+  // 获取贫民窟的房源数据
   const slumsHouse = gameDataCache?.housing?.find(h => h.region === RegionID.Slums);
   
   if (!slumsHouse) return <div className="text-white p-4">Data Error: No housing found for Slums.</div>;
 
-  // 2. 判断当前是否已拥有此房源
+  // 判断当前是否已拥有此房源
   const isRentingThis = activeHousing?.definitionId === slumsHouse.id;
 
-  // 3. 处理动作
+  // 处理动作
   const handleRent = () => {
     const result = rentHousing(slumsHouse.id);
     if (result.success) {
-      // 修正：使用现有音效 'sfx_paper' 模拟搭建帐篷的声音
+      // 使用现有音效 'sfx_paper' 模拟搭建帐篷的声音
       playSfx('sfx_paper'); 
       addNotification(result.message, 'success');
     } else {
@@ -44,7 +44,7 @@ export const SlumsHousing: React.FC<Props> = ({ onClose }) => {
   };
 
   const handleMoveOut = () => {
-    // 修正：使用现有音效 'sfx_glitch' 或 'sfx_paper' 模拟拆除
+    // 使用现有音效 'sfx_paper' 模拟拆除
     playSfx('sfx_paper');
     const result = moveOut();
     if (result.success) {
@@ -53,7 +53,7 @@ export const SlumsHousing: React.FC<Props> = ({ onClose }) => {
   };
 
   const handleSleep = () => {
-    // 修正：使用现有音效 'sfx_heartbeat' 模拟休息的心跳声
+    // 使用现有音效 'sfx_heartbeat' 模拟休息的心跳声
     playSfx('sfx_heartbeat'); 
     addNotification('You rested for a while. HP restored.', 'HP');
     onClose();

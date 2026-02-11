@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import { SuburbsChurchExterior } from './components/SuburbsChurchExterior';
@@ -18,13 +18,13 @@ export const SuburbsFaith: React.FC<Props> = ({ onClose }) => {
   
   const { playSfx } = useAudioStore();
 
-  const handleEnter = () => {
+  const handleEnter = useCallback(() => {
     playSfx('sfx_automatic_door'); // 自动门声
     setTimeout(() => playSfx('sfx_mall_ambience'), 500); // 商场环境音
     setHasEntered(true);
-  };
+  }, [playSfx]);
 
-  const handleSubscribe = (tier: 'BASIC' | 'PREMIUM') => {
+  const handleSubscribe = useCallback((tier: 'BASIC' | 'PREMIUM') => {
     const amount = tier === 'BASIC' ? 50 : 200;
     const result = addTransaction('MISC', -amount, `GraceLife ${tier} Plan`);
     
@@ -40,13 +40,13 @@ export const SuburbsFaith: React.FC<Props> = ({ onClose }) => {
       playSfx('sfx_payment_fail');
       addNotification('Transaction declined. Insufficient funds.', 'error');
     }
-  };
+  }, [addTransaction, addNotification, playSfx]);
 
-  const handleAttendSeminar = () => {
+  const handleAttendSeminar = useCallback(() => {
     playSfx('sfx_presentation_applause'); // 掌声
     addNotification('You networked with local leaders. Job prospects improved.', 'SAN');
-    // TODO: 消耗时间 (例如 2 hours)
-  };
+    // TODO: 消耗时间或增加找工作的成功率
+  }, [addNotification, playSfx]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md" onClick={onClose}>

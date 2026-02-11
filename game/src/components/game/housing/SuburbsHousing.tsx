@@ -29,26 +29,14 @@ export const SuburbsHousing: React.FC<Props> = ({ onClose }) => {
   const isOwningThis = activeHousing?.definitionId === houseData.id;
 
   const handleBuy = () => {
-    // 优先尝试购买，如果配置支持
-    if (houseData.buyConfig) {
-      const result = buyHousing(houseData.id);
-      if (result.success) {
-        playSfx('sfx_print_receipt'); // 打印合同声
-        addNotification(result.message, 'success');
-      } else {
-        playSfx('sfx_deny');
-        addNotification(result.message, 'error');
-      }
+    // 郊区只支持购买
+    const result = buyHousing(houseData.id);
+    if (result.success) {
+      playSfx('sfx_print_receipt'); // 打印合同声
+      addNotification(result.message, 'success');
     } else {
-      // 否则尝试租赁
-      const result = rentHousing(houseData.id);
-      if (result.success) {
-        playSfx('sfx_pen_scratch'); // 签字声
-        addNotification(result.message, 'success');
-      } else {
-        playSfx('sfx_deny');
-        addNotification(result.message, 'error');
-      }
+      playSfx('sfx_deny');
+      addNotification(result.message, 'error');
     }
   };
 
@@ -67,10 +55,8 @@ export const SuburbsHousing: React.FC<Props> = ({ onClose }) => {
   };
   
   const handlePayBills = () => {
-    // 这里可以打开账单界面，或者直接扣款
-    // 暂时简单处理：打开账单 Overlay (需要在 GameStore 里 setBillOpen)
-    addNotification('Checking bills...', 'info');
-    // useGameStore.getState().setBillOverlay(true); // 伪代码
+    // 氛围装饰交互，账单通过回合结算自动处理
+    addNotification('Bills are handled automatically each week.', 'info');
   };
 
   return (

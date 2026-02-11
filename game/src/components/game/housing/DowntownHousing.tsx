@@ -55,8 +55,8 @@ export const DowntownHousing: React.FC<Props> = ({ onClose }) => {
   
   const handleDrink = () => {
     playSfx('sfx_glass_clink');
-    addNotification('The vintage taste calms your nerves. SAN +10.', 'SAN');
-    // 这里可以调用一个增加 SAN 的 action
+    addNotification('The vintage taste calms your nerves.', 'info');
+    // 氛围装饰交互，不实际修改数值
   };
 
   return (

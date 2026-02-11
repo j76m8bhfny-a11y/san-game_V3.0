@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import { SlumsShrineExterior } from './components/SlumsShrineExterior';
 import { SlumsShrineInterior } from './components/SlumsShrineInterior';
+import faithRules from '@/assets/data/rules/faithRules.json';
 
 interface Props {
   onClose: () => void;
@@ -10,37 +11,93 @@ interface Props {
 
 export const SlumsFaith: React.FC<Props> = ({ onClose }) => {
   const [hasEntered, setHasEntered] = useState(false);
+  const [hasPrayedThisTurn, setHasPrayedThisTurn] = useState(false);
   const { 
-    vitality, 
+    inventory,
+    updatePlayerStats,
     addNotification,
-    // 假设 store 里有这些方法，或者直接操作 inventory
-    removeItem, 
+    modifyStats,
+    gameDataCache,
+    vitality,
   } = useGameStore();
   
   const { playSfx } = useAudioStore();
 
-  // 模拟获取玩家背包数据
-  const mockInventory = [
-    { id: 'item_1', name: 'Cheap Vodka', tags: ['ALCOHOL'], price: 5 },
-    { id: 'item_2', name: 'Stale Bread', tags: ['FOOD'], price: 2 },
-    { id: 'item_3', name: 'Cigarettes', tags: ['DRUG'], price: 8 },
-  ] as any[]; // 临时 Mock
+  // 从 inventory (string[]) 和 gameDataCache 构建物品列表
+  const playerItems = useMemo(() => {
+    if (!gameDataCache?.items) return [];
+    return inventory
+      .map(id => gameDataCache.items.find(item => item.id === id))
+      .filter((item): item is NonNullable<typeof item> => item !== undefined);
+  }, [inventory, gameDataCache]);
 
-  const handleEnter = () => {
+  const handleEnter = useCallback(() => {
     playSfx('sfx_match_strike'); // 划火柴声
     setHasEntered(true);
-  };
+  }, [playSfx]);
 
-  const handleSacrifice = (itemId: string) => {
+  const handleSacrifice = useCallback((itemId: string) => {
+    const item = gameDataCache?.items?.find(i => i.id === itemId);
+    if (!item) return;
+
+    // 获取献祭配置
+    const sacrificeConfig = (faithRules as any).regionalFaiths?.slums?.sacrifice;
+    if (!sacrificeConfig?.enabled) {
+      addNotification('献祭仪式暂时无法进行。', 'error');
+      return;
+    }
+
+    // 根据物品标签确定效果
+    let effect = sacrificeConfig.effectsByTag.DEFAULT;
+    for (const tag of item.tags) {
+      if (sacrificeConfig.effectsByTag[tag]) {
+        effect = sacrificeConfig.effectsByTag[tag];
+        break;
+      }
+    }
+
     playSfx('sfx_rat_squeak'); // 老鼠叫
-    // removeItem(itemId);
-    addNotification('The spirits accepted your offering. Luck +1.', 'SAN');
-  };
+    
+    // 从 inventory 中移除一个物品（只移除第一个匹配的）
+    const index = inventory.indexOf(itemId);
+    if (index > -1) {
+      const newInventory = [...inventory];
+      newInventory.splice(index, 1);
+      updatePlayerStats({ inventory: newInventory });
+    }
 
-  const handlePray = () => {
+    // 应用效果
+    const updates: Partial<typeof vitality.metrics> = {};
+    if (effect.hpRestore) updates.hp = vitality.metrics.hp + effect.hpRestore;
+    if (effect.sanChange) updates.san = vitality.metrics.san + effect.sanChange;
+    if (effect.addictionGain) updates.addiction = vitality.metrics.addiction + effect.addictionGain;
+    
+    if (Object.keys(updates).length > 0) {
+      modifyStats(updates);
+    }
+
+    addNotification(effect.message || '祭品被接受了。', 'SAN');
+  }, [gameDataCache?.items, inventory, vitality.metrics, modifyStats, updatePlayerStats, addNotification, playSfx]);
+
+  const handlePray = useCallback(() => {
+    const sacrificeConfig = (faithRules as any).regionalFaiths?.slums?.sacrifice;
+    const prayer = sacrificeConfig?.prayer;
+    
+    // 检查是否每回合只能祈祷一次
+    if (prayer?.oncePerTurn && hasPrayedThisTurn) {
+      addNotification('你已经祈祷过了，神灵需要休息。', 'warning');
+      return;
+    }
+    
     playSfx('sfx_whisper'); // 低语声
-    addNotification('You muttered a prayer. You feel slightly better.', 'SAN');
-  };
+    
+    if (prayer?.sanRestore) {
+      modifyStats({ san: vitality.metrics.san + prayer.sanRestore });
+    }
+    
+    setHasPrayedThisTurn(true);
+    addNotification(prayer?.message || '你低声祈祷，在这无人倾听的世界里。', 'SAN');
+  }, [hasPrayedThisTurn, vitality.metrics.san, modifyStats, addNotification, playSfx]);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm" onClick={onClose}>
@@ -50,7 +107,8 @@ export const SlumsFaith: React.FC<Props> = ({ onClose }) => {
       >
         {hasEntered ? (
           <SlumsShrineInterior 
-            inventory={mockInventory} // 替换为真实 inventory
+            inventory={playerItems}
+            hasPrayed={hasPrayedThisTurn}
             onSacrifice={handleSacrifice}
             onPray={handlePray}
             onClose={onClose}

@@ -51,12 +51,74 @@
       "confirmMessage": "⚠️ 警告：退出星星之火后你将永远无法再次加入，确定要退出吗？"
     }
   },
+  "regionalFaiths": {
+    "slums": {
+      "id": "CULT",
+      "name": "街头血祭",
+      "sacrifice": {
+        "enabled": true,
+        "effectsByTag": {
+          "FOOD": {
+            "hpRestore": 10,
+            "sanChange": 0,
+            "luckBonus": 0,
+            "message": "血肉滋养血肉。你感到体力恢复。"
+          },
+          "ALCOHOL": {
+            "hpRestore": 0,
+            "sanChange": 5,
+            "addictionGain": 5,
+            "message": "烈酒升腾，你短暂逃离了现实的残酷。"
+          },
+          "DRUG": {
+            "hpRestore": -5,
+            "sanChange": 15,
+            "addictionGain": 10,
+            "luckBonus": 1,
+            "message": "深渊向你眨眼。你获得了启示，也付出了代价。"
+          },
+          "DEFAULT": {
+            "hpRestore": 5,
+            "sanChange": 0,
+            "message": "祭品被接受了，以物易物，等价交换。"
+          }
+        },
+        "prayer": {
+          "sanRestore": 3,
+          "message": "你低声祈祷，在这无人倾听的世界里。",
+          "oncePerTurn": true
+        }
+      }
+    },
+    "downtown": {
+      "id": "BROTHERHOOD",
+      "name": "共济兄弟会",
+      "pact": {
+        "enabled": true,
+        "cost": {
+          "maxSan": 20
+        },
+        "reward": {
+          "hiddenTag": "ILLUMINATI",
+          "creditScoreBonus": 50,
+          "incomeMultiplier": 1.1,
+          "description": "你已成为我们中的一员。信息共享，利益均沾。"
+        },
+        "message": {
+          "success": "契约已签署。你牺牲了人性的一部分，换取了权力的阶梯。",
+          "alreadySigned": "你已经在名册上了。"
+        }
+      }
+    }
+  },
   "text": {
     "joinSuccess": "已加入: {name}",
     "leaveSuccess": "你背弃了信仰。",
     "leaveConfirmTitle": "确认退出信仰",
     "riteDone": "今日已完成仪式，请明日再来。",
     "noFaith": "无信仰",
-    "insufficientGold": "无法支付什一税 (需 ${amount})"
+    "insufficientGold": "无法支付什一税 (需 ${amount})",
+    "sacrificeSuccess": "祭品已被接受",
+    "pactSealed": "契约已封印"
   }
 }

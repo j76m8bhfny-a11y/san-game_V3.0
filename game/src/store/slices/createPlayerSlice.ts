@@ -3,7 +3,7 @@ import {
   PlayerClass,
   RegionID,
   ActiveHousingState,
-  ActiveInsuranceState,
+  Insurance,
   ActiveHousing
 } from '@/types/schema';
 import { StoreState } from '@/types/store';
@@ -16,7 +16,7 @@ const INITIAL_PLAYER_STATE = {
   currentRegion: RegionID.Slums,
   // 注意: activeJobs 已在 vitality 内部管理，不在此处存储
   activeHousing: null as ActiveHousing | null,  // 单一房产，初始为 null
-  activeInsurance: null as ActiveInsuranceState | null,
+  activeInsurance: null as Insurance | null,
 
   inventory: [] as string[],
   history: [] as string[],
@@ -30,7 +30,7 @@ export interface PlayerSlice {
   currentRegion: RegionID;
   // 注意: activeJobs 在 vitality 中管理 (支持多工作)
   activeHousing: ActiveHousing | null;  // 单一房产，可为 null
-  activeInsurance: ActiveInsuranceState | null;
+  activeInsurance: Insurance | null;
 
   inventory: string[];
   history: string[];
@@ -49,7 +49,7 @@ export interface PlayerSlice {
   resetPlayerState: () => void;
   
   setRegion: (region: RegionID) => void;
-  setInsurance: (insurance: ActiveInsuranceState | null) => void;
+  setInsurance: (insurance: Insurance | null) => void;
 }
 
 export const createPlayerSlice: StateCreator<StoreState, [], [], PlayerSlice> = (set, get) => ({

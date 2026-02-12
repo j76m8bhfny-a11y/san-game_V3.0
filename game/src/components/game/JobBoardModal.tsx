@@ -1,8 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import { Job, RegionID } from '@/types/schema';
-import { JobPaper, JobTheme } from './Jobs/JobPaper'; // 确保路径正确
+import { JobPaper } from './Jobs/JobPaper';
+import { JobTheme } from '@/config/jobUIConfig';
+import jobRules from '@/assets/data/rules/jobRules.json';
 
 // 映射 Region 到主题
 const THEME_MAP: Record<RegionID, JobTheme> = {
@@ -38,20 +40,14 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
     return gameDataCache.jobs.filter((job: Job) => job.region === currentRegion);
   }, [gameDataCache, currentRegion]);
 
-  // 2. 核心：检查工作申请资格 (复刻核心逻辑用于UI展示)
-  const checkRequirements = (job: Job) => {
-    // 检查阶级
-    // 注意：这里简化判断，具体数值权重建议与 createJobSlice 保持一致，
-    // 或者只做简单的字符串匹配，把复杂逻辑留给 acceptJob 处理
-    if (vitality.identity.currentClass !== job.requiredClass) {
-        // 特殊：如果工作要求 HOMELESS，但你是 WORKER，通常允许向下兼容吗？
-        // 根据你的游戏逻辑，这里假设是严格匹配，或者你可以根据权重判断
-        if (job.requiredClass === 'HOMELESS' && vitality.identity.currentClass !== 'HOMELESS') {
-             // 允许高阶级做低阶级工作？如果允许则 pass，如果不允许：
-             // return { ok: false, reason: '阶级不符' };
-        } else if (vitality.identity.currentClass !== job.requiredClass) {
-             return { ok: false, reason: `需 ${job.requiredClass}` };
-        }
+  // 2. 检查工作申请资格（与 createJobSlice 保持逻辑一致）
+  const checkRequirements = useCallback((job: Job) => {
+    // 检查阶级（向下兼容：高阶级可以做低阶级工作）
+    const playerWeight = jobRules.classWeights[vitality.identity.currentClass as keyof typeof jobRules.classWeights] ?? 0;
+    const jobWeight = jobRules.classWeights[job.requiredClass as keyof typeof jobRules.classWeights] ?? 99;
+    
+    if (playerWeight < jobWeight) {
+      return { ok: false, reason: `需 ${job.requiredClass}` };
     }
 
     // 检查房产
@@ -61,21 +57,28 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
       }
     }
 
-    // 检查道具
+    // 检查道具（支持ID匹配和标签匹配）
     if (job.requiredItem) {
-      const hasItem = inventory.some(id => id === job.requiredItem); 
-      // 注意：如果有复杂的 tag 匹配逻辑，建议封装一个通用 helper，这里简化为 ID 匹配
+      const itemMap = gameDataCache?.itemMap;
+      const hasItem = inventory.some(itemId => {
+        // 精确匹配道具ID
+        if (itemId === job.requiredItem) return true;
+        // 标签匹配：如 VEHICLE
+        const item = itemMap?.get(itemId);
+        return item?.tags?.includes(job.requiredItem!);
+      });
+      
       if (!hasItem) {
         return { ok: false, reason: `缺: ${job.requiredItem}` };
       }
     }
 
     return { ok: true, reason: '' };
-  };
+  }, [vitality.identity.currentClass, activeHousing, inventory, gameDataCache]);
 
   // 3. 处理交互
   const handleApply = (job: Job) => {
-    playSfx('sfx_paper_rustle'); // 播放音效
+    playSfx('sfx_paper'); // 播放音效
     const result = acceptJob(job.id);
     if (result.success) {
       addNotification(`成功入职: ${job.title}`, 'success');
@@ -209,6 +212,7 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
                   canApply={ok}
                   lockReason={reason}
                   onAction={() => isActive ? handleQuit(job.id) : handleApply(job)}
+                  currentSan={vitality.metrics.san}
                 />
               );
             })

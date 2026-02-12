@@ -23,12 +23,12 @@ export const SuburbsMedical: React.FC<Props> = ({ onClose }) => {
     || [];
 
   const handleEnter = () => {
-    playSfx('sfx_store_bell'); // 商店迎客铃
+    playSfx('sfx_click'); // 商店迎客铃
     setHasEntered(true);
   };
 
-  const handleBuy = (serviceId: string) => {
-    playSfx('sfx_scanner_beep'); // 扫码声
+  const handleBuy = (_serviceId: string) => {
+    playSfx('sfx_click'); // 扫码声
     addNotification('Purchase complete. Receipt in bag.', 'HP');
   };
 

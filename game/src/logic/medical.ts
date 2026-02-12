@@ -1,5 +1,5 @@
 // src/logic/medical.ts
-import { MedicalService, PlayerClass, RegionID, ActiveInsuranceState, GameDataCache } from '@/types/schema';
+import { MedicalService, PlayerClass, RegionID, Insurance, GameDataCache } from '@/types/schema';
 // ✅ 引入新设计的医疗规则配置
 import medicalRules from '@/assets/data/rules/medicalRules.json';
 
@@ -41,7 +41,7 @@ const getMessage = (key: keyof typeof defaultMessages): string => {
  */
 export const calculateMedicalCost = (
   service: MedicalService,
-  insurance: ActiveInsuranceState | null,
+  insurance: Insurance | null,
   playerClass: PlayerClass
 ): CostResult => {
   // 参数校验

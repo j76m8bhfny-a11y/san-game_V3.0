@@ -97,7 +97,7 @@ const NarrativeProp: React.FC<NarrativePropProps> = ({ text, style, baseImage, a
 };
 
 export const RustBeltScene: React.FC = () => {
-  const { setShopOpen, setJobBoardOpen, setHousingOpen, setHospitalOpen, setBankOpen } = useGameStore();
+  const { setShopOpen, setJobBoardOpen, setHousingOpen, setHospitalOpen, setBankOpen, setInsuranceOpen } = useGameStore();
 
   return (
     <BaseScene intensity={0.8} className="bg-[#1a1a1a]">
@@ -195,6 +195,22 @@ export const RustBeltScene: React.FC = () => {
              text="汪！(这只狗看起来比你还饿)"
              style={{ left: '92%', bottom: '10%', width: '6vw' }}
              baseImage="/assets/scenes/rust/prop_stray_dog.png"
+          />
+          {/* [NEW] 保险入口：工会登记处 (折叠桌) */}
+          {/* 放在工作(58%)和银行(72%)之间 */}
+          <InteractableObject 
+            label="UNION REP"
+            style={{ left: '66%', bottom: '20%', width: '8vw' }}
+            baseImage="/assets/scenes/rust/obj_insurance_table.png" // 素材：一张放满文件的折叠桌和一把椅子
+            hoverImage="/assets/scenes/rust/obj_insurance_table_lit.png"
+            onClick={() => setInsuranceOpen(true)}
+          />
+          
+          {/* 配合一个正在喝咖啡的工会代表(装饰) */}
+          <NarrativeProp 
+             text="嘿兄弟，不想断条腿还得自费接骨吧？来签个字。"
+             style={{ left: '68%', bottom: '26%', width: '3vw', zIndex: 21 }}
+             baseImage="/assets/scenes/rust/prop_coffee_cup.png"
           />
 
         </div>

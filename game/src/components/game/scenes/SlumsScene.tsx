@@ -89,7 +89,8 @@ export const SlumsScene: React.FC = () => {
     setHousingOpen, 
     setHospitalOpen, 
     setBankOpen, 
-    setFaithOpen 
+    setFaithOpen,
+    setInsuranceOpen 
   } = useGameStore();
 
   return (
@@ -158,6 +159,17 @@ export const SlumsScene: React.FC = () => {
             baseImage="/assets/scenes/slums/obj_shop_car.png"
             hoverImage="/assets/scenes/slums/obj_shop_car_open.png"
             onClick={() => setShopOpen(true)}
+          />
+
+          {/* [NEW] 保险入口：公交车站长椅广告 */}
+          {/* 放在商店(20%)和工作(45%)之间的空地 */}
+          <InteractiveElement 
+            label="INJURY LAWYER"
+            style={{ left: '32%', bottom: '15%', width: '12vw' }}
+            baseImage="/assets/scenes/slums/obj_insurance_bench.png" // 素材：印着夸张广告的长椅
+            hoverImage="/assets/scenes/slums/obj_insurance_bench_hover.png"
+            onClick={() => setInsuranceOpen(true)}
+            dialogue="*广告上写着：受伤了？被捕了？立刻拨打 555-CASH！我们甚至不查你的ID！*"
           />
 
           {/* 6. 工作：电线杆 (中间) */}

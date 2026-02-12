@@ -15,8 +15,8 @@ export const SuburbsHousing: React.FC<Props> = ({ onClose }) => {
     activeHousing, 
     vitality, 
     buyHousing, 
-    rentHousing,
     moveOut,
+    modifyStats,
     addNotification 
   } = useGameStore();
   
@@ -50,7 +50,10 @@ export const SuburbsHousing: React.FC<Props> = ({ onClose }) => {
 
   const handleRest = () => {
     playSfx('sfx_bird_chirp'); // 或者是轻音乐
-    addNotification('You enjoyed a peaceful afternoon. SAN restored.', 'SAN');
+    const restoreAmount = activeHousing?.regenHp || 0;
+    const newHp = Math.min(vitality.metrics.maxHp, vitality.metrics.hp + restoreAmount);
+    modifyStats({ hp: newHp });
+    addNotification(`You enjoyed a peaceful afternoon. HP +${restoreAmount}`, 'HP');
     onClose();
   };
   

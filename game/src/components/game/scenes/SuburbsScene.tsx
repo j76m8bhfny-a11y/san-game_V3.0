@@ -92,7 +92,8 @@ export const SuburbsScene: React.FC = () => {
     setJobBoardOpen, 
     setHousingOpen, 
     setHospitalOpen, 
-    setBankOpen 
+    setBankOpen,
+    setInsuranceOpen
   } = useGameStore();
 
   return (
@@ -174,6 +175,23 @@ export const SuburbsScene: React.FC = () => {
             baseImage="/assets/scenes/suburbs/obj_hospital_pharmacy.png"
             hoverImage="/assets/scenes/suburbs/obj_hospital_pharmacy_lit.png"
             onClick={() => setHospitalOpen(true)}
+          />
+
+          {/* [NEW] 保险入口：保险经纪人立牌 */}
+          {/* 放在办公区(26%)和HOA牌子(44%)之间 */}
+          <InteractableObject 
+            label="SAFEHANDS AGENT"
+            style={{ left: '36%', bottom: '14%', width: '4vw' }}
+            baseImage="/assets/scenes/suburbs/obj_insurance_sign.png" // 素材：类似房地产广告的小立牌
+            hoverImage="/assets/scenes/suburbs/obj_insurance_sign_hover.png"
+            onClick={() => setInsuranceOpen(true)}
+          />
+          
+          {/* 增加一点中产阶级的讽刺细节 */}
+          <NarrativeProp 
+            image="/assets/scenes/suburbs/prop_flyer_pile.png"
+            style={{ left: '38%', bottom: '13%', width: '2vw' }}
+            message="Don't wait for disaster! Bundle your life today!"
           />
 
         </div>

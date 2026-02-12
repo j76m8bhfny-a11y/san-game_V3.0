@@ -23,7 +23,7 @@ export const createJobSlice: StateCreator<StoreState, [], [], JobSlice> = (set, 
     let usedSlots = 0;
     
     activeJobIds.forEach(id => {
-      const job = jobsData.find(j => j.id === id) as Job;
+      const job = jobsData.find((j): j is Job => j.id === id);
       if (job) {
         const cost = jobRules.settings.slotCosts[job.type] || 1; 
         usedSlots += cost;
@@ -35,7 +35,7 @@ export const createJobSlice: StateCreator<StoreState, [], [], JobSlice> = (set, 
   acceptJob: (jobId) => {
     const state = get() as GameState;
     const { vitality, activeHousing, inventory } = state;
-    const job = jobsData.find(j => j.id === jobId) as Job;
+    const job = jobsData.find((j): j is Job => j.id === jobId);
 
     if (!job) return { success: false, message: "工作不存在" };
 

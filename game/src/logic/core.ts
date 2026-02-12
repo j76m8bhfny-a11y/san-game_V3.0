@@ -1,4 +1,4 @@
-import { PlayerClass, Bill, ScalingMode, RegionID, Item, Housing, Insurance, ActiveInsuranceState } from '../types/schema';
+import { PlayerClass, Bill, ScalingMode, RegionID, Item, Housing, Insurance } from '../types/schema';
 // ✅ 1. 确保正确引入配置
 import housingRules from '@/assets/data/rules/housingRules.json';
 import prisonRules from '@/assets/data/rules/prisonRules.json';
@@ -232,7 +232,7 @@ export const checkMovePermission = (
 export const calculateBillMitigation = (
   bill: Bill,
   housing: Housing | null,
-  insurance: Insurance | ActiveInsuranceState | null
+  insurance: Insurance | null
 ): { finalAmount: number; mitigated: boolean; reason?: string } => {
   let finalAmount = bill.amount; 
   let reason = '';

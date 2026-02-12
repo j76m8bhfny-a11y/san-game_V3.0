@@ -10,7 +10,7 @@ interface Props {
 }
 
 export const SuburbsBank: React.FC<Props> = ({ onClose }) => {
-  const [hasEntered, setHasEntered] = useState(false);
+  const [hasEntered, setHasEntered] = useState(true);
   const { 
     vitality, 
     bank,

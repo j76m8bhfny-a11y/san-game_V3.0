@@ -23,12 +23,12 @@ export const RustBeltMedical: React.FC<Props> = ({ onClose }) => {
     || [];
 
   const handleEnter = () => {
-    playSfx('sfx_automatic_door'); // 自动门声音
+    playSfx('sfx_click'); // 自动门声音
     setHasEntered(true);
   };
 
-  const handleBuy = (serviceId: string) => {
-    playSfx('sfx_receipt_print'); // 打印机/收银机声
+  const handleBuy = (_serviceId: string) => {
+    playSfx('sfx_click'); // 打印机/收银机声
     addNotification('Prescription received. Treatment applied.', 'HP');
   };
 

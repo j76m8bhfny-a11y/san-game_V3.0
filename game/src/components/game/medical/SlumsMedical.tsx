@@ -27,16 +27,16 @@ export const SlumsMedical: React.FC<Props> = ({ onClose }) => {
   // 这里为了演示，假设你有办法获取到 services 列表
 
   const handleEnter = () => {
-    playSfx('sfx_metal_door_creak'); // 门轴声
+    playSfx('sfx_click'); // 门轴声
     setHasEntered(true);
   };
 
-  const handleBuy = (serviceId: string) => {
+  const handleBuy = (_serviceId: string) => {
     // 调用 store 的购买逻辑
     // const result = performMedicalTreatment(serviceId);
     
     // 模拟成功
-    playSfx('sfx_pills_shake'); // 药瓶声
+    playSfx('sfx_click'); // 药瓶声
     // 或者 playSfx('sfx_surgery_saw'); // 手术声
     addNotification('You swallowed the pills. Hope they work.', 'HP');
   };

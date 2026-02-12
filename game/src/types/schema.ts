@@ -170,6 +170,9 @@ export const JobSchema = z.object({
   requiresHousing: z.boolean(), // 是否需要本地房产
   requiredItem: z.string().optional(), // 比如 "VEHICLE"
   
+  // 薪资周期
+  payCycle: z.enum(['DAILY', 'WEEKLY', 'MONTHLY']).default('WEEKLY'),
+  
   description: z.string(),
 });
 
@@ -498,6 +501,7 @@ export interface VitalityState {
     [key: string]: any;
   };
   activeJobs: string[];
+  activeInsurance: Insurance | null;
 }
 
 // ==========================================
@@ -547,7 +551,7 @@ export interface GameState {
 
   // 资产与库存
   activeHousing: ActiveHousing;
-  activeInsurance: ActiveInsuranceState | null;
+  activeInsurance: Insurance | null; // 从 vitality 同步，用于持久化
   
   inventory: string[];
   history: string[]; // 文本历史记录
@@ -735,6 +739,11 @@ export const InsuranceSchema = z.object({
     mentalCovered: z.boolean(),    // 是否包精神科
     addictionCovered: z.boolean(), // 是否包成瘾治疗
   }),
+  // UI 表现字段
+  uiTheme: z.enum(['SLUMS', 'RUST_BELT', 'DOWNTOWN', 'GLOBAL']).optional(),
+  flavorText: z.string().optional(),
+  riskDescription: z.string().optional(),
+  signMethod: z.string().optional(),
   description: z.string(),
 });
 

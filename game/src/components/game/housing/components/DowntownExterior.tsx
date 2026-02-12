@@ -11,15 +11,9 @@ interface Props {
 export const DowntownExterior: React.FC<Props> = ({ house, gold, onBuy, onClose }) => {
   const [isScanning, setIsScanning] = useState(false);
 
-  // 资本家通常是直接购买 (Buy)，或者昂贵的租赁 (Lease)
-  const isSale = !!house.buyConfig;
-  const price = isSale ? house.buyConfig!.price : 0;
-  const downPaymentRate = isSale ? house.buyConfig!.downPaymentRate : 0;
-  const downPayment = Math.ceil(price * downPaymentRate);
-  const rentCost = (house.rentConfig?.deposit || 0) + (house.rentConfig?.weeklyCosts?.[0]?.baseAmount || 0);
-  
-  const finalUpfrontCost = isSale ? downPayment : rentCost;
-  const canAfford = gold >= finalUpfrontCost;
+  // 核心区只支持购买
+  const downPayment = Math.ceil(house.buyConfig!.price * house.buyConfig!.downPaymentRate);
+  const canAfford = gold >= downPayment;
 
   const handleInteract = () => {
     if (!canAfford) return;
@@ -104,7 +98,7 @@ export const DowntownExterior: React.FC<Props> = ({ house, gold, onBuy, onClose 
               <div className="text-[#d4af37] font-mono text-xs">
                 READY TO SCAN<br/>
                 <span className="opacity-70">
-                  Entry Cost: ${finalUpfrontCost.toLocaleString()}
+                  Entry Cost: ${downPayment.toLocaleString()}
                 </span>
               </div>
             )}

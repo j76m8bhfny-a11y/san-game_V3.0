@@ -4,7 +4,7 @@ import { GameSystem, SystemResult } from '../types';
 import { checkDailyDisease } from '@/logic/health';
 import { checkClassUpdate } from '@/logic/core';
 import diseasesData from '@/assets/data/diseases.json';
-import { ActiveInsuranceState, Disease } from '@/types/schema';
+import { Insurance, Disease } from '@/types/schema';
 import vitalityRules from '@/assets/data/rules/vitalityRules.json';
 import classesData from '@/assets/data/classes.json'; // ✨ 引入阶级定义
 
@@ -20,7 +20,7 @@ export const StatRuleSystem: GameSystem = {
     };
 
     const { metrics, activeDiseases } = state.vitality;
-    const activeInsurance = state.activeInsurance as ActiveInsuranceState | null;
+    const activeInsurance = state.vitality.activeInsurance as Insurance | null;
 
     // ✅ 2. 解构配置项（带防御性默认值）
     const metabolism = vitalityRules.metabolism || {
@@ -37,12 +37,12 @@ export const StatRuleSystem: GameSystem = {
     // 0. 保险费扣除 (Insurance Premium)
     // =================================================================
     // 只有在没坐牢的情况下才自动扣费 (坐牢时 SystemRegistry 已有拦截逻辑，或者允许欠费)
-    if (activeInsurance && activeInsurance.premium > 0) {
+    if (activeInsurance && activeInsurance.weeklyCost > 0) {
         result.newTransactions!.push({
             id: Math.random().toString(),
             turn: state.vitality.time.currentTurn,
             category: 'MEDICAL',
-            amount: -activeInsurance.premium,
+            amount: -activeInsurance.weeklyCost,
             description: `保险续费: ${activeInsurance.name}`,
             timestamp: Date.now()
         });

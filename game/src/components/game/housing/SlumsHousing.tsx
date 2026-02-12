@@ -17,6 +17,7 @@ export const SlumsHousing: React.FC<Props> = ({ onClose }) => {
     vitality, 
     rentHousing, 
     moveOut,
+    modifyStats,
     addNotification 
   } = useGameStore();
   
@@ -55,7 +56,10 @@ export const SlumsHousing: React.FC<Props> = ({ onClose }) => {
   const handleSleep = () => {
     // 使用现有音效 'sfx_heartbeat' 模拟休息的心跳声
     playSfx('sfx_heartbeat'); 
-    addNotification('You rested for a while. HP restored.', 'HP');
+    const restoreAmount = activeHousing?.regenHp || 0;
+    const newHp = Math.min(vitality.metrics.maxHp, vitality.metrics.hp + restoreAmount);
+    modifyStats({ hp: newHp });
+    addNotification(`You rested for a while. HP +${restoreAmount}`, 'HP');
     onClose();
   };
 

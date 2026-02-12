@@ -4,7 +4,7 @@ import { ActiveHousingState } from '@/types/schema';
 interface Props {
   housing: ActiveHousingState;
   onRest: () => void;
-  onPayBills: () => void; // 新增：支付账单入口
+  onPayBills: () => void;
   onMoveOut: () => void;
   onClose: () => void;
 }

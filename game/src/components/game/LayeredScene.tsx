@@ -30,7 +30,7 @@ export const LayeredScene: React.FC<LayeredSceneProps> = ({
     setFaithOpen,
     isBankOpen,      // ✅ 获取状态，传给 Modal
     setBankOpen,
-    isInsuranceOpen, // ✅ 获取状态，传给 Modal (需要在 createUISlice 中定义)
+    isInsuranceOpen, // ✅ 获取状态，传给 Modal
     setInsuranceOpen // ✅ 获取方法
   } = useGameStore();
 
@@ -155,17 +155,6 @@ export const LayeredScene: React.FC<LayeredSceneProps> = ({
           <span className="text-xl group-hover:scale-110 transition-transform">💳</span>
           <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 text-xs bg-black text-white px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-zinc-700 pointer-events-none">
             CREDIT // 信用
-          </span>
-        </button>
-
-        {/* 3. ✅ [新增] 保险按钮 */}
-        <button 
-          onClick={() => setInsuranceOpen(true)}
-          className="w-12 h-12 bg-black/60 border border-zinc-600 hover:border-emerald-500 hover:bg-zinc-900 transition-all rounded-sm flex items-center justify-center group relative shadow-lg backdrop-blur-sm"
-        >
-          <span className="text-xl group-hover:scale-110 transition-transform">🛡️</span>
-          <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 text-xs bg-black text-white px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-zinc-700 pointer-events-none">
-            INSURE // 保险
           </span>
         </button>
 

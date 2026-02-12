@@ -1,16 +1,20 @@
 import React from 'react';
 import { Job } from '@/types/schema';
-
-// 定义支持的主题类型
-export type JobTheme = 'SLUMS' | 'RUST_BELT' | 'DOWNTOWN' | 'GLOBAL';
+import { 
+  JOB_BUTTON_LABELS, 
+  PAY_CYCLE_LABELS, 
+  getEfficiencyLevel,
+  JobTheme 
+} from '@/config/jobUIConfig';
 
 interface JobPaperProps {
   job: Job;
   theme: JobTheme;
   isActive: boolean;
-  canApply: boolean;    // 是否满足申请条件
-  lockReason?: string;  //如果不满足，显示的理由
-  onAction: () => void; // 点击申请或离职
+  canApply: boolean;
+  lockReason?: string;
+  onAction: () => void;
+  currentSan?: number; // 当前 SAN 值，用于显示效率
 }
 
 export const JobPaper: React.FC<JobPaperProps> = ({ 
@@ -19,8 +23,15 @@ export const JobPaper: React.FC<JobPaperProps> = ({
   isActive, 
   canApply, 
   lockReason, 
-  onAction 
+  onAction,
+  currentSan = 50, // 默认正常状态
 }) => {
+  // 获取当前主题的按钮文案
+  const buttonLabels = JOB_BUTTON_LABELS[theme];
+  
+  // 获取当前效率等级
+  const efficiency = getEfficiencyLevel(currentSan);
+  const expectedEarnings = Math.floor(job.baseSalary * efficiency.modifier);
 
   // --- 风格 1: 贫民窟 (电线杆上的小广告) ---
   if (theme === 'SLUMS') {
@@ -46,7 +57,12 @@ export const JobPaper: React.FC<JobPaperProps> = ({
         {/* 撕下来的条子区域 (Action Area) */}
         <div className="border-t-2 border-dashed border-gray-400 pt-2 flex justify-between items-end mt-2">
           <div className="flex flex-col">
-            <span className="font-marker text-xl text-green-800">${job.baseSalary}</span>
+            <span 
+              className="font-marker text-xl text-green-800 cursor-help"
+              title={`预期收入: $${expectedEarnings}/周 (效率: ${Math.round(efficiency.modifier * 100)}%)`}
+            >
+              ${job.baseSalary}{PAY_CYCLE_LABELS[job.payCycle || 'WEEKLY']}
+            </span>
             <span className="text-[10px] font-sans text-gray-500 transform -rotate-2">CASH ONLY</span>
           </div>
           
@@ -62,7 +78,7 @@ export const JobPaper: React.FC<JobPaperProps> = ({
                   : 'border-gray-300 text-gray-400 cursor-not-allowed'}
             `}
           >
-            {isActive ? "QUIT!" : canApply ? "CALL ME" : "NO WAY"}
+            {isActive ? buttonLabels.active : canApply ? buttonLabels.canApply : buttonLabels.locked}
           </button>
         </div>
 
@@ -95,7 +111,7 @@ export const JobPaper: React.FC<JobPaperProps> = ({
           `}>
              <div className="w-3 h-3 bg-[#1a1a1a] rounded-full absolute -top-1.5"></div>
              <span className="font-mono font-bold text-2xl tracking-tighter">
-                {job.title.substring(0,2).toUpperCase()}
+                {job.title?.substring(0, 2).toUpperCase() || '??'}
              </span>
           </div>
 
@@ -114,7 +130,13 @@ export const JobPaper: React.FC<JobPaperProps> = ({
              
              <div className="flex gap-4 text-xs font-mono text-stone-500 mt-1">
                <span className="flex items-center gap-1">HP:<span className="text-red-400">-{job.hpCost}</span></span>
-               <span className="flex items-center gap-1">PAY:<span className="text-yellow-600">${job.baseSalary}</span></span>
+               <span 
+                 className="flex items-center gap-1 cursor-help"
+                 title={`效率: ${efficiency.label} (${Math.round(efficiency.modifier * 100)}%) | 预期: $${expectedEarnings}/周`}
+               >
+                 PAY:<span className="text-yellow-600">${job.baseSalary}</span>
+                 <span className="text-stone-600">{PAY_CYCLE_LABELS[job.payCycle || 'WEEKLY']}</span>
+               </span>
                {job.requiresHousing && <span>🏠 HOUSING REQ.</span>}
              </div>
           </div>
@@ -132,7 +154,7 @@ export const JobPaper: React.FC<JobPaperProps> = ({
                 : 'bg-transparent text-stone-700 border-stone-800 cursor-not-allowed'}
           `}
         >
-          {isActive ? '[ PUNCH OUT ]' : canApply ? '[ PUNCH IN ]' : '[ ACCESS DENIED ]'}
+          {isActive ? buttonLabels.active : canApply ? buttonLabels.canApply : buttonLabels.locked}
         </button>
       </div>
     );
@@ -154,7 +176,7 @@ export const JobPaper: React.FC<JobPaperProps> = ({
           w-10 h-10 rounded flex items-center justify-center text-white font-bold text-lg shadow-sm
           ${isActive ? 'bg-blue-600' : 'bg-slate-700'}
         `}>
-           {job.title[0]}
+           {job.title?.[0] || '?'}
         </div>
         <span className="px-2 py-1 bg-slate-100 text-slate-500 text-[10px] font-bold rounded uppercase tracking-wider">
           {isActive ? 'Current' : 'Full Time'}
@@ -173,8 +195,18 @@ export const JobPaper: React.FC<JobPaperProps> = ({
 
       <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-100">
          <div>
-           <p className="text-[10px] text-slate-400 uppercase font-bold">Monthly Salary</p>
-           <p className="font-sans font-bold text-slate-900">${job.baseSalary.toLocaleString()}</p>
+           <p className="text-[10px] text-slate-400 uppercase font-bold">Weekly Salary</p>
+           <p 
+             className="font-sans font-bold text-slate-900 cursor-help"
+             title={`${efficiency.description} | 预期收入: $${expectedEarnings}/周`}
+           >
+             ${job.baseSalary.toLocaleString()}
+             {efficiency.modifier !== 1.0 && (
+               <span className={`ml-1 text-xs ${efficiency.modifier > 1 ? 'text-green-500' : 'text-orange-500'}`}>
+                 ({Math.round(efficiency.modifier * 100)}%)
+               </span>
+             )}
+           </p>
          </div>
          
          <button 
@@ -189,7 +221,7 @@ export const JobPaper: React.FC<JobPaperProps> = ({
                  : 'bg-slate-200 text-slate-400 cursor-not-allowed'}
            `}
          >
-           {isActive ? 'Resign' : 'Apply Now'}
+           {isActive ? buttonLabels.active : canApply ? buttonLabels.canApply : buttonLabels.locked}
          </button>
       </div>
     </div>

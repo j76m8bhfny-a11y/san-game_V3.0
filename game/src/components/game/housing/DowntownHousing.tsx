@@ -16,6 +16,7 @@ export const DowntownHousing: React.FC<Props> = ({ onClose }) => {
     vitality, 
     buyHousing, 
     moveOut,
+    modifyStats,
     addNotification 
   } = useGameStore();
   
@@ -28,7 +29,6 @@ export const DowntownHousing: React.FC<Props> = ({ onClose }) => {
   const isOwningThis = activeHousing?.definitionId === houseData.id;
 
   const handleBuy = () => {
-    // 资本家通常只有购买选项
     const result = buyHousing(houseData.id);
     if (result.success) {
       playSfx('sfx_sci_fi_door'); // 高科技门声
@@ -49,7 +49,10 @@ export const DowntownHousing: React.FC<Props> = ({ onClose }) => {
 
   const handleSleep = () => {
     playSfx('sfx_ambient_drone'); // 低沉的氛围音
-    addNotification('Optimal rest cycle completed. All stats restored.', 'HP');
+    const restoreAmount = activeHousing?.regenHp || 0;
+    const newHp = Math.min(vitality.metrics.maxHp, vitality.metrics.hp + restoreAmount);
+    modifyStats({ hp: newHp });
+    addNotification(`Optimal rest cycle completed. HP +${restoreAmount}`, 'HP');
     onClose();
   };
   

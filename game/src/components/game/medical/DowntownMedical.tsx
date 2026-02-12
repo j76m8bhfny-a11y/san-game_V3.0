@@ -23,12 +23,12 @@ export const DowntownMedical: React.FC<Props> = ({ onClose }) => {
     || [];
 
   const handleEnter = () => {
-    playSfx('sfx_sci_fi_hum'); // 科幻嗡嗡声
+    playSfx('sfx_click'); // 科幻嗡嗡声
     setHasEntered(true);
   };
 
-  const handleBuy = (serviceId: string) => {
-    playSfx('sfx_injection_hydraulic'); // 液压注射声
+  const handleBuy = (_serviceId: string) => {
+    playSfx('sfx_click'); // 液压注射声
     addNotification('Biological enhancement protocol complete.', 'HP');
   };
 

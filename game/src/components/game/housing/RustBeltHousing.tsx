@@ -16,6 +16,7 @@ export const RustBeltHousing: React.FC<Props> = ({ onClose }) => {
     vitality, 
     rentHousing, 
     moveOut,
+    modifyStats,
     addNotification 
   } = useGameStore();
   
@@ -48,7 +49,10 @@ export const RustBeltHousing: React.FC<Props> = ({ onClose }) => {
 
   const handleSleep = () => {
     playSfx('sfx_neon_hum'); // 或者是空调噪音
-    addNotification('You slept through the highway noise. HP restored.', 'HP');
+    const restoreAmount = activeHousing?.regenHp || 0;
+    const newHp = Math.min(vitality.metrics.maxHp, vitality.metrics.hp + restoreAmount);
+    modifyStats({ hp: newHp });
+    addNotification(`You slept through the highway noise. HP +${restoreAmount}`, 'HP');
     onClose();
   };
 

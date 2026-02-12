@@ -1,6 +1,6 @@
 import { GameSystem, SystemResult, SystemContext } from '../types';
 import { triggerBill, calculateBillMitigation } from '@/logic/core';
-import type { VitalityMetrics, ActiveInsuranceState, Housing } from '@/types/schema';
+import type { VitalityMetrics, Insurance, Housing } from '@/types/schema';
 
 // 导入数据 - 使用统一配置加载器
 import { Config } from '@/config';
@@ -14,7 +14,7 @@ export const BillSystem: GameSystem = {
     const newTransactions: any[] = []; 
 
     const { metrics, identity } = state.vitality;
-    const activeInsurance = state.activeInsurance as ActiveInsuranceState | null;
+    const activeInsurance = state.vitality.activeInsurance as Insurance | null;
     
     // ✅ 修复: 解析房产配置 (单一房产)
     const currentHousing = state.activeHousing;

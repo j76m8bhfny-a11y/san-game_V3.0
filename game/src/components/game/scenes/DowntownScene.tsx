@@ -86,7 +86,8 @@ export const DowntownScene: React.FC = () => {
     setJobBoardOpen, 
     setHousingOpen, 
     setHospitalOpen, 
-    setBankOpen 
+    setBankOpen,
+    setInsuranceOpen
   } = useGameStore();
 
   return (
@@ -160,6 +161,34 @@ export const DowntownScene: React.FC = () => {
             hoverImage="/assets/scenes/downtown/obj_hospital_lab_lit.png"
             onClick={() => setHospitalOpen(true)}
           />
+
+          {/* [NEW] 保险入口：神秘公文包 */}
+          {/* 放在铜牛(45%)和顶层公寓(62%)之间的空地 */}
+          <div 
+             className="absolute cursor-pointer group z-20 transition-transform hover:scale-105"
+             style={{ left: '55%', bottom: '12%', width: '5vw' }}
+             onClick={() => setInsuranceOpen(true)}
+          >
+             {/* 素材：一个放在路边长椅上的黑色高级公文包 */}
+             <img 
+               src="/assets/scenes/downtown/obj_insurance_briefcase.png" 
+               className="w-full drop-shadow-xl" 
+               alt="Briefcase"
+             />
+             
+             {/* 悬停时的全息锁特效 */}
+             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="w-full h-full border-2 border-[#d4af37] rounded-full animate-spin-slow" />
+                <div className="absolute inset-0 flex items-center justify-center text-[#d4af37] text-[8px] font-serif">
+                   VIP
+                </div>
+             </div>
+             
+             {/* 标签 */}
+             <div className="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/90 text-[#d4af37] px-2 py-1 text-[10px] font-serif border border-[#d4af37] whitespace-nowrap">
+                PRIVATE CLIENT
+             </div>
+          </div>
 
         </div>
       </ParallaxLayer>

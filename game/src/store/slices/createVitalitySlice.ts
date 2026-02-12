@@ -56,7 +56,8 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
             ...INITIAL_STATE.flags, 
             hiddenTags: [] 
         },
-    activeJobs: []
+    activeJobs: [],
+    activeInsurance: null
   },
 
   initGame: (selectedClass) => {
@@ -274,8 +275,8 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
 
   performTreatment: (serviceId) => {
     const state = get() as GameState & VitalitySlice;
-    const { vitality, activeInsurance } = state;
-    const { metrics } = vitality;
+    const { vitality } = state;
+    const { metrics, activeInsurance } = vitality;
 
     const service = (hospitalData as any[]).find(s => s.id === serviceId);
     if (!service) return { success: false, msg: "服务不可用" };

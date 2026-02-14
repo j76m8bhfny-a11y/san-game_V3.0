@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import { PlayerClass, Disease } from '@/types/schema';
+import { PlayerStatsPanel } from './PlayerStatsPanel';
 
 // ✅ 1. 引入配置文件群 (Configuration Swarm)
 import vitalityRules from '@/assets/data/rules/vitalityRules.json';
@@ -73,13 +74,15 @@ export const MiniHUD: React.FC = () => {
     vitality, 
     activeInsurance, 
     gameDataCache,
-    setShopOpen, 
     setInventoryOpen, 
     setArchiveOpen, 
     setMenuOpen 
   } = useGameStore();
   
   const { playSfx } = useAudioStore();
+  
+  // 属性面板开关状态
+  const [isStatsPanelOpen, setStatsPanelOpen] = useState(false);
 
   const { hp, maxHp, san, gold, addiction } = vitality.metrics;
   const { currentClass } = vitality.identity;
@@ -126,17 +129,23 @@ export const MiniHUD: React.FC = () => {
               </div>
             </div>
 
-            <div key={currentClass} className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border shadow-inner transition-all duration-500 ${classInfo.bg} ${classInfo.text} ${classInfo.border}`}>
+            <button 
+              onClick={() => { playSfx('sfx_click'); setStatsPanelOpen(true); }}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border shadow-inner transition-all duration-500 cursor-pointer hover:scale-105 hover:brightness-110 ${classInfo.bg} ${classInfo.text} ${classInfo.border}`}
+            >
               <span className="text-sm filter drop-shadow-sm">{classInfo.icon}</span>
               <span className="hidden md:block text-[10px] font-black tracking-widest uppercase font-mono pt-0.5">{classInfo.label}</span>
-            </div>
+            </button>
           </div>
 
           <div className="hidden md:block w-px h-8 bg-white/10 mx-1"></div>
 
-          {/* Vitals (HP/SAN) */}
+          {/* Vitals (HP/SAN) - 可点击打开属性面板 */}
           <div className="flex items-center gap-4 md:gap-6">
-            <div className="flex flex-col gap-0.5 min-w-[60px]">
+            <button 
+              onClick={() => { playSfx('sfx_click'); setStatsPanelOpen(true); }}
+              className="flex flex-col gap-0.5 min-w-[60px] cursor-pointer hover:opacity-80 transition-opacity"
+            >
                <div className="flex items-center justify-between">
                   <span className={`text-[10px] md:text-xs font-bold tracking-wider ${hp < thresholds.hpLow ? 'text-red-500 animate-pulse' : 'text-gray-400'}`}>HP</span>
                   <span className={`font-mono font-bold text-xs md:text-sm ${hpChange === 'DOWN' ? 'text-red-500' : 'text-white'}`}>
@@ -146,19 +155,20 @@ export const MiniHUD: React.FC = () => {
                <div className="w-16 md:w-24 h-1.5 bg-gray-800 rounded-full overflow-hidden border border-white/5">
                   <div className={`h-full transition-all duration-500 ${hp < thresholds.hpLow ? 'bg-red-600 shadow-[0_0_10px_red]' : 'bg-green-500'}`} style={{ width: `${Math.min((hp / maxHp) * 100, 100)}%` }} />
                </div>
-            </div>
+            </button>
 
-            <div className="flex flex-col gap-0.5 min-w-[60px]">
+            <button 
+              onClick={() => { playSfx('sfx_click'); setStatsPanelOpen(true); }}
+              className="flex flex-col gap-0.5 min-w-[60px] cursor-pointer hover:opacity-80 transition-opacity"
+            >
                <div className="flex items-center justify-between">
-                  {/* ✅ 使用 maxSan 变量 */}
                   <span className={`text-[10px] md:text-xs font-bold tracking-wider ${san > thresholds.sanHigh ? 'text-purple-400' : 'text-gray-400'}`}>SAN</span>
                   <span className="font-mono font-bold text-xs md:text-sm text-white">{san}<span className="text-[10px] text-gray-500 opacity-50">/{maxSan}</span></span>
                </div>
                <div className="w-16 md:w-24 h-1.5 bg-gray-800 rounded-full overflow-hidden border border-white/5">
-                  {/* ✅ 修正进度条计算: (san / maxSan) * 100 */}
                   <div className={`h-full transition-all duration-500 ${san > thresholds.sanMedium ? 'bg-purple-500 shadow-[0_0_10px_purple]' : san > thresholds.sanLow ? 'bg-blue-500' : 'bg-cyan-500'}`} style={{ width: `${Math.min((san / maxSan) * 100, 100)}%` }} />
                </div>
-            </div>
+            </button>
           </div>
 
           {/* Status Monitor */}
@@ -199,19 +209,21 @@ export const MiniHUD: React.FC = () => {
 
         </div>
 
-        {/* Center: Gold */}
-        <div className={`
-          flex items-center gap-1.5 md:gap-2 font-mono text-lg md:text-2xl font-black transition-all
-          ${goldChange === 'UP' ? 'text-green-400 scale-110' : goldChange === 'DOWN' ? 'text-red-400' : gold < 0 ? 'text-red-500' : 'text-yellow-400'}
-        `}>
+        {/* Center: Gold - 可点击打开属性面板 */}
+        <button 
+          onClick={() => { playSfx('sfx_click'); setStatsPanelOpen(true); }}
+          className={`
+            flex items-center gap-1.5 md:gap-2 font-mono text-lg md:text-2xl font-black transition-all cursor-pointer hover:scale-105
+            ${goldChange === 'UP' ? 'text-green-400 scale-110' : goldChange === 'DOWN' ? 'text-red-400' : gold < 0 ? 'text-red-500' : 'text-yellow-400'}
+          `}
+        >
            <span className="text-sm opacity-50 font-sans">$</span>
            <span>{gold.toLocaleString()}</span>
-        </div>
+        </button>
 
         {/* Right: Buttons */}
         <div className="flex items-center gap-1.5 md:gap-3 pl-3 md:pl-8 border-l border-white/10">
            {[
-             { label: 'SHOP', action: () => setShopOpen(true), icon: '🛍️', color: 'hover:bg-blue-500/20' },
              { label: 'BAG', action: () => setInventoryOpen(true), icon: '🎒', color: 'hover:bg-green-500/20' },
              { label: 'DATA', action: () => setArchiveOpen(true), icon: '💾', color: 'hover:bg-purple-500/20' },
              { label: 'SYS', action: () => setMenuOpen(true), icon: '⚙️', color: 'hover:bg-gray-500/20' },
@@ -227,6 +239,9 @@ export const MiniHUD: React.FC = () => {
         </div>
 
       </div>
+      
+      {/* 角色属性面板 */}
+      <PlayerStatsPanel isOpen={isStatsPanelOpen} onClose={() => setStatsPanelOpen(false)} />
     </div>
   );
 };

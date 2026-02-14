@@ -1,9 +1,11 @@
 import React from 'react';
+import { useI18n } from '@/i18n';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import insuranceData from '@/assets/data/insurance.json';
 
 export const CapitalistInsuranceCard: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const { t } = useI18n();
   const { signInsurance, cancelInsurance, vitality } = useGameStore();
   const { playSfx } = useAudioStore();
 
@@ -55,21 +57,21 @@ export const CapitalistInsuranceCard: React.FC<{ onClose: () => void }> = ({ onC
 
         <div className="flex justify-between items-end border-t border-[#d4af37]/20 pt-6">
           <div>
-             <p className="text-[#888] text-[8px] uppercase tracking-widest mb-1">MEMBER SIGNATURE</p>
+             <p className="text-[#888] text-[8px] uppercase tracking-widest mb-1">{t('insurance.memberSignature')}</p>
              <button 
                 onClick={handleSign}
                 className="font-handwriting text-2xl text-white/90 border-b border-[#d4af37]/40 pb-1 min-w-[200px] text-left hover:text-[#d4af37] transition-colors focus:outline-none"
              >
-                {isActive ? "Sir. Pixel Player" : canUpgrade ? "Upgrade to Immortality..." : "Sign Here..."}
+                {isActive ? t('insurance.signed') : canUpgrade ? t('insurance.upgrade') : t('insurance.signHere')}
              </button>
           </div>
 
           <div className="text-right">
             <p className="text-[#d4af37] font-serif text-lg">
-              {isActive ? 'ACTIVE' : canUpgrade ? 'UPGRADE AVAILABLE' : 'INVITATION ONLY'}
+              {isActive ? t('insurance.active') : canUpgrade ? t('insurance.upgradeAvailable') : t('insurance.invitationOnly')}
             </p>
             <button onClick={onClose} className="text-[#555] text-[10px] hover:text-white uppercase mt-2 tracking-widest">
-              Close
+              {t('common.close')}
             </button>
           </div>
         </div>

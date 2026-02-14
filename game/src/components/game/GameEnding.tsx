@@ -3,6 +3,7 @@ import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import ENDINGS from '@/assets/data/endings.json';
 import { motion } from 'framer-motion';
+import { useI18n } from '@/i18n';
 // ✅ 1. 引入配置文件
 import ENDING_RULES from '@/assets/data/rules/ending_rules.json';
 
@@ -12,6 +13,7 @@ interface GameEndingProps {
 }
 
 export const GameEnding: React.FC<GameEndingProps> = ({ endingId, onRestart }) => {
+  const { t } = useI18n();
   const { stopBgm, playSfx } = useAudioStore();
   
   // ✅ 2. 提取 UI 配置
@@ -88,7 +90,7 @@ export const GameEnding: React.FC<GameEndingProps> = ({ endingId, onRestart }) =
                 'bg-white text-black hover:bg-gray-200'}
             `}
           >
-            <span className="relative z-10">{isDeath ? 'RESPAWN_REQUEST()' : 'REBOOT_SYSTEM()'}</span>
+            <span className="relative z-10">{t('gameOver.restart')}</span>
             {/* 故障扫描线动画 */}
             <div className="absolute top-0 left-0 w-full h-[2px] bg-white/50 animate-[scan_2s_linear_infinite] opacity-0 group-hover:opacity-100" />
           </button>

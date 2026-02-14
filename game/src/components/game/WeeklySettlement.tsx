@@ -5,6 +5,7 @@ import {
   ArrowRight, TrendingUp, TrendingDown, DollarSign, Calendar, AlertCircle, Bitcoin
 } from 'lucide-react';
 import { Disease, WeeklyReport } from '@/types/schema';
+import { useI18n } from '@/i18n';
 
 // ✅ 1. 引入统一配置加载器
 import { Config } from '@/config';
@@ -15,6 +16,7 @@ interface WeeklySettlementProps {
 }
 
 export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) => {
+  const { t } = useI18n();
   const { 
     vitality, 
     crypto, 
@@ -108,14 +110,14 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
               </div>
             </div>
             <h2 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">
-              周结账单
+              {t('weeklySettlement.title', { turn: summary.turn })}
             </h2>
             
             {/* 财务摘要 */}
             <div className="mt-6 grid grid-cols-2 gap-3">
                <div className="bg-gray-50 dark:bg-white/5 p-4 rounded-2xl">
                  <div className="text-xs text-gray-400 mb-1 flex items-center gap-1">
-                   <TrendingUp size={12} /> 总收入
+                   <TrendingUp size={12} /> {t('weeklySettlement.income')}
                  </div>
                  <div className="text-xl font-bold text-green-500 font-mono">
                    +${summary.totalIncome}
@@ -123,7 +125,7 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
                </div>
                <div className="bg-gray-50 dark:bg-white/5 p-4 rounded-2xl">
                  <div className="text-xs text-gray-400 mb-1 flex items-center gap-1">
-                   <TrendingDown size={12} /> 总支出
+                   <TrendingDown size={12} /> {t('weeklySettlement.expense')}
                  </div>
                  <div className="text-xl font-bold text-red-500 font-mono">
                    -${summary.totalExpense}
@@ -150,7 +152,7 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
              {summary.records.length === 0 ? (
                <div className="h-full flex flex-col items-center justify-center text-gray-400 opacity-50 space-y-2 py-10">
                  <DollarSign size={32} />
-                 <span className="text-xs">本周躺平，无资金变动</span>
+                 <span className="text-xs">{t('weeklySettlement.noTransaction')}</span>
                </div>
              ) : (
                summary.records.map((record) => (
@@ -160,7 +162,7 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
                        {record.description}
                      </div>
                      <div className="text-[10px] text-gray-400 uppercase px-1.5 py-0.5 bg-gray-200 dark:bg-white/10 rounded w-fit mt-1">
-                       {record.category}
+                       {t(`weeklySettlement.categories.${record.category.toLowerCase()}`)}
                      </div>
                    </div>
                    <div className={`font-mono font-bold ${record.amount > 0 ? 'text-green-500' : 'text-gray-900 dark:text-white'}`}>
@@ -178,14 +180,14 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
                <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-xl flex items-center gap-3 text-sm font-bold border border-red-500/20">
                  <AlertCircle className="shrink-0 animate-pulse" />
                  <div>
-                   <div className="uppercase text-[10px] opacity-70">Medical Alert</div>
-                   检测到急性病症: {acuteDiseases.map(d => d.name).join(', ')}
+                   <div className="uppercase text-[10px] opacity-70">{t('weeklySettlement.medicalAlert')}</div>
+                   {t('weeklySettlement.acuteDisease', { diseases: acuteDiseases.map(d => d.name).join(', ') })}
                  </div>
                </div>
              )}
 
              <div className="flex justify-between items-center mb-4">
-                <span className="text-xs text-gray-400 uppercase">Net Profit</span>
+                <span className="text-xs text-gray-400 uppercase">{t('weeklySettlement.net')}</span>
                 <span className={`text-2xl font-black font-mono ${summary.netChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
                    {summary.netChange >= 0 ? '+' : ''}{summary.netChange}
                 </span>
@@ -195,7 +197,7 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
                onClick={handleNextWeek}
                className="w-full py-4 bg-black dark:bg-white text-white dark:text-black rounded-xl font-bold text-lg hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 shadow-xl"
              >
-               Start Week {time.currentTurn + 1} <ArrowRight size={20} />
+               {t('weeklySettlement.nextWeek', { week: time.currentTurn + 1 })} <ArrowRight size={20} />
              </button>
           </div>
 

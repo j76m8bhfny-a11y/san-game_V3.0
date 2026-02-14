@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { MedicalService } from '@/types/schema';
 import { DowntownMedicalItem } from './DowntownMedicalItem';
+import { useI18n } from '@/i18n';
 
 interface Props {
   services: MedicalService[];
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export const DowntownClinicInterior: React.FC<Props> = ({ services, gold, onBuy, onClose }) => {
+  const { t } = useI18n();
   
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center p-4 select-none bg-black">
@@ -59,7 +61,7 @@ export const DowntownClinicInterior: React.FC<Props> = ({ services, gold, onBuy,
         {/* 右侧：服务选择矩阵 */}
         <div className="flex-1 p-10 bg-gradient-to-l from-black/80 to-transparent flex flex-col">
           <div className="mb-6 flex justify-between items-end">
-            <h2 className="text-3xl font-thin text-white tracking-[0.2em]">ENHANCEMENTS</h2>
+            <h2 className="text-3xl font-thin text-white tracking-[0.2em]">{t('hospital.title')}</h2>
             <div className="text-cyan-600 text-[10px] font-mono">V 4.2.0 BETA</div>
           </div>
 
@@ -79,7 +81,7 @@ export const DowntownClinicInterior: React.FC<Props> = ({ services, gold, onBuy,
               onClick={onClose}
               className="text-gray-500 hover:text-cyan-400 text-xs font-mono uppercase tracking-widest transition-colors"
             >
-              &lt; Disconnect Interface &gt;
+              &lt; {t('common.close')} &gt;
             </button>
           </div>
         </div>

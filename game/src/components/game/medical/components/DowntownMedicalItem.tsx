@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { MedicalService } from '@/types/schema';
+import { useI18n } from '@/i18n';
 
 interface Props {
   service: MedicalService;
@@ -9,6 +10,7 @@ interface Props {
 
 export const DowntownMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const { t } = useI18n();
 
   return (
     <button
@@ -56,7 +58,7 @@ export const DowntownMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy
         </div>
 
         <div className="mt-2 text-cyan-400 text-[10px] border border-cyan-800 px-2 py-0.5 animate-pulse">
-          INITIALIZE PROTOCOL
+          {t('common.buy')}
         </div>
       </div>
       

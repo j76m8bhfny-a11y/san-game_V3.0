@@ -1,0 +1,166 @@
+{
+  "common": {
+    "close": "关闭",
+    "submit": "提交",
+    "confirm": "确认",
+    "cancel": "取消",
+    "back": "返回",
+    "loading": "正在打开档案...",
+    "empty": "无",
+    "yes": "是",
+    "no": "否",
+    "save": "保存",
+    "delete": "删除",
+    "use": "使用",
+    "buy": "购买",
+    "sell": "出售",
+    "deposit": "存款",
+    "withdraw": "取款",
+    "borrow": "借款",
+    "repay": "还款",
+    "amount": "金额",
+    "price": "价格",
+    "cost": "费用",
+    "free": "免费",
+    "unlocked": "已解锁",
+    "locked": "未解锁",
+    "active": "生效中",
+    "inactive": "未生效",
+    "now": "现在",
+    "toggle": "切换",
+    "next": "下一步",
+    "prev": "上一步",
+    "submit": "提交",
+    "apply": "申请",
+    "search": "搜索",
+    "filter": "筛选",
+    "sort": "排序",
+    "details": "详情",
+    "info": "信息",
+    "warning": "警告",
+    "error": "错误",
+    "success": "成功"
+  },
+  "hud": {
+    "week": "第 {turn} 周",
+    "class": {
+      "homeless": { "label": "流浪汉", "desc": "地狱开局" },
+      "worker": { "label": "底层工人", "desc": "西西弗斯" },
+      "middle": { "label": "中产阶级", "desc": "安逸陷阱" },
+      "capitalist": { "label": "资本家", "desc": "顶层掠食" }
+    },
+    "stats": {
+      "hp": "生命值", "hp_short": "HP",
+      "san": "理智", "san_short": "SAN",
+      "gold": "现金", "hunger": "饱食度",
+      "addiction": "成瘾度", "credit": "信用评分"
+    },
+    "buttons": { "bag": "背包", "data": "档案", "sys": "系统" },
+    "status": {
+      "hasHousing": "有住所", "homeless": "露宿",
+      "hasInsurance": "有医保", "noInsurance": "无保险",
+      "employed": "{count}工作", "unemployed": "无业",
+      "inventory": "{current}/{max}", "good": "良好",
+      "disease": "疾病", "overdue": "逾期",
+      "addiction": "成瘾", "hunger": "饥饿"
+    }
+  },
+  "regions": {
+    "slums": "贫民窟", "rust_belt": "铁锈工业区",
+    "suburbs": "郊区", "downtown": "金融核心区"
+  },
+  "map": {
+    "title": "城市地图",
+    "currentLocation": "当前位置",
+    "travel": "前往",
+    "locked": "区域锁定",
+    "lockedDesc": "需要更高阶级才能进入"
+  },
+  "scenes": {
+    "explore": "探索",
+    "interact": "互动",
+    "enter": "进入",
+    "exit": "离开",
+    "backToMap": "返回地图"
+  },
+  "statsPanel": {
+    "title": "角色状态", "netWorth": "净资产",
+    "tendency": { "red": "赤化", "wolf": "狼性", "old": "古老" },
+    "assets": { "housing": "住所", "insurance": "医疗保险", "job": "工作", "inventory": "背包" }
+  },
+  "inventory": {
+    "title": "背包", "empty": "背包是空的",
+    "filter": { "all": "全部", "consumable": "消耗", "passive": "被动", "key": "剧情" },
+    "itemType": { "consumable": "消耗品", "passive": "被动", "key": "剧情道具" },
+    "actions": { "use": "使用", "cannotUse": "无法使用", "selectToView": "选择物品查看详情" },
+    "details": { "estValue": "估价", "effects": "效果", "unlockHint": "可解锁特殊事件选项" },
+    "resistance": { "warning": "耐药性导致效果衰减" }
+  },
+  "pauseMenu": {
+    "title": "暂停",
+    "resume": "继续游戏",
+    "settings": "系统设置",
+    "restart": "重新开始",
+    "subtitle": "咖啡时间",
+    "footer": "时间就是金钱，利息正在复利",
+    "form": {
+      "title": "员工休息申请表",
+      "omb": "表格 I-765",
+      "dept": "劳工部",
+      "breakTime": "授权休息时段",
+      "resumeDesc": "立即返回工作",
+      "settingsDesc": "调整系统偏好设置",
+      "restartDesc": "警告：数据将丢失",
+      "note": "注意："
+    }
+  },
+  "titleScreen": {
+    "newGame": "新的开始", "continue": "继续游戏", "settings": "设置", "quit": "退出",
+    "subtitle": { "new": "从地狱开局", "continue": "第 {turn} 周", "settings": "调整体验", "quit": "下次再来" },
+    "hover": { "new": "放弃当前存档，重新开始", "continue": "从上次的进度继续", "settings": "音量、语言等选项", "quit": "离开游戏" }
+  },
+  "weeklySettlement": {
+    "title": "第 {turn} 周结算", "income": "收入", "expense": "支出", "net": "净变化", "balance": "当前余额",
+    "categories": { "income": "收入", "housing": "住房", "food": "食物", "medical": "医疗", "bill": "账单", "bank": "银行", "tax": "税务", "misc": "其他" }
+  },
+  "messageWindow": { "continue": "点击继续..." },
+  "classSelector": { "title": "选择你的阶级", "subtitle": "这决定了你的起点，但不决定你的终点", "select": "选择", "stats": { "initial": "初始资金", "hp": "生命值", "san": "理智值" } },
+  "settings": {
+    "title": "设置",
+    "openEnvelope": "打开档案袋",
+    "confidential": "机密",
+    "tabs": { "audio": "音频", "display": "显示", "system": "系统" },
+    "language": "语言",
+    "languageOptions": { "zh-CN": "简体中文", "en-US": "English" },
+    "audio": { "title": "音频设置", "bgm": "背景音乐", "sfx": "音效", "volume": "音量", "testSfx": "测试音效", "testBgm": "测试音乐" },
+    "display": { "title": "显示设置", "fullscreen": "全屏模式", "quality": "画质", "reality": "现实 (1080p)", "delusion": "幻觉 (4K)", "simulation": "模拟 (8-bit)" },
+    "form": {
+      "title": "游戏设置调整申请表",
+      "omb": "OMB编号：1615-0023",
+      "expires": "有效期至：2026/12/31",
+      "applicant": "申请人：",
+      "date": "日期：",
+      "audio": "第一部分 - 音频配置",
+      "display": "第二部分 - 视觉设置",
+      "language": "第三部分 - 语言偏好",
+      "warning": "警告：",
+      "warningText": "虚假陈述可能导致游戏数据损坏。",
+      "signature": "申请人签名"
+    },
+    "stickyNote": "勿忘", "version": "版本", "build": "构建", "status": "状态", "online": "在线", "docId": "文档编号", "devMode": "开发者入口", "toggle": "切换"
+  },
+  "bank": { "title": "银行", "balance": "账户余额", "deposit": "存款", "withdraw": "取款", "loan": { "title": "贷款", "apply": "申请贷款", "current": "当前贷款", "amount": "贷款金额", "interest": "利率", "term": "期限", "repay": "还款", "overdue": "已逾期 {turns} 周" }, "credit": "信用评分", "ledger": { "title": "账本", "empty": "暂无交易记录", "income": "收入", "expense": "支出" } },
+  "hospital": { "title": "医院", "services": "医疗服务", "treatment": "治疗", "drug": "药品", "surgery": "手术", "therapy": "心理治疗", "emergency": "急诊", "insurance": { "covered": "医保报销", "uncovered": "自费", "copay": "自付 {rate}%" }, "disease": { "current": "当前疾病", "none": "身体健康", "cure": "治愈" } },
+  "shop": { "title": "商店", "buy": "购买", "sell": "出售", "insufficient": "资金不足", "full": "背包已满", "categories": { "food": "食物", "medical": "医疗", "tool": "工具", "other": "其他" } },
+  "housing": { "title": "住房", "rent": "租房", "buy": "购房", "current": "当前住所", "none": "露宿街头", "weeklyCost": "周费用", "defense": "防御等级", "regen": "HP恢复", "moveIn": "入住", "moveOut": "搬出", "mortgage": "房贷" },
+  "insurance": { "title": "保险", "medical": "医疗保险", "weekly": "每周费用", "coverage": { "title": "保障范围", "emergency": "急诊", "mental": "精神科", "addiction": "成瘾治疗" }, "enroll": "投保", "cancel": "退保" },
+  "job": { "title": "工作", "board": "招聘板", "apply": "申请", "quit": "辞职", "salary": "薪资", "requirement": "要求", "type": { "fulltime": "全职", "gig": "零工" }, "cost": { "hp": "消耗 HP", "san": "消耗 SAN" } },
+  "faith": { "title": "信仰", "join": "加入", "leave": "离开", "rite": "仪式", "offer": "献祭", "pray": "祈祷", "donate": "捐赠", "faiths": { "none": "无信仰", "church": "教会", "brotherhood": "兄弟会", "cult": "隐秘教派", "revolution": "革命" } },
+  "crypto": { "title": "加密货币", "btc": "比特币", "price": "当前价格", "position": { "long": "做多", "short": "做空", "close": "平仓" }, "leverage": "杠杆", "profit": "盈亏" },
+  "jail": { "title": "监禁中", "sentence": "刑期剩余 {turns} 周", "crime": "罪名", "bail": "保释金", "serve": "服刑", "appeal": "上诉" },
+  "bill": { "title": "账单", "surprise": "意外账单", "medical": "医疗账单", "legal": "法律费用", "pay": "支付", "due": "到期" },
+  "archive": { "title": "档案", "unlocked": "已解锁档案", "locked": "未解锁", "read": "阅读" },
+  "roast": { "title": "系统消息", "subtitle": "你今天被资本主义暴打了" },
+  "gameOver": { "title": "游戏结束", "restart": "重新开始", "endings": { "death": "死亡", "survival": "生存", "alienation": "异化", "stance": "立场" } },
+  "debug": { "title": "开发者面板", "cheat": "作弊菜单", "addGold": "增加金钱", "addHp": "增加生命", "addSan": "增加理智", "unlockAll": "解锁全部", "reset": "重置游戏" }
+}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
+import { useI18n } from '@/i18n';
 import { SuburbsBankExterior } from './components/SuburbsBankExterior';
 import { SuburbsBankInterior } from './components/SuburbsBankInterior';
 import { RegionID } from '@/types/schema';
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export const SuburbsBank: React.FC<Props> = ({ onClose }) => {
+  const { t } = useI18n();
   const [hasEntered, setHasEntered] = useState(true);
   const { 
     vitality, 
@@ -41,7 +43,7 @@ export const SuburbsBank: React.FC<Props> = ({ onClose }) => {
     if (result.success) {
       playSfx('sfx_print_receipt'); // 打印凭条声
       playSfx('sfx_cash');
-      addNotification('Loan approved. Funds deposited.', 'info');
+      addNotification(t('bank.loan.success'), 'info');
     } else {
       playSfx('sfx_deny');
       addNotification(result.message, 'error');
@@ -52,10 +54,10 @@ export const SuburbsBank: React.FC<Props> = ({ onClose }) => {
     const result = repayLoan(loanId);
     if (result.success) {
       playSfx('sfx_typing'); // 数字转账声
-      addNotification('Payment processed successfully.', 'success');
+      addNotification(t('bank.loan.repaySuccess'), 'success');
     } else {
       playSfx('sfx_deny');
-      addNotification('Insufficient funds for transfer.', 'error');
+      addNotification(t('bank.insufficientFunds'), 'error');
     }
   };
 

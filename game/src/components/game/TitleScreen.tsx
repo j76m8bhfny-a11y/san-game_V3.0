@@ -1,9 +1,11 @@
 // src/components/game/TitleScreen.tsx
 
 import React, { useEffect, useState } from 'react';
+import { SettingsModal } from './SettingsModal';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
+import { useI18n } from '@/i18n';
 // ✅ 引入系统规则配置
 import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 import { random } from '@/utils/random';
@@ -76,6 +78,8 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
   // ✅ Refactor: 使用 restartGame 替代旧的 resetPlayerState
   const { vitality, inventory, restartGame } = useGameStore();
   const { playBgm } = useAudioStore();
+  const { t, locale, setLocale } = useI18n();
+  const [showSettings, setShowSettings] = useState(false);
   
   const currentTurn = vitality?.time?.currentTurn ?? 1;
   // 简单的判定：如果回合数 > 1 (或者根据你的初始设定)，则认为有存档
@@ -113,9 +117,21 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
     onStart(type);
   };
 
+  const toggleLanguage = () => {
+    setLocale(locale === 'zh-CN' ? 'en-US' : 'zh-CN');
+  };
+
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-black font-sans select-none flex flex-col items-center justify-center md:justify-between py-12 md:py-20">
       
+      {/* Language Toggle Button - Top Right */}
+      <button
+        onClick={toggleLanguage}
+        className="absolute top-6 right-6 z-50 px-3 py-1.5 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full text-xs font-medium text-white/80 hover:text-white transition-all"
+      >
+        {locale === 'zh-CN' ? '中文 / EN' : 'EN / 中文'}
+      </button>
+
       {/* L0: Background */}
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e]">
         <div className="absolute inset-0 bg-[url('/assets/textures/grid.svg')] opacity-20 [transform:perspective(500px)_rotateX(60deg)] origin-bottom" />
@@ -157,8 +173,8 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
       <div className="relative z-30 flex items-center justify-center gap-4 md:gap-12">
         
         <MenuCard 
-          label="NEW GAME" subLabel="RESIDENT ALIEN" color="bg-[#E0F7FA]" rotate={-3}
-          onClick={() => handleStart('NEW')} onHover={setHoverItem} delay={0.2}
+          label={t('titleScreen.newGame')} subLabel={t('titleScreen.subtitle.new')} color="bg-[#E0F7FA]" rotate={-3}
+          onClick={() => handleStart('NEW')} onHover={() => setHoverItem(t('titleScreen.hover.new'))} delay={0.2}
         >
           <div className="w-full h-full border-2 border-green-800/20 rounded flex flex-col items-center justify-start pt-4 bg-green-50">
              <div className="w-12 h-12 bg-gray-300 rounded-full mb-2 border border-gray-400" />
@@ -169,8 +185,8 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
         </MenuCard>
 
         <MenuCard 
-          label="CONTINUE" subLabel={`TURN ${currentTurn}`} color="bg-white" rotate={2} disabled={!hasSave}
-          onClick={() => handleStart('CONTINUE')} onHover={setHoverItem} delay={0.4}
+          label={t('titleScreen.continue')} subLabel={t('titleScreen.subtitle.continue', { turn: currentTurn })} color="bg-white" rotate={2} disabled={!hasSave}
+          onClick={() => handleStart('CONTINUE')} onHover={() => setHoverItem(t('titleScreen.hover.continue'))} delay={0.4}
         >
           <div className="w-full h-full border-t-8 border-blue-800 flex flex-col items-center pt-2">
              <div className="w-14 h-14 rounded overflow-hidden mb-2 relative flex items-center justify-center bg-gray-300">
@@ -189,11 +205,11 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
         </MenuCard>
 
         <MenuCard 
-          label="SYSTEM" subLabel="CONFIG" color="bg-gray-900" textColor="text-gray-200" rotate={5}
-          onClick={() => alert("SYSTEM LOCKED BY ADMIN")} onHover={setHoverItem} delay={0.6}
+          label={t('titleScreen.settings')} subLabel={t('titleScreen.subtitle.settings')} color="bg-[#f5f5dc]" textColor="text-gray-800" rotate={5}
+          onClick={() => setShowSettings(true)} onHover={() => setHoverItem(t('titleScreen.hover.settings'))} delay={0.6}
         >
-          <div className="w-16 h-16 border-2 border-gray-600 rounded-full flex items-center justify-center">
-             <div className="w-2 h-2 bg-red-500 rounded-full animate-ping" />
+          <div className="w-full h-full flex items-center justify-center">
+             <div className="text-4xl">⚙️</div>
           </div>
         </MenuCard>
       </div>
@@ -203,6 +219,9 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
           {hoverItem ? `> SELECT: ${hoverItem}` : "VER 8.0.0 // NO HOPE EDITION"}
         </p>
       </div>
+
+      {/* 设置菜单 */}
+      {showSettings && <SettingsModal onClose={() => setShowSettings(false)} />}
     </div>
   );
 };

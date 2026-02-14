@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useI18n } from '@/i18n';
 
 interface Props {
   onEnter: () => void;
@@ -6,6 +7,7 @@ interface Props {
 }
 
 export const RustBeltBankExterior: React.FC<Props> = ({ onEnter, onClose }) => {
+  const { t } = useI18n();
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -61,7 +63,7 @@ export const RustBeltBankExterior: React.FC<Props> = ({ onEnter, onClose }) => {
             transition-opacity duration-300
             ${isHovered ? 'opacity-100' : 'opacity-0'}
           `}>
-            Push to Enter
+            {t('common.enter')}
           </div>
         </div>
       </div>
@@ -70,7 +72,7 @@ export const RustBeltBankExterior: React.FC<Props> = ({ onEnter, onClose }) => {
         onClick={onClose}
         className="relative z-20 self-center mt-auto bg-black/60 text-gray-300 hover:text-white px-4 py-2 text-xs font-mono uppercase border border-gray-600"
       >
-        Keep Walking
+        {t('common.close')}
       </button>
     </div>
   );

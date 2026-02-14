@@ -1,5 +1,6 @@
 import React from 'react';
 import { Housing } from '@/types/schema';
+import { useI18n } from '@/i18n';
 
 interface Props {
   house: Housing;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export const SlumsExterior: React.FC<Props> = ({ house, gold, onRent, onClose }) => {
+  const { t } = useI18n();
   const cost = house.rentConfig?.deposit || 0;
   const canAfford = gold >= cost;
 
@@ -65,7 +67,7 @@ export const SlumsExterior: React.FC<Props> = ({ house, gold, onRent, onClose })
             </span>
             {!canAfford && (
               <span className="text-xs text-red-600 font-bold bg-white/80 px-1 mt-1 -rotate-2">
-                NEED CASH
+                {t('common.price')}
               </span>
             )}
           </div>
@@ -75,7 +77,7 @@ export const SlumsExterior: React.FC<Props> = ({ house, gold, onRent, onClose })
           onClick={onClose}
           className="mt-6 text-gray-400 hover:text-white text-xs font-mono uppercase tracking-widest hover:underline"
         >
-          [ Keep Moving ]
+          [ {t('common.close')} ]
         </button>
       </div>
 

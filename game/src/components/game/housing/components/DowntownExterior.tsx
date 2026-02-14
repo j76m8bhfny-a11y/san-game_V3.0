@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Housing } from '@/types/schema';
+import { useI18n } from '@/i18n';
 
 interface Props {
   house: Housing;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export const DowntownExterior: React.FC<Props> = ({ house, gold, onBuy, onClose }) => {
+  const { t } = useI18n();
   const [isScanning, setIsScanning] = useState(false);
 
   // 核心区只支持购买
@@ -92,13 +94,13 @@ export const DowntownExterior: React.FC<Props> = ({ house, gold, onBuy, onClose 
             ) : !canAfford ? (
               <div className="text-red-500 font-mono text-xs">
                 ACCESS DENIED<br/>
-                <span className="opacity-50">Insufficient Capital</span>
+                <span className="opacity-50">{t('housing.buy')}</span>
               </div>
             ) : (
               <div className="text-[#d4af37] font-mono text-xs">
                 READY TO SCAN<br/>
                 <span className="opacity-70">
-                  Entry Cost: ${downPayment.toLocaleString()}
+                  {t('common.price')}: ${downPayment.toLocaleString()}
                 </span>
               </div>
             )}
@@ -109,7 +111,7 @@ export const DowntownExterior: React.FC<Props> = ({ house, gold, onBuy, onClose 
           onClick={onClose}
           className="mt-12 text-gray-600 hover:text-white text-[10px] uppercase tracking-[0.2em] transition-colors"
         >
-          Exit Lobby
+          {t('common.close')}
         </button>
       </div>
     </div>

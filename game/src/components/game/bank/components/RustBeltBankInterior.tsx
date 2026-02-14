@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { LoanProduct, ActiveLoan } from '@/types/schema';
 import { RustBeltLoanClipboard } from './RustBeltLoanClipboard';
 import { useBankUI } from '../hooks/useBankUI';
+import { useI18n } from '@/i18n';
 
 interface Props {
   gold: number;
@@ -18,6 +19,7 @@ interface Props {
 export const RustBeltBankInterior: React.FC<Props> = ({ 
   gold, creditScore, products, activeLoans, currentTurn, onTakeLoan, onRepayLoan, onMakeInstallment, onClose 
 }) => {
+  const { t } = useI18n();
   const [stampAnim, setStampAnim] = useState(false);
   const [cashAnim, setCashAnim] = useState(false);
   const { 
@@ -98,11 +100,11 @@ export const RustBeltBankInterior: React.FC<Props> = ({
 
           <div className="w-full bg-white/80 backdrop-blur-sm border-4 border-gray-300 p-4 rounded-lg shadow-xl h-[60%] overflow-y-auto custom-scrollbar relative">
              <h3 className="text-xs font-bold text-gray-500 uppercase mb-2 border-b border-gray-300 pb-1">
-               Outstanding Debts
+               {t('bank.outstandingDebts')}
              </h3>
              
              {activeLoans.length === 0 ? (
-               <div className="text-center text-gray-400 mt-10 text-sm">No active debts.</div>
+               <div className="text-center text-gray-400 mt-10 text-sm">{t('bank.noActiveDebts')}</div>
              ) : (
                <div className="space-y-3">
                  {activeLoans.map(loan => {
@@ -124,7 +126,7 @@ export const RustBeltBankInterior: React.FC<Props> = ({
                        
                        {/* 本金利息明细 */}
                        <div className="text-[10px] text-gray-500 mt-1">
-                         Principal: ${loan.principal.toLocaleString()} | Interest: ${loan.interest.toLocaleString()}
+                         {t('bank.principal')}: ${loan.principal.toLocaleString()} | {t('bank.interest')}: ${loan.interest.toLocaleString()}
                        </div>
                        
                        {/* 警告提示 */}
@@ -140,14 +142,14 @@ export const RustBeltBankInterior: React.FC<Props> = ({
                            type="number"
                            value={repayAmount[loan.id] || ''}
                            onChange={(e) => setRepayAmount(prev => ({ ...prev, [loan.id]: Math.max(0, parseInt(e.target.value, 10) || 0) }))}
-                           placeholder="Payment Amount"
+                           placeholder={t('bank.loan.amount')}
                            className="flex-1 bg-white border border-gray-300 text-gray-800 text-xs px-2 py-1 focus:outline-none focus:border-blue-500 font-mono"
                          />
                          <button
                            onClick={() => setRepayAmount(prev => ({ ...prev, [loan.id]: Math.min(gold, totalOwed) }))}
                            className="text-[10px] text-blue-600 hover:text-blue-800 underline font-bold px-1"
                          >
-                           FULL
+                           {t('common.max')}
                          </button>
                        </div>
                        
@@ -158,14 +160,14 @@ export const RustBeltBankInterior: React.FC<Props> = ({
                            disabled={gold < (repayAmount[loan.id] || 0) || (repayAmount[loan.id] || 0) <= 0}
                            className="flex-1 bg-blue-700 hover:bg-blue-600 disabled:bg-gray-400 text-white text-[10px] font-bold py-1 uppercase"
                          >
-                           Partial Pay
+                           {t('bank.repayPartial')}
                          </button>
                          <button
                            onClick={() => handleRepay(loan.id)}
                            disabled={gold < totalOwed}
                            className="flex-1 bg-green-700 hover:bg-green-600 disabled:bg-gray-400 text-white text-[10px] font-bold py-1 uppercase"
                          >
-                           Pay Full
+                           {t('bank.repayFull')}
                          </button>
                        </div>
                      </div>
@@ -196,13 +198,13 @@ export const RustBeltBankInterior: React.FC<Props> = ({
       {/* 5. 底部栏 */}
       <div className="absolute bottom-0 w-full h-16 bg-[#333] border-t-4 border-gray-500 flex items-center justify-between px-8 z-30">
         <div className="text-white font-mono text-xs">
-          WALLET: <span className="text-green-400">${gold}</span>
+          {t('bank.wallet')}: <span className="text-green-400">${gold}</span>
         </div>
         <button 
           onClick={onClose}
           className="text-gray-400 hover:text-white text-xs font-bold uppercase"
         >
-          Exit Lobby
+          {t('common.close')}
         </button>
       </div>
 

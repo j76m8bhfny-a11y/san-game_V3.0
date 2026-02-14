@@ -2,12 +2,14 @@ import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { RegionID } from '@/types/schema';
 import { RustBeltItem } from './components/RustBeltItem';
+import { useI18n } from '@/i18n';
 
 interface Props {
   onClose: () => void;
 }
 
 export const RustBeltShop: React.FC<Props> = ({ onClose }) => {
+  const { t } = useI18n();
   const { getRegionItems, buyItem, vitality } = useGameStore();
   
   const items = getRegionItems(RegionID.RustBelt);
@@ -37,7 +39,7 @@ export const RustBeltShop: React.FC<Props> = ({ onClose }) => {
 
           {/* 收银机显示的金额 */}
           <div className="bg-[#0f172a] border-2 border-gray-600 p-2 rounded">
-             <div className="text-[10px] text-gray-400 font-mono mb-1">CASH TENDERED</div>
+             <div className="text-[10px] text-gray-400 font-mono mb-1">{t('common.price')}</div>
              <div className={`text-2xl font-mono text-right font-bold ${gold < 10 ? 'text-red-500' : 'text-green-400'}`}>
                <span className="mr-1 text-sm">$</span>{gold.toFixed(2)}
              </div>
@@ -52,7 +54,7 @@ export const RustBeltShop: React.FC<Props> = ({ onClose }) => {
 
           {items.length === 0 ? (
             <div className="h-full flex items-center justify-center text-gray-500 font-mono bg-black/60">
-              [ OUT OF STOCK ]
+              [ {t('shop.insufficient').toUpperCase()} ]
             </div>
           ) : (
             <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-x-6 gap-y-12 relative z-10">
@@ -101,7 +103,7 @@ export const RustBeltShop: React.FC<Props> = ({ onClose }) => {
              onClick={onClose}
              className="absolute right-8 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white font-mono hover:underline"
            >
-             [LEAVE STORE]
+             [{t('common.close').toUpperCase()}]
            </button>
         </div>
 

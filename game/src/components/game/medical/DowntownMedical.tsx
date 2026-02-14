@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
+import { useI18n } from '@/i18n';
 import { DowntownClinicExterior } from './components/DowntownClinicExterior';
 import { DowntownClinicInterior } from './components/DowntownClinicInterior';
 import { RegionID } from '@/types/schema';
@@ -18,6 +19,7 @@ export const DowntownMedical: React.FC<Props> = ({ onClose }) => {
   } = useGameStore();
   
   const { playSfx } = useAudioStore();
+  const { t } = useI18n();
 
   const services = gameDataCache?.regions?.find(r => r.id === RegionID.Downtown)?.hospitalTheme?.services 
     || [];
@@ -29,7 +31,7 @@ export const DowntownMedical: React.FC<Props> = ({ onClose }) => {
 
   const handleBuy = (_serviceId: string) => {
     playSfx('sfx_click'); // 液压注射声
-    addNotification('Biological enhancement protocol complete.', 'HP');
+    addNotification(t('hospital.notification.downtown'), 'HP');
   };
 
   return (

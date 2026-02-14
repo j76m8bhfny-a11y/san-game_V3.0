@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MedicalService } from '@/types/schema';
 import { SuburbsMedicalItem } from './SuburbsMedicalItem';
+import { useI18n } from '@/i18n';
 
 interface Props {
   services: MedicalService[];
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export const SuburbsClinicInterior: React.FC<Props> = ({ services, gold, onBuy, onClose }) => {
+  const { t } = useI18n();
   
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center p-4 select-none bg-gray-50">
@@ -30,7 +32,7 @@ export const SuburbsClinicInterior: React.FC<Props> = ({ services, gold, onBuy, 
         {/* 顶部：分类与广告 */}
         <div className="h-20 border-b border-gray-100 flex items-center justify-between px-8 bg-gradient-to-r from-red-50 to-white">
           <div>
-            <h2 className="text-2xl font-black text-gray-800 tracking-tight">Pharmacy</h2>
+            <h2 className="text-2xl font-black text-gray-800 tracking-tight">{t('hospital.title')}</h2>
             <div className="text-xs text-gray-500 font-medium">Pick up your prescription</div>
           </div>
           
@@ -38,7 +40,7 @@ export const SuburbsClinicInterior: React.FC<Props> = ({ services, gold, onBuy, 
              {/* 医保提示 */}
              <div className="flex items-center gap-2 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
                <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-               <span className="text-[10px] text-blue-600 font-bold uppercase">Insurance Active</span>
+               <span className="text-[10px] text-blue-600 font-bold uppercase">{t('hospital.insurance.covered')}</span>
              </div>
              
              {/* 余额 */}
@@ -74,7 +76,7 @@ export const SuburbsClinicInterior: React.FC<Props> = ({ services, gold, onBuy, 
              onClick={onClose}
              className="px-6 py-2 bg-white border border-gray-300 rounded-lg text-gray-600 font-bold text-sm hover:bg-gray-100 transition-colors shadow-sm"
            >
-             Exit Store
+             {t('common.close')}
            </button>
         </div>
       </div>

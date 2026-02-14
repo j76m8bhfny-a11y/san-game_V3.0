@@ -1,5 +1,6 @@
 import React from 'react';
 import { Housing } from '@/types/schema';
+import { useI18n } from '@/i18n';
 
 interface Props {
   house: Housing;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export const RustBeltExterior: React.FC<Props> = ({ house, gold, onRent, onClose }) => {
+  const { t } = useI18n();
   const deposit = house.rentConfig?.deposit || 0;
   const weekly = house.rentConfig?.weeklyCosts?.[0]?.baseAmount || 0;
   const totalUpfront = deposit + weekly;
@@ -108,7 +110,7 @@ export const RustBeltExterior: React.FC<Props> = ({ house, gold, onRent, onClose
           onClick={onClose}
           className="mt-8 bg-black/60 text-white px-6 py-2 border border-white/20 hover:bg-black/80 font-mono text-sm"
         >
-          [ Leave Lobby ]
+          [ {t('common.close')} ]
         </button>
       </div>
     </div>

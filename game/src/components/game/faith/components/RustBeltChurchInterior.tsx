@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { RegionID, NoviceActionType } from '@/types/schema';
 import { placeholderBackgrounds } from '../utils/placeholderAssets';
+import { useI18n } from '@/i18n';
 
 interface Props {
   onClose: () => void;
 }
 
 export const RustBeltChurchInterior: React.FC<Props> = ({ onClose }) => {
+  const { t } = useI18n();
   const { performNoviceAction, performFaithRite, getFaithMode } = useGameStore();
   const [isPreaching, setIsPreaching] = useState(false);
 
@@ -55,14 +57,14 @@ export const RustBeltChurchInterior: React.FC<Props> = ({ onClose }) => {
         <div className="border-4 border-double border-black p-4 h-full flex flex-col items-center flex-1">
           
           <h1 className="text-3xl font-black uppercase tracking-tighter mb-2 leading-none">
-            {mode === 'NOVICE' ? 'COMMUNITY BOARD' : (mode === 'NATIVE' ? 'UNION HALL' : 'THE CHAPEL')}
+            {t('faith.title', { mode })}
           </h1>
           <div className="w-full h-px bg-black mb-4" />
 
           {/* === 新手模式：勾选单 === */}
           {mode === 'NOVICE' && (
             <div className="w-full text-left space-y-4 mt-2">
-                <p className="text-xs font-bold italic text-center mb-4">"How will you serve today?"</p>
+                <p className="text-xs font-bold italic text-center mb-4">"{t('faith.serve_question')}"</p>
                 
                 {/* 选项 1: Support ($) */}
                 <div 
@@ -71,8 +73,8 @@ export const RustBeltChurchInterior: React.FC<Props> = ({ onClose }) => {
                 >
                     <div className="w-6 h-6 border-2 border-black flex items-center justify-center group-hover:bg-black group-hover:text-white transition-colors"></div>
                     <div>
-                        <div className="text-sm font-bold uppercase">Donate Funds</div>
-                        <div className="text-[10px] text-gray-600">Give $50 to the cause</div>
+                        <div className="text-sm font-bold uppercase">{t('faith.donate')}</div>
+                        <div className="text-[10px] text-gray-600">{t('faith.donate_desc')}</div>
                     </div>
                 </div>
 
@@ -83,8 +85,8 @@ export const RustBeltChurchInterior: React.FC<Props> = ({ onClose }) => {
                 >
                     <div className="w-6 h-6 border-2 border-black flex items-center justify-center group-hover:bg-black group-hover:text-white transition-colors"></div>
                     <div>
-                        <div className="text-sm font-bold uppercase">Lend a Hand</div>
-                        <div className="text-[10px] text-gray-600">Heavy lifting (-HP)</div>
+                        <div className="text-sm font-bold uppercase">{t('faith.volunteer')}</div>
+                        <div className="text-[10px] text-gray-600">{t('faith.volunteer_desc')}</div>
                     </div>
                 </div>
 
@@ -95,8 +97,8 @@ export const RustBeltChurchInterior: React.FC<Props> = ({ onClose }) => {
                 >
                     <div className="w-6 h-6 border-2 border-black flex items-center justify-center group-hover:bg-black group-hover:text-white transition-colors"></div>
                     <div>
-                        <div className="text-sm font-bold uppercase">Penance</div>
-                        <div className="text-[10px] text-gray-600">Share the pain (-HP)</div>
+                        <div className="text-sm font-bold uppercase">{t('faith.penance')}</div>
+                        <div className="text-[10px] text-gray-600">{t('faith.penance_desc')}</div>
                     </div>
                 </div>
 
@@ -107,7 +109,7 @@ export const RustBeltChurchInterior: React.FC<Props> = ({ onClose }) => {
                     onClick={() => handleNoviceAction(NoviceActionType.REJECT)}
                     className="w-full py-2 text-xs font-mono text-gray-500 hover:text-red-600 hover:line-through transition-colors"
                 >
-                    [ Tear up flyer & Leave ]
+                    {t('faith.leave')}
                 </button>
             </div>
           )}
@@ -116,7 +118,7 @@ export const RustBeltChurchInterior: React.FC<Props> = ({ onClose }) => {
           {mode !== 'NOVICE' && (
             <div className="flex flex-col h-full justify-between">
                 <p className="text-sm font-bold italic mb-6">
-                    "{mode === 'NATIVE' ? 'Solidarity Forever!' : 'Repent, for the End is Nigh!'}"
+                    "{t('faith.slogan', { mode })}"
                 </p>
                 
                 <div className="space-y-4 w-full">
@@ -125,12 +127,12 @@ export const RustBeltChurchInterior: React.FC<Props> = ({ onClose }) => {
                         disabled={isPreaching}
                         className="w-full py-3 border-2 border-black font-bold hover:bg-black hover:text-white transition-colors uppercase text-xs"
                     >
-                        {isPreaching ? 'CHANTING...' : (mode === 'NATIVE' ? 'Perform Union Rite' : 'Silent Prayer')}
+                        {isPreaching ? t('faith.preaching') : t('faith.pray', { mode })}
                     </button>
                 </div>
 
                 <div className="mt-6 text-[10px] text-gray-500 font-mono">
-                    Est. 1984 • Rust Belt Chapter
+                    {t('faith.chapter_info')}
                 </div>
             </div>
           )}
@@ -142,7 +144,7 @@ export const RustBeltChurchInterior: React.FC<Props> = ({ onClose }) => {
         onClick={onClose}
         className="absolute top-8 right-8 text-white/50 hover:text-white font-mono text-xs uppercase"
       >
-        [Exit Building]
+        {t('common.close')}
       </button>
 
     </div>

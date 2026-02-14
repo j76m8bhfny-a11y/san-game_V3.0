@@ -2,12 +2,14 @@ import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { RegionID } from '@/types/schema';
 import { DowntownItem } from './components/DowntownItem';
+import { useI18n } from '@/i18n';
 
 interface Props {
   onClose: () => void;
 }
 
 export const DowntownShop: React.FC<Props> = ({ onClose }) => {
+  const { t } = useI18n();
   const { getRegionItems, buyItem, vitality } = useGameStore();
   
   const items = getRegionItems(RegionID.Downtown);
@@ -37,17 +39,17 @@ export const DowntownShop: React.FC<Props> = ({ onClose }) => {
         <div className="relative z-10 w-1/4 h-full bg-black/80 border-r border-white/10 flex flex-col p-10 backdrop-blur-md">
           <div className="mb-12">
             <h1 className="text-5xl font-serif text-[#d4af37] mb-2 tracking-widest">
-              THE<br/>CLUB
+              {t('shop.title')}
             </h1>
             <div className="h-0.5 w-12 bg-[#d4af37] mb-4" />
             <p className="text-gray-400 font-sans text-xs tracking-[0.3em] uppercase">
-              Members Only
+              {t('shop.membersOnly')}
             </p>
           </div>
 
           {/* 会员卡片信息 */}
           <div className="mt-auto mb-12">
-             <div className="text-[#888] text-[10px] uppercase tracking-widest mb-2">Your Portfolio</div>
+             <div className="text-[#888] text-[10px] uppercase tracking-widest mb-2">{t('common.price')}</div>
              <div className="text-3xl font-serif text-white mb-1">
                <span className="text-[#d4af37] text-lg mr-1">$</span>
                {gold.toLocaleString('en-US', { minimumFractionDigits: 2 })}
@@ -60,7 +62,7 @@ export const DowntownShop: React.FC<Props> = ({ onClose }) => {
             className="text-left text-gray-500 hover:text-white transition-colors text-xs font-sans tracking-widest uppercase flex items-center gap-2 group"
           >
             <span className="w-8 h-[1px] bg-gray-600 group-hover:bg-white transition-colors" />
-            Exit Lounge
+            {t('common.close')}
           </button>
         </div>
 
@@ -80,7 +82,7 @@ export const DowntownShop: React.FC<Props> = ({ onClose }) => {
 
             {items.length === 0 ? (
               <div className="text-center py-20 border border-white/10">
-                <p className="text-gray-500 font-serif italic">No acquisitions available at this time.</p>
+                <p className="text-gray-500 font-serif italic">{t('shop.empty')}</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">

@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { MedicalService } from '@/types/schema';
+import { useI18n } from '@/i18n';
 
 interface Props {
   service: MedicalService;
@@ -9,6 +10,7 @@ interface Props {
 
 export const SlumsMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const { t } = useI18n();
 
   // 随机位置参数 (模拟散落感)
   const style = useMemo(() => ({
@@ -79,7 +81,7 @@ export const SlumsMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy })
 
         {!canAfford && (
           <div className="mt-2 text-center text-red-600 font-black text-xs uppercase border-2 border-red-600 -rotate-2">
-            NO MONEY
+            {t('common.price')}
           </div>
         )}
       </div>

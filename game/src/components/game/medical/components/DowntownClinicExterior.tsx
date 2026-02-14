@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useI18n } from '@/i18n';
 
 interface Props {
   onEnter: () => void;
@@ -7,6 +8,7 @@ interface Props {
 
 export const DowntownClinicExterior: React.FC<Props> = ({ onEnter, onClose }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const { t } = useI18n();
 
   return (
     <div className="relative w-full h-full flex flex-col justify-between p-8 overflow-hidden select-none font-sans">
@@ -73,7 +75,7 @@ export const DowntownClinicExterior: React.FC<Props> = ({ onEnter, onClose }) =>
         onClick={onClose}
         className="relative z-20 self-center mt-auto text-gray-500 hover:text-white text-[10px] font-mono uppercase tracking-[0.2em] transition-colors"
       >
-        Return to City
+        {t('common.close')}
       </button>
     </div>
   );

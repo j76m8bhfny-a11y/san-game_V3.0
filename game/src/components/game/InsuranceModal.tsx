@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { useGameStore } from '@/store/useGameStore';
+import { useI18n } from '@/i18n';
 import { REGION_THEME_MAP, THEME_ANIMATIONS } from '@/config/insuranceUIConfig';
 import { SlumsInsuranceFlyer } from './insurance/SlumsInsuranceFlyer';
 import { RustBeltInsuranceForm } from './insurance/RustBeltInsuranceForm';
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export const InsuranceModal: React.FC<Props> = ({ isOpen, onClose }) => {
+  const { t } = useI18n();
   const { currentRegion, vitality } = useGameStore();
   
   // 1. 确定主题

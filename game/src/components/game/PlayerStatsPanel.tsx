@@ -2,25 +2,35 @@ import React, { useMemo, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
+import { useI18n } from '@/i18n';
 import { PlayerClass } from '@/types/schema';
 import { X, Heart, Brain, Wallet, Utensils, Syringe, Shield, Home, Briefcase, AlertTriangle } from 'lucide-react';
 import vitalityRules from '@/assets/data/rules/vitalityRules.json';
 import INITIAL_STATE from '@/assets/data/config/initial_state.json';
 import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 
-const CLASS_CONFIG: Record<PlayerClass, { label: string; icon: string; color: string; desc: string }> = {
+// 阶级视觉配置
+const CLASS_CONFIG: Record<PlayerClass, { icon: string; color: string }> = {
   [PlayerClass.Homeless]: { 
-    label: '流浪汉', icon: '🏚️', color: 'text-stone-400', desc: '地狱开局'
+    icon: '🏚️', color: 'text-stone-400'
   },
   [PlayerClass.Worker]: { 
-    label: '底层工人', icon: '⚒️', color: 'text-sky-400', desc: '西西弗斯'
+    icon: '⚒️', color: 'text-sky-400'
   },
   [PlayerClass.Middle]: { 
-    label: '中产阶级', icon: '👔', color: 'text-indigo-400', desc: '安逸陷阱'
+    icon: '👔', color: 'text-indigo-400'
   },
   [PlayerClass.Capitalist]: { 
-    label: '资本家', icon: '🎩', color: 'text-amber-400', desc: '顶层掠食'
+    icon: '🎩', color: 'text-amber-400'
   }
+};
+
+// 阶级 i18n key 映射
+const CLASS_I18N_KEY: Record<PlayerClass, string> = {
+  [PlayerClass.Homeless]: 'homeless',
+  [PlayerClass.Worker]: 'worker',
+  [PlayerClass.Middle]: 'middle',
+  [PlayerClass.Capitalist]: 'capitalist',
 };
 
 interface Props {
@@ -30,6 +40,7 @@ interface Props {
 
 export const PlayerStatsPanel: React.FC<Props> = ({ isOpen, onClose }) => {
   const { playSfx } = useAudioStore();
+  const { t } = useI18n();
   const { 
     vitality, 
     activeHousing, 
@@ -46,6 +57,7 @@ export const PlayerStatsPanel: React.FC<Props> = ({ isOpen, onClose }) => {
   const GLOBAL_MAX = SYSTEM_RULES.caps.maxStat;
 
   const classInfo = CLASS_CONFIG[currentClass as PlayerClass] || CLASS_CONFIG[PlayerClass.Homeless];
+  const classI18nKey = CLASS_I18N_KEY[currentClass as PlayerClass] || 'homeless';
   const { thresholds } = vitalityRules.visuals;
 
   // ESC 键关闭
@@ -108,9 +120,7 @@ export const PlayerStatsPanel: React.FC<Props> = ({ isOpen, onClose }) => {
         style={{ top: '80px', position: 'absolute' }}
       >
         {/* 面板内容 */}
-        <div 
-          className="bg-gradient-to-b from-[#1a1a2e] to-[#0f0f1a] rounded-2xl border border-white/10 shadow-2xl overflow-hidden"
-        >
+        <div className="bg-gradient-to-b from-[#1a1a2e] to-[#0f0f1a] rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
           {/* 顶部装饰线 */}
           <div className="h-1 bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500" />
           
@@ -123,17 +133,49 @@ export const PlayerStatsPanel: React.FC<Props> = ({ isOpen, onClose }) => {
               <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 shrink-0">
                 <span className="text-xl">{classInfo.icon}</span>
                 <div>
-                  <div className={`text-sm font-bold ${classInfo.color}`}>{classInfo.label}</div>
-                  <div className="text-[10px] text-gray-500">{classInfo.desc}</div>
+                  <div className={`text-sm font-bold ${classInfo.color}`}>
+                    {t(`hud.class.${classI18nKey}.label`)}
+                  </div>
+                  <div className="text-[10px] text-gray-500">
+                    {t(`hud.class.${classI18nKey}.desc`)}
+                  </div>
                 </div>
               </div>
 
               {/* 核心属性 - 紧凑条形式 */}
               <div className="flex-1 grid grid-cols-4 gap-2">
-                <MiniBar icon={<Heart size={12} />} label="HP" value={hp} max={maxHp} color="bg-red-500" warning={hp < thresholds.hpLow} />
-                <MiniBar icon={<Brain size={12} />} label="SAN" value={san} max={maxSan} color="bg-purple-500" warning={san < thresholds.sanLow} />
-                <MiniBar icon={<Utensils size={12} />} label="饱食" value={hunger} max={100} color="bg-orange-500" warning={hunger < 30} />
-                <MiniBar icon={<Syringe size={12} />} label="成瘾" value={addiction} max={GLOBAL_MAX} color="bg-fuchsia-500" warning={addiction > thresholds.addictionHigh} />
+                <MiniBar 
+                  icon={<Heart size={12} />} 
+                  label={t('hud.stats.hp_short')} 
+                  value={hp} 
+                  max={maxHp} 
+                  color="bg-red-500" 
+                  warning={hp < thresholds.hpLow} 
+                />
+                <MiniBar 
+                  icon={<Brain size={12} />} 
+                  label={t('hud.stats.san_short')} 
+                  value={san} 
+                  max={maxSan} 
+                  color="bg-purple-500" 
+                  warning={san < thresholds.sanLow} 
+                />
+                <MiniBar 
+                  icon={<Utensils size={12} />} 
+                  label={t('hud.stats.hunger')} 
+                  value={hunger} 
+                  max={100} 
+                  color="bg-orange-500" 
+                  warning={hunger < 30} 
+                />
+                <MiniBar 
+                  icon={<Syringe size={12} />} 
+                  label={t('hud.stats.addiction')} 
+                  value={addiction} 
+                  max={GLOBAL_MAX} 
+                  color="bg-fuchsia-500" 
+                  warning={addiction > thresholds.addictionHigh} 
+                />
               </div>
             </div>
 
@@ -141,10 +183,18 @@ export const PlayerStatsPanel: React.FC<Props> = ({ isOpen, onClose }) => {
             <div className="flex items-center gap-4">
               {/* 货币信息 */}
               <div className="flex items-center gap-3 shrink-0">
-                <MoneyBox label="现金" value={gold} color={gold >= 0 ? 'text-green-400' : 'text-red-400'} />
-                <MoneyBox label="净资产" value={netWorth} color={netWorth >= 0 ? 'text-emerald-400' : 'text-rose-400'} />
+                <MoneyBox 
+                  label={t('hud.stats.gold')} 
+                  value={gold} 
+                  color={gold >= 0 ? 'text-green-400' : 'text-red-400'} 
+                />
+                <MoneyBox 
+                  label={t('statsPanel.netWorth')} 
+                  value={netWorth} 
+                  color={netWorth >= 0 ? 'text-emerald-400' : 'text-rose-400'} 
+                />
                 <div className="px-3 py-1.5 rounded-lg bg-black/40 border border-white/10">
-                  <div className="text-[10px] text-gray-500">信用</div>
+                  <div className="text-[10px] text-gray-500">{t('hud.stats.credit')}</div>
                   <div className={`text-sm font-mono font-bold ${creditScore >= 650 ? 'text-blue-400' : creditScore >= 500 ? 'text-yellow-400' : 'text-red-400'}`}>
                     {creditScore}
                   </div>
@@ -155,9 +205,9 @@ export const PlayerStatsPanel: React.FC<Props> = ({ isOpen, onClose }) => {
 
               {/* 政治倾向 - 三点式 */}
               <div className="flex items-center gap-4 flex-1">
-                <PointDot icon="🔴" label="赤" value={points.red} color="bg-red-500" />
-                <PointDot icon="🐺" label="狼" value={points.wolf} color="bg-amber-500" />
-                <PointDot icon="👁️" label="古" value={points.old} color="bg-purple-500" />
+                <PointDot icon="🔴" label={t('statsPanel.tendency.red')} value={points.red} color="bg-red-500" />
+                <PointDot icon="🐺" label={t('statsPanel.tendency.wolf')} value={points.wolf} color="bg-amber-500" />
+                <PointDot icon="👁️" label={t('statsPanel.tendency.old')} value={points.old} color="bg-purple-500" />
               </div>
 
               {/* 关闭按钮 */}
@@ -175,22 +225,22 @@ export const PlayerStatsPanel: React.FC<Props> = ({ isOpen, onClose }) => {
               <div className="flex items-center gap-2 shrink-0">
                 <StatusIcon 
                   icon={<Home size={14} />} 
-                  label={activeHousing ? '有住所' : '露宿'} 
+                  label={activeHousing ? t('hud.status.hasHousing') : t('hud.status.homeless')} 
                   active={!!activeHousing} 
                 />
                 <StatusIcon 
                   icon={<Shield size={14} />} 
-                  label={activeInsurance ? '有医保' : '无保险'} 
+                  label={activeInsurance ? t('hud.status.hasInsurance') : t('hud.status.noInsurance')} 
                   active={!!activeInsurance} 
                 />
                 <StatusIcon 
                   icon={<Briefcase size={14} />} 
-                  label={vitality.activeJobs.length > 0 ? `${vitality.activeJobs.length}工作` : '无业'} 
+                  label={vitality.activeJobs.length > 0 ? t('hud.status.employed', { count: vitality.activeJobs.length }) : t('hud.status.unemployed')} 
                   active={vitality.activeJobs.length > 0} 
                 />
                 <StatusIcon 
                   icon={<Wallet size={14} />} 
-                  label={`${inventory.length}/20`} 
+                  label={t('hud.status.inventory', { current: inventory.length, max: 20 })} 
                   active={inventory.length < 20} 
                 />
               </div>
@@ -206,22 +256,22 @@ export const PlayerStatsPanel: React.FC<Props> = ({ isOpen, onClose }) => {
                 ))}
                 {bank.activeLoans.some(l => l.overdueTurns > 0) && (
                   <span className="px-2 py-1 rounded text-[10px] bg-red-500/20 text-red-400 border border-red-500/30 whitespace-nowrap">
-                    <AlertTriangle size={10} className="inline" /> 逾期
+                    <AlertTriangle size={10} className="inline" /> {t('hud.status.overdue')}
                   </span>
                 )}
                 {addiction > thresholds.addictionHigh && (
                   <span className="px-2 py-1 rounded text-[10px] bg-fuchsia-500/20 text-fuchsia-400 border border-fuchsia-500/30 whitespace-nowrap">
-                    💉 成瘾
+                    💉 {t('hud.status.addiction')}
                   </span>
                 )}
                 {hunger < 30 && (
                   <span className="px-2 py-1 rounded text-[10px] bg-orange-500/20 text-orange-400 border border-orange-500/30 whitespace-nowrap">
-                    🍖 饥饿
+                    🍖 {t('hud.status.hunger')}
                   </span>
                 )}
                 {diseaseNames.length === 0 && bank.activeLoans.filter(l => l.overdueTurns > 0).length === 0 && addiction <= thresholds.addictionHigh && hunger >= 30 && (
                   <span className="px-2 py-1 rounded text-[10px] bg-green-500/20 text-green-400 border border-green/30 whitespace-nowrap">
-                    ✓ 良好
+                    ✓ {t('hud.status.good')}
                   </span>
                 )}
               </div>

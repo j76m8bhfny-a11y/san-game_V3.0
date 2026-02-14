@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { RegionID, NoviceActionType } from '@/types/schema';
 import { placeholderBackgrounds } from '../utils/placeholderAssets';
+import { useI18n } from '@/i18n';
 
 interface Props {
   onClose: () => void;
 }
 
 export const DowntownLodgeInterior: React.FC<Props> = ({ onClose }) => {
+  const { t } = useI18n();
   const { performNoviceAction, performFaithRite, getFaithMode } = useGameStore();
   const [isSigning, setIsSigning] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -65,7 +67,7 @@ export const DowntownLodgeInterior: React.FC<Props> = ({ onClose }) => {
         <div className="absolute top-4 left-4 right-4 bottom-4 border border-[#d4af37]/20 pointer-events-none" />
         
         <h2 className="text-2xl tracking-[0.3em] uppercase mb-4 border-b border-[#d4af37]/30 pb-4">
-          {mode === 'NOVICE' ? 'Letter of Intent' : (mode === 'NATIVE' ? 'The Covenant' : 'Guest Registry')}
+          {mode === 'NOVICE' ? t('faith.letter_of_intent') : (mode === 'NATIVE' ? t('faith.covenant') : t('faith.guest_registry'))}
         </h2>
 
         {/* === 新手模式：意向书条款 === */}
@@ -80,8 +82,8 @@ export const DowntownLodgeInterior: React.FC<Props> = ({ onClose }) => {
                     onClick={() => handleNoviceClick(NoviceActionType.DEDICATE)}
                     className="w-full border border-[#d4af37]/30 p-4 hover:bg-[#d4af37]/10 transition-colors text-left group"
                 >
-                    <div className="text-xs text-[#d4af37] font-bold uppercase tracking-widest group-hover:text-white">I. Membership Fee</div>
-                    <div className="text-[10px] opacity-60 mt-1">Pay initiation dues ($50).</div>
+                    <div className="text-xs text-[#d4af37] font-bold uppercase tracking-widest group-hover:text-white">{t('faith.membership_fee')}</div>
+                    <div className="text-[10px] opacity-60 mt-1">{t('faith.membership_fee_desc')}</div>
                 </button>
 
                 {/* 条款 2: Networking (互助) */}
@@ -89,8 +91,8 @@ export const DowntownLodgeInterior: React.FC<Props> = ({ onClose }) => {
                     onClick={() => handleNoviceClick(NoviceActionType.AID)}
                     className="w-full border border-[#d4af37]/30 p-4 hover:bg-[#d4af37]/10 transition-colors text-left group"
                 >
-                    <div className="text-xs text-[#d4af37] font-bold uppercase tracking-widest group-hover:text-white">II. Info Exchange</div>
-                    <div className="text-[10px] opacity-60 mt-1">Trade labor for contacts.</div>
+                    <div className="text-xs text-[#d4af37] font-bold uppercase tracking-widest group-hover:text-white">{t('faith.info_exchange')}</div>
+                    <div className="text-[10px] opacity-60 mt-1">{t('faith.info_exchange_desc')}</div>
                 </button>
 
                 {/* 条款 3: Liability (献祭) */}
@@ -98,8 +100,8 @@ export const DowntownLodgeInterior: React.FC<Props> = ({ onClose }) => {
                     onClick={() => handleNoviceClick(NoviceActionType.SACRIFICE)}
                     className="w-full border border-[#d4af37]/30 p-4 hover:bg-[#d4af37]/10 transition-colors text-left group"
                 >
-                    <div className="text-xs text-[#d4af37] font-bold uppercase tracking-widest group-hover:text-white">III. Liability Waiver</div>
-                    <div className="text-[10px] opacity-60 mt-1">Accept physical risks for profit.</div>
+                    <div className="text-xs text-[#d4af37] font-bold uppercase tracking-widest group-hover:text-white">{t('faith.liability_waiver')}</div>
+                    <div className="text-[10px] opacity-60 mt-1">{t('faith.liability_waiver_desc')}</div>
                 </button>
 
                  <div className="mt-auto w-full text-center">
@@ -107,7 +109,7 @@ export const DowntownLodgeInterior: React.FC<Props> = ({ onClose }) => {
                         onClick={() => handleNoviceClick(NoviceActionType.REJECT)}
                         className="text-[10px] font-mono opacity-40 hover:opacity-100 hover:text-red-500 uppercase tracking-widest"
                     >
-                        [ Refuse to Sign ]
+                        [ {t('faith.refuse_to_sign')} ]
                     </button>
                  </div>
             </div>
@@ -126,7 +128,7 @@ export const DowntownLodgeInterior: React.FC<Props> = ({ onClose }) => {
                   onMouseLeave={handleMouseUp}
                 >
                   <span className="text-sm tracking-widest uppercase opacity-80 group-hover:opacity-100">
-                    {progress >= 100 ? "OATH RENEWED" : "HOLD TO SIGN"}
+                    {progress >= 100 ? t('faith.oath_renewed') : t('faith.hold_to_sign')}
                   </span>
                   <div 
                     className="absolute bottom-0 left-0 h-1 bg-[#d4af37] transition-all duration-75 ease-linear" 
@@ -146,7 +148,7 @@ export const DowntownLodgeInterior: React.FC<Props> = ({ onClose }) => {
                     onClick={() => performFaithRite()}
                     className="border border-gray-600 px-8 py-3 text-xs uppercase tracking-widest hover:border-[#d4af37] hover:text-[#d4af37]"
                  >
-                     Sign Guestbook
+                     {t('faith.sign_guestbook')}
                  </button>
              </div>
         )}
@@ -157,7 +159,7 @@ export const DowntownLodgeInterior: React.FC<Props> = ({ onClose }) => {
         onClick={onClose}
         className="absolute top-8 right-8 text-[#d4af37]/50 hover:text-[#d4af37] text-[10px] font-mono uppercase tracking-[0.2em]"
       >
-        Withdraw
+        {t('faith.withdraw')}
       </button>
 
     </div>

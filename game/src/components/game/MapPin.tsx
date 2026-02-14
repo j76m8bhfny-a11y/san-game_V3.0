@@ -1,5 +1,6 @@
 import React from 'react';
 import { MapRegionConfig } from '@/config/mapConfig';
+import { useI18n } from '@/i18n';
 
 interface MapPinProps {
   config: MapRegionConfig;
@@ -16,6 +17,7 @@ export const MapPin: React.FC<MapPinProps> = ({
   onClick,
   lockReason 
 }) => {
+  const { t } = useI18n();
   return (
     <div
       onClick={isUnlocked || isCurrent ? onClick : undefined}
@@ -67,7 +69,7 @@ export const MapPin: React.FC<MapPinProps> = ({
         {/* 锁住状态的印章 */}
         {!isUnlocked && !isCurrent && (
            <div className="border-4 border-red-800 text-red-800 font-bold text-xl px-4 py-2 rotate-12 bg-red-900/10 inline-block mask-stamp">
-             RESTRICTED
+             {t('map.locked')}
              <div className="text-xs text-red-900 mt-1 uppercase">{lockReason}</div>
            </div>
         )}
@@ -75,7 +77,7 @@ export const MapPin: React.FC<MapPinProps> = ({
         {/* 当前位置标记 */}
         {isCurrent && (
           <div className="inline-block bg-red-600 text-white text-xs font-bold px-3 py-1 -rotate-6 shadow-lg">
-            YOU ARE HERE
+            {t('map.currentLocation')}
           </div>
         )}
       </div>

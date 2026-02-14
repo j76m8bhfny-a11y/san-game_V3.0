@@ -3,8 +3,10 @@ import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import insuranceData from '@/assets/data/insurance.json';
 import { Shield, Check, Info } from 'lucide-react';
+import { useI18n } from '@/i18n';
 
 export const SuburbsInsuranceEnroll: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const { t } = useI18n();
   const { signInsurance, cancelInsurance, vitality } = useGameStore();
   const { playSfx } = useAudioStore();
 
@@ -29,7 +31,7 @@ export const SuburbsInsuranceEnroll: React.FC<{ onClose: () => void }> = ({ onCl
       <div className="bg-blue-900 text-white p-6">
         <div className="flex items-center gap-3 mb-2">
           <Shield className="w-8 h-8 text-blue-300" />
-          <h2 className="text-2xl font-bold tracking-wide">SafeHands Insurance</h2>
+          <h2 className="text-2xl font-bold tracking-wide">{t('insurance.title')}</h2>
         </div>
         <p className="text-blue-200 text-sm">Protecting your family's future since 1985</p>
       </div>
@@ -54,7 +56,7 @@ export const SuburbsInsuranceEnroll: React.FC<{ onClose: () => void }> = ({ onCl
                 </div>
                 <div className="text-right">
                   <span className="text-2xl font-bold text-blue-900">${plan.weeklyCost}</span>
-                  <span className="text-gray-400 text-xs">/week</span>
+                  <span className="text-gray-400 text-xs">/{t('insurance.weekly')}</span>
                 </div>
               </div>
 
@@ -62,21 +64,21 @@ export const SuburbsInsuranceEnroll: React.FC<{ onClose: () => void }> = ({ onCl
               <div className="flex flex-wrap gap-2 mb-4">
                 {plan.coverage.emergencyCovered && (
                   <span className="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-green-100 text-green-700 rounded-full">
-                    <Check size={10} /> Emergency
+                    <Check size={10} /> {t('insurance.coverage.title')}
                   </span>
                 )}
                 {plan.coverage.mentalCovered && (
                   <span className="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-purple-100 text-purple-700 rounded-full">
-                    <Check size={10} /> Mental Health
+                    <Check size={10} /> {t('insurance.medical')}
                   </span>
                 )}
                 {plan.coverage.addictionCovered && (
                   <span className="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
-                    <Check size={10} /> Addiction
+                    <Check size={10} /> {t('insurance.medical')}
                   </span>
                 )}
                 <span className="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-gray-100 text-gray-600 rounded-full">
-                  <Info size={10} /> Copay {(plan.coverage.copayModifier * 100).toFixed(0)}%
+                  <Info size={10} /> {t('insurance.weekly')} {(plan.coverage.copayModifier * 100).toFixed(0)}%
                 </span>
               </div>
 
@@ -89,7 +91,7 @@ export const SuburbsInsuranceEnroll: React.FC<{ onClose: () => void }> = ({ onCl
                     : 'bg-blue-600 text-white hover:bg-blue-700'
                 }`}
               >
-                {isActive ? 'Cancel Policy' : 'Enroll Now'}
+                {isActive ? t('insurance.cancel') : t('insurance.enroll')}
               </button>
             </div>
           );
@@ -106,7 +108,7 @@ export const SuburbsInsuranceEnroll: React.FC<{ onClose: () => void }> = ({ onCl
             onClick={onClose}
             className="text-gray-500 hover:text-gray-700 text-sm font-medium"
           >
-            Close
+            {t('common.close')}
           </button>
         </div>
       </div>

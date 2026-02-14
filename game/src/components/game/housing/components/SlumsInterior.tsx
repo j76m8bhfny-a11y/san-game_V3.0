@@ -1,5 +1,6 @@
 import React from 'react';
 import { ActiveHousingState } from '@/types/schema';
+import { useI18n } from '@/i18n';
 
 interface Props {
   housing: ActiveHousingState;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export const SlumsInterior: React.FC<Props> = ({ housing, onSleep, onMoveOut, onClose }) => {
+  const { t } = useI18n();
   return (
     <div className="relative w-full h-full flex flex-col p-6 overflow-hidden select-none">
       
@@ -28,7 +30,7 @@ export const SlumsInterior: React.FC<Props> = ({ housing, onSleep, onMoveOut, on
       <div className="relative z-10 self-start transform rotate-1">
         <div className="bg-yellow-100/90 text-black px-4 py-3 shadow-lg border-2 border-white/50 clip-tape">
           <h2 className="text-xl font-marker font-bold uppercase border-b border-black/20 pb-1 mb-1">
-            MY SPOT
+            {t('housing.title')}
           </h2>
           <div className="text-xs font-mono space-y-1">
             <div className="flex items-center gap-2">
@@ -54,7 +56,7 @@ export const SlumsInterior: React.FC<Props> = ({ housing, onSleep, onMoveOut, on
           <div className="w-12 h-12 bg-black/50 rounded-full flex items-center justify-center border border-white/20 group-hover:bg-red-900/50 group-hover:border-red-500 transition-colors">
             🗑️
           </div>
-          <span className="text-[10px] text-gray-400 mt-2 font-mono uppercase bg-black/80 px-1">Tear Down</span>
+          <span className="text-[10px] text-gray-400 mt-2 font-mono uppercase bg-black/80 px-1">{t('housing.moveOut')}</span>
         </button>
 
         {/* 睡觉按钮：像是一个破旧的睡袋 */}
@@ -68,7 +70,7 @@ export const SlumsInterior: React.FC<Props> = ({ housing, onSleep, onMoveOut, on
             <img src="/assets/housing/ui_sleeping_bag.png" className="relative z-10 w-full h-full object-contain drop-shadow-xl" />
           </div>
           <span className="text-lg text-orange-200 font-marker mt-[-10px] relative z-20 text-shadow">
-            SLEEP
+            {t('housing.regen')}
           </span>
         </button>
 
@@ -80,7 +82,7 @@ export const SlumsInterior: React.FC<Props> = ({ housing, onSleep, onMoveOut, on
           <div className="w-12 h-12 bg-black/50 rounded-full flex items-center justify-center border border-white/20 group-hover:bg-white/20 transition-colors">
             🚪
           </div>
-          <span className="text-[10px] text-gray-400 mt-2 font-mono uppercase bg-black/80 px-1">Leave</span>
+          <span className="text-[10px] text-gray-400 mt-2 font-mono uppercase bg-black/80 px-1">{t('common.close')}</span>
         </button>
       </div>
 

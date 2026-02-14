@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PlayerClass } from '@/types/schema';
 import { useGameStore } from '@/store/useGameStore';
+import { useI18n } from '@/i18n';
 // ✅ 1. 引入新规则配置 (请确保文件路径正确)
 import rules from '@/assets/data/rules/vitalityRules.json';
 
@@ -11,30 +12,34 @@ interface ClassSelectorProps {
 
 // ✅ 2. 定义视觉映射 (UI Config)
 // 这样可以将"数值"放在 JSON 里，"长相"放在组件里，通过 ID 关联
-const CLASS_VISUALS: Record<PlayerClass, { name: string; color: string; border: string }> = {
+const CLASS_VISUALS: Record<PlayerClass, { color: string; border: string }> = {
   [PlayerClass.Homeless]: { 
-    name: '流浪汉', 
     color: 'text-gray-400', 
     border: 'border-gray-600' 
   },
   [PlayerClass.Worker]: { 
-    name: '打工人', 
     color: 'text-blue-400', 
     border: 'border-blue-500' 
   },
   [PlayerClass.Middle]: { 
-    name: '中产阶级', 
     color: 'text-purple-400', 
     border: 'border-purple-500' 
   },
   [PlayerClass.Capitalist]: { 
-    name: '资本家', 
     color: 'text-yellow-400', 
     border: 'border-yellow-500' 
   }
 };
 
+const CLASS_NAME_KEYS: Record<PlayerClass, string> = {
+  [PlayerClass.Homeless]: 'hud.class.homeless.label',
+  [PlayerClass.Worker]: 'hud.class.worker.label',
+  [PlayerClass.Middle]: 'hud.class.middle.label',
+  [PlayerClass.Capitalist]: 'hud.class.capitalist.label'
+};
+
 export const ClassSelectorModal: React.FC<ClassSelectorProps> = ({ onConfirm }) => {
+  const { t } = useI18n();
   const initGame = useGameStore(state => state.initGame);
   const [selected, setSelected] = useState<PlayerClass | null>(null);
 
@@ -49,12 +54,12 @@ export const ClassSelectorModal: React.FC<ClassSelectorProps> = ({ onConfirm }) 
   const classList = Object.entries(rules.classes).map(([key, stats]) => {
     // 强制类型转换，确保 key 被识别为 PlayerClass 枚举
     const classId = key as PlayerClass;
-    const visual = CLASS_VISUALS[classId] || { name: key, color: 'text-white', border: 'border-white' };
+    const visual = CLASS_VISUALS[classId] || { color: 'text-white', border: 'border-white' };
 
     return {
       id: classId,
-      // 从 UI 配置取
-      name: visual.name, 
+      // 从国际化取名称
+      name: t(CLASS_NAME_KEYS[classId]), 
       color: visual.color, 
       border: visual.border,
       // 从 JSON 规则取 (注意：TS 可能不知道 stats 的具体结构，这里视为 any 或需定义接口)
@@ -68,8 +73,11 @@ export const ClassSelectorModal: React.FC<ClassSelectorProps> = ({ onConfirm }) 
   return (
     <div className="fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center p-4">
       <h2 className="text-3xl font-pixel text-green-500 mb-8 tracking-widest">
-        SELECT IDENTITY
+        {t('classSelector.title')}
       </h2>
+      <p className="text-sm text-gray-400 font-mono mb-8">
+        {t('classSelector.subtitle')}
+      </p>
 
       {/* ✅ 4. 修复变量名引用: classes -> classList */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full max-w-5xl mb-12">
@@ -100,15 +108,15 @@ export const ClassSelectorModal: React.FC<ClassSelectorProps> = ({ onConfirm }) 
 
               <div className="space-y-2 font-mono text-sm">
                 <div className="flex justify-between border-b border-white/10 pb-1">
-                  <span className="text-gray-500">GOLD</span>
+                  <span className="text-gray-500">{t('classSelector.stats.initial')}</span>
                   <span className={cls.color}>${cls.gold}</span>
                 </div>
                 <div className="flex justify-between border-b border-white/10 pb-1">
-                  <span className="text-gray-500">SAN</span>
+                  <span className="text-gray-500">{t('classSelector.stats.san')}</span>
                   <span className={cls.color}>{cls.san}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-500">HP</span>
+                  <span className="text-gray-500">{t('classSelector.stats.hp')}</span>
                   <span className={cls.color}>{cls.hp}</span>
                 </div>
               </div>
@@ -131,7 +139,7 @@ export const ClassSelectorModal: React.FC<ClassSelectorProps> = ({ onConfirm }) 
             className="px-12 py-4 bg-green-600 text-black font-pixel font-bold text-xl hover:bg-green-500 transition-colors shadow-[0_0_20px_rgba(22,163,74,0.5)]"
             style={{ clipPath: 'polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%)' }}
           >
-            CONFIRM UPLOAD
+            {t('classSelector.select')}
           </motion.button>
         )}
       </AnimatePresence>

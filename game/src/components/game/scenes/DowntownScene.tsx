@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
+import { useI18n } from '@/i18n';
 import { BaseScene, ParallaxLayer } from './BaseScene';
 
 // --- 内部组件：可交互物体 ---
@@ -81,6 +82,7 @@ const ChargingBullProp = () => {
 };
 
 export const DowntownScene: React.FC = () => {
+  const { t } = useI18n();
   const { 
     setShopOpen, 
     setJobBoardOpen, 
@@ -186,7 +188,7 @@ export const DowntownScene: React.FC = () => {
              
              {/* 标签 */}
              <div className="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-black/90 text-[#d4af37] px-2 py-1 text-[10px] font-serif border border-[#d4af37] whitespace-nowrap">
-                PRIVATE CLIENT
+                {t('scenes.downtown.private_client_label')}
              </div>
           </div>
 

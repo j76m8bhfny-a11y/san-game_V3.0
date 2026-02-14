@@ -1,8 +1,10 @@
 import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
+import { useI18n } from '@/i18n';
 import marketRules from '@/assets/data/rules/marketRules.json'; // ✅ Import
 
 export const MarketChart: React.FC = () => {
+  const { t } = useI18n();
   const { crypto } = useGameStore();
   const { priceHistory, btcPrice } = crypto;
   const { paddingMin, paddingMax } = marketRules.ui.chart; // ✅ Config
@@ -25,7 +27,7 @@ export const MarketChart: React.FC = () => {
     <div className="w-full h-32 bg-black/50 border border-gray-800 rounded p-2 relative overflow-hidden">
       {/* 标题 */}
       <div className="absolute top-2 left-2 z-10">
-        <div className="text-[10px] text-gray-500 font-bold">BTC/USD (7D)</div>
+        <div className="text-[10px] text-gray-500 font-bold">{t('crypto.btc')}</div>
         <div className={`text-xl font-mono font-bold ${isUp ? 'text-green-500' : 'text-red-500'}`}>
           ${btcPrice.toLocaleString()}
         </div>

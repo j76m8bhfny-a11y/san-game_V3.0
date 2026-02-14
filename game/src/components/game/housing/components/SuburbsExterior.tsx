@@ -1,5 +1,6 @@
 import React from 'react';
 import { Housing } from '@/types/schema';
+import { useI18n } from '@/i18n';
 
 interface Props {
   house: Housing;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export const SuburbsExterior: React.FC<Props> = ({ house, gold, onBuy, onClose }) => {
+  const { t } = useI18n();
   // 假设中产阶级主要是买房 (Buy)，读取 buyConfig
   // 如果没有 buyConfig，则回退到租赁逻辑
   const isSale = !!house.buyConfig;
@@ -113,7 +115,7 @@ export const SuburbsExterior: React.FC<Props> = ({ house, gold, onBuy, onClose }
           onClick={onClose}
           className="mt-20 bg-white/80 hover:bg-white text-gray-600 px-6 py-2 rounded-full shadow-lg font-bold text-sm backdrop-blur-sm transition-all"
         >
-          Keep Walking
+          {t('common.close')}
         </button>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
+import { useI18n } from '@/i18n';
 import { DowntownBankExterior } from './components/DowntownBankExterior';
 import { DowntownBankInterior } from './components/DowntownBankInterior';
 import { RegionID } from '@/types/schema';
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export const DowntownBank: React.FC<Props> = ({ onClose }) => {
+  const { t } = useI18n();
   const [hasEntered, setHasEntered] = useState(true);
   const { 
     vitality, 
@@ -42,7 +44,7 @@ export const DowntownBank: React.FC<Props> = ({ onClose }) => {
     if (result.success) {
       playSfx('sfx_pen_scratch'); // 签字声
       setTimeout(() => playSfx('sfx_glass_clink'), 500); // 庆祝的碰杯声
-      addNotification('Capital leverage acquired.', 'success');
+      addNotification(t('bank.loan.success'), 'success');
     } else {
       playSfx('sfx_deny');
       addNotification(result.message, 'error');
@@ -53,10 +55,10 @@ export const DowntownBank: React.FC<Props> = ({ onClose }) => {
     const result = repayLoan(loanId);
     if (result.success) {
       playSfx('sfx_cash'); // 或者用更有质感的金币声
-      addNotification('Liabilities cleared.', 'success');
+      addNotification(t('bank.loan.repaySuccess'), 'success');
     } else {
       playSfx('sfx_deny');
-      addNotification('Insufficient liquid assets.', 'error');
+      addNotification(t('bank.insufficientFunds'), 'error');
     }
   };
 

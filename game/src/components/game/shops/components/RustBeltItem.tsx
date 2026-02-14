@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Item } from '@/types/schema';
+import { useI18n } from '@/i18n';
 
 interface Props {
   item: Item;
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export const RustBeltItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
+  const { t } = useI18n();
   const [isHovered, setIsHovered] = useState(false);
 
   // 简单的图标映射
@@ -73,7 +75,7 @@ export const RustBeltItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
 
          {!canAfford && (
            <div className="mt-1 text-center bg-red-600 text-white text-[10px] font-bold animate-pulse">
-             INSUFFICIENT FUNDS
+             {t('shop.insufficient')}
            </div>
          )}
       </div>

@@ -2,10 +2,12 @@ import React, { useState, useMemo } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { Item, ItemType } from '@/types/schema';
 import { useAudioStore } from '@/store/useAudioStore'; 
+import { useI18n } from '@/i18n';
 import { Package, Zap, Key, Info, AlertTriangle } from 'lucide-react'; // ✅ 新增 AlertTriangle 图标
 import shopRules from '@/assets/data/rules/shopRules.json'; // ✅ 引入 Source of Truth
 
 export const InventorySidebar: React.FC = () => {
+  const { t } = useI18n();
   const { 
     isInventoryOpen, 
     setInventoryOpen, 
@@ -74,7 +76,7 @@ export const InventorySidebar: React.FC = () => {
       <div className="p-6 border-b border-white/10 bg-[#111] flex justify-between items-center">
         <h2 className="text-xl font-bold text-gray-200 tracking-wider flex items-center gap-2">
           <Package className="w-5 h-5 text-amber-500" />
-          INVENTORY
+          {t('inventory.title')}
           {/* ✅ 修复：显示上限，并在满载时变红 */}
           <span className={`text-xs font-normal ml-2 ${isFull ? 'text-red-500' : 'text-gray-500'}`}>
             ({inventory.length} / {shopRules.inventory.maxSize})
@@ -87,10 +89,10 @@ export const InventorySidebar: React.FC = () => {
 
       {/* Filter Tabs */}
       <div className="flex p-2 gap-1 border-b border-white/10 bg-[#0f0f0f] overflow-x-auto no-scrollbar">
-        <FilterTab label="全部" active={filterType === 'ALL'} onClick={() => setFilterType('ALL')} />
-        <FilterTab label="消耗" icon={<Zap size={12}/>} active={filterType === ItemType.CONSUMABLE} onClick={() => setFilterType(ItemType.CONSUMABLE)} />
-        <FilterTab label="被动" icon={<Info size={12}/>} active={filterType === ItemType.PASSIVE} onClick={() => setFilterType(ItemType.PASSIVE)} />
-        <FilterTab label="剧情" icon={<Key size={12}/>} active={filterType === ItemType.KEY} onClick={() => setFilterType(ItemType.KEY)} />
+        <FilterTab label={t('inventory.filter.all')} active={filterType === 'ALL'} onClick={() => setFilterType('ALL')} />
+        <FilterTab label={t('inventory.filter.consumable')} icon={<Zap size={12}/>} active={filterType === ItemType.CONSUMABLE} onClick={() => setFilterType(ItemType.CONSUMABLE)} />
+        <FilterTab label={t('inventory.filter.passive')} icon={<Info size={12}/>} active={filterType === ItemType.PASSIVE} onClick={() => setFilterType(ItemType.PASSIVE)} />
+        <FilterTab label={t('inventory.filter.key')} icon={<Key size={12}/>} active={filterType === ItemType.KEY} onClick={() => setFilterType(ItemType.KEY)} />
       </div>
 
       {/* Grid Content */}
@@ -98,7 +100,7 @@ export const InventorySidebar: React.FC = () => {
         {filteredItems.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-gray-600 space-y-2 opacity-50">
             <Package size={48} strokeWidth={1} />
-            <p className="text-sm font-mono">NO ITEMS FOUND</p>
+            <p className="text-sm font-mono">{t('inventory.empty')}</p>
           </div>
         ) : (
           <div className="grid grid-cols-4 gap-3">
@@ -137,7 +139,7 @@ export const InventorySidebar: React.FC = () => {
                 <h3 className="text-lg font-bold text-white">{selectedItem.name}</h3>
                 <div className="flex gap-2 mt-1">
                   <span className={`text-[10px] px-1.5 py-0.5 rounded border ${getTypeBadgeStyle(selectedItem.type)}`}>
-                    {selectedItem.type}
+                    {selectedItem.type === ItemType.CONSUMABLE ? t('inventory.itemType.consumable') : selectedItem.type === ItemType.PASSIVE ? t('inventory.itemType.passive') : selectedItem.type === ItemType.KEY ? t('inventory.itemType.key') : selectedItem.type}
                   </span>
                   {selectedItem.tags.map(tag => (
                     <span key={tag} className="text-[10px] px-1.5 py-0.5 rounded bg-white/5 text-gray-500 border border-white/5">
@@ -147,7 +149,7 @@ export const InventorySidebar: React.FC = () => {
                 </div>
               </div>
               <div className="text-right">
-                <span className="text-xs text-gray-500 block">EST. VALUE</span>
+                <span className="text-xs text-gray-500 block">{t('inventory.details.estValue')}</span>
                 <span className="text-amber-500 font-mono">${selectedItem.price}</span>
               </div>
             </div>
@@ -177,7 +179,7 @@ export const InventorySidebar: React.FC = () => {
                               <AlertTriangle size={12} className="text-amber-600" />
                               {/* 简单的 Tooltip */}
                               <span className="absolute bottom-full left-1/2 -translate-x-1/2 mb-1 px-2 py-1 bg-black text-white text-[10px] rounded hidden group-hover:block whitespace-nowrap border border-white/20">
-                                耐药性导致效果衰减
+                                {t('inventory.resistance.warning')}
                               </span>
                            </div>
                          </>
@@ -187,7 +189,7 @@ export const InventorySidebar: React.FC = () => {
                  })()}
                  
                  {selectedItem.effects?.san !== undefined && <div className={selectedItem.effects.san > 0 ? 'text-blue-500' : 'text-purple-500'}>SAN: {selectedItem.effects.san > 0 ? '+' : ''}{selectedItem.effects.san}</div>}
-                 {selectedItem.type === ItemType.KEY && <div className="text-amber-300 flex items-center gap-1"><Key size={10}/> 可解锁特殊事件选项</div>}
+                 {selectedItem.type === ItemType.KEY && <div className="text-amber-300 flex items-center gap-1"><Key size={10}/> {t('inventory.details.unlockHint')}</div>}
               </div>
             </div>
 
@@ -201,13 +203,13 @@ export const InventorySidebar: React.FC = () => {
                   : 'bg-white/5 text-white/30 cursor-not-allowed border border-white/5'}
               `}
             >
-              {selectedItem.type === ItemType.CONSUMABLE ? 'USE ITEM' : 'PASSIVE / KEY'}
+              {selectedItem.type === ItemType.CONSUMABLE ? t('inventory.actions.use') : t('inventory.actions.cannotUse')}
             </button>
           </>
         ) : (
           <div className="h-full flex flex-col items-center justify-center text-gray-600 opacity-50">
             <Info size={32} className="mb-2"/>
-            <p className="text-xs tracking-widest">SELECT AN ITEM TO INSPECT</p>
+            <p className="text-xs tracking-widest">{t('inventory.actions.selectToView')}</p>
           </div>
         )}
       </div>

@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { placeholderBackgrounds } from '../utils/placeholderAssets';
+import { useI18n } from '@/i18n';
 
 interface Props {
   onEnter: () => void;
@@ -7,6 +8,7 @@ interface Props {
 }
 
 export const RustBeltChurchExterior: React.FC<Props> = ({ onEnter, onClose }) => {
+  const { t } = useI18n();
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -40,7 +42,7 @@ export const RustBeltChurchExterior: React.FC<Props> = ({ onEnter, onClose }) =>
       {/* 3. 橱窗贴纸 */}
       <div className="absolute bottom-1/3 left-10 opacity-70 rotate-2">
         <div className="bg-white p-2 text-black font-marker text-sm w-32 text-center shadow-lg transform origin-top-left animate-swing">
-          JESUS SAVES<br/>(SOULS)
+          {t('faith.signage')}
         </div>
       </div>
 
@@ -57,7 +59,7 @@ export const RustBeltChurchExterior: React.FC<Props> = ({ onEnter, onClose }) =>
           transition-all duration-300
           ${isHovered ? 'bg-red-900/80 border-red-500 scale-110' : 'hover:bg-black/80'}
         `}>
-          ENTER SERVICE
+          {t('faith.join')}
         </div>
       </div>
 
@@ -70,7 +72,7 @@ export const RustBeltChurchExterior: React.FC<Props> = ({ onEnter, onClose }) =>
         onClick={onClose}
         className="relative z-20 self-center mt-auto text-gray-400 hover:text-white text-xs font-mono uppercase tracking-widest"
       >
-        [ Pass By ]
+        {t('common.close')}
       </button>
     </div>
   );

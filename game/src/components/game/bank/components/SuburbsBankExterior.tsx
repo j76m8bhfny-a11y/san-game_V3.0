@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useI18n } from '@/i18n';
 
 interface Props {
   onEnter: () => void;
@@ -6,6 +7,7 @@ interface Props {
 }
 
 export const SuburbsBankExterior: React.FC<Props> = ({ onEnter, onClose }) => {
+  const { t } = useI18n();
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -44,7 +46,7 @@ export const SuburbsBankExterior: React.FC<Props> = ({ onEnter, onClose }) => {
           transition-all duration-300 whitespace-nowrap
           ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
         `}>
-          INSERT CARD
+          {t('bank.insertCard')}
         </div>
 
         {/* 全息覆盖层 (装饰) */}
@@ -66,7 +68,7 @@ export const SuburbsBankExterior: React.FC<Props> = ({ onEnter, onClose }) => {
         onClick={onClose}
         className="relative z-20 self-center mt-auto bg-gray-900/80 text-white px-6 py-2 rounded-full text-xs font-bold uppercase hover:bg-black transition-colors"
       >
-        Drive Away
+        {t('common.close')}
       </button>
     </div>
   );

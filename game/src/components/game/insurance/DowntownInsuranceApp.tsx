@@ -3,8 +3,10 @@ import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import insuranceData from '@/assets/data/insurance.json';
 import { Shield, ChevronLeft, Check, AlertCircle } from 'lucide-react';
+import { useI18n } from '@/i18n';
 
 export const DowntownInsuranceApp: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const { t } = useI18n();
   const { signInsurance, cancelInsurance, vitality } = useGameStore();
   const { playSfx } = useAudioStore();
 
@@ -34,10 +36,10 @@ export const DowntownInsuranceApp: React.FC<{ onClose: () => void }> = ({ onClos
       {/* App Header */}
       <div className="px-6 pt-4 pb-2">
         <button onClick={onClose} className="text-blue-500 flex items-center gap-1 text-sm mb-4">
-          <ChevronLeft size={16} /> Back
+          <ChevronLeft size={16} /> {t('common.close')}
         </button>
-        <h1 className="text-3xl font-bold text-slate-900">Health+</h1>
-        <p className="text-slate-500 text-sm">Choose your protection plan</p>
+        <h1 className="text-3xl font-bold text-slate-900">{t('insurance.title')}</h1>
+        <p className="text-slate-500 text-sm">{t('insurance.coverage.title')}</p>
       </div>
 
       {/* Plans List */}
@@ -54,7 +56,7 @@ export const DowntownInsuranceApp: React.FC<{ onClose: () => void }> = ({ onClos
                   <Shield size={20} />
                 </div>
                 <div className={`text-sm font-bold px-3 py-1 rounded-full ${isActive ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-500'}`}>
-                  {isActive ? 'Active' : 'Inactive'}
+                  {isActive ? t('insurance.enroll') : t('insurance.cancel')}
                 </div>
               </div>
 
@@ -63,15 +65,15 @@ export const DowntownInsuranceApp: React.FC<{ onClose: () => void }> = ({ onClos
 
               {/* Benefits Tags */}
               <div className="flex flex-wrap gap-2 mb-4">
-                {plan.coverage.mentalCovered && <span className="text-[10px] px-2 py-1 bg-purple-50 text-purple-600 rounded-md font-bold">Mental Health</span>}
-                {plan.coverage.emergencyCovered && <span className="text-[10px] px-2 py-1 bg-red-50 text-red-600 rounded-md font-bold">Emergency</span>}
-                <span className="text-[10px] px-2 py-1 bg-blue-50 text-blue-600 rounded-md font-bold">Copay {(plan.coverage.copayModifier * 100).toFixed(0)}%</span>
+                {plan.coverage.mentalCovered && <span className="text-[10px] px-2 py-1 bg-purple-50 text-purple-600 rounded-md font-bold">{t('insurance.medical')}</span>}
+                {plan.coverage.emergencyCovered && <span className="text-[10px] px-2 py-1 bg-red-50 text-red-600 rounded-md font-bold">{t('insurance.coverage.title')}</span>}
+                <span className="text-[10px] px-2 py-1 bg-blue-50 text-blue-600 rounded-md font-bold">{t('insurance.weekly')} {(plan.coverage.copayModifier * 100).toFixed(0)}%</span>
               </div>
 
               <div className="flex items-center justify-between border-t border-slate-100 pt-4">
                 <div>
                   <span className="text-lg font-bold text-slate-900">${plan.weeklyCost}</span>
-                  <span className="text-slate-400 text-xs">/week</span>
+                  <span className="text-slate-400 text-xs">/{t('insurance.weekly')}</span>
                 </div>
                 
                 {/* iOS Style Toggle Switch */}

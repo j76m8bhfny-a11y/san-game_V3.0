@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { RegionID, NoviceActionType } from '@/types/schema';
 import { placeholderBackgrounds } from '../utils/placeholderAssets';
+import { useI18n } from '@/i18n';
 
 interface Props {
   onClose: () => void;
 }
 
 export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
+  const { t } = useI18n();
   const { faith, vitality, performNoviceAction, performFaithRite, getFaithMode } = useGameStore();
   const [processing, setProcessing] = useState(false);
   const [activeTab, setActiveTab] = useState<'GIVE' | 'EVENTS'>('GIVE');
@@ -54,7 +56,7 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
             <div className="w-2 h-2 rounded-full bg-green-400" />
           </div>
           <div className="text-[9px] text-gray-400 font-mono uppercase">
-            {mode === 'NATIVE' ? 'GraceLife OS v4.0' : 'GUEST SESSION'}
+            {mode === 'NATIVE' ? t('faith.os_version') : t('faith.guest_session')}
           </div>
         </div>
 
@@ -65,7 +67,7 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
           {processing && (
             <div className="absolute inset-0 bg-white/90 z-30 flex flex-col items-center justify-center backdrop-blur-sm">
               <div className="w-8 h-8 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin mb-3" />
-              <div className="text-xs text-blue-600 font-bold uppercase tracking-widest">Processing Transaction...</div>
+              <div className="text-xs text-blue-600 font-bold uppercase tracking-widest">{t('faith.processing')}</div>
             </div>
           )}
 
@@ -75,8 +77,8 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
           {mode === 'NOVICE' && (
             <div className="flex-1 flex flex-col p-8">
                 <div className="text-center mb-8">
-                    <h1 className="text-2xl font-light text-gray-800">Hello, Visitor.</h1>
-                    <p className="text-xs text-gray-400 mt-1">Select a service to proceed.</p>
+                    <h1 className="text-2xl font-light text-gray-800">{t('faith.hello_visitor')}</h1>
+                    <p className="text-xs text-gray-400 mt-1">{t('faith.select_service')}</p>
                 </div>
 
                 <div className="grid grid-cols-2 gap-6 px-12">
@@ -88,8 +90,8 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
                         <div className="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center text-3xl text-white shadow-lg group-hover:scale-105 transition-transform">
                             💰
                         </div>
-                        <span className="text-xs font-medium text-gray-600">Donation</span>
-                        <span className="text-[9px] text-gray-400">(-$50)</span>
+                        <span className="text-xs font-medium text-gray-600">{t('faith.donate')}</span>
+                        <span className="text-[9px] text-gray-400">{t('faith.donate_cost')}</span>
                     </button>
 
                     {/* App 2: Volunteer (互助) */}
@@ -100,8 +102,8 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
                         <div className="w-16 h-16 bg-green-500 rounded-2xl flex items-center justify-center text-3xl text-white shadow-lg group-hover:scale-105 transition-transform">
                             🤝
                         </div>
-                        <span className="text-xs font-medium text-gray-600">Volunteer</span>
-                        <span className="text-[9px] text-gray-400">(-HP/+$)</span>
+                        <span className="text-xs font-medium text-gray-600">{t('faith.volunteer')}</span>
+                        <span className="text-[9px] text-gray-400">{t('faith.volunteer_cost')}</span>
                     </button>
 
                     {/* App 3: Bio-Data (献祭) */}
@@ -112,8 +114,8 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
                         <div className="w-16 h-16 bg-red-500 rounded-2xl flex items-center justify-center text-3xl text-white shadow-lg group-hover:scale-105 transition-transform">
                             🩸
                         </div>
-                        <span className="text-xs font-medium text-gray-600">Bio-Data</span>
-                        <span className="text-[9px] text-gray-400">(-HP/++$)</span>
+                        <span className="text-xs font-medium text-gray-600">{t('faith.bio_data')}</span>
+                        <span className="text-[9px] text-gray-400">{t('faith.bio_data_cost')}</span>
                     </button>
 
                     {/* App 4: Power Off (拒绝) */}
@@ -124,7 +126,7 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
                         <div className="w-16 h-16 bg-gray-700 rounded-2xl flex items-center justify-center text-3xl text-white shadow-lg group-hover:scale-105 transition-transform">
                             🔌
                         </div>
-                        <span className="text-xs font-medium text-gray-600">Log Out</span>
+                        <span className="text-xs font-medium text-gray-600">{t('faith.logout')}</span>
                     </button>
                 </div>
             </div>
@@ -137,11 +139,11 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
               <div className="bg-blue-600 text-white p-6">
                 <div className="flex justify-between items-end">
                   <div>
-                    <h1 className="text-2xl font-bold tracking-tight">My GraceLife™</h1>
-                    <p className="text-xs opacity-80 mt-1">Member Level: {faith.level}</p>
+                    <h1 className="text-2xl font-bold tracking-tight">{t('faith.dashboard_title')}</h1>
+                    <p className="text-xs opacity-80 mt-1">{t('faith.member_level')}: {faith.level}</p>
                   </div>
                   <div className="text-right">
-                    <div className="text-[10px] opacity-60 uppercase">Credit Balance</div>
+                    <div className="text-[10px] opacity-60 uppercase">{t('faith.credit_balance')}</div>
                     <div className="font-mono text-xl">${vitality.metrics.gold.toFixed(2)}</div>
                   </div>
                 </div>
@@ -153,13 +155,13 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
                     onClick={() => setActiveTab('GIVE')}
                     className={`flex-1 py-3 text-xs font-bold uppercase tracking-wider ${activeTab === 'GIVE' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-400'}`}
                 >
-                    Auto-Giving
+                    {t('faith.tab_give')}
                 </button>
                 <button 
                     onClick={() => setActiveTab('EVENTS')}
                     className={`flex-1 py-3 text-xs font-bold uppercase tracking-wider ${activeTab === 'EVENTS' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-400'}`}
                 >
-                    Services
+                    {t('faith.tab_events')}
                 </button>
               </div>
 
@@ -172,12 +174,12 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
                      >
                        <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center text-2xl">🌱</div>
                        <div>
-                         <h3 className="font-bold text-gray-800">Daily Tithe</h3>
-                         <p className="text-xs text-gray-500">Auto-deduct via Apple Pay</p>
+                         <h3 className="font-bold text-gray-800">{t('faith.daily_tithe')}</h3>
+                         <p className="text-xs text-gray-500">{t('faith.auto_deduct')}</p>
                        </div>
                      </div>
                  ) : (
-                     <div className="text-center text-gray-400 text-xs mt-10">No upcoming events.</div>
+                     <div className="text-center text-gray-400 text-xs mt-10">{t('faith.no_events')}</div>
                  )}
               </div>
             </>
@@ -187,15 +189,15 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
           {mode === 'GUEST' && (
              <div className="flex-1 flex flex-col items-center justify-center text-center p-8">
                 <div className="text-4xl grayscale opacity-30 mb-4">✝️</div>
-                <h3 className="text-gray-600 font-bold mb-2">Ecumenical Service</h3>
+                <h3 className="text-gray-600 font-bold mb-2">{t('faith.ecumenical_title')}</h3>
                 <p className="text-xs text-gray-400 max-w-[200px] mb-6">
-                  You may perform your own rites here using our secure facility.
+                  {t('faith.ecumenical_desc')}
                 </p>
                 <button
                   onClick={() => handleAction(performFaithRite)}
                   className="bg-gray-800 text-white px-8 py-3 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-black transition-colors shadow-lg"
                 >
-                  Execute Rite
+                  {t('faith.execute_rite')}
                 </button>
              </div>
           )}
@@ -204,9 +206,9 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
 
         {/* 底部退出栏 */}
         <div className="bg-white border-t border-gray-200 p-3 flex justify-between items-center z-20">
-          <div className="text-[10px] text-gray-400">Secure Connection • 256-bit Encrypted</div>
+          <div className="text-[10px] text-gray-400">{t('faith.secure_connection')}</div>
           <button onClick={onClose} className="text-xs font-bold text-red-500 hover:text-red-700 uppercase">
-            Exit Terminal
+            {t('common.close')}
           </button>
         </div>
       </div>

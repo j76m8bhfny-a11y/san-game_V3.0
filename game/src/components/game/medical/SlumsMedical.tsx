@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
+import { useI18n } from '@/i18n';
 import { SlumsClinicExterior } from './components/SlumsClinicExterior';
 import { SlumsClinicInterior } from './components/SlumsClinicInterior';
 import { RegionID } from '@/types/schema';
@@ -19,6 +20,7 @@ export const SlumsMedical: React.FC<Props> = ({ onClose }) => {
   } = useGameStore();
   
   const { playSfx } = useAudioStore();
+  const { t } = useI18n();
 
   // 1. 获取当前区域的医疗服务
   const services = gameDataCache?.regions?.find(r => r.id === RegionID.Slums)?.hospitalTheme?.services 
@@ -38,7 +40,7 @@ export const SlumsMedical: React.FC<Props> = ({ onClose }) => {
     // 模拟成功
     playSfx('sfx_click'); // 药瓶声
     // 或者 playSfx('sfx_surgery_saw'); // 手术声
-    addNotification('You swallowed the pills. Hope they work.', 'HP');
+    addNotification(t('hospital.notification.slums'), 'HP');
   };
 
   return (

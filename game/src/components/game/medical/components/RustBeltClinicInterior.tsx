@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MedicalService } from '@/types/schema';
 import { RustBeltMedicalItem } from './RustBeltMedicalItem';
+import { useI18n } from '@/i18n';
 
 interface Props {
   services: MedicalService[];
@@ -11,6 +12,7 @@ interface Props {
 
 export const RustBeltClinicInterior: React.FC<Props> = ({ services, gold, onBuy, onClose }) => {
   const [processingId, setProcessingId] = useState<string | null>(null);
+  const { t } = useI18n();
 
   const handlePurchase = (id: string) => {
     setProcessingId(id);
@@ -41,7 +43,7 @@ export const RustBeltClinicInterior: React.FC<Props> = ({ services, gold, onBuy,
         <div className="flex-1 bg-[#0f172a] border-r-4 border-[#334155] p-6 flex flex-col relative overflow-hidden">
           {/* 顶部灯箱 */}
           <div className="bg-blue-900/20 border border-blue-500/30 p-2 mb-4 text-center">
-            <h2 className="text-blue-400 font-black font-sans uppercase tracking-widest text-lg">SERVICE MENU</h2>
+            <h2 className="text-blue-400 font-black font-sans uppercase tracking-widest text-lg">{t('hospital.services')}</h2>
           </div>
 
           {/* 列表区域 */}
@@ -103,7 +105,7 @@ export const RustBeltClinicInterior: React.FC<Props> = ({ services, gold, onBuy,
             onClick={onClose}
             className="absolute top-4 right-4 text-gray-400 hover:text-white"
           >
-            [X]
+            {t('common.close')}
           </button>
         </div>
 

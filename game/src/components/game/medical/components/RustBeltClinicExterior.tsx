@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useI18n } from '@/i18n';
 
 interface Props {
   onEnter: () => void;
@@ -7,6 +8,7 @@ interface Props {
 
 export const RustBeltClinicExterior: React.FC<Props> = ({ onEnter, onClose }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const { t } = useI18n();
 
   return (
     <div className="relative w-full h-full flex flex-col justify-between p-8 overflow-hidden select-none font-sans">
@@ -73,7 +75,7 @@ export const RustBeltClinicExterior: React.FC<Props> = ({ onEnter, onClose }) =>
         onClick={onClose}
         className="relative z-20 self-center mt-auto bg-black/60 px-4 py-2 text-gray-400 hover:text-white text-xs font-mono uppercase border border-gray-600 hover:border-white transition-colors"
       >
-        Back to Street
+        {t('common.close')}
       </button>
     </div>
   );

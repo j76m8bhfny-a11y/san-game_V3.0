@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { useI18n } from '@/i18n';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
@@ -17,6 +18,7 @@ type ViewMode = 'IMPACT' | 'GRID' | 'READER';
 type Category = string; 
 
 export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
+  const { t } = useI18n();
   const unlockedIds = useGameStore(s => s.unlockedArchives) || [];
   const achievedEndings = useGameStore(s => s.achievedEndings) || [];
   const viewingId = useGameStore(s => s.viewingArchive);
@@ -140,7 +142,7 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
            <div className="font-serif text-lg leading-snug text-gray-900 line-clamp-6">
              {currentDoc.flavorText.replace(/【.*?】/g, '')}
            </div>
-           <div className="mt-8 text-center text-xs font-mono text-gray-500 animate-pulse">[ TAP TO READ ]</div>
+           <div className="mt-8 text-center text-xs font-mono text-gray-500 animate-pulse">[ {t('archive.tapToRead')} ]</div>
            <motion.div
             initial={{ scale: 2, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -148,7 +150,7 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
             className="absolute bottom-10 right-6 rotate-[-15deg] mix-blend-multiply"
           >
             <div className="border-[6px] border-red-700 text-red-700 px-4 py-2 font-black text-2xl tracking-widest opacity-80">
-              TRUTH VERIFIED
+              {t('archive.verified')}
             </div>
           </motion.div>
         </motion.div>
@@ -165,9 +167,9 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
       <div className="absolute top-0 left-0 right-0 h-16 bg-[#0a0a0a] border-b border-gray-800 flex items-center justify-between px-6 z-10">
         <div className="flex items-center gap-3">
           <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
-          <span className="text-gray-400 font-mono tracking-widest text-xs">ARCHIVE_DATABASE_V4.0</span>
+          <span className="text-gray-400 font-mono tracking-widest text-xs">{t('archive.database')}</span>
         </div>
-        <button onClick={onClose} className="text-gray-500 hover:text-white font-mono text-xs uppercase">[ CLOSE ]</button>
+        <button onClick={onClose} className="text-gray-500 hover:text-white font-mono text-xs uppercase">[ {t('common.close')} ]</button>
       </div>
 
       {/* --- GRID 视图 --- */}
@@ -245,7 +247,7 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
                           </svg>
                         </div>
                         <span className="text-gray-600 font-mono text-xs tracking-widest font-bold">
-                          已加密
+                          {t('archive.locked')}
                         </span>
                         <div className="absolute inset-0 bg-[url('/assets/textures/noise.svg')] opacity-5" />
                         <div className="absolute inset-0 opacity-10 bg-[repeating-linear-gradient(45deg,transparent,transparent_10px,#000_10px,#000_11px)]" />
@@ -274,10 +276,10 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
                 <div className="border-b-4 border-black mb-6 pb-4">
                   <div className="flex justify-between items-end mb-2">
                      <span className="font-mono text-[10px] tracking-widest text-gray-600 uppercase">
-                       {category === 'ENDING' ? 'Ending Record' : `Classified Doc // ${currentDoc.id}`}
+                       {category === 'ENDING' ? t('archive.endingRecord') : `${t('archive.classified')} // ${currentDoc.id}`}
                      </span>
                      <span className="font-mono text-[10px] bg-black text-white px-1">
-                       {category === 'ENDING' ? 'FINAL' : 'TOP SECRET'}
+                       {category === 'ENDING' ? t('archive.final') : t('archive.topSecret')}
                      </span>
                   </div>
                   <h1 className="text-4xl md:text-5xl font-black font-serif uppercase leading-[0.9] tracking-tighter">
@@ -307,7 +309,7 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
                   <div className="w-full aspect-square border-4 border-double border-gray-400/50 flex items-center justify-center mb-6">
                     <div className="text-center opacity-40">
                       <div className="text-6xl mb-2">👁️</div>
-                      <div className="font-mono text-xs">NO VISUAL RECORD</div>
+                      <div className="font-mono text-xs">{t('archive.noVisual')}</div>
                     </div>
                   </div>
                 )}
@@ -317,7 +319,7 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
                     onClick={() => { playSfx('sfx_click'); handleCloseReader(); }}
                     className="px-8 py-3 bg-[#1a1a1a] text-[#f0e6d2] font-mono font-bold tracking-[0.2em] text-sm hover:bg-red-900 transition-colors shadow-lg"
                   >
-                    {viewingId ? "[ 接受现实 ]" : "[ 返回列表 ]"}
+                    {viewingId ? `[ ${t('archive.accept')} ]` : `[ ${t('common.back')} ]`}
                   </button>
                 </div>
              </div>

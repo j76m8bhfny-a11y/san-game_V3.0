@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { MedicalService } from '@/types/schema';
+import { useI18n } from '@/i18n';
 
 interface Props {
   service: MedicalService;
@@ -9,6 +10,7 @@ interface Props {
 
 export const SuburbsMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const { t } = useI18n();
 
   // 图标映射
   const getIcon = (type: string) => {
@@ -83,7 +85,7 @@ export const SuburbsMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy 
 
         {!canAfford && (
            <div className="absolute bottom-1 w-full text-center text-[9px] text-red-500 font-bold uppercase">
-             Card Declined
+             {t('common.confirm')}
            </div>
         )}
       </div>

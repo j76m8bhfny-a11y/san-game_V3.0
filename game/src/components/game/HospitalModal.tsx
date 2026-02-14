@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
+import { useI18n } from '@/i18n';
 import { MedicalService, PlayerClass, RegionID } from '@/types/schema';
 import { calculateMedicalCost, getHospitalTheme, calculateRiskRate } from '@/logic/medical';
 import { Heart, Activity, Shield, CreditCard, AlertTriangle, Activity as ActivityIcon } from 'lucide-react';
@@ -46,9 +47,9 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
 
 // 默认 UI 文案兜底
 const defaultUiText = {
-  confirmSurgery: "签署免责协议并手术",
-  payAndTreat: "支付并治疗",
-  insufficientFunds: "余额不足"
+  confirmSurgery: "hospital.surgery.confirm",
+  payAndTreat: "hospital.treatment.pay",
+  insufficientFunds: "hospital.insufficientFunds"
 };
 
 const getUiText = (key: keyof typeof defaultUiText): string => {
@@ -56,6 +57,7 @@ const getUiText = (key: keyof typeof defaultUiText): string => {
 };
 
 const DefaultHospitalView: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const { t } = useI18n();
   const { 
     vitality, 
     currentRegion, 
@@ -136,7 +138,7 @@ const DefaultHospitalView: React.FC<{ onClose: () => void }> = ({ onClose }) => 
               const currentGold = vitality?.metrics?.gold ?? 0;
               
               if (!currentClass || !Object.values(PlayerClass).includes(currentClass)) {
-                return <div className="text-red-500">玩家状态异常</div>;
+                return <div className="text-red-500">{t('hospital.error.playerStatus')}</div>;
               }
               
               const costInfo = calculateMedicalCost(selectedService, activeInsurance, currentClass);
@@ -153,15 +155,15 @@ const DefaultHospitalView: React.FC<{ onClose: () => void }> = ({ onClose }) => 
 
                     {/* Effects Preview */}
                     <div className="grid grid-cols-2 gap-4 bg-black/30 p-4 rounded-lg border border-white/5">
-                        <EffectRow label="HP 恢复" value={selectedService.effects?.hpRestore} icon={<Heart size={14}/>} color="text-green-400" />
-                        <EffectRow label="SAN 恢复" value={selectedService.effects?.sanRestore} icon={<Activity size={14}/>} color="text-blue-400" />
+                        <EffectRow label={t('hospital.effect.hpRestore')} value={selectedService.effects?.hpRestore} icon={<Heart size={14}/>} color="text-green-400" />
+                        <EffectRow label={t('hospital.effect.sanRestore')} value={selectedService.effects?.sanRestore} icon={<Activity size={14}/>} color="text-blue-400" />
                         {selectedService.effects?.addiction && (
-                            <EffectRow label="成瘾性" value={selectedService.effects.addiction} icon={<AlertTriangle size={14}/>} color="text-purple-500" />
+                            <EffectRow label={t('hospital.effect.addiction')} value={selectedService.effects.addiction} icon={<AlertTriangle size={14}/>} color="text-purple-500" />
                         )}
                         
                         {displayRisk > 0 && (
                             <div className="flex justify-between items-center text-red-500">
-                                <div className="flex items-center gap-2"><AlertTriangle size={14}/> 手术风险</div>
+                                <div className="flex items-center gap-2"><AlertTriangle size={14}/> {t('hospital.risk.surgery')}</div>
                                 <div className="font-mono font-bold">{(displayRisk * 100).toFixed(0)}%</div>
                             </div>
                         )}
@@ -170,23 +172,23 @@ const DefaultHospitalView: React.FC<{ onClose: () => void }> = ({ onClose }) => 
                     {/* Cost Breakdown */}
                     <div className="space-y-2 mt-8">
                       <div className="flex justify-between text-sm text-gray-500">
-                        <span>医疗原价</span>
+                        <span>{t('hospital.cost.original')}</span>
                         <span>${costInfo.originalCost}</span>
                       </div>
                       {costInfo.coveredAmount > 0 && (
                         <div className="flex justify-between text-sm text-emerald-500">
-                          <span className="flex items-center gap-1"><Shield size={12}/> 保险报销</span>
+                          <span className="flex items-center gap-1"><Shield size={12}/> {t('hospital.insurance.covered')}</span>
                           <span>-${costInfo.coveredAmount}</span>
                         </div>
                       )}
                       <div className="border-t border-white/20 pt-2 flex justify-between items-end">
-                        <span className="text-sm font-bold text-white">实付金额</span>
+                        <span className="text-sm font-bold text-white">{t('hospital.cost.final')}</span>
                         <span className={`text-3xl font-mono font-black ${canAfford ? 'text-white' : 'text-red-500'}`}>
                           ${costInfo.finalCost}
                         </span>
                       </div>
                       {!canAfford && (
-                        <div className="text-right text-xs text-red-500 mt-1">{getUiText('insufficientFunds')} (当前: ${currentGold})</div>
+                        <div className="text-right text-xs text-red-500 mt-1">{t('hospital.insufficientFunds')} ({t('hospital.cost.current')}: ${currentGold})</div>
                       )}
                     </div>
                   </div>
@@ -205,9 +207,9 @@ const DefaultHospitalView: React.FC<{ onClose: () => void }> = ({ onClose }) => 
                        `}
                      >
                        {canAfford ? (
-                         <>{displayRisk > 0 ? getUiText('confirmSurgery') : getUiText('payAndTreat')}</>
+                         <>{displayRisk > 0 ? t('hospital.surgery.confirm') : t('hospital.treatment.pay')}</>
                        ) : (
-                         <><CreditCard size={18}/> {getUiText('insufficientFunds')}</>
+                         <><CreditCard size={18}/> {t('hospital.insufficientFunds')}</>
                        )}
                      </button>
                   </div>
@@ -217,7 +219,7 @@ const DefaultHospitalView: React.FC<{ onClose: () => void }> = ({ onClose }) => 
           ) : (
             <div className="h-full flex flex-col items-center justify-center text-gray-600 opacity-50">
               <ActivityIcon size={64} className="mb-4" />
-              <div>请从左侧选择医疗服务</div>
+              <div>{t('hospital.selectService')}</div>
             </div>
           )}
         </div>

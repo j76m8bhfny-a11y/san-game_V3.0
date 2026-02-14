@@ -1,6 +1,7 @@
 import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
+import { useI18n } from '@/i18n';
 import { RegionID } from '@/types/schema';
 import { RustBeltExterior } from './components/RustBeltExterior';
 import { RustBeltInterior } from './components/RustBeltInterior';
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export const RustBeltHousing: React.FC<Props> = ({ onClose }) => {
+  const { t } = useI18n();
   const { 
     gameDataCache, 
     activeHousing, 
@@ -24,7 +26,7 @@ export const RustBeltHousing: React.FC<Props> = ({ onClose }) => {
 
   const houseData = gameDataCache?.housing?.find(h => h.region === RegionID.RustBelt);
   
-  if (!houseData) return <div className="text-white p-4">No motel data found.</div>;
+  if (!houseData) return <div className="text-white p-4">{t('housing.error')}</div>;
 
   const isRentingThis = activeHousing?.definitionId === houseData.id;
 
@@ -32,7 +34,7 @@ export const RustBeltHousing: React.FC<Props> = ({ onClose }) => {
     const result = rentHousing(houseData.id);
     if (result.success) {
       playSfx('sfx_keys_jingle'); // 钥匙声
-      addNotification('Checked in to Room 204.', 'success');
+      addNotification(t('housing.moveIn'), 'success');
     } else {
       playSfx('sfx_deny');
       addNotification(result.message, 'error');
@@ -43,7 +45,7 @@ export const RustBeltHousing: React.FC<Props> = ({ onClose }) => {
     playSfx('sfx_click');
     const result = moveOut();
     if (result.success) {
-      addNotification('Checked out. Deposit returned.', 'info');
+      addNotification(t('housing.moveOut'), 'info');
     }
   };
 
@@ -52,7 +54,7 @@ export const RustBeltHousing: React.FC<Props> = ({ onClose }) => {
     const restoreAmount = activeHousing?.regenHp || 0;
     const newHp = Math.min(vitality.metrics.maxHp, vitality.metrics.hp + restoreAmount);
     modifyStats({ hp: newHp });
-    addNotification(`You slept through the highway noise. HP +${restoreAmount}`, 'HP');
+    addNotification(`${t('housing.rest')} HP +${restoreAmount}`, 'HP');
     onClose();
   };
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ActiveHousingState } from '@/types/schema';
+import { useI18n } from '@/i18n';
 
 interface Props {
   housing: ActiveHousingState;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export const RustBeltInterior: React.FC<Props> = ({ housing, onSleep, onMoveOut, onClose }) => {
+  const { t } = useI18n();
   const [isTvOn, setIsTvOn] = useState(false);
 
   return (
@@ -76,7 +78,7 @@ export const RustBeltInterior: React.FC<Props> = ({ housing, onSleep, onMoveOut,
           <div className="w-14 h-14 bg-[#2a2a2a] rounded-lg border-2 border-gray-600 flex items-center justify-center shadow-lg group-hover:border-red-500">
             🔑
           </div>
-          <span className="mt-2 bg-black/80 text-red-400 text-xs px-2 py-1 font-mono uppercase">Check Out</span>
+          <span className="mt-2 bg-black/80 text-red-400 text-xs px-2 py-1 font-mono uppercase">{t('housing.moveOut')}</span>
         </button>
 
         {/* 睡觉按钮：乱糟糟的床 */}
@@ -87,7 +89,7 @@ export const RustBeltInterior: React.FC<Props> = ({ housing, onSleep, onMoveOut,
           <img src="/assets/housing/ui_messy_bed.png" className="w-full object-contain drop-shadow-2xl" />
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
              <span className="font-black text-3xl text-white drop-shadow-[0_2px_0_rgba(0,0,0,1)] uppercase tracking-widest">
-               SLEEP
+               {t('housing.regen')}
              </span>
           </div>
         </button>
@@ -100,7 +102,7 @@ export const RustBeltInterior: React.FC<Props> = ({ housing, onSleep, onMoveOut,
           <div className="w-14 h-14 bg-[#2a2a2a] rounded-lg border-2 border-gray-600 flex items-center justify-center shadow-lg group-hover:border-white">
             🚶
           </div>
-          <span className="mt-2 bg-black/80 text-gray-300 text-xs px-2 py-1 font-mono uppercase">Go Out</span>
+          <span className="mt-2 bg-black/80 text-gray-300 text-xs px-2 py-1 font-mono uppercase">{t('common.close')}</span>
         </button>
 
       </div>

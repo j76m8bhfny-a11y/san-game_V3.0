@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState, useRef } from 'react';
 import { useGameStore } from '@/store/useGameStore';
+import { useI18n } from '@/i18n';
 // ❌ [移除] 旧的侧边栏
 // import { BankSidebar } from './BankSidebar'; 
 import { FaithModal } from './FaithModal';
@@ -22,6 +23,7 @@ export const LayeredScene: React.FC<LayeredSceneProps> = ({
   playerImage,
   isGlitch = false,
 }) => {
+  const { t } = useI18n();
   // 1. 获取阶级配置
   const currentClass = useGameStore(s => s.vitality.identity.currentClass);
   
@@ -143,7 +145,7 @@ export const LayeredScene: React.FC<LayeredSceneProps> = ({
         >
           <span className="text-xl group-hover:scale-110 transition-transform">👁️</span>
           <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 text-xs bg-black text-white px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-zinc-700 pointer-events-none">
-            SPIRIT // 精神
+            {t('faith.title')}
           </span>
         </button>
 
@@ -154,7 +156,7 @@ export const LayeredScene: React.FC<LayeredSceneProps> = ({
         >
           <span className="text-xl group-hover:scale-110 transition-transform">💳</span>
           <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 text-xs bg-black text-white px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-zinc-700 pointer-events-none">
-            CREDIT // 信用
+            {t('bank.credit')}
           </span>
         </button>
 

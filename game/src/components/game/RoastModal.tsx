@@ -1,10 +1,12 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '@/store/useGameStore';
+import { useI18n } from '@/i18n';
 // ✅ 1. 引入配置文件 (Source of Truth)
 import NARRATIVE_RULES from '@/assets/data/rules/narrative_rules.json';
 
 export const RoastModal = () => {
+  const { t } = useI18n();
   const currentRoast = useGameStore((state) => state.currentRoast);
   const dismiss = useGameStore((state) => state.dismissRoastAndEndEvent);
 
@@ -60,9 +62,9 @@ export const RoastModal = () => {
                    <span className="text-[9px] text-white font-bold font-mono">i</span>
                 </div>
                 <span className="text-[11px] font-semibold tracking-wide text-black uppercase">
-                  MESSAGES
+                  {t('roast.title')}
                 </span>
-                <span className="text-[10px] text-black font-medium ml-1">· 现在</span>
+                <span className="text-[10px] text-black font-medium ml-1">· {t('common.now')}</span>
               </div>
 
               {/* Content */}
@@ -86,7 +88,7 @@ export const RoastModal = () => {
                 flex items-center justify-center
               "
             >
-              我知道了
+              {t('common.confirm')}
             </button>
             
           </div>

@@ -5,16 +5,20 @@ import { SlumsShop } from './shops/SlumsShop';
 import { RustBeltShop } from './shops/RustBeltShop'; // 引入组件
 import { SuburbsShop } from './shops/SuburbsShop'; // 引入组件
 import { DowntownShop } from './shops/DowntownShop'; // 引入组件
+import { useI18n } from '@/i18n';
 
 // 临时占位组件，用于其他阶级还没做好的时候
-const PlaceholderShop = ({ region, onClose }: { region: string; onClose: () => void }) => (
-  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90" onClick={onClose}>
-    <div className="text-white font-mono border border-white p-8">
-      <h1 className="text-2xl mb-4">🚧 {region} SHOP 🚧</h1>
-      <p>Under Construction...</p>
+const PlaceholderShop = ({ region, onClose }: { region: string; onClose: () => void }) => {
+  const { t } = useI18n();
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90" onClick={onClose}>
+      <div className="text-white font-mono border border-white p-8">
+        <h1 className="text-2xl mb-4">🚧 {region} {t('shop.title')} 🚧</h1>
+        <p>Under Construction...</p>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export const ShopModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({ isOpen, onClose }) => {
   const { currentRegion } = useGameStore();

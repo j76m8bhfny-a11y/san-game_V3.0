@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
+import { useI18n } from '@/i18n';
 import { BaseScene, ParallaxLayer } from './BaseScene';
 
 // --- 类型定义 ---
@@ -83,6 +84,7 @@ const InteractiveElement: React.FC<PropProps> = ({
 };
 
 export const SlumsScene: React.FC = () => {
+  const { t } = useI18n();
   const { 
     setShopOpen, 
     setJobBoardOpen, 
@@ -117,7 +119,7 @@ export const SlumsScene: React.FC = () => {
           {/* 1. 街边瘾君子 (左下角) */}
           <InteractiveElement 
             isNarrative
-            dialogue="...呃...有点零钱吗...只要一美元..."
+            dialogue={t('scenes.slums.junkie_dialogue')}
             style={{ left: '5%', bottom: '5%', width: '8vw' }}
             baseImage="/assets/scenes/slums/prop_junkie.png"
             hoverImage="/assets/scenes/slums/prop_junkie_active.png"
@@ -126,7 +128,7 @@ export const SlumsScene: React.FC = () => {
           {/* 2. 燃烧的铁桶 (中前景，提供氛围) */}
           <InteractiveElement 
             isNarrative
-            dialogue="*噼啪作响的火焰温暖了你的双手*"
+            dialogue={t('scenes.slums.fire_barrel_dialogue')}
             style={{ left: '35%', bottom: '2%', width: '6vw' }}
             baseImage="/assets/scenes/slums/prop_barrel.png"
             hoverImage="/assets/scenes/slums/prop_barrel_fire.png"
@@ -135,7 +137,7 @@ export const SlumsScene: React.FC = () => {
           {/* 3. 黑帮放哨人 (右侧阴影处) */}
           <InteractiveElement 
             isNarrative
-            dialogue="看什么看？想吃枪子吗？滚远点！"
+            dialogue={t('scenes.slums.gang_dialogue')}
             style={{ left: '85%', bottom: '15%', width: '7vw' }}
             baseImage="/assets/scenes/slums/prop_gang.png"
             hoverImage="/assets/scenes/slums/prop_gang_threat.png"
@@ -164,12 +166,12 @@ export const SlumsScene: React.FC = () => {
           {/* [NEW] 保险入口：公交车站长椅广告 */}
           {/* 放在商店(20%)和工作(45%)之间的空地 */}
           <InteractiveElement 
-            label="INJURY LAWYER"
+            label={t('scenes.slums.insurance_label')}
             style={{ left: '32%', bottom: '15%', width: '12vw' }}
             baseImage="/assets/scenes/slums/obj_insurance_bench.png" // 素材：印着夸张广告的长椅
             hoverImage="/assets/scenes/slums/obj_insurance_bench_hover.png"
             onClick={() => setInsuranceOpen(true)}
-            dialogue="*广告上写着：受伤了？被捕了？立刻拨打 555-CASH！我们甚至不查你的ID！*"
+            dialogue={t('scenes.slums.insurance_dialogue')}
           />
 
           {/* 6. 工作：电线杆 (中间) */}

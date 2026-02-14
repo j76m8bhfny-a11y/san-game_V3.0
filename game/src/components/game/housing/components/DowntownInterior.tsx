@@ -1,5 +1,6 @@
 import React from 'react';
 import { ActiveHousingState } from '@/types/schema';
+import { useI18n } from '@/i18n';
 
 interface Props {
   housing: ActiveHousingState;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export const DowntownInterior: React.FC<Props> = ({ housing, onSleep, onDrink, onMoveOut, onClose }) => {
+  const { t } = useI18n();
   return (
     <div className="relative w-full h-full flex flex-col p-6 overflow-hidden select-none">
       
@@ -61,7 +63,7 @@ export const DowntownInterior: React.FC<Props> = ({ housing, onSleep, onDrink, o
           className="group flex flex-col items-center opacity-40 hover:opacity-100 transition-opacity"
         >
           <div className="text-xl mb-2 text-white group-hover:text-red-400 transition-colors">❖</div>
-          <span className="text-[10px] text-gray-400 uppercase tracking-widest">Liquidate Asset</span>
+          <span className="text-[10px] text-gray-400 uppercase tracking-widest">{t('housing.moveOut')}</span>
         </button>
 
         {/* 深度睡眠按钮：像是进入休眠舱 */}
@@ -71,7 +73,7 @@ export const DowntownInterior: React.FC<Props> = ({ housing, onSleep, onDrink, o
         >
           <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
           <span className="text-gray-300 font-sans font-light tracking-[0.2em] group-hover:text-[#d4af37]">
-            DEEP SLEEP
+            {t('housing.regen')}
           </span>
         </button>
 
@@ -81,7 +83,7 @@ export const DowntownInterior: React.FC<Props> = ({ housing, onSleep, onDrink, o
           className="group flex flex-col items-center opacity-40 hover:opacity-100 transition-opacity"
         >
           <div className="text-xl mb-2 text-white">▼</div>
-          <span className="text-[10px] text-gray-400 uppercase tracking-widest">Elevator</span>
+          <span className="text-[10px] text-gray-400 uppercase tracking-widest">{t('common.close')}</span>
         </button>
       </div>
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
+import { useI18n } from '@/i18n';
 import { SuburbsClinicExterior } from './components/SuburbsClinicExterior';
 import { SuburbsClinicInterior } from './components/SuburbsClinicInterior';
 import { RegionID } from '@/types/schema';
@@ -18,6 +19,7 @@ export const SuburbsMedical: React.FC<Props> = ({ onClose }) => {
   } = useGameStore();
   
   const { playSfx } = useAudioStore();
+  const { t } = useI18n();
 
   const services = gameDataCache?.regions?.find(r => r.id === RegionID.Suburbs)?.hospitalTheme?.services 
     || [];
@@ -29,7 +31,7 @@ export const SuburbsMedical: React.FC<Props> = ({ onClose }) => {
 
   const handleBuy = (_serviceId: string) => {
     playSfx('sfx_click'); // 扫码声
-    addNotification('Purchase complete. Receipt in bag.', 'HP');
+    addNotification(t('hospital.notification.suburbs'), 'HP');
   };
 
   return (

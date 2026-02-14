@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import { useI18n } from '@/i18n';
 import { placeholderBackgrounds, placeholderIcons, placeholderEffects } from '../utils/placeholderAssets';
 
 interface Props {
@@ -7,6 +8,7 @@ interface Props {
 }
 
 export const SlumsShrineExterior: React.FC<Props> = ({ onEnter, onClose }) => {
+  const { t } = useI18n();
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -54,7 +56,7 @@ export const SlumsShrineExterior: React.FC<Props> = ({ onEnter, onClose }) => {
           ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
         `}>
           <h2 className="text-orange-100 font-marker text-2xl mb-1 text-shadow-black tracking-widest">
-            MAKE AN OFFERING
+            {t('faith.offer')}
           </h2>
           <p className="text-gray-400 font-mono text-xs bg-black/80 px-2 py-1 inline-block">
             The spirits are hungry...
@@ -72,7 +74,7 @@ export const SlumsShrineExterior: React.FC<Props> = ({ onEnter, onClose }) => {
         onClick={onClose}
         className="relative z-20 self-center mt-auto text-gray-500 hover:text-white text-xs font-mono uppercase tracking-widest"
       >
-        [ Walk Away ]
+        [ {t('faith.leave')} ]
       </button>
     </div>
   );

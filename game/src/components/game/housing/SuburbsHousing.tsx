@@ -1,6 +1,7 @@
 import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
+import { useI18n } from '@/i18n';
 import { RegionID } from '@/types/schema';
 import { SuburbsExterior } from './components/SuburbsExterior';
 import { SuburbsInterior } from './components/SuburbsInterior';
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export const SuburbsHousing: React.FC<Props> = ({ onClose }) => {
+  const { t } = useI18n();
   const { 
     gameDataCache, 
     activeHousing, 
@@ -24,7 +26,7 @@ export const SuburbsHousing: React.FC<Props> = ({ onClose }) => {
 
   const houseData = gameDataCache?.housing?.find(h => h.region === RegionID.Suburbs);
   
-  if (!houseData) return <div className="text-white p-4">No housing data found.</div>;
+  if (!houseData) return <div className="text-white p-4">{t('housing.error')}</div>;
 
   const isOwningThis = activeHousing?.definitionId === houseData.id;
 
@@ -53,13 +55,13 @@ export const SuburbsHousing: React.FC<Props> = ({ onClose }) => {
     const restoreAmount = activeHousing?.regenHp || 0;
     const newHp = Math.min(vitality.metrics.maxHp, vitality.metrics.hp + restoreAmount);
     modifyStats({ hp: newHp });
-    addNotification(`You enjoyed a peaceful afternoon. HP +${restoreAmount}`, 'HP');
+    addNotification(`${t('housing.rest')} HP +${restoreAmount}`, 'HP');
     onClose();
   };
   
   const handlePayBills = () => {
     // 氛围装饰交互，账单通过回合结算自动处理
-    addNotification('Bills are handled automatically each week.', 'info');
+    addNotification(t('housing.weeklyCost'), 'info');
   };
 
   return (

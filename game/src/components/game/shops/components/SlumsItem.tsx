@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Item } from '@/types/schema';
+import { useI18n } from '@/i18n';
 
 interface Props {
   item: Item;
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export const SlumsItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
+  const { t } = useI18n();
   const [isHovered, setIsHovered] = useState(false);
 
   // 1. 生成随机视觉参数 (仅在组件挂载时计算一次)
@@ -78,7 +80,7 @@ export const SlumsItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
 
         {!canAfford && (
           <div className="mt-2 text-center text-red-600 font-black text-xs border border-red-600 px-1 transform -rotate-2">
-            TOO EXPENSIVE
+            {t('shop.insufficient')}
           </div>
         )}
       </div>

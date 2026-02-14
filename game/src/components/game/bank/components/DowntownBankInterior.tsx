@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { LoanProduct, ActiveLoan } from '@/types/schema';
 import { DowntownLedger } from './DowntownLedger';
 import { useBankUI } from '../hooks/useBankUI';
+import { useI18n } from '@/i18n';
 
 interface Props {
   gold: number;
@@ -18,6 +19,7 @@ interface Props {
 export const DowntownBankInterior: React.FC<Props> = ({ 
   gold, creditScore, products, activeLoans, currentTurn, onTakeLoan, onRepayLoan, onMakeInstallment, onClose 
 }) => {
+  const { t } = useI18n();
   const [signAnim, setSignAnim] = useState(false);
   const { 
     getLoanStatus, 
@@ -65,7 +67,7 @@ export const DowntownBankInterior: React.FC<Props> = ({
         {/* 左侧：资产负债表 (贷款) */}
         <div className="w-1/2 flex flex-col h-[80%] self-center">
           <h2 className="text-[#d4af37] font-serif text-2xl italic mb-6 border-b border-[#d4af37]/30 pb-2">
-            The Ledger
+            {t('bank.ledger')}
           </h2>
           
           <div className="flex-1 overflow-y-auto custom-scrollbar pr-4">
@@ -92,10 +94,10 @@ export const DowntownBankInterior: React.FC<Props> = ({
 
           {/* 债务清单 (悬浮在金条上方) */}
           <div className="absolute top-10 right-0 w-96 bg-black/70 backdrop-blur-md border border-[#d4af37]/30 p-6 rounded-sm max-h-[70%] overflow-y-auto custom-scrollbar">
-             <h3 className="text-gray-400 text-xs font-mono uppercase tracking-widest mb-4">Liabilities</h3>
+             <h3 className="text-gray-400 text-xs font-mono uppercase tracking-widest mb-4">{t('bank.liabilities')}</h3>
              
              {activeLoans.length === 0 ? (
-               <div className="text-[#d4af37] text-sm italic">Clean Balance Sheet</div>
+               <div className="text-[#d4af37] text-sm italic">{t('bank.cleanBalanceSheet')}</div>
              ) : (
                <div className="space-y-4">
                  {activeLoans.map(loan => {
@@ -113,7 +115,7 @@ export const DowntownBankInterior: React.FC<Props> = ({
                          <div className="text-right">
                            <div className="text-[#d4af37] font-bold font-mono">${totalOwed.toLocaleString()}</div>
                            <div className="text-[10px] text-gray-500">
-                             本金: ${loan.principal.toLocaleString()} | 利息: ${loan.interest.toLocaleString()}
+                             {t('bank.principal')}: ${loan.principal.toLocaleString()} | {t('bank.interest')}: ${loan.interest.toLocaleString()}
                            </div>
                          </div>
                        </div>
@@ -131,14 +133,14 @@ export const DowntownBankInterior: React.FC<Props> = ({
                            type="number"
                            value={repayAmount[loan.id] || ''}
                            onChange={(e) => setRepayAmount(prev => ({ ...prev, [loan.id]: Math.max(0, parseInt(e.target.value, 10) || 0) }))}
-                           placeholder="还款金额"
+                           placeholder={t('bank.repayAmount')}
                            className="flex-1 bg-black/50 border border-[#d4af37]/30 text-white text-xs px-2 py-1.5 rounded focus:outline-none focus:border-[#d4af37]"
                          />
                          <button
                            onClick={() => setRepayAmount(prev => ({ ...prev, [loan.id]: Math.min(gold, totalOwed) }))}
                            className="text-[10px] text-[#d4af37] hover:text-white underline whitespace-nowrap"
                          >
-                           全额
+                           {t('common.max')}
                          </button>
                        </div>
                        
@@ -149,14 +151,14 @@ export const DowntownBankInterior: React.FC<Props> = ({
                            disabled={gold < (repayAmount[loan.id] || 0) || (repayAmount[loan.id] || 0) <= 0}
                            className="flex-1 bg-[#d4af37]/20 hover:bg-[#d4af37]/30 disabled:opacity-30 disabled:cursor-not-allowed text-[#d4af37] text-xs font-mono py-1.5 rounded border border-[#d4af37]/50"
                          >
-                           还款
+                           {t('bank.withdraw')}
                          </button>
                          <button 
                            onClick={() => onRepayLoan(loan.id)}
                            disabled={gold < totalOwed}
                            className="flex-1 bg-[#d4af37] hover:bg-[#c4a030] disabled:opacity-30 disabled:cursor-not-allowed text-black text-xs font-bold py-1.5 rounded"
                          >
-                           全额结清
+                           {t('bank.repayFull')}
                          </button>
                        </div>
                      </div>
@@ -173,21 +175,21 @@ export const DowntownBankInterior: React.FC<Props> = ({
       {signAnim && (
         <div className="absolute inset-0 flex items-center justify-center z-50 bg-black/20 backdrop-blur-[2px]">
           <div className="text-6xl font-handwriting text-[#d4af37] animate-signature">
-            Approved.
+            {t('common.approved')}
           </div>
         </div>
       )}
 
       {/* 4. 底部信息 */}
       <div className="absolute bottom-6 left-8 text-[#d4af37] font-mono text-xs z-30 opacity-70">
-        NET WORTH: ${(gold * 1.5).toLocaleString()} (EST.)
+        {t('bank.netWorth')}: ${(gold * 1.5).toLocaleString()} (EST.)
       </div>
       
       <button 
         onClick={onClose}
         className="absolute top-8 right-8 text-gray-600 hover:text-[#d4af37] text-xs font-serif italic z-50"
       >
-        Close Vault
+        {t('common.close')}
       </button>
 
     </div>

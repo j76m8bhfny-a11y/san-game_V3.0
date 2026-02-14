@@ -1,4 +1,5 @@
 import React from 'react';
+import { useI18n } from '@/i18n';
 import { Job } from '@/types/schema';
 import { 
   JOB_BUTTON_LABELS, 
@@ -26,6 +27,8 @@ export const JobPaper: React.FC<JobPaperProps> = ({
   onAction,
   currentSan = 50, // 默认正常状态
 }) => {
+  const { t } = useI18n();
+  
   // 获取当前主题的按钮文案
   const buttonLabels = JOB_BUTTON_LABELS[theme];
   
@@ -59,7 +62,7 @@ export const JobPaper: React.FC<JobPaperProps> = ({
           <div className="flex flex-col">
             <span 
               className="font-marker text-xl text-green-800 cursor-help"
-              title={`预期收入: $${expectedEarnings}/周 (效率: ${Math.round(efficiency.modifier * 100)}%)`}
+              title={`${t('job.expectedEarnings')}: $${expectedEarnings}/${t('common.week')} (${t('common.efficiency')}: ${Math.round(efficiency.modifier * 100)}%)`}
             >
               ${job.baseSalary}{PAY_CYCLE_LABELS[job.payCycle || 'WEEKLY']}
             </span>
@@ -86,7 +89,7 @@ export const JobPaper: React.FC<JobPaperProps> = ({
         {!canApply && !isActive && (
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <span className="font-marker text-red-600/80 text-3xl border-4 border-red-600/80 px-2 py-1 -rotate-12 bg-white/50 backdrop-blur-[1px]">
-              {lockReason || "LOCKED"}
+              {lockReason || t('job.locked')}
             </span>
           </div>
         )}
@@ -123,21 +126,21 @@ export const JobPaper: React.FC<JobPaperProps> = ({
                 {/* 需求标签 */}
                 {!canApply && !isActive && (
                    <span className="bg-red-900/50 text-red-400 text-[10px] px-1 py-0.5 border border-red-800 font-mono">
-                     REQ: {lockReason}
+                     {t('job.requirement')}: {lockReason}
                    </span>
                 )}
              </div>
              
              <div className="flex gap-4 text-xs font-mono text-stone-500 mt-1">
-               <span className="flex items-center gap-1">HP:<span className="text-red-400">-{job.hpCost}</span></span>
+               <span className="flex items-center gap-1">{t('common.hp')}:<span className="text-red-400">-{job.hpCost}</span></span>
                <span 
                  className="flex items-center gap-1 cursor-help"
-                 title={`效率: ${efficiency.label} (${Math.round(efficiency.modifier * 100)}%) | 预期: $${expectedEarnings}/周`}
+                 title={`${t('common.efficiency')}: ${efficiency.label} (${Math.round(efficiency.modifier * 100)}%) | ${t('job.expected')}: $${expectedEarnings}/${t('common.week')}`}
                >
-                 PAY:<span className="text-yellow-600">${job.baseSalary}</span>
+                 {t('job.salary')}:<span className="text-yellow-600">${job.baseSalary}</span>
                  <span className="text-stone-600">{PAY_CYCLE_LABELS[job.payCycle || 'WEEKLY']}</span>
                </span>
-               {job.requiresHousing && <span>🏠 HOUSING REQ.</span>}
+               {job.requiresHousing && <span>🏠 {t('job.housingRequired')}</span>}
              </div>
           </div>
         </div>
@@ -179,7 +182,7 @@ export const JobPaper: React.FC<JobPaperProps> = ({
            {job.title?.[0] || '?'}
         </div>
         <span className="px-2 py-1 bg-slate-100 text-slate-500 text-[10px] font-bold rounded uppercase tracking-wider">
-          {isActive ? 'Current' : 'Full Time'}
+          {isActive ? t('job.current') : t('job.fullTime')}
         </span>
       </div>
 
@@ -195,10 +198,10 @@ export const JobPaper: React.FC<JobPaperProps> = ({
 
       <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-100">
          <div>
-           <p className="text-[10px] text-slate-400 uppercase font-bold">Weekly Salary</p>
+           <p className="text-[10px] text-slate-400 uppercase font-bold">{t('job.salary')}</p>
            <p 
              className="font-sans font-bold text-slate-900 cursor-help"
-             title={`${efficiency.description} | 预期收入: $${expectedEarnings}/周`}
+             title={`${efficiency.description} | ${t('job.expectedEarnings')}: $${expectedEarnings}/${t('common.week')}`}
            >
              ${job.baseSalary.toLocaleString()}
              {efficiency.modifier !== 1.0 && (

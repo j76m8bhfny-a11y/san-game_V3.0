@@ -1,6 +1,7 @@
 import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { RegionID } from '@/types/schema';
+import { useI18n } from '@/i18n';
 
 // 引入各区域的完整功能组件
 // 这些组件内部已经封装了：
@@ -13,6 +14,7 @@ import { DowntownFaith } from './faith/DowntownFaith';
 
 export const FaithModal: React.FC = () => {
   const { isFaithOpen, setFaithOpen, currentRegion } = useGameStore();
+  const { t } = useI18n();
 
   if (!isFaithOpen) return null;
 
@@ -40,7 +42,7 @@ export const FaithModal: React.FC = () => {
       default:
         return (
           <div className="flex items-center justify-center h-full text-white/50 font-mono">
-            [NO_FAITH_SITE_FOUND_IN_THIS_REGION]
+            {t('faith.noSite')}
           </div>
         );
     }

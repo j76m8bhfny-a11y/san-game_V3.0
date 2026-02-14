@@ -1,6 +1,7 @@
 import React, { useMemo, useCallback } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
+import { useI18n } from '@/i18n';
 import { Job, RegionID } from '@/types/schema';
 import { JobPaper } from './Jobs/JobPaper';
 import { JobTheme } from '@/config/jobUIConfig';
@@ -21,6 +22,7 @@ interface JobBoardModalProps {
 }
 
 export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose }) => {
+  const { t } = useI18n();
   const { 
     gameDataCache, 
     currentRegion, 
@@ -47,13 +49,13 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
     const jobWeight = jobRules.classWeights[job.requiredClass as keyof typeof jobRules.classWeights] ?? 99;
     
     if (playerWeight < jobWeight) {
-      return { ok: false, reason: `需 ${job.requiredClass}` };
+      return { ok: false, reason: t('job.requirement') + `: ${job.requiredClass}` };
     }
 
     // 检查房产
     if (job.requiresHousing) {
       if (!activeHousing || activeHousing.region !== job.region) {
-        return { ok: false, reason: '需本地房产' };
+        return { ok: false, reason: t('job.requirement') };
       }
     }
 
@@ -69,21 +71,21 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
       });
       
       if (!hasItem) {
-        return { ok: false, reason: `缺: ${job.requiredItem}` };
+        return { ok: false, reason: `${t('job.requirement')}: ${job.requiredItem}` };
       }
     }
 
     return { ok: true, reason: '' };
-  }, [vitality.identity.currentClass, activeHousing, inventory, gameDataCache]);
+  }, [vitality.identity.currentClass, activeHousing, inventory, gameDataCache, t]);
 
   // 3. 处理交互
   const handleApply = (job: Job) => {
     playSfx('sfx_paper'); // 播放音效
     const result = acceptJob(job.id);
     if (result.success) {
-      addNotification(`成功入职: ${job.title}`, 'success');
+      addNotification(`${t('job.apply')}: ${job.title}`, 'success');
     } else {
-      addNotification( result.message, 'error');
+      addNotification(result.message, 'error');
     }
   };
 
@@ -91,7 +93,7 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
     playSfx('sfx_click');
     const result = quitJob(jobId);
     if (result.success) {
-      addNotification( '已离职',  'info');
+      addNotification(t('job.quit'), 'info');
     }
   };
 
@@ -134,7 +136,7 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
             {isSlums && (
               <div className="relative">
                 <h2 className="font-marker text-5xl text-yellow-100 -rotate-2 drop-shadow-[4px_4px_0_#000] z-10 relative">
-                  HELP WANTED
+                  {t('job.board')}
                 </h2>
                 <span className="font-marker text-red-500 text-2xl block mt-1 rotate-1 ml-4 bg-white/10 px-2 w-max">
                   CASH DAILY. NO Q's.
@@ -147,7 +149,7 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
               <div className="flex flex-col border-l-4 border-yellow-600 pl-4">
                 <span className="text-yellow-600/50 font-mono text-xs tracking-[0.5em] mb-1">FACTORY_OS v9.2</span>
                 <h2 className="font-mono text-3xl text-stone-200 tracking-tighter uppercase font-bold">
-                  PERSONNEL ASSIGNMENT
+                  {t('job.board')}
                 </h2>
                 <div className="flex items-center gap-2 mt-2">
                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
@@ -162,7 +164,7 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
                 </div>
                 <div>
                   <h2 className="font-sans text-2xl font-bold text-slate-800 tracking-tight">
-                    Career Opportunities
+                    {t('job.board')}
                   </h2>
                   <p className="text-slate-400 text-sm">Find your purpose in the corporate machine.</p>
                 </div>
@@ -194,9 +196,9 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
           
           {availableJobs.length === 0 ? (
             <div className="w-full h-full flex flex-col items-center justify-center py-20 opacity-50">
-              {isSlums && <span className="font-marker text-4xl text-white/30 rotate-12">NO JOBS TODAY...</span>}
+              {isSlums && <span className="font-marker text-4xl text-white/30 rotate-12">{t('hud.status.unemployed')}</span>}
               {isFactory && <span className="font-mono text-xl text-stone-600 animate-pulse">NO_TASKS_QUEUED</span>}
-              {isOffice && <span className="font-sans text-slate-400">No positions available at this time.</span>}
+              {isOffice && <span className="font-sans text-slate-400">{t('hud.status.unemployed')}</span>}
             </div>
           ) : (
             availableJobs.map((job) => {

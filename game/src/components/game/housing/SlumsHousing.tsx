@@ -1,6 +1,7 @@
 import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
+import { useI18n } from '@/i18n';
 import { RegionID } from '@/types/schema';
 
 import { SlumsExterior } from './components/SlumsExterior';
@@ -11,6 +12,7 @@ interface Props {
 }
 
 export const SlumsHousing: React.FC<Props> = ({ onClose }) => {
+  const { t } = useI18n();
   const { 
     gameDataCache, 
     activeHousing, 
@@ -26,7 +28,7 @@ export const SlumsHousing: React.FC<Props> = ({ onClose }) => {
   // 获取贫民窟的房源数据
   const slumsHouse = gameDataCache?.housing?.find(h => h.region === RegionID.Slums);
   
-  if (!slumsHouse) return <div className="text-white p-4">Data Error: No housing found for Slums.</div>;
+  if (!slumsHouse) return <div className="text-white p-4">{t('housing.error')}</div>;
 
   // 判断当前是否已拥有此房源
   const isRentingThis = activeHousing?.definitionId === slumsHouse.id;
@@ -49,7 +51,7 @@ export const SlumsHousing: React.FC<Props> = ({ onClose }) => {
     playSfx('sfx_paper');
     const result = moveOut();
     if (result.success) {
-      addNotification('You tore down your camp.', 'info');
+      addNotification(t('housing.moveOut'), 'info');
     }
   };
 
@@ -59,7 +61,7 @@ export const SlumsHousing: React.FC<Props> = ({ onClose }) => {
     const restoreAmount = activeHousing?.regenHp || 0;
     const newHp = Math.min(vitality.metrics.maxHp, vitality.metrics.hp + restoreAmount);
     modifyStats({ hp: newHp });
-    addNotification(`You rested for a while. HP +${restoreAmount}`, 'HP');
+    addNotification(`${t('housing.rest')} HP +${restoreAmount}`, 'HP');
     onClose();
   };
 

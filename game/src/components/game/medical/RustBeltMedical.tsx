@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
+import { useI18n } from '@/i18n';
 import { RustBeltClinicExterior } from './components/RustBeltClinicExterior';
 import { RustBeltClinicInterior } from './components/RustBeltClinicInterior';
 import { RegionID } from '@/types/schema';
@@ -18,6 +19,7 @@ export const RustBeltMedical: React.FC<Props> = ({ onClose }) => {
   } = useGameStore();
   
   const { playSfx } = useAudioStore();
+  const { t } = useI18n();
 
   const services = gameDataCache?.regions?.find(r => r.id === RegionID.RustBelt)?.hospitalTheme?.services 
     || [];
@@ -29,7 +31,7 @@ export const RustBeltMedical: React.FC<Props> = ({ onClose }) => {
 
   const handleBuy = (_serviceId: string) => {
     playSfx('sfx_click'); // 打印机/收银机声
-    addNotification('Prescription received. Treatment applied.', 'HP');
+    addNotification(t('hospital.notification.rustbelt'), 'HP');
   };
 
   return (

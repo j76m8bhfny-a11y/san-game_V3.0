@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useI18n } from '@/i18n';
 import { Item } from '@/types/schema';
 
 interface Props {
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export const DowntownItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
+  const { t } = useI18n();
   const [isHovered, setIsHovered] = useState(false);
   const [isSigning, setIsSigning] = useState(false);
 
@@ -69,7 +71,7 @@ export const DowntownItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
       {/* 3. 价格与操作 (Signature Interaction) */}
       <div className="flex items-center justify-between mt-4 border-t border-white/10 pt-4">
         <div className="text-right">
-          <div className="text-[10px] text-gray-500 uppercase tracking-widest">Valuation</div>
+          <div className="text-[10px] text-gray-500 uppercase tracking-widest">{t('shop.valuation')}</div>
           <div className="text-white font-serif text-lg">${item.price.toLocaleString()}</div>
         </div>
 
@@ -84,11 +86,11 @@ export const DowntownItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
           `}
         >
           {isSigning ? (
-            <span className="font-handwriting text-xl animate-pulse">Signing...</span>
+            <span className="font-handwriting text-xl animate-pulse">{t('shop.signing')}</span>
           ) : !canAfford ? (
-            <span className="text-xs uppercase font-sans tracking-widest">Insufficient Asset</span>
+            <span className="text-xs uppercase font-sans tracking-widest">{t('shop.insufficientAsset')}</span>
           ) : (
-            <span className="font-serif italic tracking-wide">Acquire</span>
+            <span className="font-serif italic tracking-wide">{t('shop.acquire')}</span>
           )}
         </button>
       </div>
@@ -97,12 +99,12 @@ export const DowntownItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
       <div className="absolute top-4 right-4 flex flex-col gap-1 items-end opacity-50 group-hover:opacity-100 transition-opacity">
          {item.effects?.hp !== undefined && (
            <span className="text-[10px] text-gray-400 font-mono">
-             VIT {item.effects.hp > 0 ? '+' : ''}{item.effects.hp}
+             {t('common.hp')} {item.effects.hp > 0 ? '+' : ''}{item.effects.hp}
            </span>
          )}
          {item.effects?.san !== undefined && (
            <span className="text-[10px] text-gray-400 font-mono">
-             SAN {item.effects.san > 0 ? '+' : ''}{item.effects.san}
+             {t('common.san')} {item.effects.san > 0 ? '+' : ''}{item.effects.san}
            </span>
          )}
       </div>

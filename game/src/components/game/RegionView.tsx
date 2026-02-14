@@ -1,8 +1,10 @@
 import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { SceneManager } from './scenes/SceneManager';
+import { useI18n } from '@/i18n';
 
 export const RegionView: React.FC = () => {
+  const { t } = useI18n();
   const { 
     currentEvent, 
     setViewMode, 
@@ -33,7 +35,7 @@ export const RegionView: React.FC = () => {
            >
              <span className="text-xl group-hover:scale-110 transition-transform">🗺️</span>
              <span className="font-pixel text-xs text-white/80 tracking-widest group-hover:text-white">
-               OPEN MAP
+               {t('map.title')}
              </span>
            </button>
         </div>

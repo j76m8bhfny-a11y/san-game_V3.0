@@ -2,12 +2,14 @@ import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { RegionID } from '@/types/schema';
 import { SlumsItem } from './components/SlumsItem';
+import { useI18n } from '@/i18n';
 
 interface Props {
   onClose: () => void;
 }
 
 export const SlumsShop: React.FC<Props> = ({ onClose }) => {
+  const { t } = useI18n();
   const { getRegionItems, buyItem, vitality } = useGameStore();
   
   // 获取贫民窟的物品
@@ -33,14 +35,14 @@ export const SlumsShop: React.FC<Props> = ({ onClose }) => {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-24 bg-gradient-to-b from-black/90 to-transparent pointer-events-none z-10" />
         <div className="absolute top-6 left-1/2 -translate-x-1/2 rotate-1 bg-[#d4c5a9] px-6 py-2 shadow-lg transform origin-center z-20">
           <h1 className="text-2xl font-black text-[#2a2a2a] font-serif tracking-widest uppercase">
-            BLACK MARKET
+            {t('shop.title')}
           </h1>
           <div className="text-xs text-center font-mono text-[#5c4d3c] font-bold">CASH ONLY • NO REFUNDS</div>
         </div>
 
         {/* 玩家金钱显示：扔在角落的零钱 */}
         <div className="absolute top-6 right-8 rotate-3 bg-[#111] border border-white/20 px-4 py-2 rounded-sm shadow-xl z-20">
-          <div className="text-[10px] text-gray-500 font-mono uppercase">MY CASH</div>
+          <div className="text-[10px] text-gray-500 font-mono uppercase">{t('common.price')}</div>
           <div className={`text-xl font-mono ${gold < 10 ? 'text-red-500' : 'text-green-500'}`}>
             ${gold}
           </div>
@@ -51,7 +53,7 @@ export const SlumsShop: React.FC<Props> = ({ onClose }) => {
         <div className="absolute inset-0 pt-32 px-16 pb-16 overflow-y-auto custom-scrollbar">
           {items.length === 0 ? (
             <div className="h-full flex items-center justify-center text-white/30 font-pixel">
-              ( EMPTY )
+              {t('shop.empty')}
             </div>
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8 pb-20">
@@ -72,7 +74,7 @@ export const SlumsShop: React.FC<Props> = ({ onClose }) => {
           onClick={onClose}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 bg-red-900/80 hover:bg-red-700 text-white px-8 py-3 font-bold font-mono border-2 border-red-950 shadow-lg transition-all active:scale-95"
         >
-          CLOSE TRUNK
+          {t('common.close')}
         </button>
 
         {/* 氛围遮罩：手电筒光圈效果 (Vignette) */}

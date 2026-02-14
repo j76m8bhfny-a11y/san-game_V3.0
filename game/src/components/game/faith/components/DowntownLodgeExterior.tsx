@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { placeholderBackgrounds } from '../utils/placeholderAssets';
+import { useI18n } from '@/i18n';
 
 interface Props {
   onEnter: () => void;
@@ -7,6 +8,7 @@ interface Props {
 }
 
 export const DowntownLodgeExterior: React.FC<Props> = ({ onEnter, onClose }) => {
+  const { t } = useI18n();
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -68,7 +70,7 @@ export const DowntownLodgeExterior: React.FC<Props> = ({ onEnter, onClose }) => 
         onClick={onClose}
         className="relative z-20 self-center mt-auto text-gray-600 hover:text-[#d4af37] text-[10px] font-mono uppercase tracking-[0.2em] transition-colors"
       >
-        Withdraw
+        {t('faith.withdraw')}
       </button>
     </div>
   );

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
+import { useI18n } from '@/i18n';
 import { RegionID } from '@/types/schema';
 import { SlumsBankExterior } from './components/SlumsBankExterior';
 import { SlumsBankInterior } from './components/SlumsBankInterior';
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export const SlumsBank: React.FC<Props> = ({ onClose }) => {
+  const { t } = useI18n();
   const [hasEntered, setHasEntered] = useState(true);
   const { 
     vitality, 
@@ -40,7 +42,7 @@ export const SlumsBank: React.FC<Props> = ({ onClose }) => {
     const result = takeLoan(productId, amount);
     if (result.success) {
       playSfx('sfx_cash');
-      addNotification('You got the cash. Watch your back.', 'info');
+      addNotification(t('bank.loan.success'), 'info');
     } else {
       playSfx('sfx_deny');
       addNotification(result.message, 'error');
@@ -51,10 +53,10 @@ export const SlumsBank: React.FC<Props> = ({ onClose }) => {
     const result = repayLoan(loanId);
     if (result.success) {
       playSfx('sfx_cash');
-      addNotification('Debt paid. One less problem.', 'success');
+      addNotification(t('bank.loan.repaySuccess'), 'success');
     } else {
       playSfx('sfx_deny');
-      addNotification('Not enough cash.', 'error');
+      addNotification(t('bank.insufficientFunds'), 'error');
     }
   };
 

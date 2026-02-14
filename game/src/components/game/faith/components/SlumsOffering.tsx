@@ -1,5 +1,6 @@
 import React from 'react';
 import { Item } from '@/types/schema';
+import { useI18n } from '@/i18n';
 
 interface Props {
   item: Item;
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export const SlumsOffering: React.FC<Props> = ({ item, count, isSelected, onClick }) => {
+  const { t } = useI18n();
   // 简单的图标映射
   const getIcon = (tags: string[]) => {
     if (tags.includes('FOOD')) return '🥩'; 
@@ -40,7 +42,7 @@ export const SlumsOffering: React.FC<Props> = ({ item, count, isSelected, onClic
 
       {/* 数量标签 */}
       <div className="absolute bottom-0 right-0 bg-black/80 text-gray-300 text-[10px] font-mono px-1 border border-gray-600">
-        x{count}
+        {t('common.count', { count })}
       </div>
 
       {/* 选中时的箭头 */}

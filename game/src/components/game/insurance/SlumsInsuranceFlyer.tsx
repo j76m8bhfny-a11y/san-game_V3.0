@@ -2,9 +2,11 @@ import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import insuranceData from '@/assets/data/insurance.json';
+import { useI18n } from '@/i18n';
 
 
 export const SlumsInsuranceFlyer: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const { t } = useI18n();
   const { signInsurance, cancelInsurance, vitality } = useGameStore();
   const { playSfx } = useAudioStore();
 
@@ -68,7 +70,7 @@ export const SlumsInsuranceFlyer: React.FC<{ onClose: () => void }> = ({ onClose
                       : 'bg-white border-red-600 text-red-600 -rotate-12 hover:scale-110 hover:bg-red-50'}
                   `}
                 >
-                  {isActive ? 'VOID' : 'SIGN'}
+                  {isActive ? t('insurance.cancel') : t('insurance.enroll')}
                 </button>
               </div>
             );
@@ -78,7 +80,7 @@ export const SlumsInsuranceFlyer: React.FC<{ onClose: () => void }> = ({ onClose
         {/* 底部涂鸦 */}
         <div className="mt-auto text-center">
           <button onClick={onClose} className="font-marker text-2xl text-gray-400 hover:text-black hover:underline decoration-wavy">
-            (Leave)
+            ({t('common.close')})
           </button>
         </div>
       </div>

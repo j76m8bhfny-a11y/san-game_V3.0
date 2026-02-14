@@ -3,10 +3,12 @@ import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { MarketChart } from './MarketChart';
 import { useAudioStore } from '@/store/useAudioStore';
+import { useI18n } from '@/i18n';
 // ✅ 1. 引入数值配置文件
 import marketRules from '@/assets/data/rules/marketRules.json';
 
 export const CryptoSidebar: React.FC = () => {
+  const { t } = useI18n();
   const { 
     isCryptoOpen, 
     setCryptoOpen, 
@@ -62,7 +64,7 @@ export const CryptoSidebar: React.FC = () => {
       <div className="p-4 border-b border-gray-800 bg-[#111] flex justify-between items-center">
         <div className="flex items-center gap-2">
           <span className="text-xl">₿</span>
-          <h2 className="font-bold text-gray-200">CRYPTO.NET</h2>
+          <h2 className="font-bold text-gray-200">{t('crypto.title')}</h2>
         </div>
         <button onClick={() => setCryptoOpen(false)} className="text-gray-500 hover:text-white">✕</button>
       </div>
@@ -104,7 +106,7 @@ export const CryptoSidebar: React.FC = () => {
             <div className="space-y-4 bg-gray-900/50 p-3 rounded border border-gray-800">
               <div>
                 <div className="flex justify-between text-xs mb-1">
-                  <span className="text-gray-500">LEVERAGE</span>
+                  <span className="text-gray-500">{t('crypto.leverage')}</span>
                   <span className="text-amber-500 font-bold">{leverage}x</span>
                 </div>
                 {/* ✅ 修复：使用配置的 min/max */}
@@ -139,13 +141,13 @@ export const CryptoSidebar: React.FC = () => {
                   onClick={() => handleTrade('LONG')}
                   className="py-3 bg-green-900/30 text-green-500 border border-green-800 hover:bg-green-800/40 font-bold text-xs"
                 >
-                  LONG (做多)
+                  {t('crypto.position.long')}
                 </button>
                 <button 
                   onClick={() => handleTrade('SHORT')}
                   className="py-3 bg-red-900/30 text-red-500 border border-red-800 hover:bg-red-800/40 font-bold text-xs"
                 >
-                  SHORT (做空)
+                  {t('crypto.position.short')}
                 </button>
               </div>
             </div>
@@ -183,7 +185,7 @@ export const CryptoSidebar: React.FC = () => {
                             onClick={() => { playSfx('sfx_cash'); closePosition(pos.id); }}
                             className="px-4 py-1 border border-white/20 text-white hover:bg-white/10 text-xs"
                           >
-                            CLOSE POSITION
+                            {t('crypto.position.close')}
                           </button>
                         </div>
                       </div>

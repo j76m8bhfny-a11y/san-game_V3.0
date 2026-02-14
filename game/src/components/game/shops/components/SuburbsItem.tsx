@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Item } from '@/types/schema';
+import { useI18n } from '@/i18n';
 
 interface Props {
   item: Item;
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export const SuburbsItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
+  const { t } = useI18n();
   const [isHovered, setIsHovered] = useState(false);
 
   // 图标映射：使用更干净的 Emoji 或图片
@@ -77,13 +79,13 @@ export const SuburbsItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
          <p className="text-xs text-gray-500 italic mb-2">"{item.flavorText}"</p>
          
          <div className="flex justify-center gap-2 text-[10px] font-medium">
-            {item.effects?.hp !== undefined && <span className="text-green-600 bg-green-50 px-2 py-0.5 rounded-full">Health {item.effects.hp > 0 ? '+' : ''}{item.effects.hp}</span>}
-            {item.effects?.san !== undefined && <span className="text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Mood {item.effects.san > 0 ? '+' : ''}{item.effects.san}</span>}
+            {item.effects?.hp !== undefined && <span className="text-green-600 bg-green-50 px-2 py-0.5 rounded-full">{t('common.hp')} {item.effects.hp > 0 ? '+' : ''}{item.effects.hp}</span>}
+            {item.effects?.san !== undefined && <span className="text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">{t('common.san')} {item.effects.san > 0 ? '+' : ''}{item.effects.san}</span>}
          </div>
 
          {!canAfford && (
            <div className="mt-2 text-red-500 text-[10px] font-bold uppercase tracking-wide">
-             Insufficient Funds
+             {t('shop.insufficient')}
            </div>
          )}
          

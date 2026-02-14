@@ -1,5 +1,6 @@
 import React from 'react';
 import { LoanProduct } from '@/types/schema';
+import { useI18n } from '@/i18n';
 
 interface Props {
   product: LoanProduct;
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export const DowntownLedger: React.FC<Props> = ({ product, creditScore, onSign }) => {
+  const { t } = useI18n();
   const canAfford = creditScore >= product.minScore;
   
   return (
@@ -27,29 +29,29 @@ export const DowntownLedger: React.FC<Props> = ({ product, creditScore, onSign }
             {product.name}
           </h3>
           <div className="text-xs text-gray-500 mt-1 font-mono uppercase tracking-wide">
-            Liquidity Injection
+            {t('bank.liquidityInjection')}
           </div>
           {!canAfford && (
             <div className="text-xs text-red-600 font-bold mt-1">
-              Requires {product.minScore} Credit Score
+              {t('bank.creditRequired', { score: product.minScore })}
             </div>
           )}
         </div>
 
         <div className="flex gap-8 text-right font-mono">
           <div>
-            <div className="text-[10px] text-gray-400 uppercase">Capital</div>
+            <div className="text-[10px] text-gray-400 uppercase">{t('bank.capital')}</div>
             <div className="text-lg font-bold text-[#2a2a2a]">${product.maxAmount.toLocaleString()}</div>
           </div>
           <div>
-            <div className="text-[10px] text-gray-400 uppercase">Interest</div>
+            <div className="text-[10px] text-gray-400 uppercase">{t('bank.interestRate')}</div>
             <div className="text-lg font-bold text-[#8b4513]">{(product.weeklyRate * 100).toFixed(1)}%</div>
           </div>
         </div>
 
         {/* 签字区域 (Hover显示) */}
         <div className={`absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#d4af37]/20 to-transparent flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${!canAfford ? '!opacity-0' : ''}`}>
-           <span className="font-handwriting text-2xl text-[#8b4513] -rotate-12">Sign Here</span>
+           <span className="font-handwriting text-2xl text-[#8b4513] -rotate-12">{t('bank.signHere')}</span>
         </div>
         
         {/* 不可用时显示锁 */}

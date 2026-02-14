@@ -1,6 +1,7 @@
 import React from 'react';
 import { MedicalService } from '@/types/schema';
 import { SlumsMedicalItem } from './SlumsMedicalItem';
+import { useI18n } from '@/i18n';
 
 interface Props {
   services: MedicalService[];
@@ -10,6 +11,8 @@ interface Props {
 }
 
 export const SlumsClinicInterior: React.FC<Props> = ({ services, gold, onBuy, onClose }) => {
+  const { t } = useI18n();
+
   return (
     <div className="relative w-full h-full flex flex-col items-center justify-center p-4 select-none">
       
@@ -60,7 +63,7 @@ export const SlumsClinicInterior: React.FC<Props> = ({ services, gold, onBuy, on
             onClick={onClose}
             className="text-red-400 hover:text-white font-black font-marker text-lg tracking-widest hover:scale-110 transition-transform"
           >
-            LEAVE
+            {t('common.close')}
           </button>
         </div>
       </div>

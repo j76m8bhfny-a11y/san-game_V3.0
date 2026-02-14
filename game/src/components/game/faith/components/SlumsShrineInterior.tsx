@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { useGameStore } from '@/store/useGameStore';
+import { useI18n } from '@/i18n';
 import { RegionID, NoviceActionType, Item } from '@/types/schema';
 import { SlumsOffering } from './SlumsOffering';
 import { placeholderBackgrounds, placeholderIcons } from '../utils/placeholderAssets';
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export const SlumsShrineInterior: React.FC<Props> = ({ onClose }) => {
+  const { t } = useI18n();
   const { inventory, gameDataCache, performNoviceAction, performFaithRite, updatePlayerStats, getFaithMode } = useGameStore();
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -103,28 +105,28 @@ export const SlumsShrineInterior: React.FC<Props> = ({ onClose }) => {
                     onClick={() => handleNoviceAction(NoviceActionType.DEDICATE)}
                     className="bg-black/40 border border-white/20 p-3 hover:bg-orange-900/40 hover:border-orange-500 text-left transition-all"
                 >
-                    <div className="text-orange-400 font-bold text-xs">THROW COIN</div>
+                    <div className="text-orange-400 font-bold text-xs">{t('faith.pray')}</div>
                     <div className="text-[9px] text-gray-500">-$50</div>
                 </button>
                 <button 
                     onClick={() => handleNoviceAction(NoviceActionType.AID)}
                     className="bg-black/40 border border-white/20 p-3 hover:bg-green-900/40 hover:border-green-500 text-left transition-all"
                 >
-                    <div className="text-green-400 font-bold text-xs">SHARE FOOD</div>
+                    <div className="text-green-400 font-bold text-xs">{t('faith.join')}</div>
                     <div className="text-[9px] text-gray-500">-HP / +$</div>
                 </button>
                 <button 
                     onClick={() => handleNoviceAction(NoviceActionType.SACRIFICE)}
                     className="bg-black/40 border border-white/20 p-3 hover:bg-red-900/40 hover:border-red-500 text-left transition-all"
                 >
-                    <div className="text-red-400 font-bold text-xs">BLEED</div>
+                    <div className="text-red-400 font-bold text-xs">{t('faith.offer')}</div>
                     <div className="text-[9px] text-gray-500">-HP / ++$</div>
                 </button>
                 <button 
                     onClick={() => handleNoviceAction(NoviceActionType.REJECT)}
                     className="bg-black/40 border border-white/20 p-3 hover:bg-white/10 text-left transition-all"
                 >
-                    <div className="text-gray-400 font-bold text-xs">LEAVE</div>
+                    <div className="text-gray-400 font-bold text-xs">{t('faith.leave')}</div>
                     <div className="text-[9px] text-gray-500">Just walk away</div>
                 </button>
             </div>
@@ -137,7 +139,7 @@ export const SlumsShrineInterior: React.FC<Props> = ({ onClose }) => {
             disabled={!selectedItemId || isAnimating}
             className="bg-red-900/80 text-red-100 font-marker text-xl px-8 py-2 border border-red-500 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-red-800 transition-colors"
           >
-            {isAnimating ? "SACRIFICING..." : selectedItemId ? "OFFER FLESH" : "SELECT ITEM BELOW"}
+            {isAnimating ? t('faith.pray') : selectedItemId ? t('faith.offer') : t('faith.join')}
           </button>
         )}
 
@@ -147,7 +149,7 @@ export const SlumsShrineInterior: React.FC<Props> = ({ onClose }) => {
               onClick={() => performFaithRite()}
               className="bg-gray-800 text-white font-mono text-sm px-6 py-3 border border-gray-600 hover:bg-gray-700 transition-all"
             >
-              MEDITATE
+              {t('faith.pray')}
             </button>
         )}
       </div>
@@ -156,7 +158,7 @@ export const SlumsShrineInterior: React.FC<Props> = ({ onClose }) => {
       {mode === 'NATIVE' && (
         <div className="absolute bottom-0 w-full bg-gradient-to-t from-black via-black/90 to-transparent p-6 z-20">
           <div className="flex justify-center gap-4 overflow-x-auto pb-4 px-8">
-             {uniqueItems.length === 0 && <div className="text-gray-600 font-mono text-xs">Inventory Empty</div>}
+             {uniqueItems.length === 0 && <div className="text-gray-600 font-mono text-xs">{t('inventory.empty')}</div>}
              {uniqueItems.map(item => (
                 <SlumsOffering
                   key={item.id}
@@ -175,7 +177,7 @@ export const SlumsShrineInterior: React.FC<Props> = ({ onClose }) => {
         onClick={onClose}
         className="absolute top-6 right-6 text-gray-500 hover:text-white text-xs font-mono border border-transparent hover:border-gray-500 px-3 py-1 rounded"
       >
-        [LEAVE]
+        [{t('faith.leave')}]
       </button>
     </div>
   );

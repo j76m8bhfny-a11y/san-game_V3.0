@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useI18n } from '@/i18n';
 import { useGameStore } from '@/store/useGameStore';
 import { motion } from 'framer-motion';
 // ✅ Refactor: 引入新设计的监狱规则配置
 import prisonRules from '@/assets/data/rules/prisonRules.json';
 
 const JailOverlay: React.FC = () => {
+  const { t } = useI18n();
   const { prison, vitality, serveTime, payCashBail, signBailBond } = useGameStore();
   const [log, setLog] = useState<string>("");
 
@@ -41,10 +43,10 @@ const JailOverlay: React.FC = () => {
       >
         {/* 头部信息 */}
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-black text-red-600 tracking-widest mb-2">DETAINED</h1>
+          <h1 className="text-4xl font-black text-red-600 tracking-widest mb-2">{t('jail.title')}</h1>
           <p className="text-zinc-500">INMATE: {currentClass.toUpperCase()}</p>
           <div className="mt-4 p-4 bg-black/50 border border-zinc-800 text-zinc-300">
-             CRIME: {prison.crime}
+             {t('jail.crime')}: {prison.crime}
           </div>
         </div>
 
@@ -52,7 +54,7 @@ const JailOverlay: React.FC = () => {
         <div className="grid grid-cols-2 gap-8 mb-8">
            {/* 刑期状态 */}
            <div className="bg-zinc-800/50 p-4 border border-zinc-700">
-              <div className="text-xs text-zinc-500 uppercase">Sentence</div>
+              <div className="text-xs text-zinc-500 uppercase">{t('jail.sentence')}</div>
               <div className="text-2xl font-bold text-white">
                 {/* 字段已确认为 turnsServed / sentenceTurns */}
                 {prison.turnsServed} / {prison.sentenceTurns} <span className="text-sm font-normal text-zinc-500">Turns</span>
@@ -67,7 +69,7 @@ const JailOverlay: React.FC = () => {
 
            {/* 保释金显示 */}
            <div className="bg-zinc-800/50 p-4 border border-zinc-700">
-              <div className="text-xs text-zinc-500 uppercase">Bail Amount</div>
+              <div className="text-xs text-zinc-500 uppercase">{t('jail.bail')}</div>
               <div className="text-2xl font-bold text-green-500">${prison.bailAmount}</div>
               <div className="text-xs text-zinc-600 mt-1">Cash or Bond accepted</div>
            </div>
@@ -86,7 +88,7 @@ const JailOverlay: React.FC = () => {
             onClick={handleServe}
             className="w-full py-4 bg-zinc-800 hover:bg-zinc-700 border border-zinc-600 text-white transition-all flex justify-between px-6 items-center group"
           >
-             <span className="font-bold">SERVE TIME (1 TURN)</span>
+             <span className="font-bold">{t('jail.serve')}</span>
              <span className="text-xs text-zinc-500 group-hover:text-zinc-300">
                {/* 动态显示的提示文案 */}
                {isVipTreatment ? 'VIP Routine (No Penalty)' : 'High HP/SAN Cost'}
@@ -101,7 +103,7 @@ const JailOverlay: React.FC = () => {
               }}
               className="py-3 bg-green-900/20 hover:bg-green-900/40 border border-green-800 text-green-500 font-bold transition-all"
             >
-              CASH BAIL (-${prison.bailAmount})
+              {t('jail.bail').toUpperCase()} (-${prison.bailAmount})
             </button>
 
             <button 
@@ -111,7 +113,7 @@ const JailOverlay: React.FC = () => {
               }}
               className="py-3 bg-purple-900/20 hover:bg-purple-900/40 border border-purple-800 text-purple-400 font-bold transition-all flex flex-col items-center justify-center leading-none"
             >
-              <span>BAIL BOND</span>
+              <span>{t('jail.bail').toUpperCase()} BOND</span>
               {/* 这里显示的百分比也可以做成动态的，目前使用 rate * 100 即可 */}
               <span className="text-[10px] mt-1 opacity-70">
                 PAY ${bailDownPayment} ({(bondRate * 100).toFixed(0)}%) + DEBT

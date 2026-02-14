@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { MedicalService } from '@/types/schema';
+import { useI18n } from '@/i18n';
 
 interface Props {
   service: MedicalService;
@@ -9,6 +10,7 @@ interface Props {
 
 export const RustBeltMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const { t } = useI18n();
 
   return (
     <button
@@ -52,7 +54,7 @@ export const RustBeltMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy
           ${service.baseCost}
         </div>
         {!canAfford && (
-          <div className="text-[8px] text-red-500 font-bold uppercase">Declined</div>
+          <div className="text-[8px] text-red-500 font-bold uppercase">{t('common.confirm')}</div>
         )}
       </div>
     </button>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { LoanProduct } from '@/types/schema';
+import { useI18n } from '@/i18n';
 
 interface Props {
   product: LoanProduct;
@@ -8,6 +9,7 @@ interface Props {
 }
 
 export const RustBeltLoanClipboard: React.FC<Props> = ({ product, creditScore, onSign }) => {
+  const { t } = useI18n();
   const canAfford = creditScore >= product.minScore;
   
   return (
@@ -26,31 +28,31 @@ export const RustBeltLoanClipboard: React.FC<Props> = ({ product, creditScore, o
       {/* 纸张 */}
       <div className="absolute top-2 left-2 right-2 bottom-2 bg-white shadow-inner p-3 font-serif text-gray-800 flex flex-col z-10">
         <div className="text-center border-b-2 border-black pb-1 mb-1">
-          <h3 className="font-bold text-sm uppercase">Loan Application</h3>
+          <h3 className="font-bold text-sm uppercase">{t('bank.loan.title')}</h3>
         </div>
         
         <div className="flex-1 space-y-1 text-[10px]">
           <div className="flex justify-between">
-            <span>Amount Requested:</span>
+            <span>{t('bank.loan.amount')}:</span>
             <span className="font-mono font-bold">${product.maxAmount}</span>
           </div>
           <div className="flex justify-between">
-            <span>Interest Rate:</span>
+            <span>{t('bank.loan.interest')}:</span>
             <span className="font-mono text-red-700">{(product.weeklyRate * 100).toFixed(1)}%</span>
           </div>
           <div className="flex justify-between">
-            <span>Term:</span>
-            <span className="font-mono">{product.termTurns} Turns</span>
+            <span>{t('bank.loan.term')}:</span>
+            <span className="font-mono">{product.termTurns} {t('bank.turns')}</span>
           </div>
           
           {!canAfford && (
             <div className="text-red-600 font-bold text-center mt-1">
-              Requires {product.minScore} Credit Score
+              {t('bank.loan.creditRequired', { score: product.minScore })}
             </div>
           )}
           
           <div className="mt-2 text-[8px] text-gray-500 leading-tight text-justify">
-            I hereby agree to wage garnishment in case of default.
+            {t('bank.loan.wageGarnishment')}
           </div>
         </div>
 
@@ -63,7 +65,7 @@ export const RustBeltLoanClipboard: React.FC<Props> = ({ product, creditScore, o
             px-2 py-0.5 text-[10px] font-bold border-2 transform -rotate-3
             ${canAfford ? 'border-blue-800 text-blue-800 group-hover:bg-blue-50' : 'border-gray-400 text-gray-400'}
           `}>
-            {canAfford ? 'SIGN HERE' : 'INELIGIBLE'}
+            {canAfford ? t('common.signHere') : t('common.ineligible')}
           </div>
         </div>
       </div>

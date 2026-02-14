@@ -1,8 +1,10 @@
 import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
+import { useI18n } from '@/i18n';
 import marketRules from '@/assets/data/rules/marketRules.json'; // ✅ Import
 
 export const NewsTicker: React.FC = () => {
+  const { t } = useI18n();
   const { crypto } = useGameStore();
   const news = crypto.weeklyNews;
   const { defaultText, speedSeconds } = marketRules.ui.ticker; // ✅ Config

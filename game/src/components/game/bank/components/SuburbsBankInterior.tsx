@@ -3,6 +3,7 @@ import { LoanProduct, ActiveLoan } from '@/types/schema';
 import { useAudioStore } from '@/store/useAudioStore';
 import { getCreditRating } from '@/logic/bank';
 import { useBankUI } from '../hooks/useBankUI';
+import { useI18n } from '@/i18n';
 
 interface Props {
   gold: number;
@@ -21,6 +22,7 @@ type ScreenView = 'MENU' | 'LOANS' | 'DEBT';
 export const SuburbsBankInterior: React.FC<Props> = ({ 
   gold, creditScore, products, activeLoans, currentTurn, onTakeLoan, onRepayLoan, onMakeInstallment, onClose 
 }) => {
+  const { t } = useI18n();
   const [view, setView] = useState<ScreenView>('MENU');
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [receiptAnim, setReceiptAnim] = useState(false);
@@ -92,7 +94,7 @@ export const SuburbsBankInterior: React.FC<Props> = ({
               <div className="text-xs text-blue-300">ATM TERMINAL V4.2</div>
             </div>
             <div className="text-right">
-              <div className="text-xs text-blue-300">BALANCE</div>
+              <div className="text-xs text-blue-300">{t('bank.balance')}</div>
               <div className="text-xl font-bold">${gold.toLocaleString()}</div>
             </div>
           </div>
@@ -103,8 +105,8 @@ export const SuburbsBankInterior: React.FC<Props> = ({
             {/* Loading Overlay */}
             {processingId && (
               <div className="absolute inset-0 bg-[#004080]/90 z-40 flex flex-col items-center justify-center">
-                <div className="text-green-400 font-bold text-xl animate-pulse">PROCESSING...</div>
-                <div className="text-xs text-blue-300 mt-2">DO NOT REMOVE CARD</div>
+                <div className="text-green-400 font-bold text-xl animate-pulse">{t('common.processing')}</div>
+                <div className="text-xs text-blue-300 mt-2">{t('bank.doNotRemoveCard')}</div>
               </div>
             )}
 
@@ -113,7 +115,7 @@ export const SuburbsBankInterior: React.FC<Props> = ({
                 {/* 信用分展示 (核心) */}
                 <div className="col-span-2 bg-[#002b55] border-2 border-blue-500/50 p-4 rounded flex items-center justify-between">
                   <div>
-                    <div className="text-xs text-blue-300">CREDIT SCORE</div>
+                    <div className="text-xs text-blue-300">{t('bank.creditScore')}</div>
                     <div className={`text-4xl font-black ${rating.color}`}>{creditScore}</div>
                   </div>
                   <div className={`text-xl font-bold border-2 px-3 py-1 ${rating.color} border-current`}>
@@ -125,23 +127,23 @@ export const SuburbsBankInterior: React.FC<Props> = ({
                   onClick={() => setView('LOANS')}
                   className="bg-blue-600 hover:bg-blue-500 text-white p-4 border-b-4 border-blue-800 active:border-0 active:translate-y-1 transition-all text-left"
                 >
-                  <div className="text-xs opacity-70">GET CASH</div>
-                  <div className="font-bold text-lg">APPLY LOAN</div>
+                  <div className="text-xs opacity-70">{t('bank.getCash')}</div>
+                  <div className="font-bold text-lg">{t('bank.loan.apply')}</div>
                 </button>
 
                 <button 
                   onClick={() => setView('DEBT')}
                   className="bg-blue-600 hover:bg-blue-500 text-white p-4 border-b-4 border-blue-800 active:border-0 active:translate-y-1 transition-all text-left"
                 >
-                  <div className="text-xs opacity-70">MANAGE</div>
-                  <div className="font-bold text-lg">MY DEBTS</div>
+                  <div className="text-xs opacity-70">{t('bank.manage')}</div>
+                  <div className="font-bold text-lg">{t('bank.myDebts')}</div>
                 </button>
               </div>
             )}
 
             {view === 'LOANS' && (
               <div className="space-y-4">
-                <h3 className="text-blue-300 border-b border-blue-300/30 pb-1 mb-2">AVAILABLE OFFERS</h3>
+                <h3 className="text-blue-300 border-b border-blue-300/30 pb-1 mb-2">{t('bank.availableOffers')}</h3>
                 {products.map(p => (
                   <div key={p.id} className="bg-[#003366] p-3 border border-blue-400/30 flex justify-between items-center hover:bg-[#004080] transition-colors">
                     <div>
@@ -150,7 +152,7 @@ export const SuburbsBankInterior: React.FC<Props> = ({
                         ${p.maxAmount.toLocaleString()} @ {(p.weeklyRate * 100).toFixed(1)}% / {p.termTurns} Turns
                       </div>
                       <div className="text-[10px] text-gray-400 mt-1">
-                        Min. Score: {p.minScore}
+                        {t('bank.minScore')}: {p.minScore}
                       </div>
                     </div>
                     <button 
@@ -158,17 +160,17 @@ export const SuburbsBankInterior: React.FC<Props> = ({
                       disabled={creditScore < p.minScore}
                       className="bg-green-700 hover:bg-green-600 disabled:bg-gray-700 disabled:text-gray-500 text-white px-4 py-2 text-sm font-bold"
                     >
-                      ACCEPT
+                      {t('common.accept')}
                     </button>
                   </div>
                 ))}
-                {products.length === 0 && <div className="text-center text-gray-400 py-4">NO OFFERS AVAILABLE</div>}
+                {products.length === 0 && <div className="text-center text-gray-400 py-4">{t('bank.noOffersAvailable')}</div>}
               </div>
             )}
 
             {view === 'DEBT' && (
               <div className="space-y-4">
-                <h3 className="text-blue-300 border-b border-blue-300/30 pb-1 mb-2">OUTSTANDING DEBTS</h3>
+                <h3 className="text-blue-300 border-b border-blue-300/30 pb-1 mb-2">{t('bank.outstandingDebts')}</h3>
                 {activeLoans.map(l => {
                   const status = getLoanStatus(l, currentTurn, true);
                   const warning = getSkipWarning(l, currentTurn, true);
@@ -188,13 +190,13 @@ export const SuburbsBankInterior: React.FC<Props> = ({
                       
                       {/* 本金利息明细 */}
                       <div className="text-[10px] text-blue-200 mb-2">
-                        P: ${l.principal.toLocaleString()} | I: ${l.interest.toLocaleString()}
+                        {t('bank.principalShort')}: ${l.principal.toLocaleString()} | {t('bank.interestShort')}: ${l.interest.toLocaleString()}
                       </div>
                       
                       {/* 警告提示 */}
                       {warning && (
                         <div className="text-xs text-red-500 font-bold bg-red-900/30 p-1 mb-2 text-center animate-pulse">
-                          ⚠️ {warning}
+                          ⚠️ {t(warning)}
                         </div>
                       )}
                       
@@ -204,14 +206,14 @@ export const SuburbsBankInterior: React.FC<Props> = ({
                           type="number"
                           value={repayAmount[l.id] || ''}
                           onChange={(e) => setRepayAmount(prev => ({ ...prev, [l.id]: Math.max(0, parseInt(e.target.value, 10) || 0) }))}
-                          placeholder="AMOUNT"
+                          placeholder={t('common.amount')}
                           className="flex-1 bg-[#002b55] border border-blue-400/50 text-white text-xs px-2 py-1 focus:outline-none focus:border-blue-300"
                         />
                         <button
                           onClick={() => setRepayAmount(prev => ({ ...prev, [l.id]: Math.min(gold, totalOwed) }))}
                           className="text-[10px] text-yellow-400 hover:text-white underline px-2"
                         >
-                          MAX
+                          {t('common.max')}
                         </button>
                       </div>
                       
@@ -222,20 +224,20 @@ export const SuburbsBankInterior: React.FC<Props> = ({
                           disabled={gold < (repayAmount[l.id] || 0) || (repayAmount[l.id] || 0) <= 0}
                           className="flex-1 bg-blue-700 hover:bg-blue-600 disabled:bg-gray-700 disabled:text-gray-500 text-white py-1 text-xs font-bold"
                         >
-                          PARTIAL PAY
+                          {t('bank.repayPartial')}
                         </button>
                         <button 
                           onClick={() => handleAction(() => onRepayLoan(l.id))}
                           disabled={gold < totalOwed}
                           className="flex-1 bg-green-700 hover:bg-green-600 disabled:bg-gray-700 disabled:text-gray-500 text-white py-1 text-xs font-bold"
                         >
-                          PAY FULL
+                          {t('bank.repayFull')}
                         </button>
                       </div>
                     </div>
                   );
                 })}
-                {activeLoans.length === 0 && <div className="text-center text-green-400 py-4">NO ACTIVE DEBTS</div>}
+                {activeLoans.length === 0 && <div className="text-center text-green-400 py-4">{t('bank.noActiveDebts')}</div>}
               </div>
             )}
 
@@ -245,13 +247,13 @@ export const SuburbsBankInterior: React.FC<Props> = ({
           <div className="mt-6 flex justify-between items-center text-xs">
             {view !== 'MENU' ? (
               <button onClick={() => setView('MENU')} className="text-yellow-400 hover:text-white flex items-center gap-1">
-                &lt; BACK TO MENU
+                &lt; {t('bank.backToMenu')}
               </button>
             ) : (
-              <div className="text-blue-400">SELECT SERVICE</div>
+              <div className="text-blue-400">{t('bank.selectService')}</div>
             )}
             <button onClick={onClose} className="text-red-400 hover:text-white">
-              EJECT CARD [X]
+              {t('common.close')}
             </button>
           </div>
         </div>

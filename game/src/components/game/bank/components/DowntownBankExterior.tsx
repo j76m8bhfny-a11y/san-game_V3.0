@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useI18n } from '@/i18n';
 
 interface Props {
   onEnter: () => void;
@@ -6,6 +7,7 @@ interface Props {
 }
 
 export const DowntownBankExterior: React.FC<Props> = ({ onEnter, onClose }) => {
+  const { t } = useI18n();
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -54,7 +56,7 @@ export const DowntownBankExterior: React.FC<Props> = ({ onEnter, onClose }) => {
             transition-opacity duration-500
             ${isHovered ? 'opacity-100' : 'opacity-0'}
           `}>
-            Access Granted
+            {t('bank.accessGranted')}
           </div>
         </div>
       </div>
@@ -69,7 +71,7 @@ export const DowntownBankExterior: React.FC<Props> = ({ onEnter, onClose }) => {
         onClick={onClose}
         className="relative z-20 self-center mt-auto text-gray-400 hover:text-[#d4af37] text-xs font-mono uppercase tracking-[0.2em] transition-colors"
       >
-        Withdraw
+        {t('common.close')}
       </button>
     </div>
   );

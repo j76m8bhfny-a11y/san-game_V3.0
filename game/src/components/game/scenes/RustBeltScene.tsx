@@ -1,6 +1,7 @@
 // src/components/game/scenes/RustBeltScene.tsx
 import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
+import { useI18n } from '@/i18n';
 import { BaseScene, ParallaxLayer } from './BaseScene';
 
 // --- 辅助组件：交互物体 (功能入口) ---
@@ -97,6 +98,7 @@ const NarrativeProp: React.FC<NarrativePropProps> = ({ text, style, baseImage, a
 };
 
 export const RustBeltScene: React.FC = () => {
+  const { t } = useI18n();
   const { setShopOpen, setJobBoardOpen, setHousingOpen, setHospitalOpen, setBankOpen, setInsuranceOpen } = useGameStore();
 
   return (
@@ -131,7 +133,7 @@ export const RustBeltScene: React.FC = () => {
           
           {/* 1. 叙事道具：抛锚的皮卡 (左侧路边) */}
           <NarrativeProp 
-             text="该死... 又是变速箱。这周的工资全得搭进去了。"
+             text={t('scenes.rust_belt.truck_text')}
              style={{ left: '5%', bottom: '12%', width: '18vw' }}
              baseImage="/assets/scenes/rust/prop_broken_truck.png"
              activeImage="/assets/scenes/rust/prop_broken_truck_smoke.png"
@@ -157,7 +159,7 @@ export const RustBeltScene: React.FC = () => {
 
           {/* 4. 叙事道具：罢工标语 (路中间) */}
           <NarrativeProp 
-             text="我们要公平薪资！工会万岁！(远处传来警笛声)"
+             text={t('scenes.rust_belt.strike_text')}
              style={{ left: '50%', bottom: '8%', width: '6vw' }}
              baseImage="/assets/scenes/rust/prop_strike_sign.png"
              activeImage="/assets/scenes/rust/prop_strike_sign_fallen.png"
@@ -192,7 +194,7 @@ export const RustBeltScene: React.FC = () => {
           
           {/* 8. 叙事道具：野狗 (最右侧) */}
           <NarrativeProp 
-             text="汪！(这只狗看起来比你还饿)"
+             text={t('scenes.rust_belt.dog_text')}
              style={{ left: '92%', bottom: '10%', width: '6vw' }}
              baseImage="/assets/scenes/rust/prop_stray_dog.png"
           />
@@ -208,7 +210,7 @@ export const RustBeltScene: React.FC = () => {
           
           {/* 配合一个正在喝咖啡的工会代表(装饰) */}
           <NarrativeProp 
-             text="嘿兄弟，不想断条腿还得自费接骨吧？来签个字。"
+             text={t('scenes.rust_belt.union_rep_text')}
              style={{ left: '68%', bottom: '26%', width: '3vw', zIndex: 21 }}
              baseImage="/assets/scenes/rust/prop_coffee_cup.png"
           />

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
+import { useI18n } from '@/i18n';
 import { RegionID } from '@/types/schema';
 import { DowntownExterior } from './components/DowntownExterior';
 import { DowntownInterior } from './components/DowntownInterior';
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export const DowntownHousing: React.FC<Props> = ({ onClose }) => {
+  const { t } = useI18n();
   const { 
     gameDataCache, 
     activeHousing, 
@@ -24,7 +26,7 @@ export const DowntownHousing: React.FC<Props> = ({ onClose }) => {
 
   const houseData = gameDataCache?.housing?.find(h => h.region === RegionID.Downtown);
   
-  if (!houseData) return <div className="text-white p-4">No penthouse data found.</div>;
+  if (!houseData) return <div className="text-white p-4">{t('housing.error')}</div>;
 
   const isOwningThis = activeHousing?.definitionId === houseData.id;
 
@@ -52,13 +54,13 @@ export const DowntownHousing: React.FC<Props> = ({ onClose }) => {
     const restoreAmount = activeHousing?.regenHp || 0;
     const newHp = Math.min(vitality.metrics.maxHp, vitality.metrics.hp + restoreAmount);
     modifyStats({ hp: newHp });
-    addNotification(`Optimal rest cycle completed. HP +${restoreAmount}`, 'HP');
+    addNotification(`${t('housing.rest')} HP +${restoreAmount}`, 'HP');
     onClose();
   };
   
   const handleDrink = () => {
     playSfx('sfx_glass_clink');
-    addNotification('The vintage taste calms your nerves.', 'info');
+    addNotification(t('housing.relax'), 'info');
     // 氛围装饰交互，不实际修改数值
   };
 

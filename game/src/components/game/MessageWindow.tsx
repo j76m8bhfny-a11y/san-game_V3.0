@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import { GameEvent } from '@/types/schema';
+import { useI18n } from '@/i18n';
 // 👇 1. 引入配置文件
 import NARRATIVE_RULES from '@/assets/data/rules/narrative_rules.json';
 
@@ -251,6 +252,7 @@ const PixelPhone: React.FC<{ options: any[]; onChoose: (id: string) => void;
 
 // --- 主组件 ---
 export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
+  const { t } = useI18n();
   if (!event || !event.options) return null;
   const { resolveEventOption, vitality } = useGameStore();
   const { san } = vitality.metrics;

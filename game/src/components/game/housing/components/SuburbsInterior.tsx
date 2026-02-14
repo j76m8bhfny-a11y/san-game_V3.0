@@ -1,5 +1,6 @@
 import React from 'react';
 import { ActiveHousingState } from '@/types/schema';
+import { useI18n } from '@/i18n';
 
 interface Props {
   housing: ActiveHousingState;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export const SuburbsInterior: React.FC<Props> = ({ housing, onRest, onPayBills, onMoveOut, onClose }) => {
+  const { t } = useI18n();
   return (
     <div className="relative w-full h-full flex flex-col p-6 overflow-hidden select-none">
       
@@ -51,7 +53,7 @@ export const SuburbsInterior: React.FC<Props> = ({ housing, onRest, onPayBills, 
           <img src="/assets/housing/ui_bill_stack.png" className="w-full h-full object-contain drop-shadow-xl" />
           {/* 提示气泡 */}
           <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white px-3 py-1 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-            <span className="text-xs font-bold text-gray-700">Manage Bills</span>
+            <span className="text-xs font-bold text-gray-700">{t('housing.weeklyCost')}</span>
           </div>
         </div>
       </div>
@@ -68,7 +70,7 @@ export const SuburbsInterior: React.FC<Props> = ({ housing, onRest, onPayBills, 
             🏷️
           </div>
           <span className="mt-1 bg-white/90 text-gray-500 text-[10px] px-2 py-0.5 rounded shadow-sm font-bold uppercase">
-            {housing.type === 'OWN' ? 'Sell House' : 'Move Out'}
+            {t('housing.moveOut')}
           </span>
         </button>
 
@@ -80,7 +82,7 @@ export const SuburbsInterior: React.FC<Props> = ({ housing, onRest, onPayBills, 
           <img src="/assets/housing/ui_sofa.png" className="w-full object-contain drop-shadow-2xl" />
           <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-[#1e3a8a] text-white px-4 py-1 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
              <span className="font-bold text-sm uppercase tracking-wider">
-               Relax
+               {t('housing.regen')}
              </span>
           </div>
         </button>
@@ -93,7 +95,7 @@ export const SuburbsInterior: React.FC<Props> = ({ housing, onRest, onPayBills, 
           <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md border border-gray-200 group-hover:border-blue-400">
             🚪
           </div>
-          <span className="mt-1 bg-white/90 text-gray-500 text-[10px] px-2 py-0.5 rounded shadow-sm font-bold uppercase">Exit</span>
+          <span className="mt-1 bg-white/90 text-gray-500 text-[10px] px-2 py-0.5 rounded shadow-sm font-bold uppercase">{t('common.close')}</span>
         </button>
       </div>
 

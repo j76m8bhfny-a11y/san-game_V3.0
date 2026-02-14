@@ -2,11 +2,13 @@ import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { NoviceActionType } from '@/types/schema';
 import faithRulesUntyped from '@/assets/data/rules/faithRules.json';
+import { useI18n } from '@/i18n';
 
 // 确保类型安全 (简单的类型定义，实际应从 types 引入)
 const faithRules = faithRulesUntyped as any;
 
 export const NoviceOptions: React.FC = () => {
+  const { t } = useI18n();
   const { currentRegion, faith, performNoviceAction } = useGameStore();
   const { behaviorState } = faith;
 
@@ -18,7 +20,7 @@ export const NoviceOptions: React.FC = () => {
     <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
       <div className="bg-black/80 backdrop-blur-md p-6 rounded-xl border border-white/10 shadow-2xl pointer-events-auto min-w-[320px]">
         <h2 className="text-white font-serif text-xl mb-4 text-center tracking-widest border-b border-white/20 pb-2">
-          做出选择
+          {t('faith.make_choice')}
         </h2>
         
         <div className="flex flex-col gap-3">
@@ -65,7 +67,7 @@ export const NoviceOptions: React.FC = () => {
         </div>
 
         <div className="mt-4 text-[10px] text-center text-gray-600 font-mono">
-          "坚持你的选择，神明注视着恒心者。"
+          "{t('faith.perseverance_quote')}"
         </div>
       </div>
     </div>

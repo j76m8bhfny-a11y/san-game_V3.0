@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Bill } from '@/types/schema';
+import { useI18n } from '@/i18n';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import { motion } from 'framer-motion';
@@ -10,6 +11,7 @@ import { motion } from 'framer-motion';
 import { Config } from '@/config';
 
 export const BillOverlay: React.FC<{ bill: Bill }> = ({ bill }) => {
+  const { t } = useI18n();
   
   // 获取 resolveBill Action
   const { resolveBill } = useGameStore();
@@ -92,10 +94,10 @@ export const BillOverlay: React.FC<{ bill: Bill }> = ({ bill }) => {
           {bill.news && (
             <div className="bg-gray-200/50 p-4 border-l-4 border-gray-400 relative">
               <div className="absolute -top-3 -right-2 bg-white border border-gray-300 px-2 py-0.5 text-[9px] font-bold uppercase transform rotate-2">
-                Attachment
+                {t('bill.title')}
               </div>
               <div className="text-[10px] font-bold uppercase text-gray-500 mb-1">
-                SOURCE: {bill.news.source}
+                {t('bill.legal')}: {bill.news.source}
               </div>
               <div className="font-mono text-xs text-gray-700 leading-tight">
                 {bill.news.content}
@@ -108,7 +110,7 @@ export const BillOverlay: React.FC<{ bill: Bill }> = ({ bill }) => {
             <div className="mt-4 pt-4 border-t border-dashed border-gray-300">
                <div className="flex gap-3 items-center">
                  <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold shrink-0">
-                   SYS
+                   {t('bill.medical')}
                  </div>
                  <p className="text-sm font-bold text-gray-900 font-sans">
                    {bill.roast}
@@ -124,11 +126,11 @@ export const BillOverlay: React.FC<{ bill: Bill }> = ({ bill }) => {
                 onClick={handlePay}
                 className="w-full bg-black text-white py-4 font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors"
               >
-                {bill.amount > 0 ? 'ACCEPT REWARD' : 'ACKNOWLEDGE'}
+                {t(bill.amount > 0 ? 'bill.pay' : 'common.confirm')}
               </button>
             ) : (
               <div className="w-full py-4 text-center font-black text-2xl uppercase text-red-600 border-4 border-red-600 animate-pulse mix-blend-multiply rotate-[-2deg]">
-                {bill.amount > 0 ? 'RECEIVED' : 'PROCESSED'}
+                {t(bill.amount > 0 ? 'bill.surprise' : 'common.close')}
               </div>
             )}
           </div>

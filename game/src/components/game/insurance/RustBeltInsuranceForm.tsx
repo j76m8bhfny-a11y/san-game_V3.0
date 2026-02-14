@@ -2,8 +2,10 @@ import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import insuranceData from '@/assets/data/insurance.json';
+import { useI18n } from '@/i18n';
 
 export const RustBeltInsuranceForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
+  const { t } = useI18n();
   const { signInsurance, cancelInsurance, vitality } = useGameStore();
   const { playSfx } = useAudioStore();
 
@@ -30,15 +32,15 @@ export const RustBeltInsuranceForm: React.FC<{ onClose: () => void }> = ({ onClo
 
       <div className="p-8 bg-[#f4f4f5] flex-1 font-mono text-[#18181b]">
         <h2 className="text-xl font-bold border-b-2 border-black pb-2 mb-4 tracking-tighter">
-          UNION HEALTH BENEFIT ENROLLMENT
+          {t('insurance.title')}
         </h2>
 
         <table className="w-full text-sm mb-6 border-collapse">
           <thead>
             <tr className="border-b border-black">
-              <th className="text-left py-1">PLAN CODE</th>
-              <th className="text-left py-1">DEDUCTION</th>
-              <th className="text-left py-1">STATUS</th>
+              <th className="text-left py-1">{t('insurance.coverage.title')}</th>
+              <th className="text-left py-1">{t('insurance.weekly')}</th>
+              <th className="text-left py-1">{t('common.confirm')}</th>
             </tr>
           </thead>
           <tbody>
@@ -47,7 +49,7 @@ export const RustBeltInsuranceForm: React.FC<{ onClose: () => void }> = ({ onClo
               return (
                 <tr key={plan.id} className="border-b border-gray-300 hover:bg-gray-200 transition-colors cursor-pointer" onClick={() => handleToggle(plan)}>
                   <td className="py-3 font-bold">{plan.name}</td>
-                  <td className="py-3 text-red-700">-${plan.weeklyCost}/wk</td>
+                  <td className="py-3 text-red-700">-${plan.weeklyCost}/{t('insurance.weekly')}</td>
                   <td className="py-3 relative">
                      <div className={`w-5 h-5 border-2 border-black flex items-center justify-center ${isActive ? 'bg-black' : 'bg-white'}`}>
                         {isActive && <span className="text-white text-xs">✓</span>}
@@ -55,7 +57,7 @@ export const RustBeltInsuranceForm: React.FC<{ onClose: () => void }> = ({ onClo
                      {/* 盖章动画效果 */}
                      {isActive && (
                        <div className="absolute -top-2 -right-4 border-2 border-red-700 text-red-700 px-1 text-[10px] font-bold rotate-12 opacity-80 mix-blend-multiply pointer-events-none">
-                         APPROVED
+                         {t('insurance.enroll')}
                        </div>
                      )}
                   </td>
@@ -79,7 +81,7 @@ export const RustBeltInsuranceForm: React.FC<{ onClose: () => void }> = ({ onClo
             onClick={onClose}
             className="px-4 py-1 border border-black hover:bg-black hover:text-white transition-colors text-xs uppercase"
           >
-            Submit & Close
+            {t('common.confirm')} & {t('common.close')}
           </button>
         </div>
       </div>

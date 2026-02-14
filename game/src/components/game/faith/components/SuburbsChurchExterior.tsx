@@ -1,5 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { placeholderBackgrounds, placeholderEffects } from '../utils/placeholderAssets';
+import { useI18n } from '@/i18n';
 
 interface Props {
   onEnter: () => void;
@@ -7,6 +8,7 @@ interface Props {
 }
 
 export const SuburbsChurchExterior: React.FC<Props> = ({ onEnter, onClose }) => {
+  const { t } = useI18n();
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -29,8 +31,8 @@ export const SuburbsChurchExterior: React.FC<Props> = ({ onEnter, onClose }) => 
         {/* 屏幕内容循环 */}
         <div className="absolute inset-0 flex items-center justify-center animate-pulse-slow">
           <div className="text-center">
-            <h1 className="text-4xl font-black text-white tracking-tighter">WELCOME <span className="text-blue-400">HOME</span></h1>
-            <p className="text-xs text-gray-300 mt-1 uppercase tracking-widest">Connect • Grow • Prosper</p>
+            <h1 className="text-4xl font-black text-white tracking-tighter">{t('faith.welcome_title')}</h1>
+            <p className="text-xs text-gray-300 mt-1 uppercase tracking-widest">{t('faith.welcome_subtitle')}</p>
           </div>
         </div>
         {/* 扫描线效果 */}
@@ -47,8 +49,8 @@ export const SuburbsChurchExterior: React.FC<Props> = ({ onEnter, onClose }) => 
             G
           </div>
           <div className="text-gray-800 bg-white/90 px-3 py-1 rounded shadow-sm backdrop-blur-sm">
-            <h2 className="font-bold text-lg leading-none">GraceLife</h2>
-            <p className="text-[10px] text-gray-500 uppercase tracking-wider">Community Center</p>
+            <h2 className="font-bold text-lg leading-none">{t('faith.brand_name')}</h2>
+            <p className="text-[10px] text-gray-500 uppercase tracking-wider">{t('faith.brand_subtitle')}</p>
           </div>
         </div>
       </div>
@@ -66,7 +68,7 @@ export const SuburbsChurchExterior: React.FC<Props> = ({ onEnter, onClose }) => 
           transition-all duration-300 border border-white
           ${isHovered ? 'scale-110 shadow-blue-500/30' : 'hover:bg-white'}
         `}>
-          Join Experience
+          {t('faith.join')}
           
           {/* 装饰性光效 */}
           <div className="absolute top-0 left-0 w-full h-full bg-white opacity-20 animate-ping rounded-full" />
@@ -77,7 +79,7 @@ export const SuburbsChurchExterior: React.FC<Props> = ({ onEnter, onClose }) => 
         onClick={onClose}
         className="relative z-20 self-center mt-auto bg-gray-900/80 text-white px-6 py-2 rounded-full text-xs font-bold uppercase hover:bg-black transition-colors"
       >
-        Back to Parking Lot
+        {t('common.close')}
       </button>
     </div>
   );

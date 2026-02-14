@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
+import { useI18n } from '@/i18n';
 import { BaseScene, ParallaxLayer } from './BaseScene';
 
 // --- 内部组件：可交互物体 (带标签和光效) ---
@@ -87,6 +88,7 @@ const NarrativeProp: React.FC<{
 
 // --- 主场景组件 ---
 export const SuburbsScene: React.FC = () => {
+  const { t } = useI18n();
   const { 
     setShopOpen, 
     setJobBoardOpen, 
@@ -140,7 +142,7 @@ export const SuburbsScene: React.FC = () => {
           <NarrativeProp 
             image="/assets/scenes/suburbs/prop_hoa_sign.png"
             style={{ left: '44%', bottom: '12%', width: '3vw' }}
-            message="HOA REMINDER: Your grass is 0.5 inches too tall."
+            message={t('scenes.suburbs.hoa_message')}
           />
 
           {/* 3. 住房：独栋别墅 (正中) */}
@@ -156,7 +158,7 @@ export const SuburbsScene: React.FC = () => {
           <NarrativeProp 
             image="/assets/scenes/suburbs/prop_packages.png"
             style={{ left: '62%', bottom: '19%', width: '5vw', zIndex: 20 }}
-            message="Amazon: Payment Declined. Please update your card."
+            message={t('scenes.suburbs.packages_message')}
           />
 
           {/* 4. 银行：商业银行 (右中) */}
@@ -191,7 +193,7 @@ export const SuburbsScene: React.FC = () => {
           <NarrativeProp 
             image="/assets/scenes/suburbs/prop_flyer_pile.png"
             style={{ left: '38%', bottom: '13%', width: '2vw' }}
-            message="Don't wait for disaster! Bundle your life today!"
+            message={t('scenes.suburbs.flyer_message')}
           />
 
         </div>

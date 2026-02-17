@@ -4,9 +4,10 @@ import { GameSystem, SystemResult } from '../types';
 import { checkDailyDisease } from '@/logic/health';
 import { checkClassUpdate } from '@/logic/core';
 import diseasesData from '@/assets/data/diseases.json';
-import { Insurance, Disease } from '@/types/schema';
+import { Disease } from '@/types/schema';
 import vitalityRules from '@/assets/data/rules/vitalityRules.json';
 import classesData from '@/assets/data/classes.json'; // ✨ 引入阶级定义
+import vehicleRules from '@/assets/data/rules/vehicleRules.json'; // [NEW] 车辆规则
 
 export const StatRuleSystem: GameSystem = {
   id: 'STAT_RULES',
@@ -19,8 +20,7 @@ export const StatRuleSystem: GameSystem = {
       notes: []
     };
 
-    const { metrics, activeDiseases } = state.vitality;
-    const activeInsurance = state.vitality.activeInsurance as Insurance | null;
+    const { metrics, activeDiseases, activeInsurances } = state.vitality;
 
     // ✅ 2. 解构配置项（带防御性默认值）
     const metabolism = vitalityRules.metabolism || {
@@ -37,15 +37,108 @@ export const StatRuleSystem: GameSystem = {
     // 0. 保险费扣除 (Insurance Premium)
     // =================================================================
     // 只有在没坐牢的情况下才自动扣费 (坐牢时 SystemRegistry 已有拦截逻辑，或者允许欠费)
-    if (activeInsurance && activeInsurance.weeklyCost > 0) {
+    // ✅ 多保险支持：遍历所有生效保险并扣除周费
+    for (const insurance of activeInsurances) {
+      if (insurance.weeklyCost > 0) {
         result.newTransactions!.push({
-            id: Math.random().toString(),
-            turn: state.vitality.time.currentTurn,
-            category: 'MEDICAL',
-            amount: -activeInsurance.weeklyCost,
-            description: `保险续费: ${activeInsurance.name}`,
-            timestamp: Date.now()
+          id: Math.random().toString(),
+          turn: state.vitality.time.currentTurn,
+          category: insurance.type === 'MEDICAL' ? 'MEDICAL' : 'MISC',
+          amount: -insurance.weeklyCost,
+          description: `${insurance.name} - 周费`,
+          timestamp: Date.now()
         });
+      }
+    }
+
+    // =================================================================
+    // 0.5 车辆相关系统处理 [NEW]
+    // =================================================================
+    
+    // ---- 0.5.1 DMV排队处理 ----
+    if (state.dmvQueue) {
+      const { processDMVQueueTurn, completeDMVQueue } = state as any;
+      const queueResult = processDMVQueueTurn();
+      
+      if (queueResult.isComplete) {
+        const completeResult = completeDMVQueue();
+        result.logs.push(`DMV: ${completeResult.message}`);
+        if (completeResult.success) {
+          result.notes.push('驾照办理完成！');
+        }
+      } else {
+        result.logs.push(`DMV排队: ${queueResult.message}`);
+      }
+    }
+    
+    // ---- 0.5.2 租赁处理 ----
+    if (state.activeLease) {
+      const { processLeaseTurn } = state as any;
+      const leaseResult = processLeaseTurn();
+      
+      if (leaseResult.paymentSuccess) {
+        result.logs.push(`租赁: ${leaseResult.message}`);
+        if (leaseResult.isExpired) {
+          result.notes.push('租赁期已满，请归还车辆');
+        }
+        
+        // ✅ 自动增加里程和磨损（决策4-A）
+        const lease = state.activeLease;
+        if (lease) {
+          // 每回合随机增加50-150里程
+          const mileageIncrease = Math.floor(Math.random() * 100) + 50;
+          const newMileageUsed = (lease.mileageUsed || 0) + mileageIncrease;
+          
+          // 磨损增加0.02-0.05
+          const wearIncrease = (Math.random() * 0.03) + 0.02;
+          const newWearAndTear = Math.min(1, (lease.wearAndTear || 0) + wearIncrease);
+          
+          // 更新租赁状态
+          if (!result.updates.activeLease) {
+            result.updates.activeLease = { ...lease };
+          }
+          result.updates.activeLease.mileageUsed = newMileageUsed;
+          result.updates.activeLease.wearAndTear = newWearAndTear;
+          
+          // 如果超里程，添加警告日志
+          if (newMileageUsed > lease.mileageLimit) {
+            const overage = newMileageUsed - lease.mileageLimit;
+            result.logs.push(`租赁警告: 已超里程 ${overage} 单位`);
+          }
+        }
+      } else {
+        result.logs.push(`租赁违约: ${leaseResult.message}`);
+        result.notes.push('无法支付租赁费用，车辆已被收回');
+      }
+    }
+    
+    // ---- 0.5.3 车辆效果处理 ----
+    const vehicleEffects = (vehicleRules as any).vehicleEffects;
+    if (vehicleEffects?.applyFrequency === 'TURN_START') {
+      const { processVehicleEffects } = state as any;
+      const effects = processVehicleEffects();
+      
+      if (effects.hpChange !== 0 || effects.sanChange !== 0 || effects.addictionChange !== 0) {
+        // 初始化 metrics 容器
+        if (!result.updates.vitality) result.updates.vitality = { metrics: {} };
+        if (!result.updates.vitality.metrics) result.updates.vitality.metrics = {};
+        
+        const vitMetrics = result.updates.vitality.metrics;
+        const currentHp = vitMetrics.hp ?? metrics.hp;
+        const currentSan = vitMetrics.san ?? metrics.san;
+        const currentAddiction = vitMetrics.addiction ?? metrics.addiction;
+        
+        vitMetrics.hp = Math.max(0, currentHp + effects.hpChange);
+        vitMetrics.san = Math.max(0, Math.min(100, currentSan + effects.sanChange));
+        vitMetrics.addiction = Math.max(0, Math.min(100, currentAddiction + effects.addictionChange));
+        
+        const effectDesc = [];
+        if (effects.hpChange !== 0) effectDesc.push(`HP ${effects.hpChange > 0 ? '+' : ''}${effects.hpChange}`);
+        if (effects.sanChange !== 0) effectDesc.push(`SAN ${effects.sanChange > 0 ? '+' : ''}${effects.sanChange}`);
+        if (effects.addictionChange !== 0) effectDesc.push(`成瘾 ${effects.addictionChange > 0 ? '+' : ''}${effects.addictionChange}`);
+        
+        result.logs.push(`车辆效果: ${effectDesc.join(', ')}`);
+      }
     }
 
     // =================================================================

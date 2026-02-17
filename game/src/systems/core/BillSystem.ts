@@ -14,7 +14,9 @@ export const BillSystem: GameSystem = {
     const newTransactions: any[] = []; 
 
     const { metrics, identity } = state.vitality;
-    const activeInsurance = state.vitality.activeInsurance as Insurance | null;
+    // ✅ 获取所有保险（用于触发条件检查）和医疗保险（用于账单减免）
+    const allInsurances = state.vitality.activeInsurances || [];
+    const medicalInsurance = allInsurances.find((ins: Insurance) => ins.type === 'MEDICAL') || null;
     
     // ✅ 修复: 解析房产配置 (单一房产)
     const currentHousing = state.activeHousing;
@@ -31,15 +33,35 @@ export const BillSystem: GameSystem = {
       .flat()
       .filter((t: string) => t.startsWith('VEHICLE'));
 
-    const bill = triggerBill(
+    // 检查假证风险（如果玩家有车和假证，增加识破概率）
+    const hasFakeLicense = state.inventory.includes('LICENSE_FAKE');
+    const hasValidLicense = state.inventory.includes('LICENSE_VALID') || state.inventory.includes('LICENSE_ELITE');
+    const hasVehicle = state.inventory.some((id: string) => id.startsWith('VEH_'));
+    
+    // 如果有车、有假证、没有真证，30%概率触发假证被识破
+    let forcedBill = null;
+    if (hasVehicle && hasFakeLicense && !hasValidLicense) {
+      const detectChance = (Config.licenses as any[])?.find((l: any) => l.id === 'LICENSE_FAKE')?.policeCheck?.detectChance || 0.3;
+      if (Math.random() < detectChance) {
+        forcedBill = (Config.bills as any[]).find((b: any) => b.id === 'B_POLICE_FAKE_LICENSE') || null;
+      }
+    }
+
+    const bill = forcedBill || triggerBill(
       metrics.gold,
       metrics.san,
       identity.currentClass,
       Config.bills as any,
       Config.global.billConfig,
       {
-        housing: housingConfig, // ✅ 传入解析后的配置对象
-        vehicleTags
+        housing: housingConfig,
+        vehicleTags,
+        inventory: state.inventory,
+        insurance: allInsurances,
+        activeLoans: state.bank?.activeLoans?.map(loan => ({
+          productId: loan.productId,
+          overdueTurns: loan.overdueTurns
+        }))
       }
     );
 
@@ -49,7 +71,7 @@ export const BillSystem: GameSystem = {
 
     // 计算减免 (现在传入正确的 housingConfig)
     // 防御性检查：确保 housingConfig 存在
-    const mitigation = calculateBillMitigation(bill, housingConfig || null, activeInsurance);
+    const mitigation = calculateBillMitigation(bill, housingConfig || null, medicalInsurance);
     const finalAmount = mitigation.finalAmount;
 
     if (mitigation.mitigated) {
@@ -97,6 +119,16 @@ export const BillSystem: GameSystem = {
     });
     
     result.newTransactions = newTransactions;
+    
+    // 处理特殊账单效果
+    if (bill.id === 'B_CAR_REPO') {
+      // 车辆被拖走：从inventory中移除车辆
+      const vehicleToRemove = state.inventory.find((id: string) => id.startsWith('VEH_'));
+      if (vehicleToRemove) {
+        result.updates.inventory = state.inventory.filter((id: string) => id !== vehicleToRemove);
+        notes.push(`车辆 ${vehicleToRemove} 已被拖走`);
+      }
+    }
 
     return result;
   }

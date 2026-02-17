@@ -57,7 +57,10 @@ export const triggerBill = (
   config: { baseProb: number; debtProb: number },
   assets: {
     housing: Housing | null;
-    vehicleTags: string[]; 
+    vehicleTags: string[];
+    inventory?: string[];
+    insurance?: any;
+    activeLoans?: Array<{ productId: string; overdueTurns: number }>;
   }
 ): Bill | null => {
   const actualProb = gold < 0 ? config.debtProb : config.baseProb;
@@ -68,8 +71,10 @@ export const triggerBill = (
     if (!bill.triggerCondition) return true;
     const { 
       isDebtOnly, requiredClass, minGold, minSan, maxGold,
-      hasVehicle, hasHousing 
-    } = bill.triggerCondition;
+      hasVehicle, hasHousing,
+      hasItem, hasItemTag, noItem, noItemTag,
+      noInsuranceType
+    } = bill.triggerCondition as any;
 
     if (isDebtOnly && gold >= 0) return false;
     if (requiredClass && !requiredClass.includes(currentClass)) return false;
@@ -82,6 +87,56 @@ export const triggerBill = (
     if (hasHousing !== undefined) {
       const playerHasHousing = !!assets.housing;
       if (hasHousing !== playerHasHousing) return false;
+    }
+
+    // 车辆相关检查
+    const inventory = assets.inventory || [];
+    
+    // 检查是否有特定物品
+    if (hasItem && !inventory.includes(hasItem)) return false;
+    
+    // 检查是否有特定标签的物品
+    if (hasItemTag) {
+      const hasTag = inventory.some(id => {
+        // 简单检查：VEHICLE标签检查id前缀，LICENSE标签检查id前缀
+        if (hasItemTag === 'VEHICLE') return id.startsWith('VEH_');
+        if (hasItemTag === 'LICENSE') return id.startsWith('LICENSE_');
+        return false;
+      });
+      if (!hasTag) return false;
+    }
+    
+    // 检查是否没有特定物品
+    if (noItem && inventory.includes(noItem)) return false;
+    
+    // 检查是否没有特定标签的物品
+    if (noItemTag) {
+      const hasTag = inventory.some(id => {
+        if (noItemTag === 'VEHICLE') return id.startsWith('VEH_');
+        if (noItemTag === 'LICENSE') return id.startsWith('LICENSE_');
+        return false;
+      });
+      if (hasTag) return false;
+    }
+    
+    // ✅ 检查保险类型（多保险支持）
+    if (noInsuranceType) {
+      // assets.insurance 可能是单个保险或保险数组
+      const insurances = Array.isArray(assets.insurance) 
+        ? assets.insurance 
+        : assets.insurance ? [assets.insurance] : [];
+      const hasInsuranceType = insurances.some((ins: Insurance) => ins.type === noInsuranceType);
+      if (hasInsuranceType) return false;
+    }
+    
+    // 检查逾期贷款（车辆拖走）
+    const { hasOverdueLoan, overdueWeeks } = bill.triggerCondition as any;
+    if (hasOverdueLoan && overdueWeeks) {
+      const activeLoans = assets.activeLoans || [];
+      const hasMatchingOverdueLoan = activeLoans.some(loan => 
+        loan.productId === hasOverdueLoan && loan.overdueTurns >= overdueWeeks
+      );
+      if (!hasMatchingOverdueLoan) return false;
     }
 
     return true;

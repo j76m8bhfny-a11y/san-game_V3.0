@@ -63,5 +63,32 @@
     "color": "text-purple-500",
     "riskLevel": "PREDATORY",
     "region": "SLUMS"
+  },
+  {
+    "id": "LOAN_CAR_SUBPRIME",
+    "name": "掠夺性车贷",
+    "provider": "Smiling Jack Auto Finance",
+    "description": "首付10%，APR 25%，逾期2周强制拖车",
+    "minScore": 0,
+    "weeklyRate": 0.05,
+    "maxAmount": 5000,
+    "termTurns": 20,
+    "color": "#dc2626",
+    "riskLevel": "EXTREME",
+    "region": "RUST_BELT",
+    "repossessionItem": "VEH_PICKUP"
+  },
+  {
+    "id": "LOAN_CAR_STANDARD",
+    "name": "标准车贷",
+    "provider": "AutoMall Finance",
+    "description": "首付20%，APR 8%",
+    "minScore": 600,
+    "weeklyRate": 0.015,
+    "maxAmount": 50000,
+    "termTurns": 52,
+    "color": "#2563eb",
+    "riskLevel": "LOW",
+    "region": "SUBURBS"
   }
 ]

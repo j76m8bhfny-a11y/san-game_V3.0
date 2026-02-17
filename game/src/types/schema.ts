@@ -501,7 +501,7 @@ export interface VitalityState {
     [key: string]: any;
   };
   activeJobs: string[];
-  activeInsurance: Insurance | null;
+  activeInsurances: Insurance[]; // 支持多保险（医疗+车险）
 }
 
 // ==========================================
@@ -523,6 +523,37 @@ export interface ActiveHousingState {
 
 // 单一房产存储结构: 玩家同时只能拥有一处房产（租赁或购买）
 export type ActiveHousing = ActiveHousingState | null;
+
+// ==========================================
+// ✅ DMV排队系统定义
+// ==========================================
+
+export interface DMVQueueState {
+  ticketNumber: number;      // 玩家的号码
+  currentNumber: number;     // 当前叫号
+  waitTurnsRemaining: number; // 剩余等待回合
+  region: RegionID;          // 办理区域
+  licenseType: 'VALID' | 'ELITE'; // 申请的驾照类型
+  startTurn: number;         // 开始排队的回合
+}
+
+// ==========================================
+// ✅ 车辆租赁系统定义
+// ==========================================
+
+export interface ActiveLease {
+  leaseProductId: string;    // 租赁产品ID
+  vehicleId: string;         // 车辆ID
+  weeklyPayment: number;     // 周供
+  downPayment: number;       // 首付
+  remainingTurns: number;    // 剩余租期
+  totalTurns: number;        // 总租期
+  mileageUsed: number;       // 已用里程
+  mileageLimit: number;      // 里程上限
+  wearAndTear: number;       // 磨损程度 (0-1)
+  region: RegionID;          // 租赁区域
+  startTurn: number;         // 开始回合
+}
 
 /**
  * 纯数据接口：游戏状态（不包含方法）
@@ -551,7 +582,13 @@ export interface GameState {
 
   // 资产与库存
   activeHousing: ActiveHousing;
-  activeInsurance: Insurance | null; // 从 vitality 同步，用于持久化
+  activeInsurances: Insurance[]; // 多保险支持（医疗+车险）
+  
+  // ✅ DMV排队状态
+  dmvQueue: DMVQueueState | null;
+  
+  // ✅ 租赁状态
+  activeLease: ActiveLease | null;
   
   inventory: string[];
   history: string[]; // 文本历史记录
@@ -729,6 +766,7 @@ export type MedicalService = z.infer<typeof MedicalServiceSchema>;
 export const InsuranceSchema = z.object({
   id: z.string(),
   name: z.string(),
+  type: z.enum(['MEDICAL', 'AUTO', 'LIFE', 'PROPERTY']).default('MEDICAL'),
   allowedClasses: z.array(z.nativeEnum(PlayerClass)), // 谁能买
   weeklyCost: z.number(),
   

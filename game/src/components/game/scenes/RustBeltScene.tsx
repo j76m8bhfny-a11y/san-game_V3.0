@@ -2,7 +2,9 @@
 import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useI18n } from '@/i18n';
+import { RegionID } from '@/types/schema';
 import { BaseScene, ParallaxLayer } from './BaseScene';
+import { VehicleShopModal } from '../vehicle/VehicleShopModal';
 
 // --- 辅助组件：交互物体 (功能入口) ---
 interface InteractableObjectProps {
@@ -99,9 +101,11 @@ const NarrativeProp: React.FC<NarrativePropProps> = ({ text, style, baseImage, a
 
 export const RustBeltScene: React.FC = () => {
   const { t } = useI18n();
+  const [vehicleShopOpen, setVehicleShopOpen] = useState(false);
   const { setShopOpen, setJobBoardOpen, setHousingOpen, setHospitalOpen, setBankOpen, setInsuranceOpen } = useGameStore();
 
   return (
+    <>
     <BaseScene intensity={0.8} className="bg-[#1a1a1a]">
       {/* --- Layer 0: 远景天空 (工业烟雾) --- */}
       <ParallaxLayer depth={0.05}>
@@ -163,6 +167,15 @@ export const RustBeltScene: React.FC = () => {
              style={{ left: '50%', bottom: '8%', width: '6vw' }}
              baseImage="/assets/scenes/rust/prop_strike_sign.png"
              activeImage="/assets/scenes/rust/prop_strike_sign_fallen.png"
+          />
+
+          {/* [NEW] 车辆商店：二手车行 */}
+          <InteractableObject 
+            label={t('vehicleShop.rustbelt.name')}
+            style={{ left: '46%', bottom: '18%', width: '12vw' }}
+            baseImage="/assets/scenes/rust/obj_vehicle_dealership.png"
+            hoverImage="/assets/scenes/rust/obj_vehicle_dealership_hover.png"
+            onClick={() => setVehicleShopOpen(true)}
           />
 
           {/* 5. 工作：工厂大门 */}
@@ -239,5 +252,13 @@ export const RustBeltScene: React.FC = () => {
         }
       `}</style>
     </BaseScene>
-  );
+
+    {/* 车辆商店弹窗 */}
+    {vehicleShopOpen && (
+      <VehicleShopModal 
+        region={RegionID.RustBelt}
+        onClose={() => setVehicleShopOpen(false)} 
+      />
+    )}
+  </>);
 };

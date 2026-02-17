@@ -20,23 +20,20 @@ export const BankSystem: GameSystem = {
     // ====================================================
     // 1. 🛡️ 保险费用自动扣除 (Insurance Logic)
     // ====================================================
-    if (vitality.activeInsurance) {
-      const insurance = vitality.activeInsurance;
+    const activeInsurances = vitality.activeInsurances || [];
+    for (const insurance of activeInsurances) {
       const cost = insurance.weeklyCost;
-
       if (cost > 0) {
-        // 生成保险账单交易
-        // SystemRegistry 会处理此交易并自动扣除金币
+        const category = insurance.type === 'AUTO' ? 'BILL' : 'MEDICAL';
         result.newTransactions!.push({
           id: `ins_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
           turn: currentTurn,
-          category: 'MEDICAL',
+          category,
           amount: -cost,
-          description: `保险周费: ${insurance.name}`,
+          description: `${insurance.type === 'AUTO' ? '车险' : '医疗保险'}周费: ${insurance.name}`,
           timestamp: Date.now()
         });
-
-        result.logs.push(`支付了 $${cost} 的保险费用`);
+        result.logs.push(`支付了 $${cost} 的${insurance.type === 'AUTO' ? '车险' : '医疗保险'}费用`);
       }
     }
 

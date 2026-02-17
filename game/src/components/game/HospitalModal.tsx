@@ -62,10 +62,13 @@ const DefaultHospitalView: React.FC<{ onClose: () => void }> = ({ onClose }) => 
     vitality, 
     currentRegion, 
     gameDataCache, 
-    activeInsurance, 
+    activeInsurances, 
     performTreatment, 
     addNotification
   } = useGameStore();
+  
+  // 获取医疗保险
+  const activeInsurance = activeInsurances.find((ins: any) => ins.type === 'MEDICAL') || null;
 
   const [selectedServiceId, setSelectedServiceId] = useState<string | null>(null);
 

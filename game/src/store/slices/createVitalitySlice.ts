@@ -57,7 +57,7 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
             hiddenTags: [] 
         },
     activeJobs: [],
-    activeInsurance: null
+    activeInsurances: []
   },
 
   initGame: (selectedClass) => {
@@ -121,7 +121,7 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
       
       currentRegion: RegionID.Slums,
       activeHousing: null,
-      activeInsurance: null,
+      activeInsurances: [],
       inventory: [],
       bank: { activeLoans: [], lifetimeInterestPaid: 0 }
     }));
@@ -276,12 +276,15 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
   performTreatment: (serviceId) => {
     const state = get() as GameState & VitalitySlice;
     const { vitality } = state;
-    const { metrics, activeInsurance } = vitality;
+    const { metrics, activeInsurances } = vitality;
+    
+    // 获取医疗保险（用于医疗报销）
+    const medicalInsurance = activeInsurances.find((ins: any) => ins.type === 'MEDICAL') || null;
 
     const service = (hospitalData as any[]).find(s => s.id === serviceId);
     if (!service) return { success: false, msg: "服务不可用" };
 
-    const { finalCost } = calculateMedicalCost(service, activeInsurance, vitality.identity.currentClass);
+    const { finalCost } = calculateMedicalCost(service, medicalInsurance, vitality.identity.currentClass);
 
     if (vitality.metrics.gold < finalCost) {
         return { success: false, msg: "资金不足" };

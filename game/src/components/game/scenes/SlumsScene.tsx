@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useI18n } from '@/i18n';
+import { RegionID } from '@/types/schema';
 import { BaseScene, ParallaxLayer } from './BaseScene';
 
 // --- 类型定义 ---
@@ -83,8 +84,11 @@ const InteractiveElement: React.FC<PropProps> = ({
   );
 };
 
+import { VehicleShopModal } from '../vehicle/VehicleShopModal';
+
 export const SlumsScene: React.FC = () => {
   const { t } = useI18n();
+  const [vehicleShopOpen, setVehicleShopOpen] = React.useState(false);
   const { 
     setShopOpen, 
     setJobBoardOpen, 
@@ -96,6 +100,7 @@ export const SlumsScene: React.FC = () => {
   } = useGameStore();
 
   return (
+    <>
     <BaseScene intensity={1.5}>
       {/* --- Layer 0: 远景天空 --- */}
       <ParallaxLayer depth={0.1}>
@@ -163,6 +168,15 @@ export const SlumsScene: React.FC = () => {
             onClick={() => setShopOpen(true)}
           />
 
+          {/* [NEW] 车辆商店：拆解厂 */}
+          <InteractiveElement 
+            label={t('vehicleShop.slums.name')}
+            style={{ left: '8%', bottom: '25%', width: '12vw' }}
+            baseImage="/assets/scenes/slums/obj_vehicle_chopshop.png"
+            hoverImage="/assets/scenes/slums/obj_vehicle_chopshop_hover.png"
+            onClick={() => setVehicleShopOpen(true)}
+          />
+
           {/* [NEW] 保险入口：公交车站长椅广告 */}
           {/* 放在商店(20%)和工作(45%)之间的空地 */}
           <InteractiveElement 
@@ -217,5 +231,13 @@ export const SlumsScene: React.FC = () => {
       <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/80 via-transparent to-black/40" />
       <div className="absolute inset-0 pointer-events-none bg-[url('/assets/fx/noise_grain.png')] opacity-10 mix-blend-overlay" />
     </BaseScene>
-  );
+
+    {/* 车辆商店弹窗 */}
+    {vehicleShopOpen && (
+      <VehicleShopModal 
+        region={RegionID.Slums}
+        onClose={() => setVehicleShopOpen(false)} 
+      />
+    )}
+  </>);
 };

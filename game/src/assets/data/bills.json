@@ -1608,5 +1608,133 @@
       "content": "Heir Hunters: Billions in unclaimed inheritance waiting for distant relatives."
     },
     "roast": "有时候，奇迹就藏在你的“垃圾邮件”文件夹里。"
+  },
+  {
+    "id": "B_SLUMS_CAR_BREAKDOWN",
+    "name": "破车抛锚",
+    "type": "JUMP_SCARE",
+    "amount": -300,
+    "weight": 25,
+    "triggerCondition": {
+      "hasItem": "VEH_JUNK"
+    },
+    "effects": {
+      "hp": -10
+    },
+    "image": "/assets/bills/broken_engine.png",
+    "flavorText": "你的破皮卡在路上彻底罢工了，修理厂狮子大开口。",
+    "news": {
+      "source": "Consumer Reports",
+      "content": "The hidden costs of cheap used cars: Breakdowns cost more than the purchase price."
+    },
+    "roast": "便宜没好货，现在你知道了。"
+  },
+  {
+    "id": "B_POLICE_NO_LICENSE",
+    "name": "无照驾驶",
+    "type": "LEGAL",
+    "amount": -500,
+    "weight": 15,
+    "triggerCondition": {
+      "hasItemTag": "VEHICLE",
+      "noItemTag": "LICENSE"
+    },
+    "effects": {
+      "hp": -5,
+      "san": -10
+    },
+    "image": "/assets/bills/police_ticket.png",
+    "flavorText": "警察拦下你，发现你没有驾照。",
+    "news": {
+      "source": "NPR",
+      "content": "Driving without a license: penalties and consequences vary by state."
+    },
+    "roast": "开车需要驾照，这是常识。"
+  },
+  {
+    "id": "B_POLICE_FAKE_LICENSE",
+    "name": "假证被识破",
+    "type": "LEGAL",
+    "amount": -1000,
+    "weight": 30,
+    "triggerCondition": {
+      "hasItemTag": "VEHICLE",
+      "hasItem": "LICENSE_FAKE"
+    },
+    "effects": {
+      "hp": -10,
+      "san": -20
+    },
+    "image": "/assets/bills/police_arrest.png",
+    "flavorText": "警察一眼识破了你的假驾照。",
+    "news": {
+      "source": "Local News",
+      "content": "Fake ID crackdown results in multiple arrests."
+    },
+    "roast": "骗子的手艺不太行。"
+  },
+  {
+    "id": "B_POLICE_NO_INSURANCE",
+    "name": "无保险驾驶",
+    "type": "LEGAL",
+    "amount": -800,
+    "weight": 20,
+    "triggerCondition": {
+      "hasItemTag": "VEHICLE",
+      "noInsuranceType": "AUTO"
+    },
+    "effects": {
+      "san": -10
+    },
+    "image": "/assets/bills/insurance_ticket.png",
+    "flavorText": "你有车有驾照，但没有保险。",
+    "news": {
+      "source": "Insurance Journal",
+      "content": "Uninsured drivers cost the system billions annually."
+    },
+    "roast": "裸奔开车，胆子真大。"
+  },
+  {
+    "id": "B_CAR_ACCIDENT_NO_INSURANCE",
+    "name": "车祸无保险",
+    "type": "DISASTER",
+    "amount": -5000,
+    "weight": 5,
+    "triggerCondition": {
+      "hasItemTag": "VEHICLE",
+      "noInsuranceType": "AUTO"
+    },
+    "effects": {
+      "hp": -30,
+      "san": -15
+    },
+    "image": "/assets/bills/car_crash.png",
+    "flavorText": "你撞上了护栏，没有保险意味着全额自费。",
+    "news": {
+      "source": "Auto Safety Report",
+      "content": "Uninsured accidents lead to financial ruin for low-income drivers."
+    },
+    "roast": "这一撞，撞没了你半年的工资。"
+  },
+  {
+    "id": "B_CAR_REPO",
+    "name": "车辆被拖走",
+    "type": "LEGAL",
+    "amount": -500,
+    "weight": 10,
+    "triggerCondition": {
+      "hasOverdueLoan": "LOAN_CAR_SUBPRIME",
+      "overdueWeeks": 2
+    },
+    "effects": {
+      "san": -20
+    },
+    "image": "/assets/bills/tow_truck.png",
+    "flavorText": "因为你拖欠车贷，催收公司半夜拖走了你的车。",
+    "news": {
+      "source": "ProPublica",
+      "content": "Predatory auto lending: repossession rates soar in low-income communities."
+    },
+    "roast": "车没了，贷款还在，欢迎来到美国梦。"
   }
 ]

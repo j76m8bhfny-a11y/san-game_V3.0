@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useI18n } from '@/i18n';
+import { RegionID } from '@/types/schema';
 import { BaseScene, ParallaxLayer } from './BaseScene';
+import { VehicleShopModal } from '../vehicle/VehicleShopModal';
 
 // --- 内部组件：可交互物体 ---
 // (如果这个组件在其他场景也用了，建议后续提取到 common 文件夹，这里为了方便直接包含)
@@ -83,6 +85,7 @@ const ChargingBullProp = () => {
 
 export const DowntownScene: React.FC = () => {
   const { t } = useI18n();
+  const [vehicleShopOpen, setVehicleShopOpen] = useState(false);
   const { 
     setShopOpen, 
     setJobBoardOpen, 
@@ -93,7 +96,8 @@ export const DowntownScene: React.FC = () => {
   } = useGameStore();
 
   return (
-    // 强度 0.6：体现核心区的稳重与压迫感，视差不宜过大
+    <>
+    {/* 强度 0.6：体现核心区的稳重与压迫感，视差不宜过大 */}
     <BaseScene intensity={0.6} className="bg-[#050510]"> 
       
       {/* --- Layer 0: 璀璨天际线 (极慢) --- */}
@@ -154,6 +158,15 @@ export const DowntownScene: React.FC = () => {
             hoverImage="/assets/scenes/downtown/obj_bank_vault_open.png"
             onClick={() => setBankOpen(true)}
           />
+
+          {/* [NEW] 车辆商店：豪车展厅 */}
+          <InteractableObject 
+            label={t('vehicleShop.downtown.name')}
+            style={{ left: '90%', bottom: '12%', width: '10vw' }}
+            baseImage="/assets/scenes/downtown/obj_vehicle_showroom.png"
+            hoverImage="/assets/scenes/downtown/obj_vehicle_showroom_hover.png"
+            onClick={() => setVehicleShopOpen(true)}
+          />
           
           {/* 6. 生命延续中心 (医院) - 最右 */}
            <InteractableObject 
@@ -207,5 +220,13 @@ export const DowntownScene: React.FC = () => {
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:100px_100px] pointer-events-none opacity-20" />
 
     </BaseScene>
-  );
+
+    {/* 车辆商店弹窗 */}
+    {vehicleShopOpen && (
+      <VehicleShopModal 
+        region={RegionID.Downtown}
+        onClose={() => setVehicleShopOpen(false)} 
+      />
+    )}
+  </>);
 };

@@ -81,12 +81,15 @@ export const MiniHUD: React.FC = () => {
   // 从 Store 中解构
   const { 
     vitality, 
-    activeInsurance, 
+    activeInsurances, 
     gameDataCache,
     setInventoryOpen, 
     setArchiveOpen, 
     setMenuOpen 
   } = useGameStore();
+  
+  // 获取医疗保险用于显示
+  const activeInsurance = activeInsurances.find((ins: any) => ins.type === 'MEDICAL') || null;
   
   const { playSfx } = useAudioStore();
   const { t } = useI18n();

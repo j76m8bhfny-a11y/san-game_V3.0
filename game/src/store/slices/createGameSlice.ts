@@ -348,7 +348,7 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
                 triggeredEvents: [] // ✅ 重置已触发事件列表（新游戏可重新触发所有事件）
             },
             activeJobs: [],
-            activeInsurance: null
+            activeInsurances: []
         },
         
         // 2. Systems 重置
@@ -379,7 +379,9 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
         // 3. Assets 重置
         currentRegion: 'SLUMS' as RegionID,
         activeHousing: null,
-        activeInsurance: null,
+        activeInsurances: [],
+        dmvQueue: null, // [NEW] 重置DMV排队
+        activeLease: null, // [NEW] 重置租赁状态
         inventory: [],
         
         // 4. Game Loop 重置

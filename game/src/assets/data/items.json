@@ -235,5 +235,32 @@
     "effects": { "hp": 50, "san": -10, "addiction": 25, "resistance": 10 },
     "tags": ["DRUG", "ILLEGAL"],
     "flavorText": "透支明天的精力，来度过今天的难关。"
+  },
+  {
+    "id": "LICENSE_FAKE",
+    "name": "假驾照",
+    "type": "KEY",
+    "price": 500,
+    "regions": ["SLUMS"],
+    "tags": ["LICENSE", "ILLEGAL"],
+    "flavorText": "看起来挺像那么回事，但警察一眼就能看出来。"
+  },
+  {
+    "id": "LICENSE_VALID",
+    "name": "正式驾照",
+    "type": "KEY",
+    "price": 50,
+    "regions": ["RUST_BELT", "SUBURBS"],
+    "tags": ["LICENSE"],
+    "flavorText": "经过DMV地狱般的排队后，你终于获得了合法上路的权利。"
+  },
+  {
+    "id": "LICENSE_ELITE",
+    "name": "豁免驾照",
+    "type": "KEY",
+    "price": 5000,
+    "regions": ["DOWNTOWN"],
+    "tags": ["LICENSE", "ELITE"],
+    "flavorText": "你的律师团确保这张驾照上没有任何违规记录。"
   }
 ]

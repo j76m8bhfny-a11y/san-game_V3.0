@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useI18n } from '@/i18n';
+import { RegionID } from '@/types/schema';
 import { BaseScene, ParallaxLayer } from './BaseScene';
+import { VehicleShopModal } from '../vehicle/VehicleShopModal';
 
 // --- 内部组件：可交互物体 (带标签和光效) ---
 interface InteractableProps {
@@ -89,6 +91,7 @@ const NarrativeProp: React.FC<{
 // --- 主场景组件 ---
 export const SuburbsScene: React.FC = () => {
   const { t } = useI18n();
+  const [vehicleShopOpen, setVehicleShopOpen] = useState(false);
   const { 
     setShopOpen, 
     setJobBoardOpen, 
@@ -99,6 +102,7 @@ export const SuburbsScene: React.FC = () => {
   } = useGameStore();
 
   return (
+    <>
     <BaseScene intensity={0.8} className="bg-[#87CEEB]"> {/* 天空蓝背景底色 */}
       
       {/* ================= Layer 0: 完美天空 (极慢) ================= */}
@@ -170,6 +174,15 @@ export const SuburbsScene: React.FC = () => {
             onClick={() => setBankOpen(true)}
           />
 
+          {/* [NEW] 车辆商店：4S店 */}
+          <InteractableObject 
+            label={t('vehicleShop.suburbs.name')}
+            style={{ left: '68%', bottom: '12%', width: '8vw' }}
+            baseImage="/assets/scenes/suburbs/obj_vehicle_dealership.png"
+            hoverImage="/assets/scenes/suburbs/obj_vehicle_dealership_hover.png"
+            onClick={() => setVehicleShopOpen(true)}
+          />
+
           {/* 5. 医院：连锁药房 (右侧) */}
            <InteractableObject 
             label="CVS PHARMACY"
@@ -208,5 +221,13 @@ export const SuburbsScene: React.FC = () => {
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_50%,rgba(255,255,255,0.3)_100%)] mix-blend-soft-light" />
 
     </BaseScene>
-  );
+
+    {/* 车辆商店弹窗 */}
+    {vehicleShopOpen && (
+      <VehicleShopModal 
+        region={RegionID.Suburbs}
+        onClose={() => setVehicleShopOpen(false)} 
+      />
+    )}
+  </>);
 };

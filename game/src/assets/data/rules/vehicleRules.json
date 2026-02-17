@@ -1,0 +1,38 @@
+{
+  "tradeIn": {
+    "enabled": true,
+    "rateModifier": 0.05,
+    "descriptionKey": "vehicle.tradeIn.description"
+  },
+  "lease": {
+    "enabled": true,
+    "downPaymentRate": 0.15,
+    "weeklyRate": 0.02,
+    "mileageLimit": 1000,
+    "overageChargePerUnit": 5,
+    "wearAndTearThreshold": 0.7,
+    "wearAndTearPenaltyRate": 0.1,
+    "descriptionKey": "vehicle.lease.description"
+  },
+  "creditCheck": {
+    "enabled": true,
+    "rejectThreshold": 500,
+    "highRateThreshold": 600,
+    "standardRateThreshold": 700,
+    "rateModifiers": {
+      "subprime": 0.05,
+      "high": 0.02,
+      "standard": 0,
+      "low": -0.01
+    }
+  },
+  "vehicleEffects": {
+    "processingOrder": ["SAN", "HP", "ADDICTION"],
+    "applyFrequency": "TURN_START"
+  },
+  "insuranceCheck": {
+    "billTypesRequiringAuto": ["DISASTER", "LEGAL"],
+    "noInsuranceBillId": "B_POLICE_NO_INSURANCE",
+    "accidentNoInsuranceBillId": "B_CAR_ACCIDENT_NO_INSURANCE"
+  }
+}

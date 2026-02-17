@@ -52,7 +52,10 @@ export const PlayerStatsPanel: React.FC<Props> = ({ isOpen, onClose }) => {
 
   const { hp, maxHp, san, gold, addiction, hunger, creditScore } = vitality.metrics;
   const { currentClass, points } = vitality.identity;
-  const { activeDiseases, activeInsurance } = vitality;
+  const { activeDiseases, activeInsurances } = vitality;
+  
+  // 获取医疗保险
+  const activeInsurance = activeInsurances.find((ins: any) => ins.type === 'MEDICAL') || null;
   const maxSan = (vitality.metrics as any).maxSan || INITIAL_STATE.vitality.maxSan;
   const GLOBAL_MAX = SYSTEM_RULES.caps.maxStat;
 

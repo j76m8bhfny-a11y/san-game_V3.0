@@ -79,7 +79,35 @@
   "hospital": { "title": "Hospital", "services": "Services", "treatment": "Treatment", "drug": "Drugs", "surgery": "Surgery", "therapy": "Therapy", "emergency": "Emergency", "insurance": { "covered": "Covered", "uncovered": "Not Covered", "copay": "Copay {rate}%" }, "disease": { "current": "Current Disease", "none": "Healthy", "cure": "Cure" } },
   "shop": { "title": "Shop", "buy": "Buy", "sell": "Sell", "insufficient": "Insufficient funds", "full": "Inventory full", "categories": { "food": "Food", "medical": "Medical", "tool": "Tools", "other": "Other" } },
   "housing": { "title": "Housing", "rent": "Rent", "buy": "Buy", "current": "Current", "none": "Homeless", "weeklyCost": "Weekly Cost", "defense": "Defense", "regen": "HP Regen", "moveIn": "Move In", "moveOut": "Move Out", "mortgage": "Mortgage" },
-  "insurance": { "title": "Insurance", "medical": "Medical Insurance", "weekly": "Weekly", "coverage": { "title": "Coverage", "emergency": "Emergency", "mental": "Mental", "addiction": "Addiction" }, "enroll": "Enroll", "cancel": "Cancel" },
+  "insurance": { 
+    "title": "Insurance", 
+    "medical": { "title": "Medical Insurance" },
+    "auto": { 
+      "title": "Auto Insurance",
+      "noVehicle": "No Vehicle",
+      "needVehicle": "Purchase a vehicle to enroll in auto insurance"
+    },
+    "type": {
+      "medical": "Medical",
+      "auto": "Auto"
+    },
+    "weekly": "Weekly", 
+    "coverage": { 
+      "title": "Coverage", 
+      "emergency": "Emergency", 
+      "mental": "Mental", 
+      "addiction": "Addiction",
+      "auto": "Auto Coverage",
+      "copay": "Copay"
+    }, 
+    "enroll": "Enroll", 
+    "cancel": "Cancel",
+    "signed": "Signed",
+    "signHere": "Sign Here",
+    "active": "Active",
+    "invitationOnly": "Invitation Only",
+    "memberSignature": "Member Signature"
+  },
   "job": { "title": "Job", "board": "Job Board", "apply": "Apply", "quit": "Quit", "salary": "Salary", "requirement": "Requirement", "type": { "fulltime": "Full-time", "gig": "Gig" }, "cost": { "hp": "HP Cost", "san": "SAN Cost" } },
   "faith": { "title": "Faith", "join": "Join", "leave": "Leave", "rite": "Rite", "offer": "Offer", "pray": "Pray", "donate": "Donate", "faiths": { "none": "None", "church": "Church", "brotherhood": "Brotherhood", "cult": "Cult", "revolution": "Revolution" } },
   "crypto": { "title": "Crypto", "btc": "Bitcoin", "price": "Price", "position": { "long": "Long", "short": "Short", "close": "Close" }, "leverage": "Leverage", "profit": "P&L" },
@@ -88,5 +116,116 @@
   "archive": { "title": "Archive", "unlocked": "Unlocked", "locked": "Locked", "read": "Read" },
   "roast": { "title": "System Message", "subtitle": "You've been beaten by capitalism today" },
   "gameOver": { "title": "Game Over", "restart": "Restart", "endings": { "death": "Death", "survival": "Survival", "alienation": "Alienation", "stance": "Stance" } },
-  "debug": { "title": "Developer Panel", "cheat": "Cheat Menu", "addGold": "Add Gold", "addHp": "Add HP", "addSan": "Add SAN", "unlockAll": "Unlock All", "reset": "Reset Game" }
+  "debug": { "title": "Developer Panel", "cheat": "Cheat Menu", "addGold": "Add Gold", "addHp": "Add HP", "addSan": "Add SAN", "unlockAll": "Unlock All", "reset": "Reset Game" },
+  "vehicle": {
+    "junk": {
+      "name": "Junk Pickup",
+      "flavor": "Rusty, but the wheels still turn.",
+      "regionWarning": "⚠️ Cannot legally enter Middle/Upper class areas"
+    },
+    "pickup": {
+      "name": "Used Pickup",
+      "flavor": "The backbone of the working class."
+    },
+    "sedan": {
+      "name": "Electric Sedan",
+      "flavor": "Standard issue for the middle class."
+    },
+    "limo": {
+      "name": "Armored Limo",
+      "flavor": "Leather seats, champagne, and superiority."
+    },
+    "tags": {
+      "owned": "Owned",
+      "forSale": "For Sale",
+      "policeImmune": "✨ Immune to Police"
+    }
+  },
+  "license": {
+    "fake": {
+      "name": "Fake License",
+      "flavor": "Looks legit enough.",
+      "risk": "⚠️ 30% chance of detection"
+    },
+    "valid": {
+      "name": "Valid License",
+      "flavor": "Legal right to drive.",
+      "dmvWait": "Wait {turns} turn(s) to process"
+    },
+    "elite": {
+      "name": "Elite License",
+      "flavor": "Legal team ensures clean record.",
+      "perk": "Immune to all police checks"
+    }
+  },
+  "vehicleShop": {
+    "common": {
+      "buy": "Buy",
+      "sell": "Sell",
+      "sellPrice": "Sell Price",
+      "cashBuy": "Cash Purchase",
+      "loanBuy": "Loan Purchase",
+      "lease": "Lease",
+      "tradeIn": "Trade-In",
+      "insufficientFunds": "Insufficient Funds",
+      "classLocked": "Class Requirement Not Met",
+      "alreadyOwned": "Already Owned",
+      "noVehicle": "No Vehicle to Sell"
+    },
+    "panel": {
+      "vehicleBusiness": "🚗 Vehicle Business",
+      "licenseBusiness": "🎫 License Business",
+      "conciergeService": "💎 Concierge Service"
+    },
+    "slums": {
+      "name": "The Chop Shop",
+      "buyTitle": "Buy (As Is)",
+      "buySubtitle": "Sold as-is, no returns",
+      "sellTitle": "Sell (Scrap)",
+      "sellDesc": "Priced by scrap weight (10% of value)",
+      "licenseTitle": "The Forger",
+      "licenseSubtitle": "Special services in dark corners"
+    },
+    "rustbelt": {
+      "name": "Smiling Jack's Used Cars",
+      "buyTitle": "Buy",
+      "buySubtitle": "10% down, APR up to 25%",
+      "sellTitle": "Sell",
+      "licenseTitle": "License Services",
+      "dmvTitle": "DMV Office",
+      "dmvSubtitle": "Now serving #{current}, your number #{ticket}",
+      "dmvWait": "Wait (consumes 1 turn)",
+      "dmvNoAppointment": "No appointment? Come back tomorrow."
+    },
+    "suburbs": {
+      "name": "AutoMall of the Suburbs",
+      "buyTitle": "Buy / Lease",
+      "leaseTitle": "Lease Options",
+      "leaseDesc": "Car not yours, credit score sets payment",
+      "sellTitle": "Sell / Trade-In",
+      "tradeInTitle": "Trade-In",
+      "tradeInDesc": "Trade value: ${value}",
+      "licenseTitle": "License Services",
+      "creditCheck": "Credit Check: {score}/{required}",
+      "creditRejected": "Insufficient credit, please leave"
+    },
+    "downtown": {
+      "name": "Concierge Motors",
+      "buyTitle": "Asset Acquisition",
+      "buySubtitle": "Full payment, no loans",
+      "sellTitle": "Asset Disposal",
+      "conciergeTitle": "Concierge",
+      "eliteLicenseTitle": "Legal Exemption",
+      "eliteLicenseDesc": "Call lawyer for expedited processing ($5,000)"
+    },
+    "loan": {
+      "title": "Loan Terms",
+      "downPayment": "Down Payment",
+      "apr": "APR",
+      "weeklyPayment": "Weekly Payment",
+      "totalCost": "Total Cost",
+      "repossessionWarning": "⚠️ Vehicle repossessed after {weeks} weeks overdue",
+      "signContract": "Sign Contract"
+    }
+  }
 }

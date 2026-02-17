@@ -3,6 +3,7 @@ import { Item, RegionID, LedgerCategory, ItemType } from '@/types/schema';
 import { StoreState } from '@/types/store';
 // ✅ 1. 引入配置文件 (请确保路径正确)
 import shopRules from '@/assets/data/rules/shopRules.json';
+import { getVehicleSellPrice } from '@/components/game/vehicle/config/vehicleShopConfig'; // [NEW]
 
 // ✅ 辅助函数：消耗物品并播放音效（提取重复代码）
 const consumeItemAndFinish = (itemId: string, state: any, set: Function) => {
@@ -22,6 +23,7 @@ export interface ShopSlice {
   // Actions
   buyItem: (itemId: string) => void;
   useItem: (itemId: string) => void;
+  sellVehicle: (region: RegionID) => { success: boolean; message: string; price?: number };
 }
 
 export const createShopSlice: StateCreator<StoreState, [], [], ShopSlice> = (set, get) => ({
@@ -106,6 +108,37 @@ export const createShopSlice: StateCreator<StoreState, [], [], ShopSlice> = (set
     // ✅ 重构 4: 音效读取配置
     // if (state.playSfx) state.playSfx(shopRules.audio.buySuccess);
     state.addNotification(`获得: ${item.name}`, "success");
+  },
+
+  sellVehicle: (region) => {
+    const state = get();
+    if (!state.gameDataCache) {
+      return { success: false, message: "游戏数据未加载" };
+    }
+
+    // 查找当前拥有的车辆
+    const vehicleId = state.inventory.find(id => id.startsWith('VEH_'));
+    if (!vehicleId) {
+      return { success: false, message: "没有车辆可出售" };
+    }
+
+    const vehicle = state.gameDataCache.items.find((i: Item) => i.id === vehicleId);
+    if (!vehicle) {
+      return { success: false, message: "车辆数据异常" };
+    }
+
+    // ✅ 使用配置化的售价计算（从vehicles.json读取）
+    const sellPrice = getVehicleSellPrice(vehicleId, region);
+
+    // 移除车辆
+    const newInventory = state.inventory.filter(id => id !== vehicleId);
+    set({ inventory: newInventory });
+
+    // 添加收入
+    state.addTransaction('INCOME', sellPrice, `出售车辆: ${vehicle.name}`);
+    state.addNotification(`出售车辆获得 $${sellPrice}`, "GOLD");
+
+    return { success: true, message: `车辆已出售`, price: sellPrice };
   },
 
   useItem: (itemId) => {

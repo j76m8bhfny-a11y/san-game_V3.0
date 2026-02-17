@@ -34,6 +34,7 @@ import hospitalServicesData from '@/assets/data/hospital_services.json';
 import housingData from '@/assets/data/housing.json';
 import insuranceData from '@/assets/data/insurance.json';
 import itemsData from '@/assets/data/items.json';
+import licensesData from '@/assets/data/licenses.json';
 import jobsData from '@/assets/data/jobs.json';
 import loansData from '@/assets/data/loans.json';
 import newsData from '@/assets/data/news.json';
@@ -75,6 +76,7 @@ export const Data = {
   insurance: insuranceData,
   items: itemsData,
   jobs: jobsData,
+  licenses: licensesData,
   loans: loansData,
   news: newsData,
 } as const;

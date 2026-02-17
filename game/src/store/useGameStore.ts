@@ -15,6 +15,7 @@ import { createJobSlice, JobSlice } from './slices/createJobSlice';
 import { createShopSlice, ShopSlice } from './slices/createShopSlice';
 import { createPlayerSlice, PlayerSlice } from './slices/createPlayerSlice';
 import { createInsuranceSlice, InsuranceSlice } from './slices/createInsuranceSlice'; // [NEW]
+import { createVehicleSlice, VehicleSlice } from './slices/createVehicleSlice'; // [NEW]
 
 // --- 组合所有切片的类型 ---
 export type StoreState = 
@@ -30,6 +31,7 @@ export type StoreState =
   & GameSlice     
   & JobSlice
   & InsuranceSlice // [NEW]
+  & VehicleSlice // [NEW]
   & ShopSlice;
 
 // --- 🛠️ 日志中间件 (Logger Middleware) ---
@@ -83,6 +85,7 @@ export const useGameStore = create<StoreState>()(
         ...createJobSlice(...a),
         ...createShopSlice(...a),
         ...createInsuranceSlice(...a), // [NEW]
+        ...createVehicleSlice(...a), // [NEW]
       }),
       {
         name: 'pixel-life-storage', 
@@ -96,7 +99,9 @@ export const useGameStore = create<StoreState>()(
           // ✅ 2. 玩家资产与位置
           currentRegion: state.currentRegion,
           activeHousing: state.activeHousing,  // 单一房产
-          activeInsurance: state.vitality.activeInsurance,
+          activeInsurances: state.vitality.activeInsurances,
+          dmvQueue: state.dmvQueue, // [NEW] DMV排队状态
+          activeLease: state.activeLease, // [NEW] 租赁状态
           inventory: state.inventory,
           history: state.history,
           unlockedArchives: state.unlockedArchives,

@@ -1,0 +1,117 @@
+{
+  "SLUMS": {
+    "id": "SLUMS_CHOP_SHOP",
+    "nameKey": "vehicleShop.slums.name",
+    "theme": "chopshop",
+    "layout": "twoColumn",
+    "leftPanel": {
+      "titleKey": "vehicleShop.panel.vehicleBusiness",
+      "sections": ["buy", "sell"]
+    },
+    "rightPanel": {
+      "titleKey": "vehicleShop.panel.licenseBusiness",
+      "sections": ["license"]
+    },
+    "uiText": {
+      "buyTitleKey": "vehicleShop.slums.buyTitle",
+      "buySubtitleKey": "vehicleShop.slums.buySubtitle",
+      "sellTitleKey": "vehicleShop.slums.sellTitle",
+      "sellDescKey": "vehicleShop.slums.sellDesc",
+      "licenseTitleKey": "vehicleShop.slums.licenseTitle",
+      "licenseSubtitleKey": "vehicleShop.slums.licenseSubtitle"
+    },
+    "visual": {
+      "exteriorImage": "/assets/vehicle/slums_exterior.png",
+      "interiorBg": "/assets/vehicle/slums_interior.png",
+      "accentColor": "#8B4513"
+    }
+  },
+  "RUST_BELT": {
+    "id": "RUST_BELT_AUTO",
+    "nameKey": "vehicleShop.rustbelt.name",
+    "theme": "usedcar",
+    "layout": "twoColumn",
+    "leftPanel": {
+      "titleKey": "vehicleShop.panel.vehicleBusiness",
+      "sections": ["buy", "sell"]
+    },
+    "rightPanel": {
+      "titleKey": "vehicleShop.panel.licenseBusiness",
+      "sections": ["license", "dmvQueue"]
+    },
+    "uiText": {
+      "buyTitleKey": "vehicleShop.rustbelt.buyTitle",
+      "buySubtitleKey": "vehicleShop.rustbelt.buySubtitle",
+      "sellTitleKey": "vehicleShop.rustbelt.sellTitle",
+      "licenseTitleKey": "vehicleShop.rustbelt.licenseTitle",
+      "dmvTitleKey": "vehicleShop.rustbelt.dmvTitle",
+      "dmvSubtitleKey": "vehicleShop.rustbelt.dmvSubtitle"
+    },
+    "visual": {
+      "exteriorImage": "/assets/vehicle/rustbelt_exterior.png",
+      "interiorBg": "/assets/vehicle/rustbelt_interior.png",
+      "accentColor": "#D2691E"
+    }
+  },
+  "SUBURBS": {
+    "id": "SUBURBS_DEALERSHIP",
+    "nameKey": "vehicleShop.suburbs.name",
+    "theme": "dealership",
+    "layout": "twoColumn",
+    "leftPanel": {
+      "titleKey": "vehicleShop.panel.vehicleBusiness",
+      "sections": ["buy", "sell", "tradeIn"]
+    },
+    "rightPanel": {
+      "titleKey": "vehicleShop.panel.licenseBusiness",
+      "sections": ["license"]
+    },
+    "features": {
+      "leaseEnabled": true,
+      "creditCheck": true,
+      "tradeInEnabled": true
+    },
+    "uiText": {
+      "buyTitleKey": "vehicleShop.suburbs.buyTitle",
+      "leaseTitleKey": "vehicleShop.suburbs.leaseTitle",
+      "sellTitleKey": "vehicleShop.suburbs.sellTitle",
+      "tradeInTitleKey": "vehicleShop.suburbs.tradeInTitle",
+      "licenseTitleKey": "vehicleShop.suburbs.licenseTitle"
+    },
+    "visual": {
+      "exteriorImage": "/assets/vehicle/suburbs_exterior.png",
+      "interiorBg": "/assets/vehicle/suburbs_interior.png",
+      "accentColor": "#4169E1"
+    }
+  },
+  "DOWNTOWN": {
+    "id": "DOWNTOWN_SHOWROOM",
+    "nameKey": "vehicleShop.downtown.name",
+    "theme": "showroom",
+    "layout": "twoColumn",
+    "leftPanel": {
+      "titleKey": "vehicleShop.panel.vehicleBusiness",
+      "sections": ["buy", "sell"]
+    },
+    "rightPanel": {
+      "titleKey": "vehicleShop.panel.conciergeService",
+      "sections": ["eliteLicense"]
+    },
+    "features": {
+      "cashOnly": true,
+      "conciergeService": true
+    },
+    "uiText": {
+      "buyTitleKey": "vehicleShop.downtown.buyTitle",
+      "buySubtitleKey": "vehicleShop.downtown.buySubtitle",
+      "sellTitleKey": "vehicleShop.downtown.sellTitle",
+      "conciergeTitleKey": "vehicleShop.downtown.conciergeTitle",
+      "eliteLicenseTitleKey": "vehicleShop.downtown.eliteLicenseTitle"
+    },
+    "visual": {
+      "exteriorImage": "/assets/vehicle/downtown_exterior.png",
+      "interiorBg": "/assets/vehicle/downtown_interior.png",
+      "accentColor": "#FFD700"
+    }
+  }
+}

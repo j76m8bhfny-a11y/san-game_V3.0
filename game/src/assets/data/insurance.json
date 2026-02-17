@@ -2,6 +2,7 @@
   {
     "id": "INS_SLUMS_SCAM",
     "name": "快速救急金 & 创伤险",
+    "type": "MEDICAL",
     "allowedClasses": ["HOMELESS"],
     "weeklyCost": 50,
     "coverage": {
@@ -18,6 +19,7 @@
   {
     "id": "INS_WORKER_UNION",
     "name": "工团互助险 (HMO)",
+    "type": "MEDICAL",
     "allowedClasses": ["WORKER"],
     "weeklyCost": 150,
     "coverage": {
@@ -33,6 +35,7 @@
   {
     "id": "INS_CORP_GOLD",
     "name": "LifeShield™ 黄金计划",
+    "type": "MEDICAL",
     "allowedClasses": ["MIDDLE", "CAPITALIST"],
     "weeklyCost": 600,
     "coverage": {
@@ -48,6 +51,7 @@
   {
     "id": "INS_GLOBAL_VIP",
     "name": "Apex 生物安全协议",
+    "type": "MEDICAL",
     "allowedClasses": ["CAPITALIST"],
     "weeklyCost": 2500,
     "coverage": {
@@ -59,5 +63,39 @@
     "uiTheme": "GLOBAL",
     "flavorText": "这不仅仅是保险，这是永生的入场券。优先器官移植权。",
     "signMethod": "SIGNATURE"
+  },
+  {
+    "id": "INS_AUTO_FAKE",
+    "name": "非标车险",
+    "type": "AUTO",
+    "allowedClasses": ["HOMELESS", "WORKER"],
+    "weeklyCost": 200,
+    "coverage": {
+      "copayModifier": 0.5,
+      "emergencyCovered": false,
+      "mentalCovered": false,
+      "addictionCovered": false,
+      "autoCovered": false
+    },
+    "uiTheme": "SLUMS",
+    "flavorText": "没有正式驾照也能买，但别指望能赔多少。",
+    "signMethod": "CASH"
+  },
+  {
+    "id": "INS_AUTO_STANDARD",
+    "name": "标准车险",
+    "type": "AUTO",
+    "allowedClasses": ["WORKER", "MIDDLE", "CAPITALIST"],
+    "weeklyCost": 50,
+    "coverage": {
+      "copayModifier": 0.2,
+      "emergencyCovered": true,
+      "mentalCovered": false,
+      "addictionCovered": false,
+      "autoCovered": true
+    },
+    "uiTheme": "RUST_BELT",
+    "flavorText": "正常人的选择。",
+    "signMethod": "STAMP"
   }
 ]

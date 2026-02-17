@@ -4,7 +4,9 @@ import {
   RegionID,
   ActiveHousingState,
   Insurance,
-  ActiveHousing
+  ActiveHousing,
+  DMVQueueState,
+  ActiveLease
 } from '@/types/schema';
 import { StoreState } from '@/types/store';
 import { Config } from '@/config';
@@ -16,7 +18,9 @@ const INITIAL_PLAYER_STATE = {
   currentRegion: RegionID.Slums,
   // 注意: activeJobs 已在 vitality 内部管理，不在此处存储
   activeHousing: null as ActiveHousing | null,  // 单一房产，初始为 null
-  activeInsurance: null as Insurance | null,
+  activeInsurances: [] as Insurance[],
+  dmvQueue: null as DMVQueueState | null, // [NEW] DMV排队状态
+  activeLease: null as ActiveLease | null, // [NEW] 租赁状态
 
   inventory: [] as string[],
   history: [] as string[],
@@ -30,7 +34,9 @@ export interface PlayerSlice {
   currentRegion: RegionID;
   // 注意: activeJobs 在 vitality 中管理 (支持多工作)
   activeHousing: ActiveHousing | null;  // 单一房产，可为 null
-  activeInsurance: Insurance | null;
+  activeInsurances: Insurance[];
+  dmvQueue: DMVQueueState | null; // [NEW] DMV排队状态
+  activeLease: ActiveLease | null; // [NEW] 租赁状态
 
   inventory: string[];
   history: string[];
@@ -49,7 +55,7 @@ export interface PlayerSlice {
   resetPlayerState: () => void;
   
   setRegion: (region: RegionID) => void;
-  setInsurance: (insurance: Insurance | null) => void;
+  setInsurance: (insurances: Insurance[]) => void;
 }
 
 export const createPlayerSlice: StateCreator<StoreState, [], [], PlayerSlice> = (set, get) => ({
@@ -62,7 +68,8 @@ export const createPlayerSlice: StateCreator<StoreState, [], [], PlayerSlice> = 
   updatePlayerStats: (updates) => set((state: any) => {
     // 定义 PlayerSlice 允许的字段白名单
     const allowedKeys = [
-      'currentRegion', 'activeHousing', 'activeInsurance', 
+      'currentRegion', 'activeHousing', 'activeInsurances', 
+      'dmvQueue', 'activeLease', // [NEW]
       'inventory', 'history', 'unlockedArchives', 'achievedEndings', 'ending'
     ];
     
@@ -106,6 +113,20 @@ export const createPlayerSlice: StateCreator<StoreState, [], [], PlayerSlice> = 
     });
   },
 
-  setRegion: (region) => set({ currentRegion: region }),
-  setInsurance: (insurance) => set({ activeInsurance: insurance }),
+  setRegion: (region) => {
+    const state = get();
+    
+    // 检查车辆区域限制
+    const hasJunkVehicle = state.inventory.includes('VEH_JUNK');
+    if (hasJunkVehicle && (region === RegionID.Suburbs || region === RegionID.Downtown)) {
+      // 车辆限制：破车无法进入中产或资本家区域
+      if (state.addNotification) {
+        state.addNotification('你的破车无法进入此区域，请先出售或更换车辆', 'warning');
+      }
+      return;
+    }
+    
+    set({ currentRegion: region });
+  },
+  setInsurance: (insurances) => set({ activeInsurances: insurances }),
 });

@@ -153,7 +153,35 @@
   "hospital": { "title": "医院", "services": "医疗服务", "treatment": "治疗", "drug": "药品", "surgery": "手术", "therapy": "心理治疗", "emergency": "急诊", "insurance": { "covered": "医保报销", "uncovered": "自费", "copay": "自付 {rate}%" }, "disease": { "current": "当前疾病", "none": "身体健康", "cure": "治愈" } },
   "shop": { "title": "商店", "buy": "购买", "sell": "出售", "insufficient": "资金不足", "full": "背包已满", "categories": { "food": "食物", "medical": "医疗", "tool": "工具", "other": "其他" } },
   "housing": { "title": "住房", "rent": "租房", "buy": "购房", "current": "当前住所", "none": "露宿街头", "weeklyCost": "周费用", "defense": "防御等级", "regen": "HP恢复", "moveIn": "入住", "moveOut": "搬出", "mortgage": "房贷" },
-  "insurance": { "title": "保险", "medical": "医疗保险", "weekly": "每周费用", "coverage": { "title": "保障范围", "emergency": "急诊", "mental": "精神科", "addiction": "成瘾治疗" }, "enroll": "投保", "cancel": "退保" },
+  "insurance": { 
+    "title": "保险", 
+    "medical": { "title": "医疗保险" },
+    "auto": { 
+      "title": "车辆保险",
+      "noVehicle": "无车辆",
+      "needVehicle": "购买车辆后可投保车险"
+    },
+    "type": {
+      "medical": "医疗保险",
+      "auto": "车辆保险"
+    },
+    "weekly": "每周费用", 
+    "coverage": { 
+      "title": "保障范围", 
+      "emergency": "急诊", 
+      "mental": "精神科", 
+      "addiction": "成瘾治疗",
+      "auto": "车险理赔",
+      "copay": "自付比例"
+    }, 
+    "enroll": "投保", 
+    "cancel": "退保",
+    "signed": "已签署",
+    "signHere": "在此签名",
+    "active": "生效中",
+    "invitationOnly": "仅限受邀",
+    "memberSignature": "会员签名"
+  },
   "job": { "title": "工作", "board": "招聘板", "apply": "申请", "quit": "辞职", "salary": "薪资", "requirement": "要求", "type": { "fulltime": "全职", "gig": "零工" }, "cost": { "hp": "消耗 HP", "san": "消耗 SAN" } },
   "faith": { "title": "信仰", "join": "加入", "leave": "离开", "rite": "仪式", "offer": "献祭", "pray": "祈祷", "donate": "捐赠", "faiths": { "none": "无信仰", "church": "教会", "brotherhood": "兄弟会", "cult": "隐秘教派", "revolution": "革命" } },
   "crypto": { "title": "加密货币", "btc": "比特币", "price": "当前价格", "position": { "long": "做多", "short": "做空", "close": "平仓" }, "leverage": "杠杆", "profit": "盈亏" },
@@ -162,5 +190,116 @@
   "archive": { "title": "档案", "unlocked": "已解锁档案", "locked": "未解锁", "read": "阅读" },
   "roast": { "title": "系统消息", "subtitle": "你今天被资本主义暴打了" },
   "gameOver": { "title": "游戏结束", "restart": "重新开始", "endings": { "death": "死亡", "survival": "生存", "alienation": "异化", "stance": "立场" } },
-  "debug": { "title": "开发者面板", "cheat": "作弊菜单", "addGold": "增加金钱", "addHp": "增加生命", "addSan": "增加理智", "unlockAll": "解锁全部", "reset": "重置游戏" }
+  "debug": { "title": "开发者面板", "cheat": "作弊菜单", "addGold": "增加金钱", "addHp": "增加生命", "addSan": "增加理智", "unlockAll": "解锁全部", "reset": "重置游戏" },
+  "vehicle": {
+    "junk": {
+      "name": "破皮卡",
+      "flavor": "锈迹斑斑，但至少四个轮子还能转。",
+      "regionWarning": "⚠️ 此车无法合法进入中产或资本家区域"
+    },
+    "pickup": {
+      "name": "二手皮卡",
+      "flavor": "工人阶级的脊梁。"
+    },
+    "sedan": {
+      "name": "电动轿车",
+      "flavor": "中产阶级的标准配置。"
+    },
+    "limo": {
+      "name": "防弹豪车",
+      "flavor": "真皮座椅，车载香槟。"
+    },
+    "tags": {
+      "owned": "已拥有",
+      "forSale": "出售中",
+      "policeImmune": "✨ 免疫警察检查"
+    }
+  },
+  "license": {
+    "fake": {
+      "name": "假驾照",
+      "flavor": "看起来挺像那么回事。",
+      "risk": "⚠️ 30%概率被警察识破"
+    },
+    "valid": {
+      "name": "正式驾照",
+      "flavor": "合法上路的权利。",
+      "dmvWait": "需要等待{turns}回合办理"
+    },
+    "elite": {
+      "name": "豁免驾照",
+      "flavor": "律师团确保无违规记录。",
+      "perk": "免疫所有警察检查"
+    }
+  },
+  "vehicleShop": {
+    "common": {
+      "buy": "购买",
+      "sell": "出售",
+      "sellPrice": "售价",
+      "cashBuy": "现金购买",
+      "loanBuy": "贷款购买",
+      "lease": "租赁",
+      "tradeIn": "置换",
+      "insufficientFunds": "资金不足",
+      "classLocked": "阶级不符",
+      "alreadyOwned": "已拥有此车",
+      "noVehicle": "没有车辆可出售"
+    },
+    "panel": {
+      "vehicleBusiness": "🚗 车辆业务",
+      "licenseBusiness": "🎫 证件业务",
+      "conciergeService": "💎 管家服务"
+    },
+    "slums": {
+      "name": "黑车拆解厂",
+      "buyTitle": "买车 (Buy)",
+      "buySubtitle": "现状出售，概不退换",
+      "sellTitle": "卖车 (Scrap)",
+      "sellDesc": "按废铁重量计价 (原价的10%)",
+      "licenseTitle": "假证贩子 (The Forger)",
+      "licenseSubtitle": "阴暗角落的特殊服务"
+    },
+    "rustbelt": {
+      "name": "Smiling Jack's Used Cars",
+      "buyTitle": "买车",
+      "buySubtitle": "首付10%起，APR高达25%",
+      "sellTitle": "卖车",
+      "licenseTitle": "驾照办理",
+      "dmvTitle": "DMV 车管所",
+      "dmvSubtitle": "现在叫号 #{current}，您的号码 #{ticket}",
+      "dmvWait": "等待 (消耗1回合)",
+      "dmvNoAppointment": "没有预约？明天再来。"
+    },
+    "suburbs": {
+      "name": "AutoMall of the Suburbs",
+      "buyTitle": "买车 / 租赁",
+      "leaseTitle": "租赁方案",
+      "leaseDesc": "车不属于您，信用分决定月供",
+      "sellTitle": "卖车 / 置换",
+      "tradeInTitle": "以旧换新",
+      "tradeInDesc": "旧车估价：${value}",
+      "licenseTitle": "驾照办理",
+      "creditCheck": "信用分检查: {score}/{required}",
+      "creditRejected": "信用分不足，请离开"
+    },
+    "downtown": {
+      "name": "Concierge Motors",
+      "buyTitle": "资产收购",
+      "buySubtitle": "全款支付，无需贷款",
+      "sellTitle": "资产处置",
+      "conciergeTitle": "礼宾服务",
+      "eliteLicenseTitle": "法律豁免",
+      "eliteLicenseDesc": "致电律师快速办理 (费用$5,000)"
+    },
+    "loan": {
+      "title": "贷款条款",
+      "downPayment": "首付",
+      "apr": "年利率",
+      "weeklyPayment": "周供",
+      "totalCost": "总成本",
+      "repossessionWarning": "⚠️ 逾期{weeks}周车辆将被强制拖走",
+      "signContract": "签署合同"
+    }
+  }
 }

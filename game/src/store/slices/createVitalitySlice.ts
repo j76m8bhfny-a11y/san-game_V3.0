@@ -116,7 +116,9 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
           btcPrice: startPrice,
           positions: [],
           priceHistory: Array(7).fill(startPrice),
-          weeklyNews: null
+          weeklyNews: null,
+          weeklyTradesCount: 0,
+          lastTradeTurn: -1
       },
       
       currentRegion: RegionID.Slums,

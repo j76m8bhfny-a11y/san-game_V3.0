@@ -39,6 +39,7 @@ export default {
         'stamp': 'stamp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards',
         'slide-out-right': 'slide-out-right 1s ease-out forwards',
         'bounce-slow': 'bounce-slow 2s ease-in-out infinite',
+        'marquee': 'marquee 15s linear infinite',
       },
       keyframes: {
         shake: {

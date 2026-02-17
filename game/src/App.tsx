@@ -27,6 +27,7 @@ import { RegionView } from './components/game/RegionView';
 import { HousingModal } from './components/game/HousingModal';
 import { CryptoSidebar } from './components/game/Crypto/CryptoSidebar';
 import { NewsTicker } from './components/game/Crypto/NewsTicker';
+import { CryptoNewsPopup } from './components/game/Crypto/CryptoNewsPopup';
 import JailOverlay from './components/game/JailOverlay';
 import { InsuranceModal } from './components/game/InsuranceModal'; // [NEW] 引入组件
 
@@ -37,6 +38,8 @@ const App: React.FC = () => {
     activeBill, 
     ending, 
     weeklyReport,
+    currentCryptoNews,  // 🔴 新增
+    hideCryptoNews,     // 🔴 新增
     _hasHydrated,
     isShopOpen,
     isJobBoardOpen,
@@ -212,6 +215,15 @@ const App: React.FC = () => {
       {isMenuOpen && <PauseMenu isOpen={isMenuOpen} onResume={() => setMenuOpen(false)} onRestart={handleRestart} />}
 
       {currentRoast && <RoastModal />}
+      
+      {/* 🔴 调整点3: 加密新闻弹窗 */}
+      {currentCryptoNews && (
+        <CryptoNewsPopup 
+          news={currentCryptoNews} 
+          onClose={hideCryptoNews} 
+        />
+      )}
+      
       <RoutineToast />
       <FeedbackLayer />
       <TooltipLayer />

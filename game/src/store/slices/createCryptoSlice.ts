@@ -16,13 +16,17 @@ export interface CryptoSlice {
     btcPrice: number;
     priceHistory: number[];
     positions: CryptoPosition[];
-    weeklyNews: NewsItem | null; 
+    weeklyNews: NewsItem | null;
+    weeklyTradesCount: number;  // 🔴 新增：本周交易次数
+    lastTradeTurn: number;      // 🔴 新增：上次交易回合
   };
 
   openCryptoAccount: () => void;
   openPosition: (type: 'LONG' | 'SHORT', principal: number, leverage: number) => void;
   closePosition: (id: string) => void;
   processWeeklyMarket: (allNews: NewsItem[]) => { logs: string[]; notes: string[] };
+  resetWeeklyTradeCount: () => void;  // 🔴 新增：每周重置
+  canTradeThisTurn: () => boolean;    // 🔴 新增：检查能否交易
 }
 
 export const createCryptoSlice: StateCreator<StoreState, [], [], CryptoSlice> = (set, get) => ({
@@ -37,14 +41,28 @@ export const createCryptoSlice: StateCreator<StoreState, [], [], CryptoSlice> = 
     weeklyNews: newsData.length > 0 
       ? (newsData as NewsItem[])[Math.floor(Math.random() * newsData.length)] 
       : null,
+    // 🔴 初始化交易限制
+    weeklyTradesCount: 0,
+    lastTradeTurn: -1,
   },
 
+  // 🔴 调整点1: KYC验证 - 需要驾照
   openCryptoAccount: () => {
     const state = get() as GameState & { addTransaction: Function; addNotification: Function };
-    const { vitality } = state;
+    const { vitality, inventory } = state;
 
     // ✅ 3. 获取配置的开户费 (与 Sidebar UI 保持一致)
     const FEE = marketRules.crypto.accountFee;
+
+    // 🔴 检查是否有驾照 (KYC验证)
+    const hasLicense = inventory.some((id: string) => 
+      marketRules.crypto.kyc.acceptedLicenses.includes(id)
+    );
+    
+    if (!hasLicense) {
+      state.addNotification('KYC验证失败：需要有效驾照', 'error');
+      return;
+    }
 
     if (vitality.metrics.gold < FEE) {
       state.addNotification('资金不足，无法支付去中心化网络接入费', 'error');
@@ -65,18 +83,30 @@ export const createCryptoSlice: StateCreator<StoreState, [], [], CryptoSlice> = 
     state.addNotification('网络已连接。Welcome to the degenerate future.', 'success');
   },
 
+  // 🔴 调整点2 & 6: 网络费 + 每周限一次交易
   openPosition: (type, principal, leverage) => {
     const state = get() as GameState & { addTransaction: Function; addNotification: Function };
     const { crypto, vitality } = state;
+    const { currentTurn } = vitality.time;
     
-    // 1. 检查资金
-    if (vitality.metrics.gold < principal) {
-      state.addNotification('可用资金不足以建立此仓位', 'error');
+    // 🔴 检查本周交易次数
+    if (crypto.weeklyTradesCount >= marketRules.trading.maxTradesPerTurn) {
+      state.addNotification('本周交易次数已用完，请等待下周', 'error');
       return;
     }
 
-    // 2. 原子扣款
-    const txResult = state.addTransaction('BANK', -principal, `开仓: BTC ${type} x${leverage}`);
+    // 🔴 扣除网络费 (固定损耗)
+    const networkFee = marketRules.trading.networkFee;
+    const totalCost = principal + networkFee;
+
+    // 1. 检查资金 (包含网络费)
+    if (vitality.metrics.gold < totalCost) {
+      state.addNotification(`资金不足（需要本金$${principal} + 网络费$${networkFee}）`, 'error');
+      return;
+    }
+
+    // 2. 原子扣款 (本金 + 网络费)
+    const txResult = state.addTransaction('BANK', -totalCost, `开仓: BTC ${type} x${leverage} (网络费$${networkFee})`);
     if (!txResult.success) {
       state.addNotification('资金不足以建立仓位', 'error');
       return;
@@ -95,7 +125,9 @@ export const createCryptoSlice: StateCreator<StoreState, [], [], CryptoSlice> = 
     set((s: any) => ({
       crypto: {
         ...s.crypto,
-        positions: [newPosition, ...s.crypto.positions]
+        positions: [newPosition, ...s.crypto.positions],
+        weeklyTradesCount: s.crypto.weeklyTradesCount + 1,  // 🔴 增加交易次数
+        lastTradeTurn: currentTurn
       }
     }));
 
@@ -136,6 +168,22 @@ export const createCryptoSlice: StateCreator<StoreState, [], [], CryptoSlice> = 
     // 4. 根据盈亏显示不同颜色的通知
     const msgType = pnl >= 0 ? 'success' : (pnl > -position.principal ? 'warning' : 'error');
     state.addNotification(`平仓完成。净盈亏: $${pnl}`, msgType);
+  },
+
+  // 🔴 新增：检查能否交易
+  canTradeThisTurn: () => {
+    const { crypto } = get();
+    return crypto.weeklyTradesCount < marketRules.trading.maxTradesPerTurn;
+  },
+
+  // 🔴 新增：每周重置交易次数
+  resetWeeklyTradeCount: () => {
+    set((s: any) => ({
+      crypto: {
+        ...s.crypto,
+        weeklyTradesCount: 0
+      }
+    }));
   },
 
   processWeeklyMarket: (allNews) => {
@@ -191,7 +239,8 @@ export const createCryptoSlice: StateCreator<StoreState, [], [], CryptoSlice> = 
           btcPrice: nextPrice,
           priceHistory: newHistory,
           positions: remainingPositions,
-          weeklyNews: nextWeekNews
+          weeklyNews: nextWeekNews,
+          weeklyTradesCount: 0  // 🔴 每周重置交易次数
         }
       };
     });

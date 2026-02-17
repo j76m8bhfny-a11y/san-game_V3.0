@@ -1,13 +1,15 @@
 import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
-import { useI18n } from '@/i18n';
-import marketRules from '@/assets/data/rules/marketRules.json'; // ✅ Import
+import marketRules from '@/assets/data/rules/marketRules.json';
 
 export const NewsTicker: React.FC = () => {
-  const { t } = useI18n();
   const { crypto } = useGameStore();
+  
+  // 🔴 调整点3: 只有开通比特币账户的才会显示新闻
+  if (!crypto.isAccountOpen) return null;
+  
   const news = crypto.weeklyNews;
-  const { defaultText, speedSeconds } = marketRules.ui.ticker; // ✅ Config
+  const { defaultText, speedSeconds } = marketRules.ui.ticker;
 
   // 如果没有新闻，显示配置的默认文本
   const text = news ? news.text : defaultText;
@@ -26,7 +28,6 @@ export const NewsTicker: React.FC = () => {
       </div>
       
       {/* ✅ 动态 CSS 动画速度 */}
-      {/* ✅ 优化：使用 will-change 和 transform 优化渲染性能 */}
       <style>{`
         @keyframes marquee {
           0% { transform: translate3d(0, 0, 0); }

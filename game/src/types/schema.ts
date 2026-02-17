@@ -578,6 +578,8 @@ export interface GameState {
     priceHistory: number[];
     positions: CryptoPosition[];
     weeklyNews: NewsItem | null;
+    weeklyTradesCount: number;  // 🔴 新增：本周交易次数
+    lastTradeTurn: number;      // 🔴 新增：上次交易回合
   };
 
   // 资产与库存
@@ -605,6 +607,7 @@ export interface GameState {
   viewingArchive: string | null;
   currentEvent: GameEvent | null;
   activeBill: Bill | null;
+  currentCryptoNews: NewsItem | null;  // 🔴 新增：加密新闻弹窗
   ending: string | null;
   
   _hasHydrated: boolean;

@@ -184,7 +184,59 @@
   },
   "job": { "title": "工作", "board": "招聘板", "apply": "申请", "quit": "辞职", "salary": "薪资", "requirement": "要求", "type": { "fulltime": "全职", "gig": "零工" }, "cost": { "hp": "消耗 HP", "san": "消耗 SAN" } },
   "faith": { "title": "信仰", "join": "加入", "leave": "离开", "rite": "仪式", "offer": "献祭", "pray": "祈祷", "donate": "捐赠", "faiths": { "none": "无信仰", "church": "教会", "brotherhood": "兄弟会", "cult": "隐秘教派", "revolution": "革命" } },
-  "crypto": { "title": "加密货币", "btc": "比特币", "price": "当前价格", "position": { "long": "做多", "short": "做空", "close": "平仓" }, "leverage": "杠杆", "profit": "盈亏" },
+  "crypto": {
+    "title": "暗网交易终端",
+    "btc": "比特币",
+    "price": "当前价格",
+    "buyingPower": "购买力",
+    "lowFunds": "资金不足",
+    "networkFee": "网络费",
+    "gasFee": "Gas费",
+    "position": {
+      "long": "做多",
+      "short": "做空",
+      "close": "平仓",
+      "pumpIt": "PUMP IT",
+      "dumpIt": "DUMP IT",
+      "longSub": "LONG 🚀",
+      "shortSub": "SHORT 📉"
+    },
+    "leverage": {
+      "label": "杠杆",
+      "safe": "保守",
+      "normal": "标准",
+      "aggressive": "激进",
+      "suicide": "自杀模式",
+      "suicideWarning": "💀 爆仓风险极高"
+    },
+    "amount": {
+      "label": "金额",
+      "max": "最大",
+      "quick25": "25%",
+      "quick50": "50%",
+      "allIn": "ALL IN",
+      "allInFlavor": "破碎命运"
+    },
+    "account": {
+      "locked": "🔒 需要KYC验证",
+      "kycRequired": "需要有效驾照",
+      "connect": "接入网络 (${fee})",
+      "connected": "已接入"
+    },
+    "tradeLimit": {
+      "weekly": "本周已交易",
+      "wait": "下周再来"
+    },
+    "news": {
+      "title": "加密快讯",
+      "breaking": ">>> BREAKING:"
+    },
+    "errors": {
+      "noLicense": "需要有效驾照进行KYC验证",
+      "weeklyLimit": "本周交易次数已用完",
+      "insufficientFunds": "资金不足（含网络费$15）"
+    }
+  },
   "jail": { "title": "监禁中", "sentence": "刑期剩余 {turns} 周", "crime": "罪名", "bail": "保释金", "serve": "服刑", "appeal": "上诉" },
   "bill": { "title": "账单", "surprise": "意外账单", "medical": "医疗账单", "legal": "法律费用", "pay": "支付", "due": "到期" },
   "archive": { "title": "档案", "unlocked": "已解锁档案", "locked": "未解锁", "read": "阅读" },

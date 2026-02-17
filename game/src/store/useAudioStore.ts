@@ -27,6 +27,11 @@ const AUDIO_ASSETS = {
   sfx_trash: '/assets/audio/sfx_trash.mp3',               // 拆除/垃圾声
   sfx_snore: '/assets/audio/sfx_snore.mp3',               // 睡觉打呼
 
+  // === 🔴 预留：比特币交易系统 SFX ===
+  // TODO: 需要制作音频文件
+  // 建议音效：大铁门关闭声、沉重的心跳声、或者赌场筹码推倒声
+  sfx_all_in: '/assets/audio/sfx_all_in.mp3',             // 梭哈/ALL IN 按钮音效
+
   // 铁锈区
   sfx_keys_jingle: '/assets/audio/sfx_keys_jingle.mp3',   // 钥匙晃动
   sfx_neon_hum: '/assets/audio/sfx_neon_hum.mp3',         // 霓虹灯电流声

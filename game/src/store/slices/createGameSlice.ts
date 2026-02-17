@@ -1,10 +1,11 @@
 import { StateCreator } from 'zustand';
-import { GameState, GameEvent, EventOption, WeeklyReport, Ending, FaithID, PlayerClass, RegionID, Bill } from '@/types/schema';
+import { GameState, GameEvent, EventOption, WeeklyReport, Ending, FaithID, PlayerClass, RegionID, Bill, NewsItem } from '@/types/schema';
 import { resolveOption } from '@/logic/eventResolver';
 import { runTurnSettlement } from '@/systems/SystemRegistry';
 import { resolveEnding } from '@/logic/endings';
 import endingsData from '@/assets/data/endings.json';
 import ENDING_RULES from '@/assets/data/rules/ending_rules.json';
+import newsData from '@/assets/data/news.json';
 
 // ✅ 引入 UI 清理函数
 import { clearAllNotificationTimers } from './createUISlice';
@@ -22,6 +23,7 @@ export interface GameSlice {
   currentEvent: GameEvent | null;
   weeklyReport: WeeklyReport | null;
   activeBill: Bill | null;  // ✅ 修复：与 UISlice 和 schema.ts 保持一致
+  currentCryptoNews: NewsItem | null;  // 🔴 新增：当前显示的加密新闻
 
   // --- Actions ---
   triggerEvent: (event: GameEvent) => void;
@@ -32,6 +34,11 @@ export interface GameSlice {
   nextTurn: () => void;
   closeWeeklyReport: () => void;
   
+  // 🔴 新增：加密新闻弹窗控制
+  showCryptoNews: (news: NewsItem) => void;
+  hideCryptoNews: () => void;
+  maybeTriggerCryptoNews: () => void;
+  
   // 全局重置
   restartGame: () => void;
 }
@@ -41,6 +48,7 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
   currentEvent: null,
   weeklyReport: null,
   activeBill: null,  // 初始状态
+  currentCryptoNews: null,  // 🔴 初始状态
 
   triggerEvent: (event) => {
     set({ isEventOpen: true, currentEvent: event });
@@ -184,6 +192,32 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
 
   closeEvent: () => {
     set({ isEventOpen: false, currentEvent: null });
+  },
+
+  // 🔴 调整点3: 加密新闻弹窗控制
+  showCryptoNews: (news: NewsItem) => {
+    set({ currentCryptoNews: news });
+  },
+  
+  hideCryptoNews: () => {
+    set({ currentCryptoNews: null });
+  },
+  
+  maybeTriggerCryptoNews: () => {
+    const { crypto } = get();
+    
+    // 只有开通比特币账户的才会收到推送
+    if (!crypto.isAccountOpen) return;
+    
+    // 30%概率推送
+    if (Math.random() > 0.3) return;
+    
+    // 随机选择一条新闻
+    const allNews = newsData as NewsItem[];
+    const randomNews = allNews[Math.floor(Math.random() * allNews.length)];
+    
+    // 设置当前显示的新闻弹窗
+    set({ currentCryptoNews: randomNews });
   },
 
   resolveBill: () => {
@@ -359,7 +393,9 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
             btcPrice: INITIAL_STATE.crypto.startPrice,
             priceHistory: Array(7).fill(INITIAL_STATE.crypto.startPrice), 
             positions: [], 
-            weeklyNews: null 
+            weeklyNews: null,
+            weeklyTradesCount: 0,  // 🔴 新增
+            lastTradeTurn: -1      // 🔴 新增
         },
         
         faith: { 
@@ -389,6 +425,7 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
         isEventOpen: false,
         currentEvent: null,
         weeklyReport: null,
+        currentCryptoNews: null,  // 🔴 重置加密新闻
         
         // 5. 恢复 Meta 数据
         unlockedArchives,

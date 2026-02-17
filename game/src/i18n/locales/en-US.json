@@ -110,7 +110,59 @@
   },
   "job": { "title": "Job", "board": "Job Board", "apply": "Apply", "quit": "Quit", "salary": "Salary", "requirement": "Requirement", "type": { "fulltime": "Full-time", "gig": "Gig" }, "cost": { "hp": "HP Cost", "san": "SAN Cost" } },
   "faith": { "title": "Faith", "join": "Join", "leave": "Leave", "rite": "Rite", "offer": "Offer", "pray": "Pray", "donate": "Donate", "faiths": { "none": "None", "church": "Church", "brotherhood": "Brotherhood", "cult": "Cult", "revolution": "Revolution" } },
-  "crypto": { "title": "Crypto", "btc": "Bitcoin", "price": "Price", "position": { "long": "Long", "short": "Short", "close": "Close" }, "leverage": "Leverage", "profit": "P&L" },
+  "crypto": {
+    "title": "Darknet Trading Terminal",
+    "btc": "Bitcoin",
+    "price": "Price",
+    "buyingPower": "BUYING POWER",
+    "lowFunds": "LOW FUNDS",
+    "networkFee": "Network Fee",
+    "gasFee": "Gas Fee",
+    "position": {
+      "long": "Long",
+      "short": "Short",
+      "close": "Close",
+      "pumpIt": "PUMP IT",
+      "dumpIt": "DUMP IT",
+      "longSub": "LONG 🚀",
+      "shortSub": "SHORT 📉"
+    },
+    "leverage": {
+      "label": "Leverage",
+      "safe": "Safe",
+      "normal": "Normal",
+      "aggressive": "Aggressive",
+      "suicide": "SUICIDE MODE",
+      "suicideWarning": "💀 Extreme Liquidation Risk"
+    },
+    "amount": {
+      "label": "Amount",
+      "max": "MAX",
+      "quick25": "25%",
+      "quick50": "50%",
+      "allIn": "ALL IN",
+      "allInFlavor": "Broken Destiny"
+    },
+    "account": {
+      "locked": "🔒 KYC REQUIRED",
+      "kycRequired": "Valid license needed",
+      "connect": "CONNECT (${fee})",
+      "connected": "CONNECTED"
+    },
+    "tradeLimit": {
+      "weekly": "Weekly Limit Reached",
+      "wait": "Return Next Week"
+    },
+    "news": {
+      "title": "Crypto News",
+      "breaking": ">>> BREAKING:"
+    },
+    "errors": {
+      "noLicense": "Valid license required for KYC",
+      "weeklyLimit": "Weekly trade limit exhausted",
+      "insufficientFunds": "Insufficient funds (incl. $15 network fee)"
+    }
+  },
   "jail": { "title": "In Prison", "sentence": "{turns} weeks remaining", "crime": "Crime", "bail": "Bail", "serve": "Serve", "appeal": "Appeal" },
   "bill": { "title": "Bill", "surprise": "Surprise Bill", "medical": "Medical Bill", "legal": "Legal Fee", "pay": "Pay", "due": "Due" },
   "archive": { "title": "Archive", "unlocked": "Unlocked", "locked": "Locked", "read": "Read" },

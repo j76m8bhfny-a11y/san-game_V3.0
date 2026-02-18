@@ -41,6 +41,15 @@ export interface GameSlice {
   
   // 全局重置
   restartGame: () => void;
+  
+  // ✅ 重构：提取的回合结算子方法
+  checkTurnLimit: (state: GameState, store: StoreState) => boolean;
+  runCoreSettlement: (state: GameState) => { updates: any; report: WeeklyReport; notes: string[] };
+  processCryptoMarket: (state: GameState, store: StoreState) => { notes: string[] };
+  applySettlementUpdates: (updates: any, report: WeeklyReport) => void;
+  checkDeathCondition: (store: StoreState) => boolean;
+  updatePlayerClass: (store: StoreState) => void;
+  finalizeTurn: (state: GameState, store: StoreState, settlementNotes: string[], cryptoNotes: string[]) => void;
 }
 
 export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set, get) => ({
@@ -230,105 +239,150 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
     }
   },
 
+  // ============================================================
+  // 回合推进主流程 (已重构为子方法)
+  // ============================================================
   nextTurn: () => {
     if (get().isMenuOpen) return;
-    
-    // 监狱状态下不执行普通回合结算，由 serveTime 处理
-    if (get().prison?.inJail) return;
+    if (get().prison?.inJail) return; // 监狱状态下不执行普通回合结算
 
     const state = get() as GameState;
     const store = get() as StoreState;
-    
-    // 使用配置中的 maxTurns
+
+    // 1. 回合上限检查
+    if (get().checkTurnLimit(state, store)) return;
+
+    // 2. 运行核心系统结算
+    const settlementResult = get().runCoreSettlement(state);
+
+    // 3. 处理加密市场
+    const cryptoResult = get().processCryptoMarket(state, store);
+
+    // 4. 应用结算更新
+    get().applySettlementUpdates(settlementResult.updates, settlementResult.report);
+
+    // 5. 检查死亡条件
+    if (get().checkDeathCondition(store)) return;
+
+    // 6. 更新玩家阶级
+    get().updatePlayerClass(store);
+
+    // 7. 完成回合
+    get().finalizeTurn(state, store, settlementResult.notes, cryptoResult.notes);
+  },
+
+  // ------------------------------------------------------------
+  // 子方法：回合上限检查
+  // ------------------------------------------------------------
+  checkTurnLimit: (state, store) => {
     const maxTurns = ENDING_RULES.constraints.maxTurns;
-    // ✅ Refactor: 从配置中读取数值钳制范围
-    const { minStat, maxStat } = SYSTEM_RULES.caps;
-
-    // 1. 回合上限检查 (结局判定)
     if (state.vitality.time.currentTurn >= maxTurns) {
-        const endingId = resolveEnding(state, endingsData as unknown as Ending[]);
-        store.triggerEnding(endingId);
-        return; 
+      const endingId = resolveEnding(state, endingsData as unknown as Ending[]);
+      store.triggerEnding(endingId);
+      return true; // 表示已触发结局，终止回合
     }
+    return false;
+  },
 
-    // 2. 运行核心系统的周结算
+  // ------------------------------------------------------------
+  // 子方法：运行核心系统结算
+  // ------------------------------------------------------------
+  runCoreSettlement: (state) => {
     const result = runTurnSettlement(state);
+    return {
+      updates: result.updates,
+      report: result.report,
+      notes: result.notes || []
+    };
+  },
 
-    // 3. Crypto 市场结算
-    let cryptoNotes: string[] = [];
+  // ------------------------------------------------------------
+  // 子方法：处理加密市场
+  // ------------------------------------------------------------
+  processCryptoMarket: (state, store) => {
+    const notes: string[] = [];
     
-    if (state.crypto && state.crypto.isAccountOpen) {
-      // 防御性处理：如果 gameDataCache 未加载，使用 crypto 中缓存的上周新闻
+    if (state.crypto?.isAccountOpen) {
       let allNews = store.gameDataCache?.news;
       if (!allNews || allNews.length === 0) {
         console.warn('[Crypto] gameDataCache.news 为空，使用备用新闻数据');
-        // 使用 crypto 中已经缓存的 weeklyNews 作为兜底
         allNews = state.crypto.weeklyNews ? [state.crypto.weeklyNews] : [];
       }
-      const cryptoResult = store.processWeeklyMarket(allNews);
-      // crypto 日志通过 processWeeklyMarket 内部的通知系统展示
-      cryptoNotes = cryptoResult.notes || [];
+      const result = store.processWeeklyMarket(allNews);
+      notes.push(...(result.notes || []));
     }
+    
+    return { notes };
+  },
 
-    // 4. 深度应用 Vitality 更新 (含数值钳制)
+  // ------------------------------------------------------------
+  // 子方法：应用结算更新
+  // ------------------------------------------------------------
+  applySettlementUpdates: (updates, report) => {
+    const { minStat, maxStat } = SYSTEM_RULES.caps;
+    
     set((prev: any) => {
-        const prevMetrics = prev.vitality.metrics;
-        const updateMetrics = result.updates.vitality?.metrics || {};
-        
-        let rawSan = (updateMetrics.san !== undefined) ? updateMetrics.san : prevMetrics.san;
-        let rawHp = (updateMetrics.hp !== undefined) ? updateMetrics.hp : prevMetrics.hp;
+      const prevMetrics = prev.vitality.metrics;
+      const updateMetrics = updates.vitality?.metrics || {};
+      
+      const rawSan = updateMetrics.san !== undefined ? updateMetrics.san : prevMetrics.san;
+      const rawHp = updateMetrics.hp !== undefined ? updateMetrics.hp : prevMetrics.hp;
 
-        // ✅ Refactor: 使用配置变量替换硬编码的 0 和 100
-        const finalSan = Math.max(minStat, Math.min(maxStat, rawSan));
-        const finalHp = Math.max(minStat, Math.min(maxStat, rawHp)); 
-
-        return {
-            ...prev,
-            ...result.updates,
-            vitality: result.updates.vitality ? {
-                ...prev.vitality,
-                ...result.updates.vitality,
-                metrics: { 
-                    ...prev.vitality.metrics, 
-                    ...updateMetrics,
-                    san: finalSan, 
-                    hp: finalHp
-                },
-                identity: { ...prev.vitality.identity, ...(result.updates.vitality.identity || {}) }
-            } : prev.vitality
-        };
+      return {
+        ...prev,
+        ...updates,
+        vitality: updates.vitality ? {
+          ...prev.vitality,
+          ...updates.vitality,
+          metrics: {
+            ...prev.vitality.metrics,
+            ...updateMetrics,
+            san: Math.max(minStat, Math.min(maxStat, rawSan)),
+            hp: Math.max(minStat, Math.min(maxStat, rawHp))
+          },
+          identity: { ...prev.vitality.identity, ...(updates.vitality.identity || {}) }
+        } : prev.vitality,
+        weeklyReport: report
+      };
     });
+  },
 
-    // 5. 生存熔断机制 (Death Check)
-    const freshState = get() as GameState;
-    const { hp, san } = freshState.vitality.metrics;
+  // ------------------------------------------------------------
+  // 子方法：检查死亡条件
+  // ------------------------------------------------------------
+  checkDeathCondition: (store) => {
+    const state = get() as GameState;
+    if (state.ending) return true;
     
-    if (freshState.ending) return; 
-
-    // 检查 HP 死亡条件
+    const { hp } = state.vitality.metrics;
+    const { minStat } = SYSTEM_RULES.caps;
+    
     if (hp <= minStat) {
-        store.triggerEnding('ENDING_DEATH_HP'); 
-        return; 
+      store.triggerEnding('ENDING_DEATH_HP');
+      return true;
     }
-    
-    // 检查 SAN 死亡条件（疯狂/精神崩溃）
-    if (san <= minStat) {
-        store.triggerEnding('ENDING_DEATH_SAN'); 
-        return; 
-    }
-    
-    // 6. 阶级判定 (回合结算后)
+    return false;
+  },
+
+  // ------------------------------------------------------------
+  // 子方法：更新玩家阶级
+  // ------------------------------------------------------------
+  updatePlayerClass: (store) => {
     if (store.recalculateClass) {
       store.recalculateClass();
     }
-    
-    // 7. 存储报表并打开 UI
-    set({ weeklyReport: result.report });
+  },
 
+  // ------------------------------------------------------------
+  // 子方法：完成回合，发送通知
+  // ------------------------------------------------------------
+  finalizeTurn: (state, store, settlementNotes, cryptoNotes) => {
     const nextTurnNum = state.vitality.time.currentTurn + 1;
     store.addNotification(`进入第 ${nextTurnNum} 周`, 'info');
     
-    [...result.notes, ...cryptoNotes].forEach((n: string) => store.addNotification(n, 'warning'));
+    [...settlementNotes, ...cryptoNotes].forEach((n: string) => {
+      store.addNotification(n, 'warning');
+    });
   },
 
   closeWeeklyReport: () => {
@@ -349,7 +403,7 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
     // 推进回合后再清空 UI 状态和账本
     set({ weeklyReport: null });
     if (store.clearWeeklyLedger) store.clearWeeklyLedger();
-    if (store.tickFaithDebuffs) store.tickFaithDebuffs();
+    // 注意: tickFaithDebuffs 已在 FaithSystem.processTurn 中调用，无需重复
   },
 
   // =================================================================
@@ -413,9 +467,9 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
         prison: { inJail: false, crime: '', sentenceTurns: 0, turnsServed: 0, bailAmount: 0 },
         
         // 3. Assets 重置
+        // 注意: activeInsurances 已在 vitality 中重置，此处无需重复
         currentRegion: 'SLUMS' as RegionID,
         activeHousing: null,
-        activeInsurances: [],
         dmvQueue: null, // [NEW] 重置DMV排队
         activeLease: null, // [NEW] 重置租赁状态
         inventory: [],
@@ -445,7 +499,20 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
         currentRoast: null,
         notifications: [],
         viewingArchive: null,
-        activeBill: null
+        activeBill: null,
+        
+        // 7. 饮食系统重置
+        dietState: {
+            junkFoodPoints: 0,
+            healthyPoints: 0,
+            consecutiveJunkDays: 0,
+            consecutiveHealthyDays: 0,
+            sodiumIntake: 0,
+            sugarIntake: 0,
+            redMeatPoints: 0,
+            noFreshFoodDays: 0
+        },
+        activeBuffs: []
     });
   }
 });

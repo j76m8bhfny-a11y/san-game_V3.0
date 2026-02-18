@@ -91,7 +91,7 @@ const JailOverlay: React.FC = () => {
              <span className="font-bold">{t('jail.serve')}</span>
              <span className="text-xs text-zinc-500 group-hover:text-zinc-300">
                {/* 动态显示的提示文案 */}
-               {isVipTreatment ? 'VIP Routine (No Penalty)' : 'High HP/SAN Cost'}
+               {isVipTreatment ? 'VIP Routine (No Penalty)' : 'High HP/Insight Cost'}
              </span>
           </button>
 

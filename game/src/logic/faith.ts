@@ -160,7 +160,7 @@ export const calculateRiteOutcome = (
     return { success: false, message: "体力不足，无法进行仪式。", goldChange: 0, updates: {} };
   }
   if (rite.sanCost && metrics.san <= rite.sanCost) {
-    return { success: false, message: "精神状态不佳，无法集中精力。", goldChange: 0, updates: {} };
+    return { success: false, message: "灵视不足，无法感知仪式的真谛。", goldChange: 0, updates: {} };
   }
 
   // ==========================
@@ -197,10 +197,10 @@ export const calculateRiteOutcome = (
   if (rite.hpCost) newHp -= rite.hpCost;
   if (rite.sanCost) newSan -= rite.sanCost;
 
-  // 奖励 (SAN/HP)
+  // 奖励 (灵视值/HP)
   if (rite.baseSanReward) {
     newSan += rite.baseSanReward;
-    resultMsg += `理智 +${rite.baseSanReward}。`;
+    resultMsg += `灵视 +${rite.baseSanReward}。`;
   }
   
   if (rite.baseHpReward) {

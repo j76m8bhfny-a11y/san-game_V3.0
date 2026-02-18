@@ -87,15 +87,28 @@ export const executeAction = (state: GameState, action: GameAction): ActionResul
       const subActions = roll < rate ? params.successActions : params.failActions;
 
       if (subActions && subActions.length > 0) {
-        // 递归执行子动作
-        // 注意：这里为了简单，只合并 updates，实际情况可能需要更复杂的递归合并逻辑
+        // 递归执行子动作 - 使用累积状态确保子动作间的状态同步
+        let currentState = { ...state };
+        
+        // 应用之前的 updates 到 currentState
+        if (updates.vitality) {
+          currentState = {
+            ...currentState,
+            vitality: {
+              ...currentState.vitality,
+              ...(updates.vitality as any),
+              metrics: {
+                ...currentState.vitality.metrics,
+                ...(updates.vitality.metrics || {})
+              }
+            }
+          };
+        }
+        
         subActions.forEach((subAction: GameAction) => {
-          const subResult = executeAction(state, subAction); // 使用当前 state (近似)
+          const subResult = executeAction(currentState, subAction);
           
           // 合并 updates
-          // 注意：深层合并 vitality 比较麻烦，这里做简单的浅层合并演示
-          // 真正的逻辑应该使用类似 lodash.merge 的工具
-          // 但由于我们返回的是 "diff"，直接覆盖通常也是可接受的，除了 vitality
           Object.keys(subResult.updates).forEach(key => {
              if (key === 'vitality' && updates.vitality) {
                  // 简单的二级合并
@@ -107,6 +120,20 @@ export const executeAction = (state: GameState, action: GameAction): ActionResul
                  updates[key] = subResult.updates[key];
              }
           });
+          
+          // 更新 currentState 以反映当前累积状态
+          if (subResult.updates.vitality?.metrics) {
+            currentState = {
+              ...currentState,
+              vitality: {
+                ...currentState.vitality,
+                metrics: {
+                  ...currentState.vitality.metrics,
+                  ...subResult.updates.vitality.metrics
+                }
+              }
+            };
+          }
           
           logs.push(...subResult.logs);
         });

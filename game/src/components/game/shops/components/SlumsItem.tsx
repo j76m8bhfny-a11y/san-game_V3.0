@@ -75,7 +75,7 @@ export const SlumsItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
         
         <div className="mt-2 flex gap-2 text-[10px] font-mono">
            {item.effects?.hp !== undefined && <span className={item.effects.hp > 0 ? 'text-green-700' : 'text-red-700'}>HP {item.effects.hp > 0 ? '+' : ''}{item.effects.hp}</span>}
-           {item.effects?.san !== undefined && <span className={item.effects.san > 0 ? 'text-blue-700' : 'text-purple-700'}>SAN {item.effects.san > 0 ? '+' : ''}{item.effects.san}</span>}
+           {item.effects?.san !== undefined && <span className={item.effects.san > 0 ? 'text-amber-700' : 'text-purple-700'}>灵视{item.effects.san > 0 ? '+' : ''}{item.effects.san}</span>}
         </div>
 
         {!canAfford && (

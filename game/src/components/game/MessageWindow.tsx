@@ -255,8 +255,8 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
   const { t } = useI18n();
   if (!event || !event.options) return null;
   const { resolveEventOption, vitality } = useGameStore();
-  const { san } = vitality.metrics;
   const { playSfx } = useAudioStore();
+  const currentInsight = vitality.metrics.san;
   
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [stage, setStage] = useState<'INIT' | 'TYPING_TITLE' | 'TYPING_BODY' | 'INTERACTIVE'>('INIT');
@@ -319,11 +319,18 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
   };
   
 
+  // 根据灵视值决定是否显示D选项（觉醒选项）
+  // sanLock: 需要达到的灵视值阈值才能看到这个选项
+  const canSeeDOption = event.options.D?.sanLock 
+    ? currentInsight >= event.options.D.sanLock 
+    : currentInsight >= 40; // 默认需要40灵视值
+  
   const options = [
     { id: 'A', label: event.options.A.label, type: 'risk' },
     { id: 'B', label: event.options.B.label, type: 'safe' },
     { id: 'C', label: event.options.C.label, type: 'special' },
-    { id: 'D', label: event.options.D?.label || '', type: 'awakening' },
+    // D选项：只有灵视值足够高才能看到（觉醒者看到隐藏真相）
+    ...(canSeeDOption ? [{ id: 'D', label: event.options.D?.label || '', type: 'awakening' }] : []),
   ].filter(opt => opt.label);
 
   const descriptionText = event.text;

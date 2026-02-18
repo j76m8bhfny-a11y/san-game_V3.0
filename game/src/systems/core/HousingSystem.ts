@@ -129,6 +129,9 @@ export const HousingSystem: GameSystem = {
 
             loan.interest = Math.max(0, loan.interest - payment.interestPayment);
             loan.principal = Math.max(0, loan.principal - payment.principalPayment);
+            
+            // ✅ 修复：重置逾期周数（成功还款）
+            loan.overdueTurns = 0;
 
             if (loan.principal <= 0) {
               result.logs.push(`【恭喜】${housing.name} 的房贷已全部还清！`);
@@ -143,7 +146,12 @@ export const HousingSystem: GameSystem = {
               updatedLoans[loanIndex] = loan;
             }
           } else {
-            result.logs.push(`【警告】${housing.name} 房贷扣款失败：余额不足 (需$${totalCost + totalMortgagePayment})`);
+            // ✅ 修复：增加逾期周数（扣款失败）
+            loan.overdueTurns = (loan.overdueTurns || 0) + 1;
+            updatedLoans[loanIndex] = loan;
+            hasUpdates = true;
+            
+            result.logs.push(`【警告】${housing.name} 房贷扣款失败：余额不足 (需$${totalCost + totalMortgagePayment})，逾期 ${loan.overdueTurns} 周`);
           }
         }
       }

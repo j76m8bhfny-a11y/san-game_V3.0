@@ -1,0 +1,392 @@
+{
+  "$schema": "items-for-survival-dimensions",
+  "description": "物品数值配置示例 - 展示如何通过物品数值影响生存维度",
+  "version": "1.0.0",
+  
+  "items": [
+    {
+      "id": "canned_food",
+      "name": "罐头食品",
+      "type": "CONSUMABLE",
+      "tags": ["food", "cheap"],
+      "price": 15,
+      "effects": {
+        "hunger": 25,
+        "hp": 2
+      },
+      "flavorText": "廉价但能填饱肚子",
+      "dimensionImpact": {
+        "description": "对维度的影响",
+        "nutritionSupply": { "value": 20, "reason": "基础食物补给" }
+      }
+    },
+    {
+      "id": "fresh_vegetables",
+      "name": "新鲜蔬菜",
+      "type": "CONSUMABLE",
+      "tags": ["food", "healthy"],
+      "price": 45,
+      "effects": {
+        "hunger": 20,
+        "hp": 5
+      },
+      "flavorText": "营养均衡，有益健康",
+      "dimensionImpact": {
+        "nutritionSupply": { "value": 40, "reason": "健康饮食" }
+      }
+    },
+    {
+      "id": "luxury_steak",
+      "name": "和牛牛排",
+      "type": "CONSUMABLE",
+      "tags": ["food", "luxury"],
+      "price": 200,
+      "effects": {
+        "hunger": 35,
+        "hp": 15,
+        "san": 10
+      },
+      "flavorText": "顶级享受，身心愉悦",
+      "dimensionImpact": {
+        "nutritionSupply": { "value": 60, "reason": "高端营养" },
+        "mentalStability": { "value": 30, "reason": "奢侈享受带来的愉悦" }
+      }
+    },
+    {
+      "id": "instant_noodles",
+      "name": "泡面",
+      "type": "CONSUMABLE",
+      "tags": ["food", "junk", "cheap"],
+      "price": 8,
+      "effects": {
+        "hunger": 15,
+        "hp": -2
+      },
+      "flavorText": "便宜方便，但没什么营养",
+      "dimensionImpact": {
+        "nutritionSupply": { "value": 5, "reason": "垃圾食品，营养价值低" }
+      }
+    },
+    
+    {
+      "id": "med_kit",
+      "name": "急救包",
+      "type": "CONSUMABLE",
+      "tags": ["medical"],
+      "price": 120,
+      "effects": {
+        "hp": 40
+      },
+      "flavorText": "应急医疗物资",
+      "dimensionImpact": {
+        "medicalSupport": { "value": 35, "reason": "应急治疗能力" }
+      }
+    },
+    {
+      "id": "painkillers",
+      "name": "止痛药",
+      "type": "CONSUMABLE",
+      "tags": ["medical", "addictive"],
+      "price": 60,
+      "effects": {
+        "hp": 10,
+        "san": 5,
+        "addiction": 3
+      },
+      "flavorText": "缓解痛苦，但容易上瘾",
+      "dimensionImpact": {
+        "medicalSupport": { "value": 20, "reason": "基础止痛" },
+        "mentalStability": { "value": 10, "reason": "暂时缓解精神压力" }
+      }
+    },
+    {
+      "id": "antibiotics",
+      "name": "抗生素",
+      "type": "CONSUMABLE",
+      "tags": ["medical", "cure"],
+      "price": 150,
+      "effects": {
+        "hp": 5
+      },
+      "cures": ["INFECTION", "SEPSIS"],
+      "flavorText": "治疗感染的特效药",
+      "dimensionImpact": {
+        "medicalSupport": { "value": 50, "reason": "治愈感染疾病" }
+      }
+    },
+    
+    {
+      "id": "tent",
+      "name": "简易帐篷",
+      "type": "PASSIVE",
+      "tags": ["housing", "portable"],
+      "price": 100,
+      "effects": {
+        "maxHp": 5
+      },
+      "flavorText": "勉强遮风挡雨",
+      "dimensionImpact": {
+        "physicalDefense": { "value": 15, "reason": "基础遮蔽" }
+      }
+    },
+    {
+      "id": "sleeping_bag",
+      "name": "睡袋",
+      "type": "PASSIVE",
+      "tags": ["housing", "portable"],
+      "price": 80,
+      "effects": {
+        "maxHp": 3
+      },
+      "flavorText": "比直接睡地上强点",
+      "dimensionImpact": {
+        "physicalDefense": { "value": 10, "reason": "轻微保暖" }
+      }
+    },
+    {
+      "id": "kettle",
+      "name": "电热水壶",
+      "type": "PASSIVE",
+      "tags": ["comfort"],
+      "price": 50,
+      "effects": {},
+      "flavorText": "一杯热茶能安抚心灵",
+      "dimensionImpact": {
+        "mentalStability": { "value": 15, "reason": "小确幸提升心情" }
+      }
+    },
+    {
+      "id": "security_door",
+      "name": "防盗门",
+      "type": "PASSIVE",
+      "tags": ["housing_upgrade", "defense"],
+      "price": 500,
+      "effects": {
+        "maxHp": 15
+      },
+      "flavorText": "阻挡不速之客",
+      "dimensionImpact": {
+        "physicalDefense": { "value": 40, "reason": "显著提升住所安全性" }
+      }
+    },
+    
+    {
+      "id": "medical_insurance_basic",
+      "name": "基础医保",
+      "type": "KEY",
+      "tags": ["insurance"],
+      "price": 200,
+      "effects": {},
+      "insuranceData": {
+        "type": "MEDICAL",
+        "copayModifier": 0.5,
+        "emergencyCovered": false,
+        "mentalCovered": false,
+        "addictionCovered": false
+      },
+      "flavorText": "基础医疗保障",
+      "dimensionImpact": {
+        "medicalSupport": { "value": 30, "reason": "基础医保覆盖" },
+        "economicBuffer": { "value": 20, "reason": "降低医疗支出风险" }
+      }
+    },
+    {
+      "id": "medical_insurance_premium",
+      "name": "高端医保",
+      "type": "KEY",
+      "tags": ["insurance", "premium"],
+      "price": 800,
+      "effects": {},
+      "insuranceData": {
+        "type": "MEDICAL",
+        "copayModifier": 0.1,
+        "emergencyCovered": true,
+        "mentalCovered": true,
+        "addictionCovered": true
+      },
+      "flavorText": "全面医疗保护",
+      "dimensionImpact": {
+        "medicalSupport": { "value": 75, "reason": "全面医疗覆盖" },
+        "economicBuffer": { "value": 40, "reason": "大幅降低医疗支出" }
+      }
+    },
+    
+    {
+      "id": "lucky_charm",
+      "name": "护身符",
+      "type": "PASSIVE",
+      "tags": ["faith", "comfort"],
+      "price": 30,
+      "effects": {
+        "san": 5
+      },
+      "flavorText": "你相信它能带来好运",
+      "dimensionImpact": {
+        "mentalStability": { "value": 20, "reason": "心理安慰作用" }
+      }
+    },
+    {
+      "id": "bible",
+      "name": "圣经",
+      "type": "PASSIVE",
+      "tags": ["faith", "church"],
+      "price": 25,
+      "effects": {
+        "san": 8
+      },
+      "flavorText": "寻求心灵慰藉",
+      "dimensionImpact": {
+        "mentalStability": { "value": 25, "reason": "信仰带来的平静" }
+      }
+    },
+    {
+      "id": "weird_idol",
+      "name": "诡异雕像",
+      "type": "PASSIVE",
+      "tags": ["faith", "cult", "dangerous"],
+      "price": 100,
+      "effects": {
+        "san": -10,
+        "hp": 5
+      },
+      "flavorText": "它在对你低语...",
+      "dimensionImpact": {
+        "mentalStability": { "value": -20, "reason": "sanity流失" },
+        "physicalDefense": { "value": 10, "reason": "神秘力量保护" }
+      }
+    }
+  ],
+  
+  "housing": {
+    "slum_shack": {
+      "id": "slum_shack",
+      "name": "贫民窟棚屋",
+      "region": "SLUMS",
+      "requiredClass": "HOMELESS",
+      "value": 500,
+      "rentConfig": {
+        "deposit": 100,
+        "weeklyCosts": [
+          { "key": "RENT", "label": "租金", "baseAmount": 50 }
+        ]
+      },
+      "defenseLevel": 20,
+      "regenHp": 2,
+      "flavorText": "破破烂烂，聊胜于无",
+      "dimensionImpact": {
+        "physicalDefense": { "value": 20, "reason": "基础住所" },
+        "mentalStability": { "value": 10, "reason": "不用睡大街" }
+      }
+    },
+    "suburb_apartment": {
+      "id": "suburb_apartment",
+      "name": "郊区公寓",
+      "region": "SUBURBS",
+      "requiredClass": "WORKER",
+      "value": 150000,
+      "buyConfig": {
+        "price": 150000,
+        "downPaymentRate": 0.20,
+        "mortgageTermTurns": 520,
+        "interestRate": 0.04,
+        "weeklyCosts": [
+          { "key": "MORTGAGE", "label": "房贷", "baseAmount": 350 },
+          { "key": "HOA", "label": "物业费", "baseAmount": 80 }
+        ]
+      },
+      "defenseLevel": 60,
+      "regenHp": 8,
+      "flavorText": "中产生活，安稳舒适",
+      "dimensionImpact": {
+        "physicalDefense": { "value": 60, "reason": "安全社区" },
+        "mentalStability": { "value": 50, "reason": "舒适居住环境" },
+        "nutritionSupply": { "value": 30, "reason": "配套厨房" }
+      }
+    },
+    "downtown_penthouse": {
+      "id": "downtown_penthouse",
+      "name": "顶层豪宅",
+      "region": "DOWNTOWN",
+      "requiredClass": "CAPITALIST",
+      "value": 2000000,
+      "buyConfig": {
+        "price": 2000000,
+        "downPaymentRate": 0.30,
+        "mortgageTermTurns": 520,
+        "interestRate": 0.035,
+        "weeklyCosts": [
+          { "key": "MORTGAGE", "label": "房贷", "baseAmount": 3500 },
+          { "key": "TAX", "label": "房产税", "baseAmount": 800 },
+          { "key": "SERVICE", "label": "管家服务", "baseAmount": 500 }
+        ]
+      },
+      "defenseLevel": 90,
+      "regenHp": 15,
+      "flavorText": "云端之上的奢华",
+      "dimensionImpact": {
+        "physicalDefense": { "value": 90, "reason": "顶级安保" },
+        "mentalStability": { "value": 80, "reason": "极致享受" },
+        "nutritionSupply": { "value": 60, "reason": "私人厨师" },
+        "medicalSupport": { "value": 40, "reason": "私人医生预约" },
+        "economicBuffer": { "value": 50, "reason": "房产资产" }
+      }
+    }
+  },
+  
+  "calculationNotes": {
+    "description": "数值设计指南",
+    "dimensionScale": {
+      "0-20": "极差 - 生存受到严重威胁",
+      "20-40": "较差 - 需要尽快改善",
+      "40-60": "一般 - 勉强维持",
+      "60-80": "良好 - 比较安全",
+      "80-100": "优秀 - 几乎无忧"
+    },
+    "balancingTips": [
+      "1. 食物类物品主要影响 nutritionSupply",
+      "2. 住所和装备主要影响 physicalDefense", 
+      "3. 舒适物品和信仰主要影响 mentalStability",
+      "4. 医疗物品和保险主要影响 medicalSupport",
+      "5. 金钱和收入主要影响 economicBuffer",
+      "6. 调整物品价格来平衡获取难度",
+      "7. 负面效果（成瘾、减san）可以作为强力物品的平衡代价"
+    ],
+    "exampleScenario": {
+      "流浪者初期": {
+        "inventory": ["instant_noodles", "sleeping_bag"],
+        "dimensions": {
+          "nutritionSupply": 5,
+          "physicalDefense": 10,
+          "mentalStability": 15,
+          "medicalSupport": 5,
+          "economicBuffer": 10
+        },
+        "expectedSurvivalRate": "15-25%"
+      },
+      "工人稳定期": {
+        "inventory": ["canned_food", "kettle", "med_kit"],
+        "housing": "slum_shack",
+        "dimensions": {
+          "nutritionSupply": 35,
+          "physicalDefense": 35,
+          "mentalStability": 40,
+          "medicalSupport": 35,
+          "economicBuffer": 35
+        },
+        "expectedSurvivalRate": "55-70%"
+      },
+      "中产舒适期": {
+        "inventory": ["fresh_vegetables", "security_door", "medical_insurance_basic"],
+        "housing": "suburb_apartment",
+        "dimensions": {
+          "nutritionSupply": 60,
+          "physicalDefense": 70,
+          "mentalStability": 65,
+          "medicalSupport": 60,
+          "economicBuffer": 60
+        },
+        "expectedSurvivalRate": "75-85%"
+      }
+    }
+  }
+}

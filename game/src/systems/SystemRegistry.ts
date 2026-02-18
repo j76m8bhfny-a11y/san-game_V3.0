@@ -186,6 +186,11 @@ export const runTurnSettlement = (currentState: GameState) => {
     turnNetGoldChange = allowedTransactions.reduce((sum, t) => sum + t.amount, 0);
     finalGold = initialGold + turnNetGoldChange;
     currentLedger = allowedTransactions;
+    
+    // ✅ 修复：同步更新 tempState 以保持一致性（虽然函数结束前不再使用，但防御性保留）
+    if (tempState.vitality?.metrics) {
+      tempState.vitality.metrics.gold = Math.max(0, finalGold);
+    }
   }
   
   accumulatedUpdates.vitality.metrics.gold = Math.max(0, finalGold);

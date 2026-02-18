@@ -137,6 +137,30 @@
     "title": "美式灵视 (UR)",
     "description": "视角拉远，地球变成了一个贴着条形码的商品。屏幕弹出系统框：Simulation Failed. Reset? [Y/N] 你看清了：这不是游戏，这是你的生活。",
     "priority": 2,
-    "type": "UR"
+    "type": "UR",
+    "conditions": {
+      "minSan": 85
+    }
+  },
+  {
+    "id": "ED-21",
+    "title": "蒙昧的幸福",
+    "description": "你从未质疑过任何事情。工作、消费、睡觉、重复。你觉得自己是个幸福的普通人，直到死在一张付不起的账单上。你死时依然相信：只要再努力一点，就能成功。",
+    "priority": 3,
+    "type": "ALIENATION",
+    "conditions": {
+      "maxSan": 20
+    }
+  },
+  {
+    "id": "ED-22",
+    "title": "觉醒者",
+    "description": "你看清了系统的每一个齿轮如何咬合，如何碾碎像你这样的人。你无法再假装一切正常，也无法再融入这个疯狂的世界。你成了一个永远的局外人，但至少，你是清醒的。",
+    "priority": 3,
+    "type": "STANCE",
+    "conditions": {
+      "minSan": 70,
+      "maxSan": 84
+    }
   }
 ]

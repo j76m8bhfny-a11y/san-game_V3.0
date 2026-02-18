@@ -6,15 +6,16 @@ import { checkClassUpdate } from '@/logic/core';
 import diseasesData from '@/assets/data/diseases.json';
 import { Disease } from '@/types/schema';
 import vitalityRules from '@/assets/data/rules/vitalityRules.json';
-import classesData from '@/assets/data/classes.json'; // ✨ 引入阶级定义
-import vehicleRules from '@/assets/data/rules/vehicleRules.json'; // [NEW] 车辆规则
+import classesData from '@/assets/data/classes.json';
+import vehicleRules from '@/assets/data/rules/vehicleRules.json';
+import foodRules from '@/assets/data/rules/foodRules.json';
 
 export const StatRuleSystem: GameSystem = {
   id: 'STAT_RULES',
 
   processTurn: ({ state }) => {
     const result: SystemResult = {
-      updates: {}, // 初始化为空对象
+      updates: {},
       newTransactions: [],
       logs: [],
       notes: []
@@ -22,22 +23,22 @@ export const StatRuleSystem: GameSystem = {
 
     const { metrics, activeDiseases, activeInsurances } = state.vitality;
 
-    // ✅ 2. 解构配置项（带防御性默认值）
+    // 解构配置项（带防御性默认值）
     const metabolism = vitalityRules.metabolism || {
       baseCost: 5,
       hungerDecayPerTurn: 20,
       starvationDamage: 15
     };
-    const sanity = vitalityRules.sanity || {
-      breakThreshold: 20,
-      selfHarmDamage: 10
-    };
+    // 注：原 sanity 配置已改为 insight（灵视值系统）
+    // 灵视值不再直接导致身体伤害，其影响体现在工作效率和事件触发上
+
+    // 饮食系统配置
+    const hungerConfig = foodRules.hungerSystem;
+    const dietTrackerConfig = foodRules.dietTracker;
 
     // =================================================================
     // 0. 保险费扣除 (Insurance Premium)
     // =================================================================
-    // 只有在没坐牢的情况下才自动扣费 (坐牢时 SystemRegistry 已有拦截逻辑，或者允许欠费)
-    // ✅ 多保险支持：遍历所有生效保险并扣除周费
     for (const insurance of activeInsurances) {
       if (insurance.weeklyCost > 0) {
         result.newTransactions!.push({
@@ -52,10 +53,8 @@ export const StatRuleSystem: GameSystem = {
     }
 
     // =================================================================
-    // 0.5 车辆相关系统处理 [NEW]
+    // 0.5 车辆相关系统处理
     // =================================================================
-    
-    // ---- 0.5.1 DMV排队处理 ----
     if (state.dmvQueue) {
       const { processDMVQueueTurn, completeDMVQueue } = state as any;
       const queueResult = processDMVQueueTurn();
@@ -71,7 +70,6 @@ export const StatRuleSystem: GameSystem = {
       }
     }
     
-    // ---- 0.5.2 租赁处理 ----
     if (state.activeLease) {
       const { processLeaseTurn } = state as any;
       const leaseResult = processLeaseTurn();
@@ -82,25 +80,19 @@ export const StatRuleSystem: GameSystem = {
           result.notes.push('租赁期已满，请归还车辆');
         }
         
-        // ✅ 自动增加里程和磨损（决策4-A）
         const lease = state.activeLease;
         if (lease) {
-          // 每回合随机增加50-150里程
           const mileageIncrease = Math.floor(Math.random() * 100) + 50;
           const newMileageUsed = (lease.mileageUsed || 0) + mileageIncrease;
-          
-          // 磨损增加0.02-0.05
           const wearIncrease = (Math.random() * 0.03) + 0.02;
           const newWearAndTear = Math.min(1, (lease.wearAndTear || 0) + wearIncrease);
           
-          // 更新租赁状态
           if (!result.updates.activeLease) {
             result.updates.activeLease = { ...lease };
           }
           result.updates.activeLease.mileageUsed = newMileageUsed;
           result.updates.activeLease.wearAndTear = newWearAndTear;
           
-          // 如果超里程，添加警告日志
           if (newMileageUsed > lease.mileageLimit) {
             const overage = newMileageUsed - lease.mileageLimit;
             result.logs.push(`租赁警告: 已超里程 ${overage} 单位`);
@@ -112,14 +104,12 @@ export const StatRuleSystem: GameSystem = {
       }
     }
     
-    // ---- 0.5.3 车辆效果处理 ----
     const vehicleEffects = (vehicleRules as any).vehicleEffects;
     if (vehicleEffects?.applyFrequency === 'TURN_START') {
       const { processVehicleEffects } = state as any;
       const effects = processVehicleEffects();
       
       if (effects.hpChange !== 0 || effects.sanChange !== 0 || effects.addictionChange !== 0) {
-        // 初始化 metrics 容器
         if (!result.updates.vitality) result.updates.vitality = { metrics: {} };
         if (!result.updates.vitality.metrics) result.updates.vitality.metrics = {};
         
@@ -144,10 +134,7 @@ export const StatRuleSystem: GameSystem = {
     // =================================================================
     // 1. 基础代谢 (Hunger/Survival)
     // =================================================================
-    // ✅ Refactor: 使用配置中的基础消耗开关/阈值
     if (metabolism.baseCost > 0) {
-        
-        // 🛡️ 防御性初始化 updates 结构
         if (!result.updates.vitality) {
             result.updates.vitality = { metrics: {} };
         }
@@ -155,85 +142,260 @@ export const StatRuleSystem: GameSystem = {
             result.updates.vitality.metrics = {};
         }
 
-        // 使用局部变量引用
         const vitMetrics = result.updates.vitality.metrics;
-
-        // -----------------------------------------------------------------
-        // 1.1 饥饿循环 (Hunger Cycle)
-        // -----------------------------------------------------------------
-    
-        // 获取当前值 (优先取 metrics 中的原始值)
-        const currentHunger = metrics.hunger ?? 100;
+        const currentHunger = metrics.hunger ?? hungerConfig.maxHunger;
         const currentHp = metrics.hp;
 
-        // ✅ Refactor: 使用配置中的衰减值 (原为 20)
         let newHunger = Math.max(0, currentHunger - metabolism.hungerDecayPerTurn);
         let hpLoss = 0;
 
         if (newHunger === 0) {
-            // 如果已经是0，或者扣减后变成了0 -> 触发饥饿伤害
-            // ✅ Refactor: 使用配置中的伤害值 (原为 15)
             hpLoss = metabolism.starvationDamage;
             result.logs.push(`⚠️ 极度饥饿: 生命流失 -${hpLoss}`);
             result.notes.push("你快饿死了，快去买点吃的！");
+        } else if (newHunger < hungerConfig.thresholds.hungry) {
+            result.logs.push(`饥饿警告: 饱腹感仅剩 ${newHunger}`);
+            result.notes.push("你的胃在抗议，工作效率下降了。");
         } else {
             result.logs.push(`饱腹感下降: -${metabolism.hungerDecayPerTurn} (剩余: ${newHunger})`);
         }
 
-        // 写入更新
         vitMetrics.hunger = newHunger;
         if (hpLoss > 0) {
             vitMetrics.hp = Math.max(0, currentHp - hpLoss);
         }
     }
 
+    // =================================================================
+    // 1.5 饮食追踪系统 (Diet Tracker)
+    // =================================================================
+    if (dietTrackerConfig.enabled) {
+        const dietState = (state as any).dietState || {
+            junkFoodPoints: 0,
+            healthyPoints: 0,
+            consecutiveJunkDays: 0,
+            consecutiveHealthyDays: 0,
+            sodiumIntake: 0,
+            sugarIntake: 0,
+            redMeatPoints: 0,
+            noFreshFoodDays: 0
+        };
+
+        // 衰减计算 (所有摄入指标都会随时间衰减)
+        const decayedJunkPoints = Math.max(0, dietState.junkFoodPoints - dietTrackerConfig.junkFoodPoints.decayPerTurn);
+        const decayedHealthyPoints = Math.max(0, dietState.healthyPoints - dietTrackerConfig.healthyPoints.decayPerTurn);
+        const decayedSodium = Math.max(0, dietState.sodiumIntake - 5); // 钠每天衰减5
+        const decayedSugar = Math.max(0, dietState.sugarIntake - 3);   // 糖每天衰减3
+        const decayedRedMeat = Math.max(0, dietState.redMeatPoints - 2); // 红肉每天衰减2
+
+        let newDietState = {
+            ...dietState,
+            junkFoodPoints: decayedJunkPoints,
+            healthyPoints: decayedHealthyPoints,
+            sodiumIntake: decayedSodium,
+            sugarIntake: decayedSugar,
+            redMeatPoints: decayedRedMeat
+        };
+
+        // 检查饮食相关疾病触发
+        const dietDiseases = foodRules.dietRelatedDiseases.triggers;
+        
+        // Type 2 Diabetes 检查
+        if (!activeDiseases.includes('TYPE_2_DIABETES') && 
+            dietState.junkFoodPoints >= dietDiseases.type2_diabetes.junkFoodPoints &&
+            dietState.consecutiveJunkDays >= dietDiseases.type2_diabetes.consecutiveJunkDays) {
+            if (Math.random() < dietDiseases.type2_diabetes.baseChance) {
+                if (!result.updates.vitality) result.updates.vitality = {};
+                result.updates.vitality.activeDiseases = [...activeDiseases, 'TYPE_2_DIABETES'];
+                result.notes.push('【健康警报】你感到异常口渴和疲劳... (患上II型糖尿病)');
+                result.logs.push('染上疾病: TYPE_2_DIABETES');
+            }
+        }
+
+        // Metabolic Syndrome 检查
+        if (!activeDiseases.includes('METABOLIC_SYNDROME') && 
+            dietState.junkFoodPoints >= dietDiseases.metabolic_syndrome.junkFoodPoints &&
+            Math.random() < (dietDiseases.metabolic_syndrome.baseChance || 0.35)) {
+            if (!result.updates.vitality) result.updates.vitality = {};
+            // 添加疾病
+            result.updates.vitality.activeDiseases = [...activeDiseases, 'METABOLIC_SYNDROME'];
+            // 应用永久MaxHP减少
+            if (!result.updates.vitality.metrics) result.updates.vitality.metrics = {};
+            const currentMaxHp = result.updates.vitality.metrics.maxHp ?? metrics.maxHp;
+            result.updates.vitality.metrics.maxHp = Math.max(20, currentMaxHp - dietDiseases.metabolic_syndrome.permanentMaxHpReduction);
+            result.notes.push('【健康警报】你的腰围在增加，体检报告亮起了红灯... (患上代谢综合征)');
+            result.logs.push('染上疾病: METABOLIC_SYNDROME (MaxHP -5)');
+        }
+
+        // Hypertension 检查
+        if (!activeDiseases.includes('HYPERTENSION') && 
+            dietState.sodiumIntake >= dietDiseases.hypertension.sodiumIntakeThreshold &&
+            Math.random() < (dietDiseases.hypertension.baseChance || 0.4)) {
+            if (!result.updates.vitality) result.updates.vitality = {};
+            // 添加疾病
+            result.updates.vitality.activeDiseases = [...activeDiseases, 'HYPERTENSION'];
+            if (!result.updates.vitality.metrics) result.updates.vitality.metrics = {};
+            const currentMaxHp = result.updates.vitality.metrics.maxHp ?? metrics.maxHp;
+            result.updates.vitality.metrics.maxHp = Math.max(20, currentMaxHp - dietDiseases.hypertension.maxHpReduction);
+            result.notes.push('【健康警报】你经常感到头晕目眩... (患上高血压)');
+            result.logs.push('染上疾病: HYPERTENSION (MaxHP -10)');
+        }
+
+        // Heart Disease 检查
+        if (!activeDiseases.includes('HEART_DISEASE') && 
+            dietState.junkFoodPoints >= dietDiseases.heart_disease.junkFoodPoints &&
+            Math.random() < (dietDiseases.heart_disease.baseChance || 0.25)) {
+            if (!result.updates.vitality) result.updates.vitality = {};
+            // 添加疾病
+            result.updates.vitality.activeDiseases = [...activeDiseases, 'HEART_DISEASE'];
+            if (!result.updates.vitality.metrics) result.updates.vitality.metrics = {};
+            const currentMaxHp = result.updates.vitality.metrics.maxHp ?? metrics.maxHp;
+            result.updates.vitality.metrics.maxHp = Math.max(20, currentMaxHp - dietDiseases.heart_disease.maxHpReduction);
+            result.notes.push('【健康警报】你的心脏发出警告... (患上心脏病，需要$50,000手术费)');
+            result.logs.push('染上疾病: HEART_DISEASE (MaxHP -20)');
+        }
+
+        // Scurvy 检查
+        if (!activeDiseases.includes('SCURVY') && 
+            dietState.noFreshFoodDays >= dietDiseases.scurvy.noFreshFoodDays &&
+            Math.random() < (dietDiseases.scurvy.baseChance || 0.5)) {
+            if (!result.updates.vitality) result.updates.vitality = {};
+            result.notes.push('【健康警报】你的牙龈开始出血... (患上坏血病，需要维生素C)');
+            result.logs.push('染上疾病: SCURVY');
+        }
+
+        // 增加无新鲜食物天数
+        newDietState.noFreshFoodDays = dietState.noFreshFoodDays + 1;
+
+        // 保存饮食状态
+        if (!result.updates.dietState) {
+            result.updates.dietState = newDietState;
+        }
+
+        // 饮食警告
+        if (newDietState.junkFoodPoints >= dietTrackerConfig.junkFoodPoints.thresholds.critical) {
+            result.notes.push('⚠️ 你的饮食极其不健康，慢性疾病风险极高！');
+        } else if (newDietState.junkFoodPoints >= dietTrackerConfig.junkFoodPoints.thresholds.danger) {
+            result.notes.push('⚠️ 长期食用垃圾食品正在损害你的健康...');
+        }
+    }
 
     // =================================================================
-    // 2.1 现有疾病症状发作 (Ongoing Disease Effects)
+    // 2.1 现有疾病症状发作
     // =================================================================
     const currentDiseases = state.vitality.activeDiseases || [];
     let diseaseHpLoss = 0;
     let diseaseSanLoss = 0;
 
+    // 疾病治疗费用检查（从账本判断是否已支付）
+    const diseaseTreatment = foodRules.diseaseTreatment;
+    const ledgerHistory = state.vitality.ledger.history;
+    
     currentDiseases.forEach(diseaseId => {
-        // 在静态数据中查找疾病详情
         const diseaseDef = diseasesData.find((d: any) => d.id === diseaseId);
         
         if (diseaseDef && diseaseDef.effects) {
             if (diseaseDef.effects.hpDrain) diseaseHpLoss += diseaseDef.effects.hpDrain;
             if (diseaseDef.effects.sanDrain) diseaseSanLoss += diseaseDef.effects.sanDrain;
         }
+
+        // 心脏病随机发作
+        if (diseaseId === 'HEART_DISEASE') {
+            const heartDiseaseConfig = foodRules.dietRelatedDiseases.triggers.heart_disease;
+            if (Math.random() < heartDiseaseConfig.randomEvent.chest_pain.chancePerTurn) {
+                diseaseHpLoss += heartDiseaseConfig.randomEvent.chest_pain.hpDamage;
+                result.notes.push(`💔 ${heartDiseaseConfig.randomEvent.chest_pain.message || '胸口突然剧痛，像被大象踩住...'}`);
+            }
+        }
+        
+        // 未治疗疾病额外扣血
+        const treatmentConfig = (diseaseTreatment as any)[diseaseId.toLowerCase()];
+        if (treatmentConfig && treatmentConfig.untreatedHpDrain) {
+            // 检查本周是否已支付治疗费用（通过账本检查）
+            const hasPaidTreatment = ledgerHistory.some((r: any) => 
+                r.category === 'MEDICAL' && 
+                r.amount < 0 && 
+                (r.description.includes(diseaseId) || r.description.includes('治疗') || r.description.includes('胰岛素') || r.description.includes('降压药'))
+            );
+            
+            if (!hasPaidTreatment) {
+                diseaseHpLoss += treatmentConfig.untreatedHpDrain;
+                result.notes.push(`⚠️ ${diseaseId}: 未支付治疗费用，病情恶化 (HP -${treatmentConfig.untreatedHpDrain})`);
+            }
+        }
     });
 
     if (diseaseHpLoss > 0 || diseaseSanLoss > 0) {
-        // 初始化 metrics 容器
         if (!result.updates.vitality) result.updates.vitality = { metrics: {} };
         if (!result.updates.vitality.metrics) result.updates.vitality.metrics = {};
         
         const vitMetrics = result.updates.vitality.metrics;
-        
-        // 计算扣除 (基于之前步骤可能修改过的值)
         const currentHp = vitMetrics.hp ?? metrics.hp;
         const currentSan = vitMetrics.san ?? metrics.san;
 
         vitMetrics.hp = Math.max(0, currentHp - diseaseHpLoss);
         vitMetrics.san = Math.max(0, currentSan - diseaseSanLoss);
 
-        result.logs.push(`疾病折磨: HP -${diseaseHpLoss}, SAN -${diseaseSanLoss}`);
+        result.logs.push(`疾病折磨: HP -${diseaseHpLoss}${diseaseSanLoss > 0 ? `, SAN -${diseaseSanLoss}` : ''}`);
     }
 
     // =================================================================
-    // 2.2 疾病检查 (Disease Check)
+    // 2.5 Buff效果处理
     // =================================================================
-    // checkDailyDisease 内部逻辑稍后也应连接到 rules，这里仅调用
+    const activeBuffs = (state as any).activeBuffs || [];
+    const currentTurn = state.vitality.time.currentTurn;
+    let buffHpGain = 0;
+    let buffMaxHpBonus = 0;
+    let expiredBuffs: string[] = [];
+
+    activeBuffs.forEach((buff: any) => {
+        if (buff.endTurn <= currentTurn) {
+            expiredBuffs.push(buff.id);
+            result.logs.push(`Buff结束: ${buff.name}`);
+        } else {
+            // 应用Buff效果
+            if (buff.effects.hpRegenBonus) {
+                buffHpGain += buff.effects.hpRegenBonus;
+            }
+            if (buff.effects.maxHpBonus) {
+                buffMaxHpBonus += buff.effects.maxHpBonus;
+            }
+            result.logs.push(`Buff生效: ${buff.name}`);
+        }
+    });
+
+    if (buffHpGain > 0 || buffMaxHpBonus > 0) {
+        if (!result.updates.vitality) result.updates.vitality = { metrics: {} };
+        if (!result.updates.vitality.metrics) result.updates.vitality.metrics = {};
+        
+        const vitMetrics = result.updates.vitality.metrics;
+        const currentHp = vitMetrics.hp ?? metrics.hp;
+        const currentMaxHp = vitMetrics.maxHp ?? metrics.maxHp;
+        
+        vitMetrics.hp = Math.min(currentMaxHp + buffMaxHpBonus, currentHp + buffHpGain);
+        if (buffMaxHpBonus > 0) {
+            vitMetrics.maxHp = currentMaxHp + buffMaxHpBonus;
+        }
+        
+        result.logs.push(`Buff恢复: HP +${buffHpGain}${buffMaxHpBonus > 0 ? `, MaxHP +${buffMaxHpBonus}` : ''}`);
+    }
+
+    // 移除过期Buff
+    if (expiredBuffs.length > 0) {
+        const newBuffs = activeBuffs.filter((b: any) => !expiredBuffs.includes(b.id));
+        if (!result.updates.activeBuffs) {
+            result.updates.activeBuffs = newBuffs;
+        }
+    }
+
+    // =================================================================
+    // 2.2 常规疾病检查
+    // =================================================================
     const newDiseaseId = checkDailyDisease(state, diseasesData as Disease[]);
 
     if (newDiseaseId) {
         if (!currentDiseases.includes(newDiseaseId)) {
-            // 初始化 vitality
             if (!result.updates.vitality) result.updates.vitality = {};
-            
-            // ✅ 直接赋值，无需担心覆盖 metrics (SystemRegistry 会处理合并)
             result.updates.vitality.activeDiseases = [...currentDiseases, newDiseaseId];
             
             result.notes.push(`【健康警报】你感到身体不适... (检测到: ${newDiseaseId})`);
@@ -242,51 +404,33 @@ export const StatRuleSystem: GameSystem = {
     }
 
     // =================================================================
-    // 3. SAN 值惩罚 (Mental Break)
+    // 3. 灵视值机制 (Insight System)
     // =================================================================
-    // ✅ Refactor: 使用配置中的崩溃阈值 (原为 20)
-    if (metrics.san < sanity.breakThreshold) {
-        // 初始化
-        if (!result.updates.vitality) result.updates.vitality = { metrics: {} };
-        if (!result.updates.vitality.metrics) result.updates.vitality.metrics = {};
-        
-        const vitMetrics = result.updates.vitality.metrics;
-
-        // ✅ 安全地基于“可能是上一步修改过的值”进行计算
-        const tempHp = vitMetrics.hp ?? metrics.hp;
-        
-        // ✅ Refactor: 使用配置中的自残伤害 (原为 10)
-        vitMetrics.hp = Math.max(0, tempHp - sanity.selfHarmDamage);
-
-        result.logs.push(`严重精神崩溃: 发生自残行为 (HP -${sanity.selfHarmDamage})`);
-    }
+    // 灵视值不再直接造成身体伤害，其影响体现在：
+    // - 低灵视 (<30): 蒙昧状态，被体制规训，工作效率正常
+    // - 中灵视 (30-70): 初觉状态，开始质疑，工作效率略微下降
+    // - 高灵视 (>70): 觉醒状态，看到真相，工作效率明显下降，被当作疯子
+    // 具体效率计算在 JobSystem.ts 中处理
+    // 
+    // 注：原"低SAN自残"机制已移除，因为低灵视代表"正常人"状态
 
     // =================================================================
-    // 4. 阶级/身份检查 (Class/Identity Check) ✨ 新增
+    // 4. 阶级/身份检查
     // =================================================================
-    
-    // 这里的 metrics.gold 是经过前面系统（如 Housing, Job）结算后的最新金额
     const currentGold = metrics.gold; 
-    
-    // 调用逻辑层函数，根据 classes.json 的配置计算新阶级
     const newClassId = checkClassUpdate(currentGold, classesData);
     
-    // 如果计算出的阶级与当前不符，触发变更
     if (newClassId !== state.vitality.identity.currentClass) {
-        // 初始化 vitality 更新对象
         if (!result.updates.vitality) result.updates.vitality = {};
         
-        // 更新阶级 ID，保留其他 identity 字段
         result.updates.vitality.identity = {
             ...state.vitality.identity,
             currentClass: newClassId
         };
         
-        // 查找阶级名称用于日志显示
         const classDef = classesData.find((c: any) => c.id === newClassId);
         result.logs.push(`⚠️ 阶级变动: 你的身份已更新为【${classDef?.name || newClassId}】`);
         
-        // 如果变成了流浪汉，给出特别提示
         if (newClassId === 'HOMELESS') {
             result.notes.push("资产已为负数，你失去了所有体面，沦为了流浪汉。");
         }

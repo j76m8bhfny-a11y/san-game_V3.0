@@ -164,7 +164,7 @@ export const JobSchema = z.object({
   // 薪资与消耗 (周为单位)
   baseSalary: z.number(), 
   hpCost: z.number(),     // 每周消耗 HP
-  sanCost: z.number(),    // 每周消耗 SAN (灵视)
+  sanCost: z.number(),    // 每周消耗 灵视值 (Insight) - 高灵视更容易看到真相，但也更难融入世俗工作
 
   // 限制条件
   requiresHousing: z.boolean(), // 是否需要本地房产
@@ -249,10 +249,10 @@ export const EventSchema = z.object({
   title: z.string(),
   bgImage: z.string().optional(),
   eventImage: z.string().optional(),
-  text: z.string(), // 单一题干文本，不再区分高低 SAN
+  text: z.string(), // 单一题干文本，不再区分高低灵视
   conditions: z.object({
-    minSan: z.number().optional(),
-    maxSan: z.number().optional(),
+    minSan: z.number().optional(),  // 最小灵视值要求（觉醒度不足无法触发）
+    maxSan: z.number().optional(),  // 最大灵视值限制（过于觉醒可能看不到某些世俗事件）
     requiredClass: z.array(z.nativeEnum(PlayerClass)).optional(),
     hasItem: z.string().optional(),
     region: z.nativeEnum(RegionID).optional(),
@@ -278,8 +278,8 @@ export const EndingSchema = z.object({
   conditions: z.object({
     minTurn: z.number().optional(), // ✅ Day -> Turn
     maxHp: z.number().optional(),
-    minSan: z.number().optional(),
-    maxSan: z.number().optional(),
+    minSan: z.number().optional(),  // 最小灵视值要求
+    maxSan: z.number().optional(),  // 最大灵视值限制
     minGold: z.number().optional(),
     maxGold: z.number().optional(),
     requiredClass: z.nativeEnum(PlayerClass).optional(),
@@ -311,7 +311,7 @@ export type NewsItem = z.infer<typeof NewsItemSchema>;
 export interface GameNotification {
   id: string;
   message: string;
-  type: 'success' | 'warning' | 'error' | 'info' | 'GOLD' | 'HP' | 'SAN';
+  type: 'success' | 'warning' | 'error' | 'info' | 'GOLD' | 'HP' | 'SAN';  // SAN = 灵视值变化
   value?: number;
 }
 
@@ -611,6 +611,10 @@ export interface GameState {
   ending: string | null;
   
   _hasHydrated: boolean;
+  
+  // 🍖 饮食追踪系统
+  dietState: DietState;
+  activeBuffs: ActiveBuff[];
 }
 /**
  * 游戏数据缓存类型（运行时，不持久化）
@@ -807,3 +811,33 @@ export interface ActiveJobState {
   sanCost: number;
   region: RegionID;
 }
+
+// ==========================================
+// 🍖 饮食追踪系统 (Food System)
+// ==========================================
+
+export interface DietState {
+  junkFoodPoints: number;        // 垃圾食品积分 (0-100)
+  healthyPoints: number;         // 健康饮食积分 (0-100)
+  consecutiveJunkDays: number;   // 连续吃垃圾食品天数
+  consecutiveHealthyDays: number; // 连续健康饮食天数
+  sodiumIntake: number;          // 钠摄入量 (累计)
+  sugarIntake: number;           // 糖摄入量 (累计)
+  redMeatPoints: number;         // 红肉摄入积分
+  noFreshFoodDays: number;       // 无新鲜食物天数
+}
+
+export interface ActiveBuff {
+  id: string;
+  name: string;
+  endTurn: number;
+  effects: {
+    maxHpBonus?: number;
+    hpRegenBonus?: number;
+    [key: string]: any;
+  };
+}
+
+// ==========================================
+// ✅ 类型导出完成
+// ==========================================

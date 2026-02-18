@@ -1,0 +1,125 @@
+{
+  "$schema": "survival-dimensions-simple",
+  "description": "简化版生存维度配置 - 直接使用现有JSON数据结构",
+  "version": "1.0.0",
+  
+  "dimensions": {
+    "physicalDefense": {
+      "description": "物理防御 - 基于住所和装备",
+      "weight": 0.30,
+      "sources": [
+        { "type": "housing", "attribute": "defenseLevel", "weight": 0.60, "multiplier": 5 },
+        { "type": "housing", "attribute": "regenHp", "weight": 0.40, "multiplier": 2 }
+      ],
+      "formula": "weighted_average"
+    },
+    
+    "mentalStability": {
+      "description": "精神稳定 - 基于住所舒适度",
+      "weight": 0.25,
+      "sources": [
+        { "type": "housing", "attribute": "regenHp", "weight": 0.70, "multiplier": 3 },
+        { "type": "faith", "attribute": "level", "weight": 0.30, "multiplier": 25 }
+      ],
+      "formula": "weighted_average"
+    },
+    
+    "nutritionSupply": {
+      "description": "营养供给 - 基于食物和饮食",
+      "weight": 0.20,
+      "sources": [
+        { "type": "diet", "attribute": "healthScore", "weight": 0.60 },
+        { "type": "inventory", "tag": "FOOD", "attribute": "hunger", "weight": 0.40, "multiplier": 1.5 }
+      ],
+      "formula": "weighted_average"
+    },
+    
+    "medicalSupport": {
+      "description": "医疗支持 - 基于保险和医疗资源",
+      "weight": 0.15,
+      "sources": [
+        { "type": "insurance", "attribute": "hasMedical", "weight": 0.50, "value": 60 },
+        { "type": "inventory", "tag": "MEDICAL", "attribute": "hp", "weight": 0.30, "multiplier": 2 },
+        { "type": "region", "attribute": "hospitalTier", "weight": 0.20 }
+      ],
+      "formula": "weighted_average"
+    },
+    
+    "economicSecurity": {
+      "description": "经济安全 - 基于收入和资产",
+      "weight": 0.10,
+      "sources": [
+        { "type": "income", "attribute": "weeklyNet", "weight": 0.60, "multiplier": 0.05 },
+        { "type": "currency", "attribute": "gold", "weight": 0.40, "scale": "log", "logBase": 100 }
+      ],
+      "formula": "weighted_average"
+    }
+  },
+  
+  "classBaseScores": {
+    "HOMELESS": {
+      "physicalDefense": 5,
+      "mentalStability": 10,
+      "nutritionSupply": 5,
+      "medicalSupport": 5,
+      "economicSecurity": 5
+    },
+    "WORKER": {
+      "physicalDefense": 15,
+      "mentalStability": 20,
+      "nutritionSupply": 15,
+      "medicalSupport": 15,
+      "economicSecurity": 20
+    },
+    "MIDDLE": {
+      "physicalDefense": 30,
+      "mentalStability": 35,
+      "nutritionSupply": 30,
+      "medicalSupport": 35,
+      "economicSecurity": 40
+    },
+    "CAPITALIST": {
+      "physicalDefense": 50,
+      "mentalStability": 45,
+      "nutritionSupply": 45,
+      "medicalSupport": 50,
+      "economicSecurity": 70
+    }
+  },
+  
+  "regionHospitalTiers": {
+    "SLUMS": 20,
+    "RUST_BELT": 40,
+    "SUBURBS": 70,
+    "DOWNTOWN": 90
+  },
+  
+  "calculation": {
+    "targetSurvivalRate": 0.65,
+    "dimensionWeights": {
+      "physicalDefense": 0.30,
+      "mentalStability": 0.25,
+      "nutritionSupply": 0.20,
+      "medicalSupport": 0.15,
+      "economicSecurity": 0.10
+    },
+    "sigmoid": {
+      "steepness": 0.08,
+      "midpoint": 50
+    },
+    "diseasePenalty": {
+      "perDisease": 0.05,
+      "perAcuteDisease": 0.15,
+      "addictionMultiplier": 0.002
+    },
+    "homelessPenalty": {
+      "physicalDefense": -10,
+      "mentalStability": -20
+    }
+  },
+  
+  "debug": {
+    "enabled": true,
+    "logCalculations": false
+  }
+}

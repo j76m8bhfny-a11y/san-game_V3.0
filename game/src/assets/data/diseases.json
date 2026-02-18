@@ -1,5 +1,8 @@
 [
   {
+    "_comment": "========== 原有疾病 =========="
+  },
+  {
     "id": "FLU_LOW",
     "name": "贫民窟流感",
     "type": "CHRONIC",
@@ -31,5 +34,155 @@
     "severity": 5,
     "effects": { "sanDrain": 10 },
     "description": "你开始看见不存在的霓虹灯，听见资本的低语。"
+  },
+
+  {
+    "_comment": "========== 饮食相关疾病 - 美国现实 =========="
+  },
+  {
+    "id": "FOOD_POISONING",
+    "name": "食物中毒",
+    "type": "ACUTE",
+    "severity": 4,
+    "effects": { "hpDrain": 10 },
+    "duration": 3,
+    "cureCondition": { 
+      "requiredServiceTags": ["DRUG"],
+      "minDrugTier": 1
+    },
+    "source": "RISKY_FOOD",
+    "description": "变质食物或不当储存导致的急性肠胃炎。上吐下泻，生不如死。"
+  },
+  {
+    "id": "TYPE_2_DIABETES",
+    "name": "II型糖尿病",
+    "type": "CHRONIC",
+    "severity": 6,
+    "effects": { 
+      "hpDrain": 5,
+      "statDebuff": "PHYSICAL_LABOR_RESTRICTED"
+    },
+    "cureCondition": {
+      "dietChangeRequired": true,
+      "healthyPointsThreshold": 30,
+      "duration": 21
+    },
+    "ongoingCost": {
+      "insulin": 50,
+      "frequency": "WEEKLY"
+    },
+    "source": "JUNK_FOOD",
+    "description": "穷人的流行病。血液里流的不是血，是高果糖玉米糖浆。需要每周$50的胰岛素维持。"
+  },
+  {
+    "id": "HYPERTENSION",
+    "name": "高血压",
+    "type": "CHRONIC",
+    "severity": 5,
+    "effects": { 
+      "hpDrain": 3,
+      "maxHpReduction": 10,
+      "surgeryRiskIncrease": 0.2
+    },
+    "cureCondition": {
+      "dietChangeRequired": true,
+      "sodiumReductionDays": 14
+    },
+    "ongoingCost": {
+      "medication": 30,
+      "frequency": "WEEKLY"
+    },
+    "source": "HIGH_SODIUM",
+    "description": "加工食品的馈赠。血管像老化的橡胶管，随时可能爆裂。手术风险增加20%。"
+  },
+  {
+    "id": "HEART_DISEASE",
+    "name": "心脏病",
+    "type": "CHRONIC",
+    "severity": 8,
+    "effects": { 
+      "hpDrain": 8,
+      "maxHpReduction": 20
+    },
+    "randomEvents": {
+      "chest_pain": {
+        "chancePerTurn": 0.15,
+        "hpDamage": 15,
+        "message": "胸口突然剧痛，像被大象踩住..."
+      }
+    },
+    "cureCondition": {
+      "requiredServiceTags": ["SURGERY", "CARDIAC"],
+      "cost": 50000
+    },
+    "source": "JUNK_FOOD",
+    "description": "数十年的快餐账单终于到期了。心脏支架手术需要$50,000——如果你没有保险的话。"
+  },
+  {
+    "id": "METABOLIC_SYNDROME",
+    "name": "代谢综合征",
+    "type": "CHRONIC",
+    "severity": 5,
+    "effects": { 
+      "hpDrain": 4,
+      "maxHpReduction": 5,
+      "insurancePremiumIncrease": 0.25
+    },
+    "cureCondition": {
+      "reversible": true,
+      "healthyPointsThreshold": 30,
+      "duration": 14
+    },
+    "source": "JUNK_FOOD",
+    "description": "肥胖、高血糖、高血压的三重奏。保险公司会为此多收你25%的保费。"
+  },
+  {
+    "id": "GOUT",
+    "name": "痛风",
+    "type": "CHRONIC",
+    "severity": 4,
+    "effects": { 
+      "hpDrain": 3,
+      "statDebuff": "MOBILITY_RESTRICTED"
+    },
+    "cureCondition": {
+      "dietChangeRequired": true,
+      "avoidRedMeatDays": 14
+    },
+    "source": "RED_MEAT",
+    "description": "国王的病。讽刺的是，现在只有吃得起太多红肉的富人会得。脚趾像被老虎钳夹住。"
+  },
+  {
+    "id": "SCURVY",
+    "name": "坏血病",
+    "type": "CHRONIC",
+    "severity": 3,
+    "effects": { 
+      "hpDrain": 5,
+      "statDebuff": "APPEARANCE_CHANGE"
+    },
+    "cureCondition": {
+      "requiredServiceTags": ["DRUG"],
+      "specificItem": "vitamin_c"
+    },
+    "source": "NO_FRESH_FOOD",
+    "description": "21天没有新鲜蔬果的结果。牙龈出血，伤口愈合缓慢。在现代社会本不该发生。"
+  },
+  {
+    "id": "FATTY_LIVER",
+    "name": "非酒精性脂肪肝",
+    "type": "CHRONIC",
+    "severity": 4,
+    "effects": { 
+      "hpDrain": 3,
+      "maxHpReduction": 8
+    },
+    "cureCondition": {
+      "reversible": true,
+      "healthyPointsThreshold": 40,
+      "duration": 28
+    },
+    "source": "SUGAR",
+    "description": "肝脏被糖原包裹，像一块肥鹅肝。戒糖比戒酒还难。"
   }
 ]

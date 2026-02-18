@@ -3,7 +3,6 @@ import {
   PlayerClass,
   RegionID,
   ActiveHousingState,
-  Insurance,
   ActiveHousing,
   DMVQueueState,
   ActiveLease
@@ -16,9 +15,8 @@ export const CLASS_INITIAL_STATS = Config.vitality.classes as Record<PlayerClass
 // 2. 初始状态
 const INITIAL_PLAYER_STATE = {
   currentRegion: RegionID.Slums,
-  // 注意: activeJobs 已在 vitality 内部管理，不在此处存储
+  // 注意: activeJobs 和 activeInsurances 已在 vitality 内部管理，不在此处存储
   activeHousing: null as ActiveHousing | null,  // 单一房产，初始为 null
-  activeInsurances: [] as Insurance[],
   dmvQueue: null as DMVQueueState | null, // [NEW] DMV排队状态
   activeLease: null as ActiveLease | null, // [NEW] 租赁状态
 
@@ -32,9 +30,8 @@ const INITIAL_PLAYER_STATE = {
 export interface PlayerSlice {
   // --- State ---
   currentRegion: RegionID;
-  // 注意: activeJobs 在 vitality 中管理 (支持多工作)
+  // 注意: activeJobs 和 activeInsurances 在 vitality 中管理
   activeHousing: ActiveHousing | null;  // 单一房产，可为 null
-  activeInsurances: Insurance[];
   dmvQueue: DMVQueueState | null; // [NEW] DMV排队状态
   activeLease: ActiveLease | null; // [NEW] 租赁状态
 
@@ -55,7 +52,6 @@ export interface PlayerSlice {
   resetPlayerState: () => void;
   
   setRegion: (region: RegionID) => void;
-  setInsurance: (insurances: Insurance[]) => void;
 }
 
 export const createPlayerSlice: StateCreator<StoreState, [], [], PlayerSlice> = (set, get) => ({
@@ -67,8 +63,9 @@ export const createPlayerSlice: StateCreator<StoreState, [], [], PlayerSlice> = 
    */
   updatePlayerStats: (updates) => set((state: any) => {
     // 定义 PlayerSlice 允许的字段白名单
+    // 注意: activeInsurances 已从 PlayerSlice 移除，统一使用 vitality.activeInsurances
     const allowedKeys = [
-      'currentRegion', 'activeHousing', 'activeInsurances', 
+      'currentRegion', 'activeHousing', 
       'dmvQueue', 'activeLease', // [NEW]
       'inventory', 'history', 'unlockedArchives', 'achievedEndings', 'ending'
     ];
@@ -128,5 +125,4 @@ export const createPlayerSlice: StateCreator<StoreState, [], [], PlayerSlice> = 
     
     set({ currentRegion: region });
   },
-  setInsurance: (insurances) => set({ activeInsurances: insurances }),
 });

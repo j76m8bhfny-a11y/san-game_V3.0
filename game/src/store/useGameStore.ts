@@ -2,37 +2,25 @@ import { create, StateCreator, StoreMutatorIdentifier } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
 // 1. 导入切片
-import { createVitalitySlice, VitalitySlice } from './slices/createVitalitySlice';
-import { createBankSlice, BankSlice } from './slices/createBankSlice';
-import { createFaithSlice, FaithSlice } from './slices/createFaithSlice';
-import { createCryptoSlice, CryptoSlice } from './slices/createCryptoSlice';
-import { createPrisonSlice, PrisonSlice } from './slices/createPrisonSlice';
-import { createUISlice, UISlice } from './slices/createUISlice';
-import { createSystemSlice, SystemSlice } from './slices/createSystemSlice';
-import { createGameSlice, GameSlice } from './slices/createGameSlice';
-import { createHousingSlice, HousingSlice } from './slices/createHousingSlice';
-import { createJobSlice, JobSlice } from './slices/createJobSlice'; 
-import { createShopSlice, ShopSlice } from './slices/createShopSlice';
-import { createPlayerSlice, PlayerSlice } from './slices/createPlayerSlice';
-import { createInsuranceSlice, InsuranceSlice } from './slices/createInsuranceSlice'; // [NEW]
-import { createVehicleSlice, VehicleSlice } from './slices/createVehicleSlice'; // [NEW]
+import { createVitalitySlice } from './slices/createVitalitySlice';
+import { createBankSlice } from './slices/createBankSlice';
+import { createFaithSlice } from './slices/createFaithSlice';
+import { createCryptoSlice } from './slices/createCryptoSlice';
+import { createPrisonSlice } from './slices/createPrisonSlice';
+import { createUISlice } from './slices/createUISlice';
+import { createSystemSlice } from './slices/createSystemSlice';
+import { createGameSlice } from './slices/createGameSlice';
+import { createHousingSlice } from './slices/createHousingSlice';
+import { createJobSlice } from './slices/createJobSlice'; 
+import { createShopSlice } from './slices/createShopSlice';
+import { createPlayerSlice } from './slices/createPlayerSlice';
+import { createInsuranceSlice } from './slices/createInsuranceSlice';
+import { createVehicleSlice } from './slices/createVehicleSlice';
 
-// --- 组合所有切片的类型 ---
-export type StoreState = 
-  & VitalitySlice   
-  & PlayerSlice     
-  & BankSlice       
-  & FaithSlice      
-  & CryptoSlice     
-  & PrisonSlice     
-  & UISlice         
-  & SystemSlice     
-  & HousingSlice     
-  & GameSlice     
-  & JobSlice
-  & InsuranceSlice // [NEW]
-  & VehicleSlice // [NEW]
-  & ShopSlice;
+// --- 从 types/store 重新导出 StoreState ---
+// 避免重复定义导致类型不一致
+import type { StoreState } from '@/types/store';
+export type { StoreState };
 
 // --- 🛠️ 日志中间件 (Logger Middleware) ---
 type Logger = <
@@ -86,6 +74,22 @@ export const useGameStore = create<StoreState>()(
         ...createShopSlice(...a),
         ...createInsuranceSlice(...a), // [NEW]
         ...createVehicleSlice(...a), // [NEW]
+        
+        // 🍖 饮食系统初始状态
+        dietState: {
+          junkFoodPoints: 0,
+          healthyPoints: 0,
+          consecutiveJunkDays: 0,
+          consecutiveHealthyDays: 0,
+          sodiumIntake: 0,
+          sugarIntake: 0,
+          redMeatPoints: 0,
+          noFreshFoodDays: 0
+        },
+        activeBuffs: [],
+        // ✅ 注意: activeInsurances 由 createVitalitySlice 提供
+        // 这里添加空数组以满足 TypeScript 类型检查
+        activeInsurances: []
       }),
       {
         name: 'pixel-life-storage', 
@@ -99,7 +103,7 @@ export const useGameStore = create<StoreState>()(
           // ✅ 2. 玩家资产与位置
           currentRegion: state.currentRegion,
           activeHousing: state.activeHousing,  // 单一房产
-          activeInsurances: state.vitality.activeInsurances,
+          // 注意: activeInsurances 已移至 vitality 中管理，从顶层移除
           dmvQueue: state.dmvQueue, // [NEW] DMV排队状态
           activeLease: state.activeLease, // [NEW] 租赁状态
           inventory: state.inventory,

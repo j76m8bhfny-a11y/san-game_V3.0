@@ -58,21 +58,23 @@
     },
     "highRiskJobs": ["MINER", "TEST_SUBJECT"]
   },
-  "sanity": {
-    "breakThreshold": 20,
-    "selfHarmDamage": 10
+  "insight": {
+    "lowThreshold": 30,
+    "awakenThreshold": 70,
+    "transcendThreshold": 85
   },
   "visuals": {
     "thresholds": {
       "hpLow": 30,
-      "sanHigh": 80,
-      "sanMedium": 70,
-      "sanLow": 30,
+      "insightLow": 30,
+      "insightMedium": 50,
+      "insightHigh": 70,
+      "insightAwaken": 85,
       "addictionHigh": 50
     },
     "phases": {
-      "bluePillMin": 71,
-      "cracksMin": 31
+      "mundaneMax": 30,
+      "awakenMin": 71
     }
   }
 }

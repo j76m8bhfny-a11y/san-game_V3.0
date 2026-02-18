@@ -6,7 +6,9 @@ import { produce } from 'immer';
 export const checkCondition = (state: GameState, condition: GameEvent['conditions']): boolean => {
   if (!condition) return true;
 
-  // 1. SAN Check (使用新的 metrics 路径)
+  // 1. 灵视值检查 (Insight Check)
+  // minSan: 觉醒度不足则无法看到此事件（需要更高灵视）
+  // maxSan: 过于觉醒则看不到某些世俗事件（灵视太高无法触发）
   if (condition.minSan !== undefined && state.vitality.metrics.san < condition.minSan) return false;
   if (condition.maxSan !== undefined && state.vitality.metrics.san > condition.maxSan) return false;
 

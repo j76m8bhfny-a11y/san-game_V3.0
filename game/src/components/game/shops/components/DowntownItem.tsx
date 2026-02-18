@@ -103,8 +103,8 @@ export const DowntownItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
            </span>
          )}
          {item.effects?.san !== undefined && (
-           <span className="text-[10px] text-gray-400 font-mono">
-             {t('common.san')} {item.effects.san > 0 ? '+' : ''}{item.effects.san}
+           <span className="text-[10px] text-amber-500 font-mono">
+             灵视{item.effects.san > 0 ? '+' : ''}{item.effects.san}
            </span>
          )}
       </div>

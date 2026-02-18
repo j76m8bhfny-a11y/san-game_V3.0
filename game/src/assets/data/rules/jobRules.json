@@ -14,32 +14,32 @@
   },
   "efficiencyCurve": [
     {
-      "maxSan": 20,
-      "modifier": 1.2,
-      "label": "麻木",
-      "statusText": "麻木 (120%)"
-    },
-    {
-      "maxSan": 50,
+      "maxSan": 30,
       "modifier": 1.0,
-      "label": "稳定",
-      "statusText": "稳定 (100%)"
+      "label": "蒙昧",
+      "statusText": "蒙昧 (100%)"
     },
     {
-      "maxSan": 80,
+      "maxSan": 70,
+      "modifier": 0.8,
+      "label": "初觉",
+      "statusText": "初觉 (80%)"
+    },
+    {
+      "maxSan": 85,
       "modifier": 0.6,
-      "label": "分心",
-      "statusText": "分心 (60%)"
+      "label": "觉醒",
+      "statusText": "觉醒 (60%)"
     },
     {
       "maxSan": 100,
-      "modifier": 0.2,
-      "label": "灵视干扰",
-      "statusText": "灵视干扰 (20%)"
+      "modifier": 0.4,
+      "label": "通透",
+      "statusText": "通透 (40%)"
     }
   ],
   "accidents": {
-    "highSanThreshold": 80,
+    "highSanThreshold": 85,
     "probability": 0.15,
     "penaltyRate": 0.25
   }

@@ -120,7 +120,7 @@ export const JobSystem: GameSystem = {
         timestamp: Date.now()
       });
 
-      // 5. 额外事件: 高灵视事故
+      // 5. 额外事件: 极高灵视被视为疯子
       const { highSanThreshold, probability, penaltyRate } = jobRules.accidents;
 
       if (currentSan > highSanThreshold && Math.random() < probability) {
@@ -130,10 +130,10 @@ export const JobSystem: GameSystem = {
           turn: vitality.time.currentTurn,
           category: 'MISC',
           amount: -penalty,
-          description: `工作事故 (${job.title}): 灵视过高导致操作失误`,
+          description: `工作事故 (${job.title}): 你说出了不该看到的真相`,
           timestamp: Date.now()
         });
-        result.logs.push(`【警告】${job.title}: 看到幻觉误触警报，赔偿 $${penalty}`);
+        result.logs.push(`【警告】${job.title}: 你说出了不该看到的真相，被同事当作疯子，赔偿 $${penalty}`);
       }
     });
 

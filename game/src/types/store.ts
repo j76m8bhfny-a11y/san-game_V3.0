@@ -16,6 +16,8 @@ import { FaithSlice } from '../store/slices/createFaithSlice';
 import { PrisonSlice } from '../store/slices/createPrisonSlice';
 import { CryptoSlice } from '../store/slices/createCryptoSlice';
 import { SystemSlice } from '../store/slices/createSystemSlice';
+import { InsuranceSlice } from '../store/slices/createInsuranceSlice';
+import { VehicleSlice } from '../store/slices/createVehicleSlice';
 
 /**
  * 完整的 Store 状态类型
@@ -32,7 +34,28 @@ export type StoreState = GameState &
   FaithSlice &
   PrisonSlice &
   CryptoSlice &
-  SystemSlice;
+  SystemSlice &
+  InsuranceSlice &
+  VehicleSlice &
+  {
+    // 🍖 饮食系统状态
+    dietState: {
+      junkFoodPoints: number;
+      healthyPoints: number;
+      consecutiveJunkDays: number;
+      consecutiveHealthyDays: number;
+      sodiumIntake: number;
+      sugarIntake: number;
+      redMeatPoints: number;
+      noFreshFoodDays: number;
+    };
+    activeBuffs: Array<{
+      id: string;
+      name: string;
+      endTurn: number;
+      effects: Record<string, any>;
+    }>;
+  };
 
 /**
  * 类型安全的 set 函数类型

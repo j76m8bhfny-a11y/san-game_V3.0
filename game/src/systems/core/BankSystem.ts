@@ -56,135 +56,132 @@ export const BankSystem: GameSystem = {
       const { collection, mortgage } = Config.bank;
 
       processedLoans.forEach((loan) => {
-        // 检查是否当前逾期
-        const isOverdue = currentTurn > loan.dueTurn;
+        // 获取当前逾期周数
+        const t = loan.overdueTurns || 0;
         
-        if (isOverdue) {
-          // 获取当前逾期周数
-          const t = loan.overdueTurns;
-          
-          // ----------------------------------------------------
-          // 🏠 房贷处理逻辑 (Mortgage Logic)
-          // ----------------------------------------------------
-          if (loan.isMortgage) {
-             // 🛑 达到断供阈值 -> 强制收房
-             if (t >= mortgage.foreclosureTurns) {
-                const houseName = currentHousing?.loanId === loan.id ? currentHousing.name : '你名下的房产';
-               
-               result.logs.push(`【法拍执行】房屋 ${houseName} 因断供被银行强制收回！`);
-               result.notes.push("你失去了房子，变回了流浪汉，信用分崩盘。");
-               
-               // 移除房产
-               if (currentHousing?.loanId === loan.id) {
-                 (result.updates as any).activeHousing = null;
-               } 
-               
-               // 阶级跌落
-               result.updates.vitality = {
-                 ...result.updates.vitality,
-                 identity: {
-                   ...(result.updates.vitality as any)?.identity || vitality.identity,
-                   currentClass: PlayerClass.Homeless
-                 }
-               } as any;
-               
-               // 标记移除贷款
-               loansToRemove.push(loan.id);
-               
-               // 📉 信用分重罚
-               totalScoreChange -= mortgage.foreclosurePenalty;
-               return; 
-
-             } else {
-               // ⚠️ 断供警告
-               const houseName = currentHousing?.loanId === loan.id ? currentHousing.name : '某处房产';
-               result.logs.push(`【房贷警告】${houseName} 逾期 ${t} 周。${mortgage.foreclosureTurns - t}周后将收回房产。`);
-               totalScoreChange -= mortgage.warningPenalty;
-             }
-          } 
-          
-          // ----------------------------------------------------
-          // 💸 普通贷款催收逻辑 (Collection Logic)
-          // ----------------------------------------------------
-          else {
-            // 🛑 阶段 1: 早期警告
-            if (t === collection.warning.turn) {
-              result.logs.push(`贷款逾期警告: 信用评分下降。`);
-              totalScoreChange -= collection.warning.scorePenalty;
-            }
-            
-            // 🛑 阶段 2: 暴力催收 (扣 HP/SAN)
-            else if (t <= collection.violence.maxTurn) {
-              result.logs.push(`【暴力催收】讨债人打断了你的肋骨！`);
-              
-              // 读取配置伤害值和数值下限
-              const { hpDamage, sanDamage } = collection.violence;
-              const { minStat } = Config.system.caps;
-              
-              // 获取当前 HP/SAN（优先读取 updates 中的值，如果尚未设置则读取 current）
-              const currentHp = (result.updates.vitality as any)?.metrics?.hp ?? vitality.metrics.hp;
-              const currentSan = (result.updates.vitality as any)?.metrics?.san ?? vitality.metrics.san;
-              
-              result.updates.vitality = {
-                 ...result.updates.vitality,
-                 metrics: {
-                   ...(result.updates.vitality as any)?.metrics,
-                   hp: Math.max(minStat, currentHp - hpDamage),
-                   san: Math.max(minStat, currentSan - sanDamage)
-                 }
-              } as any;
-              
-              totalScoreChange -= collection.violence.scorePenalty;
-            }
-            
-            // 🛑 阶段 3: 强制划扣 (Seizure)
-            else if (t <= collection.seizure.maxTurn) {
-               const limit = collection.seizure.limit;
-               // 获取最新余额
-               const currentGold = (result.updates.vitality as any)?.metrics?.gold ?? vitality.metrics.gold;
-               const seizeAmount = Math.min(currentGold, limit); 
-               
-               if (seizeAmount > 0) {
-                 result.newTransactions!.push({
-                   id: `${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 5)}`,
-                   turn: currentTurn,
-                   category: 'BANK',
-                   amount: -seizeAmount,
-                   description: '【强制执行】银行冻结并划扣资产',
-                   timestamp: Date.now()
-                 });
-                 
-                 // 扣减本金（使用不可变方式更新）
-                 const loanIndex = processedLoans.findIndex(l => l.id === loan.id);
-                 if (loanIndex !== -1) {
-                   processedLoans[loanIndex] = {
-                     ...processedLoans[loanIndex],
-                     principal: Math.max(0, processedLoans[loanIndex].principal - seizeAmount)
-                   };
-                 }
-                 result.logs.push(`银行强制划扣了 $${seizeAmount}`);
-               } else {
-                 result.logs.push(`【强制执行失败】你名下无任何资产可供冻结。`);
+        // ----------------------------------------------------
+        // 🏠 房贷处理逻辑 (Mortgage Logic)
+        // ----------------------------------------------------
+        // ✅ 修复：房贷使用 overdueTurns > 0 作为逾期判定（由 HousingSystem 设置）
+        if (loan.isMortgage && t > 0) {
+           // 🛑 达到断供阈值 -> 强制收房
+           if (t >= mortgage.foreclosureTurns) {
+              const houseName = currentHousing?.loanId === loan.id ? currentHousing.name : '你名下的房产';
+             
+             result.logs.push(`【法拍执行】房屋 ${houseName} 因断供被银行强制收回！`);
+             result.notes.push("你失去了房子，变回了流浪汉，信用分崩盘。");
+             
+             // 移除房产
+             if (currentHousing?.loanId === loan.id) {
+               (result.updates as any).activeHousing = null;
+             } 
+             
+             // 阶级跌落
+             result.updates.vitality = {
+               ...result.updates.vitality,
+               identity: {
+                 ...(result.updates.vitality as any)?.identity || vitality.identity,
+                 currentClass: PlayerClass.Homeless
                }
-               
-               totalScoreChange -= collection.seizure.scorePenalty;
-            }
-            
-            // 🛑 阶段 4: 司法介入 (入狱)
-            else {
-               result.logs.push(`【司法介入】因长期恶意拖欠，你被逮捕了。`);
-               
-               (result.updates as any).prison = {
-                 inJail: true,
-                 sentenceTurns: collection.jail.sentenceTurns, // 读取配置刑期
-                 crime: "金融诈骗与恶意欠款",
-                 bailAmount: 0
-               } as any;
-               
-               totalScoreChange -= collection.jail.scorePenalty;
-            }
+             } as any;
+             
+             // 标记移除贷款
+             loansToRemove.push(loan.id);
+             
+             // 📉 信用分重罚
+             totalScoreChange -= mortgage.foreclosurePenalty;
+             return; 
+
+           } else {
+             // ⚠️ 断供警告
+             const houseName = currentHousing?.loanId === loan.id ? currentHousing.name : '某处房产';
+             result.logs.push(`【房贷警告】${houseName} 逾期 ${t} 周。${mortgage.foreclosureTurns - t}周后将收回房产。`);
+             totalScoreChange -= mortgage.warningPenalty;
+           }
+        } 
+          
+        
+        // ----------------------------------------------------
+        // 💸 普通贷款催收逻辑 (Collection Logic)
+        // ----------------------------------------------------
+        // ✅ 修复：普通贷款使用 currentTurn > loan.dueTurn 判定逾期
+        else if (currentTurn > loan.dueTurn) {
+          // 🛑 阶段 1: 早期警告
+          if (t === collection.warning.turn) {
+            result.logs.push(`贷款逾期警告: 信用评分下降。`);
+            totalScoreChange -= collection.warning.scorePenalty;
           }
           
+          // 🛑 阶段 2: 暴力催收 (扣 HP/SAN)
+          else if (t <= collection.violence.maxTurn) {
+            result.logs.push(`【暴力催收】讨债人打断了你的肋骨！`);
+            
+            // 读取配置伤害值和数值下限
+            const { hpDamage, sanDamage } = collection.violence;
+            const { minStat } = Config.system.caps;
+            
+            // 获取当前 HP/SAN（优先读取 updates 中的值，如果尚未设置则读取 current）
+            const currentHp = (result.updates.vitality as any)?.metrics?.hp ?? vitality.metrics.hp;
+            const currentSan = (result.updates.vitality as any)?.metrics?.san ?? vitality.metrics.san;
+            
+            result.updates.vitality = {
+               ...result.updates.vitality,
+               metrics: {
+                 ...(result.updates.vitality as any)?.metrics,
+                 hp: Math.max(minStat, currentHp - hpDamage),
+                 san: Math.max(minStat, currentSan - sanDamage)
+               }
+            } as any;
+            
+            totalScoreChange -= collection.violence.scorePenalty;
+          }
+          
+          // 🛑 阶段 3: 强制划扣 (Seizure)
+          else if (t <= collection.seizure.maxTurn) {
+             const limit = collection.seizure.limit;
+             // 获取最新余额
+             const currentGold = (result.updates.vitality as any)?.metrics?.gold ?? vitality.metrics.gold;
+             const seizeAmount = Math.min(currentGold, limit); 
+             
+             if (seizeAmount > 0) {
+               result.newTransactions!.push({
+                 id: `${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 5)}`,
+                 turn: currentTurn,
+                 category: 'BANK',
+                 amount: -seizeAmount,
+                 description: '【强制执行】银行冻结并划扣资产',
+                 timestamp: Date.now()
+               });
+               
+               // 扣减本金（使用不可变方式更新）
+               const loanIndex = processedLoans.findIndex(l => l.id === loan.id);
+               if (loanIndex !== -1) {
+                 processedLoans[loanIndex] = {
+                   ...processedLoans[loanIndex],
+                   principal: Math.max(0, processedLoans[loanIndex].principal - seizeAmount)
+                 };
+               }
+               result.logs.push(`银行强制划扣了 $${seizeAmount}`);
+             } else {
+               result.logs.push(`【强制执行失败】你名下无任何资产可供冻结。`);
+             }
+             
+             totalScoreChange -= collection.seizure.scorePenalty;
+          }
+          
+          // 🛑 阶段 4: 司法介入 (入狱)
+          else {
+             result.logs.push(`【司法介入】因长期恶意拖欠，你被逮捕了。`);
+             
+             (result.updates as any).prison = {
+               inJail: true,
+               sentenceTurns: collection.jail.sentenceTurns, // 读取配置刑期
+               crime: "金融诈骗与恶意欠款",
+               bailAmount: 0
+             } as any;
+             
+             totalScoreChange -= collection.jail.scorePenalty;
+          }
         }
       });
 

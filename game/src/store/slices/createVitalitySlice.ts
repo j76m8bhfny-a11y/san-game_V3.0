@@ -18,6 +18,7 @@ import INITIAL_STATE from '@/assets/data/config/initial_state.json';
 import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 import rules from '@/assets/data/rules/vitalityRules.json';
 import medicalRules from '@/assets/data/rules/medicalRules.json';
+import bankRules from '@/assets/data/rules/bankRules.json';
 
 export interface VitalitySlice {
   vitality: VitalityState;
@@ -238,6 +239,11 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
     }
     if (changes.hunger !== undefined) {
       newMetrics.hunger = Math.max(minStat, Math.min(effectiveMaxHunger, changes.hunger));
+    }
+    // ✅ 修复：钳制 creditScore (信用分范围 [300, 850])
+    if (changes.creditScore !== undefined) {
+      const { minScore, maxScore } = bankRules.creditScore;
+      newMetrics.creditScore = Math.max(minScore, Math.min(maxScore, changes.creditScore));
     }
     
     return {

@@ -1,0 +1,128 @@
+{
+  "$schema": "vitality-dimensions-config",
+  "description": "生存维度配置 - 定义如何从各类物品/状态聚合出生存维度",
+  "version": "1.0.0",
+  
+  "dimensions": {
+    "physicalDefense": {
+      "description": "物理防御 - 抵抗伤害和疾病的能力",
+      "weight": 0.30,
+      "sources": [
+        { "type": "housing", "attribute": "defenseLevel", "weight": 0.40 },
+        { "type": "equipment", "attribute": "defense", "weight": 0.30 },
+        { "type": "buff", "attribute": "defenseBonus", "weight": 0.20 },
+        { "type": "base", "attribute": "classBaseDefense", "weight": 0.10 }
+      ],
+      "formula": "weighted_average",
+      "normalization": { "min": 0, "max": 100 }
+    },
+    
+    "mentalStability": {
+      "description": "精神稳定 - 抵抗理智流失的能力",
+      "weight": 0.25,
+      "sources": [
+        { "type": "housing", "attribute": "comfortLevel", "weight": 0.35 },
+        { "type": "consumable", "tag": "comfort", "attribute": "sanRestore", "weight": 0.25 },
+        { "type": "faith", "attribute": "sanctuaryLevel", "weight": 0.25 },
+        { "type": "buff", "attribute": "sanBonus", "weight": 0.15 }
+      ],
+      "formula": "weighted_average",
+      "normalization": { "min": 0, "max": 100 }
+    },
+    
+    "nutritionSupply": {
+      "description": "营养供给 - 维持饥饿和恢复的能力",
+      "weight": 0.20,
+      "sources": [
+        { "type": "diet", "attribute": "nutritionScore", "weight": 0.50 },
+        { "type": "consumable", "tag": "food", "attribute": "hungerRestore", "weight": 0.30 },
+        { "type": "housing", "attribute": "hasKitchen", "weight": 0.20 }
+      ],
+      "formula": "weighted_average",
+      "normalization": { "min": 0, "max": 100 }
+    },
+    
+    "medicalSupport": {
+      "description": "医疗支持 - 治疗和恢复生命的能力",
+      "weight": 0.15,
+      "sources": [
+        { "type": "insurance", "attribute": "coverageScore", "weight": 0.40 },
+        { "type": "consumable", "tag": "medical", "attribute": "hpRestore", "weight": 0.30 },
+        { "type": "region", "attribute": "hospitalQuality", "weight": 0.20 },
+        { "type": "buff", "attribute": "regenBonus", "weight": 0.10 }
+      ],
+      "formula": "weighted_average",
+      "normalization": { "min": 0, "max": 100 }
+    },
+    
+    "economicBuffer": {
+      "description": "经济缓冲 - 应对突发支出的能力",
+      "weight": 0.10,
+      "sources": [
+        { "type": "currency", "attribute": "gold", "weight": 0.50 },
+        { "type": "income", "attribute": "weeklyNet", "weight": 0.30 },
+        { "type": "asset", "attribute": "liquidAssetValue", "weight": 0.20 }
+      ],
+      "formula": "weighted_average",
+      "normalization": { "min": 0, "max": 10000, "scale": "log" }
+    }
+  },
+  
+  "aggregationRules": {
+    "weighted_average": {
+      "description": "加权平均 - 各来源按权重加权后平均",
+      "formula": "sum(value_i * weight_i) / sum(weight_i)"
+    },
+    "geometric_mean": {
+      "description": "几何平均 - 强调短板效应",
+      "formula": "pow(product(value_i), 1/n)"
+    },
+    "minimum": {
+      "description": "取最小值 - 最短板决定",
+      "formula": "min(value_i)"
+    }
+  },
+  
+  "classBaseValues": {
+    "HOMELESS": {
+      "physicalDefense": 10,
+      "mentalStability": 15,
+      "medicalSupport": 5
+    },
+    "WORKER": {
+      "physicalDefense": 25,
+      "mentalStability": 30,
+      "medicalSupport": 20
+    },
+    "MIDDLE": {
+      "physicalDefense": 40,
+      "mentalStability": 45,
+      "medicalSupport": 35
+    },
+    "CAPITALIST": {
+      "physicalDefense": 55,
+      "mentalStability": 50,
+      "medicalSupport": 50
+    }
+  },
+  
+  "calculation": {
+    "targetSurvivalRate": 0.70,
+    "dimensionWeights": {
+      "physicalDefense": 0.30,
+      "mentalStability": 0.25,
+      "nutritionSupply": 0.20,
+      "medicalSupport": 0.15,
+      "economicBuffer": 0.10
+    },
+    "sigmoidParams": {
+      "steepness": 0.08,
+      "midpoint": 50
+    },
+    "diseasePenalty": {
+      "perDisease": 0.05,
+      "perAcuteDisease": 0.15,
+      "addictionMultiplier": 0.003
+    }
+  }
+}

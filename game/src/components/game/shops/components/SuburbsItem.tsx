@@ -80,7 +80,7 @@ export const SuburbsItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
          
          <div className="flex justify-center gap-2 text-[10px] font-medium">
             {item.effects?.hp !== undefined && <span className="text-green-600 bg-green-50 px-2 py-0.5 rounded-full">{t('common.hp')} {item.effects.hp > 0 ? '+' : ''}{item.effects.hp}</span>}
-            {item.effects?.san !== undefined && <span className="text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">{t('common.san')} {item.effects.san > 0 ? '+' : ''}{item.effects.san}</span>}
+            {item.effects?.san !== undefined && <span className="text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">灵视{item.effects.san > 0 ? '+' : ''}{item.effects.san}</span>}
          </div>
 
          {!canAfford && (

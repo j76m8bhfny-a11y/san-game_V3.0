@@ -242,6 +242,13 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
         nextState.vitality.metrics.san = Math.max(0, nextState.vitality.metrics.san);
         // ✅ 修复：保存死亡状态
         set(nextState);
+        // ✅ 修复：触发死亡结局
+        setTimeout(() => {
+          const store = get();
+          if (store.triggerEnding) {
+            store.triggerEnding('ENDING_DEATH_PRISON');
+          }
+        }, 0);
       }
 
       // ✅ 新增：出狱时自动发送通知

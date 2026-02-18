@@ -35,9 +35,10 @@ export const JOB_BUTTON_LABELS: Record<JobTheme, JobButtonLabels> = {
   },
 };
 
-// 效率曲线配置
+// 效率曲线配置 - 基于灵视值（Insight）
+// 灵视值越高，越难融入世俗工作，效率越低
 export interface EfficiencyLevel {
-  maxSan: number;
+  maxSan: number;  // 最大灵视值阈值
   modifier: number;
   label: string;
   description: string;
@@ -45,32 +46,32 @@ export interface EfficiencyLevel {
 
 export const EFFICIENCY_LEVELS: EfficiencyLevel[] = [
   {
-    maxSan: 20,
-    modifier: 1.2,
-    label: '麻木',
-    description: 'SAN值极低，你已麻木，工作效率异常提升',
-  },
-  {
-    maxSan: 50,
+    maxSan: 30,
     modifier: 1.0,
-    label: '稳定',
-    description: 'SAN值正常，工作效率稳定',
+    label: '蒙昧',
+    description: '灵视值低，被体制规训，工作效率正常',
   },
   {
-    maxSan: 80,
+    maxSan: 70,
+    modifier: 0.8,
+    label: '初觉',
+    description: '灵视值中等，开始质疑现实，效率略微下降',
+  },
+  {
+    maxSan: 85,
     modifier: 0.6,
-    label: '分心',
-    description: 'SAN值偏高，你开始听到低语，效率下降',
+    label: '觉醒',
+    description: '灵视值高，难以融入世俗，效率明显下降',
   },
   {
     maxSan: 100,
-    modifier: 0.2,
-    label: '灵视干扰',
-    description: 'SAN值过高，现实开始扭曲，几乎无法工作',
+    modifier: 0.4,
+    label: '通透',
+    description: '灵视值极高，被视为疯子，几乎无法工作',
   },
 ];
 
-// 获取当前 SAN 值对应的效率等级
+// 获取当前灵视值对应的效率等级
 export function getEfficiencyLevel(currentSan: number): EfficiencyLevel {
   for (const level of EFFICIENCY_LEVELS) {
     if (currentSan <= level.maxSan) {

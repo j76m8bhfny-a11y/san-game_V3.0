@@ -72,7 +72,7 @@ export const DebugPanel: React.FC<DebugPanelProps> = ({ onClose }) => {
           </div>
           <div className="border border-green-500/20 p-2 rounded">
             <div className="text-gray-500">{t('common.san')}</div>
-            <div className="text-xl font-bold text-blue-400">{san} / {maxSan}</div>
+            <div className="text-xl font-bold text-amber-400">{san} / {maxSan}</div>
           </div>
           <div className="border border-green-500/20 p-2 rounded">
             <div className="text-gray-500">{t('common.turn')}</div>
@@ -115,8 +115,11 @@ export const DebugPanel: React.FC<DebugPanelProps> = ({ onClose }) => {
               <button onClick={() => modifyStats({ hp: Math.max(0, hp - 10) })} className="bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded transition-all">
                 {t('debug.hpMinus10')}
               </button>
-              <button onClick={() => modifyStats({ san: Math.max(0, san - 10) })} className="bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded transition-all">
-                {t('debug.sanMinus10')}
+              <button onClick={() => modifyStats({ san: Math.max(0, san - 10) })} className="bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded transition-all" title="降低灵视（更加蒙昧）">
+                灵视-10
+              </button>
+              <button onClick={() => modifyStats({ san: Math.min(maxSan, san + 10) })} className="bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded transition-all" title="提升灵视（更加觉醒）">
+                灵视+10
               </button>
             </div>
           </div>

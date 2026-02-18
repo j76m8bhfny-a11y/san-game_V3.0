@@ -81,15 +81,14 @@ export const MiniHUD: React.FC = () => {
   // 从 Store 中解构
   const { 
     vitality, 
-    activeInsurances, 
     gameDataCache,
     setInventoryOpen, 
     setArchiveOpen, 
     setMenuOpen 
   } = useGameStore();
   
-  // 获取医疗保险用于显示
-  const activeInsurance = activeInsurances.find((ins: any) => ins.type === 'MEDICAL') || null;
+  // 获取医疗保险用于显示 - 从 vitality 中读取
+  const activeInsurance = vitality.activeInsurances.find((ins: any) => ins.type === 'MEDICAL') || null;
   
   const { playSfx } = useAudioStore();
   const { t } = useI18n();
@@ -112,8 +111,12 @@ export const MiniHUD: React.FC = () => {
   const classInfo = CLASS_CONFIG[currentClass as PlayerClass] || CLASS_CONFIG[PlayerClass.Homeless];
   const classI18nKey = CLASS_I18N_KEY[currentClass as PlayerClass] || 'homeless';
   
-  // ✅ 3. 解构视觉阈值配置
+  // ✅ 3. 解构视觉阈值配置（灵视值版本）
   const { thresholds } = vitalityRules.visuals;
+  // 灵视值阈值：越高越觉醒
+  const insightLow = thresholds.insightLow ?? 30;
+  const insightMedium = thresholds.insightMedium ?? 50;
+  const insightHigh = thresholds.insightHigh ?? 70;
 
   // 计算当前疾病名称列表
   const diseaseNames = useMemo(() => {
@@ -179,13 +182,13 @@ export const MiniHUD: React.FC = () => {
               className="flex flex-col gap-0.5 min-w-[60px] cursor-pointer hover:opacity-80 transition-opacity"
             >
                <div className="flex items-center justify-between">
-                  <span className={`text-[10px] md:text-xs font-bold tracking-wider ${san > thresholds.sanHigh ? 'text-purple-400' : 'text-gray-400'}`}>
+                  <span className={`text-[10px] md:text-xs font-bold tracking-wider ${san > insightHigh ? 'text-amber-400' : san > insightMedium ? 'text-purple-400' : 'text-gray-400'}`}>
                     {t('hud.stats.san_short')}
                   </span>
                   <span className="font-mono font-bold text-xs md:text-sm text-white">{san}<span className="text-[10px] text-gray-500 opacity-50">/{maxSan}</span></span>
                </div>
                <div className="w-16 md:w-24 h-1.5 bg-gray-800 rounded-full overflow-hidden border border-white/5">
-                  <div className={`h-full transition-all duration-500 ${san > thresholds.sanMedium ? 'bg-purple-500 shadow-[0_0_10px_purple]' : san > thresholds.sanLow ? 'bg-blue-500' : 'bg-cyan-500'}`} style={{ width: `${Math.min((san / maxSan) * 100, 100)}%` }} />
+                  <div className={`h-full transition-all duration-500 ${san > insightHigh ? 'bg-amber-500 shadow-[0_0_10px_amber]' : san > insightMedium ? 'bg-purple-500 shadow-[0_0_8px_purple]' : san > insightLow ? 'bg-blue-500' : 'bg-gray-500'}`} style={{ width: `${Math.min((san / maxSan) * 100, 100)}%` }} />
                </div>
             </button>
           </div>

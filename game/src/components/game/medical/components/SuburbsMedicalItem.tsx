@@ -76,8 +76,8 @@ export const SuburbsMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy 
             </div>
           )}
           {service.effects?.sanRestore && (
-            <div className="flex justify-between text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
-              <span>Mood</span>
+            <div className="flex justify-between text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">
+              <span>Insight</span>
               <span>+{service.effects.sanRestore}</span>
             </div>
           )}

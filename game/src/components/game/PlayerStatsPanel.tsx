@@ -160,8 +160,8 @@ export const PlayerStatsPanel: React.FC<Props> = ({ isOpen, onClose }) => {
                   label={t('hud.stats.san_short')} 
                   value={san} 
                   max={maxSan} 
-                  color="bg-purple-500" 
-                  warning={san < thresholds.sanLow} 
+                  color={san > (thresholds.insightHigh ?? 70) ? "bg-amber-500" : "bg-purple-500"} 
+                  warning={san > (thresholds.insightAwaken ?? 85)} 
                 />
                 <MiniBar 
                   icon={<Utensils size={12} />} 

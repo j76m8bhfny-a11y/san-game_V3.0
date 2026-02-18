@@ -1,0 +1,244 @@
+{
+  "_comment": "美国社会食物系统规则配置 - 反映食物荒漠、SNAP福利、快餐成瘾等现实",
+  
+  "hungerSystem": {
+    "maxHunger": 100,
+    "decayPerTurn": 20,
+    "starvationDamage": 15,
+    "thresholds": {
+      "satiated": 70,
+      "normal": 30,
+      "hungry": 10,
+      "starving": 0
+    }
+  },
+
+  "dietTracker": {
+    "enabled": true,
+    "junkFoodPoints": {
+      "max": 100,
+      "decayPerTurn": 2,
+      "thresholds": {
+        "warning": 30,
+        "danger": 50,
+        "critical": 75
+      }
+    },
+    "healthyPoints": {
+      "max": 100,
+      "decayPerTurn": 1,
+      "thresholds": {
+        "good": 30,
+        "excellent": 50,
+        "optimal": 75
+      }
+    },
+    "consecutiveDays": {
+      "junkFoodLimit": 7,
+      "healthyFoodBonus": 14
+    }
+  },
+
+  "snapBenefits": {
+    "enabled": true,
+    "weeklyAmount": 60,
+    "eligibleClasses": ["HOMELESS", "WORKER"],
+    "weeklyIncomeThreshold": 200,
+    "restrictedTags": ["ALCOHOL", "HOT_FOOD", "PREPARED_FOOD", "SUPPLEMENT"],
+    "eligibleTags": ["SNAP_ELIGIBLE"]
+  },
+
+  "foodBank": {
+    "enabled": true,
+    "weeklyLimit": 3,
+    "eligibleClasses": ["HOMELESS", "WORKER"],
+    "incomeThreshold": 150,
+    "timeCost": 1,
+    "qualityDistribution": {
+      "poor": 0.30,
+      "standard": 0.50,
+      "good": 0.15,
+      "excellent": 0.05
+    }
+  },
+
+  "classFoodTiers": {
+    "HOMELESS": {
+      "tier": 1,
+      "accessibleRegions": ["SLUMS"],
+      "typicalFoodCost": { "min": 1, "max": 20 },
+      "forcedTags": ["JUNK_FOOD", "PROCESSED", "SNAP_ELIGIBLE"],
+      "diseaseRiskMultiplier": 1.5,
+      "junkFoodAddictionMultiplier": 1.3
+    },
+    "WORKER": {
+      "tier": 2,
+      "accessibleRegions": ["SLUMS", "RUST_BELT"],
+      "typicalFoodCost": { "min": 5, "max": 60 },
+      "commonTags": ["FAST_FOOD", "CONVENIENCE"],
+      "timeConstraint": true,
+      "workHoursThreshold": 40
+    },
+    "MIDDLE": {
+      "tier": 3,
+      "accessibleRegions": ["SLUMS", "RUST_BELT", "SUBURBS"],
+      "typicalFoodCost": { "min": 40, "max": 200 },
+      "commonTags": ["ORGANIC", "FAST_CASUAL"],
+      "canAccessSnap": false,
+      "insuranceDiscount": {
+        "healthyPointsThreshold": 50,
+        "discountRate": 0.1
+      }
+    },
+    "CAPITALIST": {
+      "tier": 4,
+      "accessibleRegions": ["SLUMS", "RUST_BELT", "SUBURBS", "DOWNTOWN"],
+      "typicalFoodCost": { "min": 150, "max": 1000 },
+      "exclusiveTags": ["ELITE", "BIOHACK", "PERSONAL_CHEF"],
+      "forcedEffects": ["LONGEVITY_BOOST", "METABOLIC_OPTIMIZATION"],
+      "classAnxietyChance": 0.3
+    }
+  },
+
+  "dietRelatedDiseases": {
+    "triggers": {
+      "type2_diabetes": {
+        "junkFoodPoints": 80,
+        "consecutiveJunkDays": 14,
+        "baseChance": 0.3,
+        "effectPerTurn": { "hpDrain": 5 },
+        "workRestriction": ["PHYSICAL_LABOR"]
+      },
+      "hypertension": {
+        "sodiumIntakeThreshold": 100,
+        "baseChance": 0.4,
+        "maxHpReduction": 10,
+        "surgeryRiskIncrease": 0.2
+      },
+      "heart_disease": {
+        "junkFoodPoints": 75,
+        "baseChance": 0.25,
+        "maxHpReduction": 20,
+        "randomEvent": {
+          "chest_pain": {
+            "chancePerTurn": 0.15,
+            "hpDamage": 15,
+            "duration": 1,
+            "message": "胸口突然剧痛，像被大象踩住..."
+          }
+        }
+      },
+      "gout": {
+        "redMeatPoints": 50,
+        "baseChance": 0.2,
+        "restrictedToClasses": ["CAPITALIST", "MIDDLE"],
+        "effect": { "workPenalty": 0.3, "movementRestriction": true }
+      },
+      "scurvy": {
+        "noFreshFoodDays": 21,
+        "baseChance": 0.5,
+        "hpDrain": 5,
+        "visualEffect": "appearance_change"
+      },
+      "metabolic_syndrome": {
+        "junkFoodPoints": 50,
+        "baseChance": 0.35,
+        "permanentMaxHpReduction": 5,
+        "reversible": true,
+        "reversalRequirement": { "healthyPoints": 30, "duration": 14 }
+      }
+    }
+  },
+
+  "diseaseTreatment": {
+    "type2_diabetes": {
+      "insulinCostPerWeek": 50,
+      "untreatedHpDrain": 8
+    },
+    "hypertension": {
+      "medicationCostPerWeek": 30,
+      "untreatedHpDrain": 5
+    },
+    "heart_disease": {
+      "surgeryCost": 50000,
+      "untreatedHpDrain": 10
+    },
+    "scurvy": {
+      "vitaminCCost": 20,
+      "untreatedHpDrain": 5
+    }
+  },
+
+  "addiction": {
+    "sugar": {
+      "thresholds": {
+        "mild": 20,
+        "moderate": 40,
+        "severe": 60,
+        "extreme": 80
+      },
+      "withdrawalEffects": {
+        "hp": -2,
+        "cravingMessage": "你渴望糖分和油脂...",
+        "forceConsumeChance": 0.3
+      }
+    },
+    "caffeine": {
+      "thresholds": {
+        "mild": 15,
+        "moderate": 35
+      },
+      "withdrawalEffects": {
+        "san": -3,
+        "workEfficiency": -0.2
+      }
+    }
+  },
+
+  "foodEffects": {
+    "immediate": {
+      "hungerRestore": "effects.hunger",
+      "hpChange": "effects.hp",
+      "addictionGain": "effects.addiction",
+      "resistanceGain": "effects.resistance"
+    },
+    "dietTracker": {
+      "junkFood": "tags.includes('JUNK_FOOD')",
+      "healthy": "tags.includes('ORGANIC') || tags.includes('HEALTHY')",
+      "redMeat": "tags.includes('RED_MEAT')"
+    },
+    "diseaseRisk": {
+      "source": "activeEffect.params",
+      "roll": "random() < riskRate"
+    },
+    "buffs": {
+      "source": "activeEffect.type",
+      "duration": "activeEffect.params.duration",
+      "stackable": false
+    }
+  },
+
+  "ledgerMapping": {
+    "FOOD": { "category": "FOOD", "priority": 3 },
+    "JUNK_FOOD": { "category": "FOOD", "priority": 3, "tag": "unhealthy" },
+    "SNAP_PURCHASE": { "category": "FOOD", "paymentMethod": "SNAP" }
+  },
+
+  "ui": {
+    "hungerBar": {
+      "color": "#f97316",
+      "warningThreshold": 30,
+      "criticalThreshold": 10
+    },
+    "dietTracker": {
+      "showJunkPoints": false,
+      "showHealthyPoints": false,
+      "showWarnings": true
+    },
+    "foodBankButton": {
+      "enabled": true,
+      "location": "SLUMS",
+      "cooldown": 7
+    }
+  }
+}

@@ -88,13 +88,21 @@ export const JobSystem: GameSystem = {
 
       // =================================================================
 
-      // 3. 计算 HP 消耗
-      if (vitality.metrics.hp <= totalHpCost + job.hpCost) {
+      // 3. 计算 HP 消耗（考虑Buff影响）
+      // 检查是否有疲劳压制Buff（能量饮料等）
+      const hasFatigueSuppress = state.vitality.activeBuffs?.some(
+        (b: any) => b.id.startsWith('buff_fatigue_suppress') && b.duration > 0
+      );
+      
+      // 应用workHpCostModifier：如果有疲劳压制，工作不消耗HP
+      const actualHpCost = hasFatigueSuppress ? 0 : job.hpCost;
+      
+      if (vitality.metrics.hp <= totalHpCost + actualHpCost) {
         result.notes.push(`体力不支，被迫旷工: ${job.title}`);
         return; 
       }
 
-      totalHpCost += job.hpCost;
+      totalHpCost += actualHpCost;
       totalSanCost += job.sanCost;
 
       // 4. 计算工资 (效率 × 信仰Debuff倍率)

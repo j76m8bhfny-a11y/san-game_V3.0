@@ -80,8 +80,19 @@ export const checkDailyDisease = (state: GameState, allDiseases: Disease[] = [])
   if (isWeakBody) risk *= modifiers.weakBodyMultiplier;
   if (isWeakMind) risk *= modifiers.weakSanMultiplier;
 
+  // -- 修正因子 E: 基因优化/疾病免疫Buff --
+  // 计算疾病抗性（0-1之间，1表示完全免疫）
+  const diseaseResistance = (vitality as any).activeBuffs?.reduce((sum: number, b: any) => {
+    if (b.duration <= 0) return sum; // Buff已过期
+    const buffResistance = b.effects?.perTurn?.diseaseResistance || 0;
+    return sum + buffResistance;
+  }, 0) || 0;
+  
+  // 应用抗性：抗性1.0 = 0%疾病概率，抗性0.5 = 50%疾病概率
+  const effectiveRisk = risk * (1 - Math.min(diseaseResistance, 1));
+  
   // 4. 掷骰子 (Risk Check)
-  if (Math.random() > risk) return null;
+  if (Math.random() > effectiveRisk) return null;
 
   // 5. 选择疾病
   // ✅ 重构：从 JSON 配置读取当前区域的疾病分布

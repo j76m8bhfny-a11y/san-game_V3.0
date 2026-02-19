@@ -11,7 +11,8 @@ import {
   calculateSurvivalRate, 
   checkSurvival, 
   printSurvivalAnalysis,
-  SurvivalResult 
+  SurvivalResult,
+  VitalityDecay
 } from '@/logic/survivalCalculator';
 
 export interface SurvivalSlice {
@@ -29,10 +30,10 @@ export interface SurvivalSlice {
   getSurvivalRate: () => number;
   
   /**
-   * 执行死亡判定
-   * 在回合结束时调用
+   * 执行生存检查
+   * 在回合结束时调用，返回VitalityDecay供调用方应用
    */
-  checkDeath: () => { survived: boolean; roll: number; rate: number };
+  checkDeath: () => { decay: import('@/logic/survivalCalculator').VitalityDecay; wouldDie: boolean };
   
   /**
    * 打印存活分析到控制台
@@ -66,11 +67,11 @@ export const createSurvivalSlice: StateCreator<StoreState, [], [], SurvivalSlice
     
     // 如果已经在监狱或已死亡，跳过判定
     if (state.prison?.inJail) {
-      return { survived: true, roll: 0, rate: 1 };
+      return { decay: { hpDecay: 0, sanDecay: 0, level: 'EXCELLENT', survivalRate: 1 }, wouldDie: false };
     }
     
     if (state.ending) {
-      return { survived: false, roll: 1, rate: 0 };
+      return { decay: { hpDecay: 0, sanDecay: 0, level: 'CRITICAL', survivalRate: 0 }, wouldDie: true };
     }
     
     return checkSurvival(state);
@@ -96,7 +97,7 @@ export interface VitalitySlice {
   
   // 新增存活计算
   getSurvivalAnalysis: () => SurvivalResult;
-  checkDeath: () => { survived: boolean; roll: number; rate: number };
+  checkDeath: () => { decay: VitalityDecay; wouldDie: boolean };
 }
 
 export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice> = (set, get) => ({
@@ -119,27 +120,37 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
     
     // ... 现有回合逻辑 ...
     
-    // 新增：存活判定
-    const deathCheck = get().checkDeath();
+    // 新增：计算Vitality Decay
+    const { decay, wouldDie } = get().checkDeath();
     
-    if (!deathCheck.survived) {
-      console.log(`💀 死亡判定失败: 骰子 ${(deathCheck.roll * 100).toFixed(1)}% > 存活率 ${(deathCheck.rate * 100).toFixed(1)}%`);
-      
-      // 触发死亡结局
+    // 应用HP/SAN变化
+    const currentMetrics = state.vitality.metrics;
+    const newHp = Math.max(0, Math.min(currentMetrics.maxHp, currentMetrics.hp + decay.hpDecay));
+    const newSan = Math.max(0, Math.min(currentMetrics.maxSan, currentMetrics.san + decay.sanDecay));
+    
+    get().modifyStats({ hp: newHp, san: newSan });
+    
+    // 死亡判定
+    if (newHp <= 0) {
       const store = get() as any;
       if (store.triggerEnding) {
-        store.triggerEnding('DEATH_GENERIC');
+        store.triggerEnding('DEATH', `在${decay.level}环境下生命耗尽`);
       }
-      
+      return;
+    }
+    if (newSan <= 0) {
+      const store = get() as any;
+      if (store.triggerEnding) {
+        store.triggerEnding('MADNESS', `精神崩溃于${decay.level}环境`);
+      }
       return;
     }
     
-    // 存活但危险时给警告
-    const survival = get().getSurvivalAnalysis();
-    if (survival.riskLevel === 'CRITICAL') {
+    // 危险时给警告
+    if (decay.level === 'CRITICAL') {
       const store = get() as any;
       if (store.addNotification) {
-        store.addNotification('⚠️ 警告：你的生命垂危！请立即治疗！', 'error');
+        store.addNotification('⚠️ 生命危险！环境极度恶劣', 'error');
       }
     }
     
@@ -252,9 +263,10 @@ useGameStore.getState().debugSurvival?.();
 import { printSurvivalAnalysis } from '@/logic/survivalCalculator';
 console.log(printSurvivalAnalysis(useGameStore.getState()));
 
-// 手动触发死亡判定
+// 手动触发生存检查
 const result = useGameStore.getState().checkDeath?.();
 console.log(result);
+// 输出: { decay: { hpDecay, sanDecay, level, survivalRate }, wouldDie }
 
 // 查看各维度分数
 const analysis = useGameStore.getState().getSurvivalAnalysis?.();

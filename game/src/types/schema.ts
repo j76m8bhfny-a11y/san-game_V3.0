@@ -481,6 +481,39 @@ export interface VitalityIdentity {
   };
 }
 
+export interface SurvivalBuff {
+  id: string;
+  name: string;
+  description: string;
+  duration: number;
+  maxDuration: number;
+  effects: {
+    perTurn?: { 
+      hp?: number; 
+      san?: number; 
+      gold?: number;
+      stackMultiplier?: number; // 层数倍率（毒素累积每层额外扣血）
+      ignoreHpDecay?: number; // 忽视HP流失量（止痛药）
+    };
+    onExpire?: { 
+      hp?: number; 
+      san?: number; 
+      gold?: number;
+      trigger?: string; // 触发事件ID
+      maxHpBonus?: number; // MaxHP恢复值（通常为0）
+    };
+    onApply?: {
+      clearStatus?: string[]; // 清除状态（如止血清除流血）
+    };
+    maxHpBonus?: number; // 临时MaxHP增加（年轻血液等）
+  };
+  source: string;
+  stackable: boolean;
+  maxStacks?: number;
+  stacks?: number; // 当前层数（用于可堆叠Buff）
+  icon?: string;
+}
+
 export interface VitalityState {
   metrics: VitalityMetrics;
   identity: VitalityIdentity;
@@ -490,6 +523,9 @@ export interface VitalityState {
   };
   // ✅ 新增
   activeDiseases: string[]; // 存疾病 ID
+  
+  // ✅ 新增：生存系统Buff
+  activeBuffs: SurvivalBuff[];
   
   ledger: {
     history: LedgerRecord[];

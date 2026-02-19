@@ -115,7 +115,22 @@
     "homelessPenalty": {
       "physicalDefense": -10,
       "mentalStability": -20
-    }
+    },
+    "vitalityDecay": {
+      "description": "生存率S对应的生命/理智每回合变化",
+      "thresholds": [0.2, 0.4, 0.6, 0.8],
+      "levels": ["CRITICAL", "DANGER", "WARNING", "GOOD", "EXCELLENT"],
+      "hpDecay": [-5, -2, -1, 0, 1],
+      "sanDecay": [-3, -1, 0, 0, 1]
+    },
+    "classResistance": {
+      "description": "阶级抗性系数，越低越脆弱，惩罚会除以该系数",
+      "HOMELESS": 0.3,
+      "WORKER": 0.6,
+      "MIDDLE": 1.0,
+      "CAPITALIST": 2.0
+    },
+    "randomVariance": 0.05
   },
   
   "debug": {

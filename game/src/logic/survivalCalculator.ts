@@ -34,6 +34,14 @@ export interface SurvivalResult {
   suggestions: string[];
 }
 
+// 新增：Vitality Decay结果类型
+export interface VitalityDecay {
+  hpDecay: number;        // 本回合HP变化
+  sanDecay: number;       // 本回合SAN变化
+  level: 'EXCELLENT' | 'GOOD' | 'WARNING' | 'DANGER' | 'CRITICAL';
+  survivalRate: number;   // 原始生存率（不含随机扰动）
+}
+
 // ==========================================
 // 核心计算函数
 // ==========================================
@@ -235,22 +243,27 @@ export function calculateSurvivalRate(
   const sigmoid = (x: number) => 1 / (1 + Math.exp(-calcConfig.sigmoid.steepness * (x - calcConfig.sigmoid.midpoint)));
   let survivalRate = sigmoid(compositeScore);
   
-  // 4. 应用疾病惩罚
+  // 4. 应用疾病惩罚（含ClassResistance修正）
   const diseases = state.vitality.activeDiseases;
   const diseaseDefs = gameDataCache?.diseases || [];
-  let diseasePenalty = 0;
+  let diseasePenaltyBase = 0;
   
   for (const diseaseId of diseases) {
     const diseaseDef = diseaseDefs.find((d: Disease) => d.id === diseaseId);
     if (diseaseDef?.type === 'ACUTE') {
-      diseasePenalty += calcConfig.diseasePenalty.perAcuteDisease;
+      diseasePenaltyBase += calcConfig.diseasePenalty.perAcuteDisease;
     } else {
-      diseasePenalty += calcConfig.diseasePenalty.perDisease;
+      diseasePenaltyBase += calcConfig.diseasePenalty.perDisease;
     }
   }
   
   // 成瘾惩罚
-  diseasePenalty += state.vitality.metrics.addiction * calcConfig.diseasePenalty.addictionMultiplier;
+  diseasePenaltyBase += state.vitality.metrics.addiction * calcConfig.diseasePenalty.addictionMultiplier;
+  
+  // 应用阶级抗性：惩罚 = 基础惩罚 / 抗性
+  const characterClass = state.vitality.identity.currentClass;
+  const classResistance = (calcConfig.classResistance as any)[characterClass] || 1.0;
+  const diseasePenalty = diseasePenaltyBase / classResistance;
   
   survivalRate = Math.max(0, survivalRate - diseasePenalty);
   
@@ -309,16 +322,78 @@ export function getSurvivalRateQuick(state: StoreState): number {
 }
 
 /**
- * 回合结束判定
+ * 计算Vitality Decay Rate
+ * 根据生存率S返回每回合HP/SAN变化
  */
-export function checkSurvival(state: StoreState): { survived: boolean; roll: number; rate: number } {
-  const result = calculateSurvivalRate(state, { includeVariance: true });
-  const roll = Math.random();
+export function calculateVitalityDecay(
+  state: StoreState,
+  options?: { includeVariance?: boolean }
+): VitalityDecay {
+  const result = calculateSurvivalRate(state);
+  let survivalRate = result.survivalRate;
+  const decayConfig = config.calculation.vitalityDecay as any;
+  
+  // 应用随机扰动
+  if (options?.includeVariance) {
+    const variance = (Math.random() - 0.5) * 2 * (config.calculation.randomVariance || 0.05);
+    survivalRate = Math.max(0, Math.min(1, survivalRate + variance));
+  }
+  
+  // 确定等级索引
+  let levelIndex: number;
+  const thresholds = decayConfig.thresholds;
+  
+  if (survivalRate >= thresholds[3]) levelIndex = 4;      // EXCELLENT
+  else if (survivalRate >= thresholds[2]) levelIndex = 3; // GOOD
+  else if (survivalRate >= thresholds[1]) levelIndex = 2; // WARNING
+  else if (survivalRate >= thresholds[0]) levelIndex = 1; // DANGER
+  else levelIndex = 0;                                     // CRITICAL
+  
+  const levels = decayConfig.levels;
+  
+  let hpDecay = decayConfig.hpDecay[levelIndex];
+  let sanDecay = decayConfig.sanDecay[levelIndex];
+  
+  // 检查是否有忽视HP流失的Buff（如止痛药）
+  const activeBuffs = (state as any).vitality?.activeBuffs || [];
+  const painkillerBuff = activeBuffs.find((b: any) => 
+    b.id.startsWith('buff_painkiller') && b.duration > 0
+  );
+  
+  if (painkillerBuff && painkillerBuff.effects?.perTurn?.ignoreHpDecay) {
+    const ignoreAmount = painkillerBuff.effects.perTurn.ignoreHpDecay;
+    // 减少HP流失（如果是负数）或增加恢复（如果是正数）
+    if (hpDecay < 0) {
+      hpDecay = Math.min(0, hpDecay + ignoreAmount);
+    }
+  }
+  
   return {
-    survived: roll <= result.survivalRate,
-    roll,
-    rate: result.survivalRate,
+    hpDecay,
+    sanDecay,
+    level: levels[levelIndex],
+    survivalRate
   };
+}
+
+/**
+ * 回合结束时的生存检查
+ * 返回VitalityDecay供advanceTurn调用
+ * 
+ * 旧逻辑（废弃）：Roll点判定生死
+ * 新逻辑（当前）：计算Decay Rate，由调用方应用
+ */
+export function checkSurvival(
+  state: StoreState
+): { decay: VitalityDecay; wouldDie: boolean } {
+  const decay = calculateVitalityDecay(state, { includeVariance: true });
+  
+  // 预测是否会死亡（用于UI警告）
+  const currentHp = state.vitality.metrics.hp;
+  const currentSan = state.vitality.metrics.san;
+  const wouldDie = (currentHp + decay.hpDecay <= 0) || (currentSan + decay.sanDecay <= 0);
+  
+  return { decay, wouldDie };
 }
 
 // ==========================================
@@ -335,9 +410,14 @@ export function printSurvivalAnalysis(state: StoreState): string {
   output += '║           存活概率分析                                    ║\n';
   output += '╚══════════════════════════════════════════════════════════╝\n\n';
   
+  // 计算Decay信息
+  const decay = calculateVitalityDecay(state);
+  
   output += `📊 综合存活率: ${(result.survivalRate * 100).toFixed(1)}%\n`;
   output += `📈 综合评分: ${result.compositeScore.toFixed(1)}/100\n`;
   output += `🚨 风险等级: ${result.riskLevel}\n`;
+  output += `💔 生命流失: ${decay.hpDecay > 0 ? '+' : ''}${decay.hpDecay}/回合 | 理智流失: ${decay.sanDecay > 0 ? '+' : ''}${decay.sanDecay}/回合\n`;
+  output += `📊 环境等级: ${decay.level}\n`;
   if (result.weakDimension) {
     output += `⚠️  最短板: ${result.weakDimension}\n`;
   }

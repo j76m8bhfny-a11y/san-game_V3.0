@@ -1,0 +1,230 @@
+{
+  "$schema": "survival-buffs",
+  "description": "生存系统StatusEffect定义 - 食物与物品系统Buff",
+  "version": "2.0.0",
+  
+  "buffs": {
+    "_comment": "========== 原有Buff（保留） ==========",
+    "shock_homelessness": {
+      "name": "居无定所",
+      "description": "露宿街头带来的持续心理压力",
+      "duration": 3,
+      "effects": {
+        "perTurn": { "san": -2 },
+        "onExpire": { "san": 5 }
+      },
+      "stackable": false,
+      "icon": "buff_homeless"
+    },
+    
+    "shock_fired": {
+      "name": "失业焦虑",
+      "description": "失去工作的不安全感",
+      "duration": 5,
+      "effects": {
+        "perTurn": { "san": -1 },
+        "onExpire": { "san": 3 }
+      },
+      "stackable": true,
+      "maxStacks": 3,
+      "icon": "buff_fired"
+    },
+    
+    "shock_illness": {
+      "name": "病痛折磨",
+      "description": "疾病带来的身体不适",
+      "duration": 7,
+      "effects": {
+        "perTurn": { "hp": -1, "san": -1 },
+        "onExpire": { "hp": 3 }
+      },
+      "stackable": false,
+      "icon": "buff_illness"
+    },
+    
+    "buff_insured": {
+      "name": "有保障的安心",
+      "description": "医疗保险带来的安全感",
+      "duration": -1,
+      "effects": {
+        "perTurn": { "san": 1 }
+      },
+      "stackable": false,
+      "icon": "buff_insured"
+    },
+
+    "_comment": "========== 新增：HOMELESS阶级Buff ==========",
+    "buff_bleeding_stop": {
+      "name": "紧急止血",
+      "description": "工业胶带粗暴地止住了伤口流血",
+      "duration": 1,
+      "effects": {
+        "perTurn": { "hp": 0 },
+        "onApply": { "clearStatus": ["BLEEDING"] }
+      },
+      "stackable": false,
+      "icon": "buff_bandage"
+    },
+
+    "buff_addiction_alcohol": {
+      "name": "酒精依赖",
+      "description": "廉价的工业酒精开始侵蚀你的理智",
+      "duration": 10,
+      "effects": {
+        "perTurn": { "san": -1 },
+        "onExpire": { 
+          "san": -5,
+          "trigger": "WITHDRAWAL_ALCOHOL"
+        }
+      },
+      "stackable": true,
+      "maxStacks": 5,
+      "icon": "buff_addiction"
+    },
+
+    "_comment": "========== 新增：WORKER阶级Buff ==========",
+    "buff_fatigue_suppress": {
+      "name": "透支精力",
+      "description": "高剂量咖啡因强行压制身体的疲惫信号",
+      "duration": 3,
+      "effects": {
+        "perTurn": { 
+          "san": -1,
+          "workHpCostModifier": 0
+        },
+        "onExpire": { 
+          "hp": -5,
+          "san": -3
+        }
+      },
+      "stackable": false,
+      "icon": "buff_stimulant"
+    },
+
+    "buff_toxic_buildup": {
+      "name": "毒素累积",
+      "description": "劣质加工食品中的化学物质在体内堆积",
+      "duration": 5,
+      "effects": {
+        "perTurn": { 
+          "hp": -1,
+          "stackMultiplier": 1.5
+        }
+      },
+      "stackable": true,
+      "maxStacks": 5,
+      "icon": "buff_toxic"
+    },
+
+    "buff_painkiller": {
+      "name": "镇痛麻痹",
+      "description": "布洛芬掩盖了身体的警告信号",
+      "duration": 5,
+      "effects": {
+        "perTurn": { 
+          "san": -1,
+          "ignoreHpDecay": 2
+        },
+        "onExpire": { 
+          "hp": -3,
+          "san": 2
+        }
+      },
+      "stackable": false,
+      "icon": "buff_painkiller"
+    },
+
+    "_comment": "========== 新增：MIDDLE阶级Buff ==========",
+    "buff_anxiety_block": {
+      "name": "虚假平静",
+      "description": "化学药物制造的虚假安全感",
+      "duration": 3,
+      "effects": {
+        "perTurn": { 
+          "san": -3,
+          "eventSanCostModifier": 0
+        },
+        "onExpire": { 
+          "trigger": "ANXIETY_REBOUND",
+          "san": -10
+        }
+      },
+      "stackable": false,
+      "icon": "buff_sedated"
+    },
+
+    "buff_class_illusion": {
+      "name": "阶级幻觉",
+      "description": "瑜伽和正念冥想制造的虚假阶级跃升感",
+      "duration": 5,
+      "effects": {
+        "perTurn": { 
+          "hp": 2,
+          "san": -2
+        },
+        "onExpire": { 
+          "san": -5,
+          "trigger": "REALITY_CRASH"
+        }
+      },
+      "stackable": false,
+      "icon": "buff_meditation"
+    },
+
+    "_comment": "========== 新增：CAPITALIST阶级Buff ==========",
+    "buff_synthetic_youth": {
+      "name": "合成青春",
+      "description": "年轻血液带来的虚假生命力充盈",
+      "duration": 10,
+      "effects": {
+        "perTurn": { 
+          "hp": 2,
+          "san": 1
+        },
+        "maxHpBonus": 20,
+        "onExpire": { 
+          "hp": -10,
+          "san": -5,
+          "maxHpBonus": 0,
+          "trigger": "AGING_CRASH"
+        }
+      },
+      "stackable": false,
+      "refreshRule": "extend",
+      "icon": "buff_youth"
+    },
+
+    "buff_immune_disease": {
+      "name": "基因优化",
+      "description": "靶向营养素暂时重写了免疫系统",
+      "duration": 15,
+      "effects": {
+        "perTurn": { 
+          "diseaseResistance": 1.0
+        },
+        "onExpire": { 
+          "san": -3,
+          "trigger": "IMMUNITY_DROP"
+        }
+      },
+      "stackable": false,
+      "refreshRule": "extend",
+      "icon": "buff_shield"
+    }
+  },
+  
+  "eventMappings": {
+    "_comment": "原有事件映射",
+    "EVT_01_BENCH": { "buffId": "shock_homelessness", "probability": 0.5 },
+    "EVT_04_SPIKES": { "buffId": "shock_homelessness", "probability": 1.0 },
+    "JOB_LOST": { "buffId": "shock_fired", "probability": 1.0 },
+    "DISEASE_CONTRACTED": { "buffId": "shock_illness", "probability": 1.0 },
+    
+    "_comment": "新增：食物触发事件",
+    "EVT_FOODPOISONING_MCNUGGET": { 
+      "buffId": "shock_illness", 
+      "probability": 1.0,
+      "overrideDuration": 3
+    }
+  }
+}

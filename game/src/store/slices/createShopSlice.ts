@@ -232,7 +232,7 @@ export const createShopSlice: StateCreator<StoreState, [], [], ShopSlice> = (set
       }
 
       // 应用饮食状态更新
-      set((s: any) => ({ dietState: newDietState }));
+      set(() => ({ dietState: newDietState }));
 
       // 处理 ActiveEffect
       if (item.activeEffect) {
@@ -274,20 +274,63 @@ export const createShopSlice: StateCreator<StoreState, [], [], ShopSlice> = (set
               state.addNotification(`⚠️ 你生病了: ${newDiseaseId}`, "error");
             }
           }
-        } else if (type === 'METABOLIC_OPTIMIZATION') {
-          // 代谢优化 Buff
-          const buffEndTurn = state.vitality.time.currentTurn + params.duration;
-          set((s: any) => ({
-            activeBuffs: [...(s.activeBuffs || []), {
-              id: 'METABOLIC_OPTIMIZATION',
-              name: '代谢优化',
-              endTurn: buffEndTurn,
-              effects: {
-                maxHpBonus: params.maxHpBonus || 0,
-                hpRegenBonus: 5
+        } else if (type === 'APPLY_BUFF') {
+          // 应用生存Buff
+          const { buffId, duration, probability = 1.0 } = params;
+          if (Math.random() < probability) {
+            if (state.applyItemBuff) {
+              state.applyItemBuff(buffId, duration);
+            } else {
+              // 兜底：直接修改状态
+              const store = get() as any;
+              if (store.addSurvivalBuff) {
+                store.addSurvivalBuff({
+                  id: `${buffId}_${Date.now()}`,
+                  name: buffId,
+                  description: '',
+                  duration: duration || 5,
+                  maxDuration: duration || 5,
+                  effects: {},
+                  source: 'ITEM',
+                  stackable: false
+                });
               }
-            }]
-          }));
+            }
+          }
+        } else if (type === 'TRIGGER_EVENT') {
+          // 触发事件
+          const { eventId, probability = 1.0 } = params;
+          if (Math.random() < probability) {
+            const eventData = state.gameDataCache?.events?.find((e: any) => e.id === eventId);
+            if (eventData && state.triggerEvent) {
+              state.triggerEvent(eventData);
+            } else {
+              state.addNotification(`触发事件: ${eventId}`, "warning");
+            }
+          }
+        } else if (type === 'METABOLIC_OPTIMIZATION') {
+          // 代谢优化 Buff - 使用新的SurvivalBuff格式
+          // 创建一个临时代谢优化Buff
+          const metabolicBuff = {
+            id: `buff_metabolic_${Date.now()}`,
+            name: '代谢优化',
+            description: '生酮饮食带来的代谢状态改变',
+            duration: params.duration,
+            maxDuration: params.duration,
+            effects: {
+              perTurn: { hp: 2 },
+              maxHpBonus: params.maxHpBonus || 0,
+              onExpire: { 
+                hp: -5,
+                maxHpBonus: 0  // 恢复MaxHP
+              }
+            },
+            source: 'ITEM',
+            stackable: false,
+            icon: 'buff_metabolic'
+          };
+          const store = get() as any;
+          store.addSurvivalBuff?.(metabolicBuff);
           state.addNotification(`🧬 代谢优化激活: MaxHP +${params.maxHpBonus} (${params.duration}回合)`, "success");
         } else if (type === 'LONGEVITY_BOOST') {
           // 长寿强化

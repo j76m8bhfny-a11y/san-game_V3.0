@@ -436,7 +436,8 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
                 triggeredEvents: [] // ✅ 重置已触发事件列表（新游戏可重新触发所有事件）
             },
             activeJobs: [],
-            activeInsurances: []
+            activeInsurances: [],
+            activeBuffs: []
         },
         
         // 2. Systems 重置

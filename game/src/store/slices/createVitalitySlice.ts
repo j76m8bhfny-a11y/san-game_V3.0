@@ -11,6 +11,9 @@ import { CLASS_INITIAL_STATS } from './createPlayerSlice';
 import { calculateMedicalCost } from '@/logic/medical';
 import { checkDailyDisease } from '@/logic/health';
 import { determineClass, hasClassChanged, getClassChangeDesc } from '@/logic/class';
+import { checkSurvival } from '@/logic/survivalCalculator';
+import { SurvivalBuff } from '@/types/schema';
+import buffConfig from '@/assets/data/rules/survival_buffs.json';
 import { StoreState } from '@/types/store';
 
 import hospitalData from '@/assets/data/hospital_services.json';
@@ -39,9 +42,19 @@ export interface VitalitySlice {
     netWorth?: number; 
     reason?: string;
   };
+  
+  // Buff管理方法
+  addSurvivalBuff: (buff: SurvivalBuff) => void;
+  removeSurvivalBuff: (buffId: string) => void;
+  processBuffs: () => { hpChange: number; sanChange: number; expiredBuffs: string[] };
+  applyEventBuff: (eventId: string) => void;
+  applyItemBuff: (buffId: string, customDuration?: number) => void;
 }
 
 const generateId = () => `${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 5)}`;
+
+// 防止Buff触发循环的全局跟踪器
+const processingTriggers = new Set<string>();
 
 export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice> = (set, get) => ({
   vitality: {
@@ -58,7 +71,8 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
             hiddenTags: [] 
         },
     activeJobs: [],
-    activeInsurances: []
+    activeInsurances: [],
+    activeBuffs: []
   },
 
   initGame: (selectedClass) => {
@@ -93,7 +107,8 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
           hiddenTags: [],
           triggeredEvents: []
         },
-        activeJobs: []
+        activeJobs: [],
+        activeBuffs: []
       },
       
       // ✅ Fix: 适配新的 FaithState 结构，初始化 behaviorState
@@ -380,6 +395,49 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
       if (state.addNotification) {
         state.addNotification(`警告：你患上了 ${diseaseName}`, 'warning');
       }
+      // 触发疾病Buff
+      get().applyEventBuff('DISEASE_CONTRACTED');
+    }
+
+    // ===== 步骤1: 计算Vitality Decay（新逻辑）=====
+    const { decay } = checkSurvival(state);
+    
+    // ===== 步骤2: 处理Buff效果（新逻辑）=====
+    const { hpChange: buffHpChange, sanChange: buffSanChange } = get().processBuffs();
+    
+    // ===== 步骤3: 应用总变化 =====
+    const currentMetrics = state.vitality.metrics;
+    const totalHpChange = decay.hpDecay + buffHpChange;
+    const totalSanChange = decay.sanDecay + buffSanChange;
+    
+    const newHp = Math.max(0, Math.min(currentMetrics.maxHp || 100, currentMetrics.hp + totalHpChange));
+    const newSan = Math.max(0, Math.min(currentMetrics.maxSan || 100, currentMetrics.san + totalSanChange));
+    
+    updates.metrics = {
+      ...currentMetrics,
+      hp: newHp,
+      san: newSan
+    };
+    
+    // ===== 步骤4: 死亡判定 =====
+    if (newHp <= 0) {
+      if (state.triggerEnding) {
+        state.triggerEnding('DEATH', `在${decay.level}环境下生命耗尽`);
+      }
+    }
+    if (newSan <= 0) {
+      if (state.triggerEnding) {
+        state.triggerEnding('MADNESS', `精神崩溃于${decay.level}环境`);
+      }
+    }
+    
+    // ===== 步骤5: 通知玩家 =====
+    if (state.addNotification) {
+      if (decay.level === 'CRITICAL') {
+        state.addNotification('⚠️ 生命危险！环境极度恶劣', 'error');
+      } else if (decay.level === 'DANGER') {
+        state.addNotification('⚠️ 健康状况堪忧', 'warning');
+      }
     }
 
     return {
@@ -395,5 +453,254 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
           ...state.vitality,
           ledger: { history: [] }
       }
-  }))
+  })),
+
+  // ==========================================
+  // Buff管理方法
+  // ==========================================
+  
+  addSurvivalBuff: (buff: SurvivalBuff) => {
+    // 先处理 onApply 效果（需要在状态更新前执行）
+    
+    if (buff.effects?.onApply?.clearStatus) {
+      // 处理清除状态（如止血胶带清除流血）
+      const statusesToClear = buff.effects.onApply.clearStatus;
+      // TODO: 当游戏中实现了具体的状态系统后，这里应该清除相应状态
+      console.log(`[SurvivalBuff] 清除状态: ${statusesToClear.join(', ')}`);
+    }
+    
+    set((state: any) => {
+      const existingBuffs = state.vitality.activeBuffs || [];
+      const buffBaseId = buff.id.split('_')[0];
+      
+      // 查找同类型Buff
+      const existingIndex = existingBuffs.findIndex((b: SurvivalBuff) => 
+        b.id.split('_')[0] === buffBaseId
+      );
+      
+      // 计算MaxHP变化（用于maxHpBonus首次应用）
+      let maxHpChange = 0;
+      
+      // 不可堆叠：刷新持续时间
+      if (!buff.stackable && existingIndex >= 0) {
+        return {
+          vitality: {
+            ...state.vitality,
+            activeBuffs: existingBuffs.map((b: SurvivalBuff, idx: number) => 
+              idx === existingIndex ? { ...b, duration: buff.maxDuration } : b
+            )
+          }
+        };
+      }
+      
+      // 可堆叠：增加层数（不超过maxStacks）
+      if (buff.stackable && existingIndex >= 0) {
+        const existing = existingBuffs[existingIndex];
+        const maxStacks = buff.maxStacks || 1;
+        const newStacks = Math.min((existing.stacks || 1) + 1, maxStacks);
+        
+        return {
+          vitality: {
+            ...state.vitality,
+            activeBuffs: existingBuffs.map((b: SurvivalBuff, idx: number) => 
+              idx === existingIndex ? { 
+                ...b, 
+                stacks: newStacks,
+                duration: buff.maxDuration // 同时刷新持续时间
+              } : b
+            )
+          }
+        };
+      }
+      
+      // 新Buff：初始化层数为1，并应用maxHpBonus
+      const newBuff = { ...buff, stacks: buff.stackable ? 1 : undefined };
+      
+      // 应用maxHpBonus（如果有）
+      const buffEffects = buff.effects as any;
+      if (buffEffects?.maxHpBonus) {
+        maxHpChange = buffEffects.maxHpBonus;
+      }
+      
+      const currentMetrics = state.vitality.metrics;
+      const newMaxHp = Math.max(10, (currentMetrics.maxHp || 100) + maxHpChange);
+      
+      return {
+        vitality: {
+          ...state.vitality,
+          metrics: {
+            ...currentMetrics,
+            maxHp: newMaxHp
+          },
+          activeBuffs: [...existingBuffs, newBuff]
+        }
+      };
+    });
+  },
+
+  removeSurvivalBuff: (buffId: string) => set((state: any) => ({
+    vitality: {
+      ...state.vitality,
+      activeBuffs: (state.vitality.activeBuffs || []).filter((b: SurvivalBuff) => b.id !== buffId)
+    }
+  })),
+
+  processBuffs: () => {
+    const state = get();
+    const buffs = state.vitality.activeBuffs || [];
+    
+    let hpChange = 0;
+    let sanChange = 0;
+    let maxHpChange = 0;
+    const expiredBuffs: string[] = [];
+    const remainingBuffs: SurvivalBuff[] = [];
+    
+    for (const buff of buffs) {
+      // 应用每回合效果（考虑层数倍率）
+      if (buff.effects.perTurn) {
+        const stacks = buff.stacks || 1;
+        const baseHp = buff.effects.perTurn.hp || 0;
+        const baseSan = buff.effects.perTurn.san || 0;
+        
+        // 如果有stackMultiplier，每层额外增加效果
+        const multiplier = buff.effects.perTurn.stackMultiplier || 1;
+        const effectiveStacks = stacks > 1 ? 1 + (stacks - 1) * (multiplier - 1) : 1;
+        
+        hpChange += baseHp * effectiveStacks;
+        sanChange += baseSan * effectiveStacks;
+      }
+      
+      // 减少持续时间（-1表示永久）
+      const newDuration = buff.duration > 0 ? buff.duration - 1 : buff.duration;
+      
+      if (newDuration === 0) {
+        // Buff过期
+        expiredBuffs.push(buff.id);
+        if (buff.effects.onExpire) {
+          hpChange += buff.effects.onExpire.hp || 0;
+          sanChange += buff.effects.onExpire.san || 0;
+          
+          // 处理MaxHP恢复（maxHpBonus设为0表示恢复）
+          const expireEffects = buff.effects.onExpire as any;
+          const buffEffects = buff.effects as any;
+          if (expireEffects?.maxHpBonus !== undefined) {
+            const currentMaxHpBonus = buffEffects?.maxHpBonus || 0;
+            const expireMaxHpBonus = expireEffects.maxHpBonus;
+            // 恢复：减去Buff提供的加成，加上过期设定的值（通常为0）
+            maxHpChange += expireMaxHpBonus - currentMaxHpBonus;
+          }
+          
+          // 触发过期事件（如戒断反应）- 添加循环检测
+          if (buff.effects.onExpire.trigger) {
+            const triggerId = buff.effects.onExpire.trigger;
+            if (!processingTriggers.has(triggerId)) {
+              processingTriggers.add(triggerId);
+              get().applyEventBuff(triggerId);
+              processingTriggers.delete(triggerId);
+            } else {
+              console.warn(`[SurvivalBuff] 检测到循环触发，已阻止: ${triggerId}`);
+            }
+          }
+        }
+      } else {
+        remainingBuffs.push({ ...buff, duration: newDuration });
+      }
+    }
+    
+    // 更新状态（包括可能的MaxHP变化）
+    set((state: any) => {
+      const currentMetrics = state.vitality.metrics;
+      const newMaxHp = Math.max(10, (currentMetrics.maxHp || 100) + maxHpChange);
+      // 调整当前HP不超过新的MaxHP
+      const newHp = Math.min(newMaxHp, currentMetrics.hp);
+      
+      return {
+        vitality: {
+          ...state.vitality,
+          metrics: {
+            ...currentMetrics,
+            hp: newHp,
+            maxHp: newMaxHp
+          },
+          activeBuffs: remainingBuffs
+        }
+      };
+    });
+    
+    return { hpChange, sanChange, expiredBuffs };
+  },
+
+  applyEventBuff: (eventId: string) => {
+    const mapping = (buffConfig as any).eventMappings[eventId];
+    if (!mapping) return; // 该事件无Buff映射
+    
+    // 检查概率
+    if (Math.random() > mapping.probability) return;
+    
+    const buffTemplate = (buffConfig as any).buffs[mapping.buffId];
+    if (!buffTemplate) {
+      console.warn(`[SurvivalBuff] 未找到Buff定义: ${mapping.buffId}`);
+      return;
+    }
+    
+    // 创建Buff实例（支持overrideDuration覆盖默认持续时间）
+    const duration = mapping.overrideDuration !== undefined 
+      ? mapping.overrideDuration 
+      : buffTemplate.duration;
+    
+    const buff: SurvivalBuff = {
+      id: `${mapping.buffId}_${Date.now()}`,
+      name: buffTemplate.name,
+      description: buffTemplate.description,
+      duration: duration,
+      maxDuration: duration,
+      effects: buffTemplate.effects,
+      source: eventId,
+      stackable: buffTemplate.stackable,
+      maxStacks: buffTemplate.maxStacks,
+      icon: buffTemplate.icon
+    };
+    
+    get().addSurvivalBuff(buff);
+    
+    // 通知玩家
+    const state = get() as any;
+    if (state.addNotification) {
+      state.addNotification(`获得状态: ${buff.name}`, 'info');
+    }
+  },
+
+  // 新增：从物品效果应用Buff
+  applyItemBuff: (buffId: string, customDuration?: number) => {
+    const buffTemplate = (buffConfig as any).buffs[buffId];
+    if (!buffTemplate) {
+      console.warn(`[SurvivalBuff] 未找到Buff定义: ${buffId}`);
+      return;
+    }
+    
+    const duration = customDuration !== undefined ? customDuration : buffTemplate.duration;
+    
+    // 创建Buff实例
+    const buff: SurvivalBuff = {
+      id: `${buffId}_${Date.now()}`,
+      name: buffTemplate.name,
+      description: buffTemplate.description,
+      duration: duration,
+      maxDuration: duration,
+      effects: buffTemplate.effects,
+      source: 'ITEM',
+      stackable: buffTemplate.stackable,
+      maxStacks: buffTemplate.maxStacks,
+      icon: buffTemplate.icon
+    };
+    
+    get().addSurvivalBuff(buff);
+    
+    // 通知玩家
+    const state = get() as any;
+    if (state.addNotification) {
+      const stackMsg = buffTemplate.stackable ? ' (可堆叠)' : '';
+      state.addNotification(`获得状态: ${buff.name}${stackMsg}`, 'info');
+    }
+  }
 });

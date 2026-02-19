@@ -19,7 +19,7 @@ export const DowntownInsuranceApp: React.FC<{ onClose: () => void }> = ({ onClos
   
   const activeInsurances = vitality.activeInsurances || [];
   const getIsActive = (planId: string) => activeInsurances.some((ins: any) => ins.id === planId);
-  const hasVehicle = inventory.some((id: string) => id.startsWith('VEH_'));
+  const hasVehicle = inventory.some((id: string) => id.startsWith('CAR_') || id === 'KEY_CAR');
 
   const handleToggle = (planId: string) => {
     playSfx('sfx_click');

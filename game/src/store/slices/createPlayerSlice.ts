@@ -114,7 +114,7 @@ export const createPlayerSlice: StateCreator<StoreState, [], [], PlayerSlice> = 
     const state = get();
     
     // 检查车辆区域限制
-    const hasJunkVehicle = state.inventory.includes('VEH_JUNK');
+    const hasJunkVehicle = state.inventory.includes('CAR_JUNK');
     if (hasJunkVehicle && (region === RegionID.Suburbs || region === RegionID.Downtown)) {
       // 车辆限制：破车无法进入中产或资本家区域
       if (state.addNotification) {

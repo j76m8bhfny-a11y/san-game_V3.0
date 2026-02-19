@@ -78,9 +78,10 @@ export const JobSystem: GameSystem = {
       }
 
       // 2. 复核道具
-      if (job.requiredItem) {
-          if (!hasRequiredItem(job.requiredItem)) {
-              result.logs.push(`【停薪】${job.title}: 缺少必要工具 (${job.requiredItem})。`);
+      const requiredItemsList = job.requiredItems || (job.requiredItem ? [job.requiredItem] : []);
+      for (const required of requiredItemsList) {
+          if (!hasRequiredItem(required)) {
+              result.logs.push(`【停薪】${job.title}: 缺少必要工具 (${required})。`);
               result.notes.push(`工作异常: ${job.title} 因缺少工具暂停发放工资。`);
               return; 
           }

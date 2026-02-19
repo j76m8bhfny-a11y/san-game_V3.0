@@ -99,7 +99,7 @@ export const triggerBill = (
     if (hasItemTag) {
       const hasTag = inventory.some(id => {
         // 简单检查：VEHICLE标签检查id前缀，LICENSE标签检查id前缀
-        if (hasItemTag === 'VEHICLE') return id.startsWith('VEH_');
+        if (hasItemTag === 'VEHICLE') return id.startsWith('CAR_') || id === 'KEY_CAR';
         if (hasItemTag === 'LICENSE') return id.startsWith('LICENSE_');
         return false;
       });
@@ -112,7 +112,7 @@ export const triggerBill = (
     // 检查是否没有特定标签的物品
     if (noItemTag) {
       const hasTag = inventory.some(id => {
-        if (noItemTag === 'VEHICLE') return id.startsWith('VEH_');
+        if (noItemTag === 'VEHICLE') return id.startsWith('CAR_') || id === 'KEY_CAR';
         if (noItemTag === 'LICENSE') return id.startsWith('LICENSE_');
         return false;
       });

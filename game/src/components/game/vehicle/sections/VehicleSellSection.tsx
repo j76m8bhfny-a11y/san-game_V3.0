@@ -19,10 +19,14 @@ export const VehicleSellSection: React.FC<VehicleSellSectionProps> = ({
   isTradeIn
 }) => {
   const { t } = useI18n();
-  const { inventory, sellVehicle, calculateTradeInValue: calculateTradeInValueFromStore } = useGameStore();
+  const { inventory, sellVehicle, calculateTradeInValue: calculateTradeInValueFromStore, getVehiclePurchaseRegion } = useGameStore();
 
   const currentVehicleId = getCurrentVehicle(inventory);
   const currentVehicle = currentVehicleId ? getVehicleConfig(currentVehicleId) : null;
+  const purchaseRegion = getVehiclePurchaseRegion();
+  
+  // 🚗 检查是否在购买区域
+  const canSellHere = !purchaseRegion || purchaseRegion === region;
   
   // ✅ 置换价格比普通售价高5%
   const sellPrice = currentVehicleId ? getVehicleSellPrice(currentVehicleId, region) : 0;
@@ -31,7 +35,10 @@ export const VehicleSellSection: React.FC<VehicleSellSectionProps> = ({
 
   const handleSell = () => {
     if (!currentVehicleId) return;
-    sellVehicle(region);
+    const result = sellVehicle(region);
+    if (!result.success) {
+      // 错误通知由 store 处理
+    }
   };
 
   if (!currentVehicle) {
@@ -78,15 +85,27 @@ export const VehicleSellSection: React.FC<VehicleSellSectionProps> = ({
         </div>
       </div>
 
+      {/* 🚗 区域限制提示 */}
+      {!canSellHere && purchaseRegion && (
+        <div className="mb-3 p-2 bg-yellow-600/20 border border-yellow-500/30 rounded">
+          <p className="text-yellow-400 text-xs text-center">
+            ⚠️ 只能在购买区域 ({purchaseRegion}) 出售此车辆
+          </p>
+        </div>
+      )}
+
       {/* 出售/置换按钮 */}
       <motion.button
         onClick={handleSell}
+        disabled={!canSellHere}
         className={`w-full py-2 px-4 rounded text-sm font-medium transition-all flex items-center justify-center gap-2 ${
-          isTradeIn 
-            ? 'bg-green-600/80 hover:bg-green-500 text-white'
-            : 'bg-red-600/80 hover:bg-red-500 text-white'
+          !canSellHere
+            ? 'bg-gray-600/50 text-gray-400 cursor-not-allowed'
+            : isTradeIn 
+              ? 'bg-green-600/80 hover:bg-green-500 text-white'
+              : 'bg-red-600/80 hover:bg-red-500 text-white'
         }`}
-        whileTap={{ scale: 0.98 }}
+        whileTap={canSellHere ? { scale: 0.98 } : undefined}
       >
         <DollarSign size={16} />
         {isTradeIn 
@@ -95,7 +114,7 @@ export const VehicleSellSection: React.FC<VehicleSellSectionProps> = ({
         }
       </motion.button>
       
-      {isTradeIn && (
+      {isTradeIn && canSellHere && (
         <p className="text-white/40 text-xs mt-2 text-center">
           出售后可获得更高价格（+5%置换加成），再购买新车即可
         </p>

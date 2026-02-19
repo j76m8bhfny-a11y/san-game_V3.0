@@ -135,19 +135,19 @@ export const getVehicleSellPrice = (
 
 // 检查是否拥有车辆
 export const hasVehicle = (inventory: string[]): boolean => {
-  return inventory.some(id => id.startsWith('VEH_'));
+  return inventory.some(id => id.startsWith('CAR_') || id === 'KEY_CAR');
 };
 
 // ✅ 检查是否拥有车辆或租赁车辆
 export const hasVehicleOrLease = (inventory: string[], activeLease: any | null): boolean => {
-  const hasOwnedVehicle = inventory.some(id => id.startsWith('VEH_'));
+  const hasOwnedVehicle = inventory.some(id => id.startsWith('CAR_') || id === 'KEY_CAR');
   const hasLeasedVehicle = !!activeLease;
   return hasOwnedVehicle || hasLeasedVehicle;
 };
 
 // 获取当前车辆ID
 export const getCurrentVehicle = (inventory: string[]): string | null => {
-  return inventory.find(id => id.startsWith('VEH_')) || null;
+  return inventory.find(id => id.startsWith('CAR_') || id === 'KEY_CAR') || null;
 };
 
 // 检查是否拥有驾照
@@ -173,7 +173,7 @@ export const isPoliceImmune = (inventory: string[]): boolean => {
   // 拥有豁免驾照
   if (inventory.includes('LICENSE_ELITE')) return true;
   // 拥有防弹豪车
-  if (inventory.includes('VEH_LIMO')) return true;
+  if (inventory.includes('CAR_LUXURY')) return true;
   return false;
 };
 

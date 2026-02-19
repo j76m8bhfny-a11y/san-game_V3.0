@@ -36,7 +36,7 @@ export const BillSystem: GameSystem = {
     // 检查假证风险（如果玩家有车和假证，增加识破概率）
     const hasFakeLicense = state.inventory.includes('LICENSE_FAKE');
     const hasValidLicense = state.inventory.includes('LICENSE_VALID') || state.inventory.includes('LICENSE_ELITE');
-    const hasVehicle = state.inventory.some((id: string) => id.startsWith('VEH_'));
+    const hasVehicle = state.inventory.some((id: string) => id.startsWith('CAR_') || id === 'KEY_CAR');
     
     // 如果有车、有假证、没有真证，30%概率触发假证被识破
     let forcedBill = null;
@@ -123,7 +123,7 @@ export const BillSystem: GameSystem = {
     // 处理特殊账单效果
     if (bill.id === 'B_CAR_REPO') {
       // 车辆被拖走：从inventory中移除车辆
-      const vehicleToRemove = state.inventory.find((id: string) => id.startsWith('VEH_'));
+      const vehicleToRemove = state.inventory.find((id: string) => id.startsWith('CAR_') || id === 'KEY_CAR');
       if (vehicleToRemove) {
         result.updates.inventory = state.inventory.filter((id: string) => id !== vehicleToRemove);
         notes.push(`车辆 ${vehicleToRemove} 已被拖走`);

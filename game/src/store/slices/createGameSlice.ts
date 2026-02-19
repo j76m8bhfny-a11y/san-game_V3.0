@@ -513,7 +513,21 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
             redMeatPoints: 0,
             noFreshFoodDays: 0
         },
-        activeBuffs: []
+        activeBuffs: [],
+        shopInventory: {
+          SLUMS: [],
+          RUST_BELT: [],
+          SUBURBS: [],
+          DOWNTOWN: []
+        } // 🏪 重置商店库存
     });
+    
+    // 🏪 重新初始化商店库存
+    setTimeout(() => {
+      const store = get() as any;
+      if (store.refreshShopInventory) {
+        store.refreshShopInventory();
+      }
+    }, 0);
   }
 });

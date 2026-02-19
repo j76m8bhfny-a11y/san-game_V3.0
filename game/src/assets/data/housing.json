@@ -1,80 +1,75 @@
 [
   {
-    "id": "APT_SLUMS_01",
-    "name": "漏风集装箱",
+    "id": "TENT_UNDER_BRIDGE",
+    "name": "桥下帐篷营位",
     "region": "SLUMS",
     "requiredClass": "HOMELESS",
     "value": 0,
-    "regenHp": 5,
-    "defenseLevel": 1,
+    "regenHp": 10,
+    "defenseLevel": 2,
     "rentConfig": {
       "deposit": 0,
       "weeklyCosts": [
-        { "key": "RENT", "label": "床位费", "baseAmount": 50 },
-        { "key": "PROTECTION", "label": "帮派保护费", "baseAmount": 20 }
+        { "key": "RENT", "label": "营地保护费", "baseAmount": 35 }
       ]
     },
-    "description": "虽然四面漏风，但至少不用担心睡梦中被老鼠咬掉耳朵。"
+    "description": "你付的不是房租，而是确保证府铲车来清理市容时，有人能提前五分钟叫醒你的信息费。"
   },
   {
-    "id": "APT_RUST_01",
-    "name": "工会宿舍",
+    "id": "MOTEL_EXTENDED_STAY",
+    "name": "汽车旅馆长租客房",
     "region": "RUST_BELT",
     "requiredClass": "WORKER",
     "value": 5000,
-    "regenHp": 10,
-    "defenseLevel": 3,
+    "regenHp": 25,
+    "defenseLevel": 5,
     "rentConfig": {
-      "deposit": 500,
+      "deposit": 300,
       "weeklyCosts": [
-        { "key": "RENT", "label": "租金", "baseAmount": 200 },
-        { "key": "UTILITY", "label": "水电均摊", "baseAmount": 50 },
-        { "key": "UNION_FEE", "label": "工会清洁费", "baseAmount": 30 }
+        { "key": "RENT", "label": "周租金", "baseAmount": 300 }
       ]
     },
-    "description": "充满了机油味和汗臭味，但那是生存的味道。"
+    "description": "典型的穷人税。因为付不出正式公寓的'押一付三'和信用检查，你只能按周付高昂的旅馆费，永远攒不下首付。地毯吸满了前任房客的绝望。"
   },
   {
-    "id": "HOUSE_SUBURB_01",
-    "name": "橡树街独栋",
+    "id": "HOUSE_SUBURBAN",
+    "name": "郊区独栋别墅",
     "region": "SUBURBS",
     "requiredClass": "MIDDLE",
-    "value": 500000,
-    "regenHp": 25,
-    "defenseLevel": 8,
+    "value": 400000,
+    "regenHp": 45,
+    "defenseLevel": 12,
     "buyConfig": {
-      "price": 500000,
+      "price": 400000,
       "downPaymentRate": 0.2,
       "mortgageTermTurns": 520,
       "interestRate": 0.002,
       "weeklyCosts": [
         { "key": "TAX", "label": "房产税", "baseAmount": 150 },
-        { "key": "HOA", "label": "社区物业费", "baseAmount": 100 },
-        { "key": "INSURANCE", "label": "房屋保险", "baseAmount": 60 },
-        { "key": "GARDEN", "label": "草坪维护", "baseAmount": 40 }
+        { "key": "HOA", "label": "HOA管委会费", "baseAmount": 100 }
       ]
     },
-    "description": "标准的中产阶级美梦。白色的栅栏，金毛犬，以及三十年的房贷。"
+    "description": "三十年固定利率贷款让你拥有了这堆木头和石膏板。但只要你的草坪比邻居高出两英寸，社区管委会依然能让你体会到无产阶级的无力感。"
   },
   {
-    "id": "PENTHOUSE_DOWNTOWN_01",
-    "name": "云端 penthouse",
+    "id": "PENTHOUSE_DOWNTOWN",
+    "name": "市中心顶层公寓",
     "region": "DOWNTOWN",
     "requiredClass": "CAPITALIST",
     "value": 3000000,
-    "regenHp": 40,
-    "defenseLevel": 15,
+    "regenHp": 80,
+    "defenseLevel": 25,
     "buyConfig": {
       "price": 3000000,
       "downPaymentRate": 0.3,
       "mortgageTermTurns": 520,
-      "interestRate": 0.0015,
+      "interestRate": 0.001,
       "weeklyCosts": [
-        { "key": "TAX", "label": "豪宅税", "baseAmount": 5000 },
-        { "key": "CONCIERGE", "label": "管家服务费", "baseAmount": 2000 },
-        { "key": "SECURITY", "label": "私人安保", "baseAmount": 1500 }
+        { "key": "TAX", "label": "豪宅税", "baseAmount": 800 },
+        { "key": "CONCIERGE", "label": "礼宾服务费", "baseAmount": 400 },
+        { "key": "SECURITY", "label": "私人安保费", "baseAmount": 300 }
       ]
     },
-    "description": "俯瞰众生的高度。你终于拥有了推开窗户就能跳下去的自由——当然，你不会的，你的股票还没解套。"
+    "description": "真正的富人从不全款买房，而是用极低的利率套取银行的钱。防弹玻璃外是随地大小便的无家可归者，玻璃内是恒温72华氏度的酒窖。这就是美国梦的最顶层。"
   }
 ]

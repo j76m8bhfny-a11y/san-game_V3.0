@@ -45,11 +45,23 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
   // 2. 检查工作申请资格（与 createJobSlice 保持逻辑一致）
   const checkRequirements = useCallback((job: Job) => {
     // 检查阶级（向下兼容：高阶级可以做低阶级工作）
-    const playerWeight = jobRules.classWeights[vitality.identity.currentClass as keyof typeof jobRules.classWeights] ?? 0;
+    const playerClass = vitality.identity.currentClass;
+    const playerWeight = jobRules.classWeights[playerClass as keyof typeof jobRules.classWeights] ?? 0;
     const jobWeight = jobRules.classWeights[job.requiredClass as keyof typeof jobRules.classWeights] ?? 99;
     
     if (playerWeight < jobWeight) {
       return { ok: false, reason: t('job.requirement') + `: ${job.requiredClass}` };
+    }
+
+    // 检查"职场黑名单"Buff（辞退后4回合内无法申请同阶级工作）
+    const blacklistBuff = vitality.activeBuffs?.find((b: any) => 
+      b.id.startsWith('buff_job_blacklist') && b.duration > 0
+    );
+    if (blacklistBuff && blacklistBuff.data?.originalClass === job.requiredClass) {
+      return { 
+        ok: false, 
+        reason: `职场黑名单: ${blacklistBuff.duration}回合后解除` 
+      };
     }
 
     // 检查房产
@@ -59,19 +71,20 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
       }
     }
 
-    // 检查道具（支持ID匹配和标签匹配）
-    if (job.requiredItem) {
+    // 检查道具（支持ID匹配和标签匹配，支持多个要求）
+    const requiredItemsList = job.requiredItems || (job.requiredItem ? [job.requiredItem] : []);
+    for (const required of requiredItemsList) {
       const itemMap = gameDataCache?.itemMap;
       const hasItem = inventory.some(itemId => {
         // 精确匹配道具ID
-        if (itemId === job.requiredItem) return true;
+        if (itemId === required) return true;
         // 标签匹配：如 VEHICLE
         const item = itemMap?.get(itemId);
-        return item?.tags?.includes(job.requiredItem!);
+        return item?.tags?.includes(required);
       });
       
       if (!hasItem) {
-        return { ok: false, reason: `${t('job.requirement')}: ${job.requiredItem}` };
+        return { ok: false, reason: `${t('job.requirement')}: ${required}` };
       }
     }
 

@@ -90,5 +90,18 @@
     "color": "#2563eb",
     "riskLevel": "LOW",
     "region": "SUBURBS"
+  },
+  {
+    "id": "LOAN_STUDENT_DEBT",
+    "name": "未来基石助学贷款",
+    "provider": "萨利大妈学生金融",
+    "description": "恭喜你投资自己的未来！无需信用检查，即刻放款。请注意，本贷款合同受联邦法律保护，即使死亡，债务也将由您的遗产继承人优先偿还。",
+    "minScore": 0,
+    "weeklyRate": 0.003,
+    "maxAmount": 160000,
+    "termTurns": 520,
+    "color": "#8B0000",
+    "riskLevel": "PREDATORY",
+    "region": "SUBURBS"
   }
 ]

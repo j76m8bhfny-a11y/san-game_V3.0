@@ -168,7 +168,8 @@ export const JobSchema = z.object({
 
   // 限制条件
   requiresHousing: z.boolean(), // 是否需要本地房产
-  requiredItem: z.string().optional(), // 比如 "VEHICLE"
+  requiredItem: z.string().optional(), // 比如 "VEHICLE" (向后兼容)
+  requiredItems: z.array(z.string()).optional(), // 多个必需物品，如 ["DEGREE", "VEHICLE"]
   
   // 薪资周期
   payCycle: z.enum(['DAILY', 'WEEKLY', 'MONTHLY']).default('WEEKLY'),
@@ -512,6 +513,7 @@ export interface SurvivalBuff {
   maxStacks?: number;
   stacks?: number; // 当前层数（用于可堆叠Buff）
   icon?: string;
+  data?: any; // 额外数据（如黑名单记录原始阶级）
 }
 
 export interface VitalityState {

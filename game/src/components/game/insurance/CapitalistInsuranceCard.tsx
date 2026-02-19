@@ -19,7 +19,7 @@ export const CapitalistInsuranceCard: React.FC<{ onClose: () => void }> = ({ onC
   const activeInsurances = vitality.activeInsurances || [];
   const hasMedicalInsurance = hasInsurance('MEDICAL');
   const hasAutoInsurance = hasInsurance('AUTO');
-  const hasVehicle = inventory.some((id: string) => id.startsWith('VEH_'));
+  const hasVehicle = inventory.some((id: string) => id.startsWith('CAR_') || id === 'KEY_CAR');
 
   const handleSign = (plan: any) => {
     if (!plan) return;

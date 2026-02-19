@@ -3,6 +3,7 @@ import { GameState, Housing, ActiveHousingState, RegionID, ActiveHousing } from 
 import { StoreState } from '@/types/store';
 import housingData from '@/assets/data/housing.json';
 import housingRules from '@/assets/data/rules/housingRules.json';
+import jobRules from '@/assets/data/rules/jobRules.json';
 
 
 
@@ -51,6 +52,13 @@ export const createHousingSlice: StateCreator<StoreState, [], [], HousingSlice> 
     const house = housingData.find(h => h.id === housingId) as Housing;
     if (!house || !house.rentConfig) return { success: false, message: "房源无效" };
     
+    // 0. 检查阶级（向下兼容：高阶级可以租低阶级房子）
+    const playerWeight = jobRules.classWeights[gameState.vitality.identity.currentClass as keyof typeof jobRules.classWeights] ?? 0;
+    const houseWeight = jobRules.classWeights[house.requiredClass as keyof typeof jobRules.classWeights] ?? 99;
+    if (playerWeight < houseWeight) {
+      return { success: false, message: "你的身份不足以入住此地。" };
+    }
+    
     // 1. 检查是否已有房产
     if (gameState.activeHousing) {
       return { success: false, message: `你已有住所 (${gameState.activeHousing.name})，请先退租或出售。` };
@@ -97,6 +105,13 @@ export const createHousingSlice: StateCreator<StoreState, [], [], HousingSlice> 
     
     const house = housingData.find(h => h.id === housingId) as Housing;
     if (!house || !house.buyConfig) return { success: false, message: "该房产不可出售" };
+    
+    // 0. 检查阶级（向下兼容：高阶级可以买低阶级房子）
+    const playerWeight = jobRules.classWeights[gameState.vitality.identity.currentClass as keyof typeof jobRules.classWeights] ?? 0;
+    const houseWeight = jobRules.classWeights[house.requiredClass as keyof typeof jobRules.classWeights] ?? 99;
+    if (playerWeight < houseWeight) {
+      return { success: false, message: "你的身份不足以购买此地产业。" };
+    }
     
     // 1. 检查是否已有房产
     if (gameState.activeHousing) {

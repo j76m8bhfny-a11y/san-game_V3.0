@@ -3,7 +3,8 @@ import { GameState, LedgerRecord, VitalityState } from '@/types/schema';
 import { BankSystem } from './core/BankSystem'; 
 import { HousingSystem } from './core/HousingSystem';
 import { JobSystem } from './core/JobSystem'; 
-import { BillSystem } from './core/BillSystem'; // 引入
+import { BillSystem } from './core/BillSystem';
+import { EmploymentSystem } from './core/EmploymentSystem';
 import { FaithSystem } from './core/FaithSystem';
 import { EventSystem } from './core/EventSystem';
 import systemRules from '@/assets/data/rules/systemRules.json';
@@ -20,10 +21,11 @@ const getBlockedSystems = (): string[] => {
 };
 
 // ✅ 按照优先级注册系统
-// 核心生存(100) -> 金融(90) -> 工作(80) -> 账单(70)
+// 核心生存(100) -> 金融(90) -> 就业辞退(85) -> 工作结算(80) -> 账单(70)
 const activeSystems: GameSystem[] = [
   { ...HousingSystem, priority: executionOrder.housing },
   { ...BankSystem, priority: executionOrder.bank },
+  { ...EmploymentSystem, priority: executionOrder.employment || 85 },
   { ...JobSystem, priority: executionOrder.job },
   { ...BillSystem, priority: executionOrder.bill },
   { ...FaithSystem, priority: executionOrder.faith },

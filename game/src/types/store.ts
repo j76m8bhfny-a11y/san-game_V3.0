@@ -3,7 +3,7 @@
  * 用于统一 Zustand Store 的 set 调用类型
  */
 
-import { GameState } from './schema';
+import { GameState, RegionID } from './schema';
 import { UISlice } from '../store/slices/createUISlice';
 import { VitalitySlice } from '../store/slices/createVitalitySlice';
 import { BankSlice } from '../store/slices/createBankSlice';
@@ -55,6 +55,10 @@ export type StoreState = GameState &
       endTurn: number;
       effects: Record<string, any>;
     }>;
+    // 🏪 商店库存系统（回合制刷新）
+    shopInventory: Record<RegionID, string[]>; // 每个区域当前可购买的物品ID列表
+    // 🚗 车辆购买区域记录（限制只能在购买区域卖车）
+    vehiclePurchaseRegion: RegionID | null;
   };
 
 /**

@@ -209,7 +209,7 @@ export const createVehicleSlice: StateCreator<StoreState, [], [], VehicleSlice> 
     const { vitality, inventory } = state;
     
     // 检查是否已有车辆（包括拥有的和租赁的）
-    const hasOwnedVehicle = inventory.some(id => id.startsWith('VEH_'));
+    const hasOwnedVehicle = inventory.some(id => id.startsWith('CAR_') || id === 'KEY_CAR');
     const hasLeasedVehicle = !!state.activeLease;
     if (hasOwnedVehicle) {
       return { success: false, message: '您已经拥有车辆，无法租赁（请先出售现有车辆）' };
@@ -580,7 +580,7 @@ export const createVehicleSlice: StateCreator<StoreState, [], [], VehicleSlice> 
     
     // 获取所有车辆效果
     const vehicleEffects = inventory
-      .filter(id => id.startsWith('VEH_'))
+      .filter(id => id.startsWith('CAR_') || id === 'KEY_CAR')
       .map(id => getVehicleConfig(id)?.effects)
       .filter(Boolean);
     

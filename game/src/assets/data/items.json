@@ -961,7 +961,7 @@
     "type": "PASSIVE",
     "price": 2000,
     "regions": ["SUBURBS"],
-    "tags": ["VEHICLE_T2"],
+    "tags": ["VEHICLE", "VEHICLE_T2"],
     "flavorText": "自由的象征。"
   },
   {
@@ -971,7 +971,7 @@
     "price": 800,
     "regions": ["RUST_BELT", "SLUMS"],
     "effects": { "hp": 0, "san": -2 },
-    "tags": ["VEHICLE_T1"],
+    "tags": ["VEHICLE", "VEHICLE_T1"],
     "flavorText": "锈迹斑斑，但至少四个轮子还能转。"
   },
   {
@@ -981,7 +981,7 @@
     "price": 3500,
     "regions": ["RUST_BELT", "SUBURBS"],
     "effects": { "hp": 0, "san": 3 },
-    "tags": ["VEHICLE_T2"],
+    "tags": ["VEHICLE", "VEHICLE_T2"],
     "flavorText": "前任车主可能死在里面了。"
   },
   {
@@ -991,7 +991,7 @@
     "price": 8000,
     "regions": ["SUBURBS"],
     "effects": { "hp": 0, "san": 8 },
-    "tags": ["VEHICLE_T2"],
+    "tags": ["VEHICLE", "VEHICLE_T2"],
     "flavorText": "中产阶级的标准配置。"
   },
   {
@@ -1001,7 +1001,7 @@
     "price": 25000,
     "regions": ["DOWNTOWN"],
     "effects": { "hp": 0, "san": 15 },
-    "tags": ["VEHICLE_T3"],
+    "tags": ["VEHICLE", "VEHICLE_T3"],
     "flavorText": "速度可以杀死烦恼。"
   },
   {
@@ -1011,7 +1011,7 @@
     "price": 50000,
     "regions": ["DOWNTOWN"],
     "effects": { "hp": 0, "san": 25 },
-    "tags": ["VEHICLE_T4"],
+    "tags": ["VEHICLE", "VEHICLE_T4"],
     "flavorText": "真皮座椅，车载香槟。"
   },
   {
@@ -1058,5 +1058,14 @@
     "regions": ["DOWNTOWN"],
     "tags": ["LICENSE", "ELITE"],
     "flavorText": "你的律师团确保这张驾照上没有任何违规记录。"
+  },
+  {
+    "id": "DEGREE",
+    "name": "私立大学学士文凭",
+    "type": "PASSIVE",
+    "price": 160000,
+    "regions": ["SUBURBS", "DOWNTOWN"],
+    "tags": ["EDUCATION"],
+    "flavorText": "印着几行你看不懂的拉丁文的昂贵羊皮纸。它不能保证你找到工作，但能保证借贷公司在未来三十年里合法地从你的工资里吸血，而且即使你流落街头宣告破产，这笔债务也绝对不会被豁免。"
   }
 ]

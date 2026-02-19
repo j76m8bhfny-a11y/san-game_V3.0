@@ -87,6 +87,15 @@ export const useGameStore = create<StoreState>()(
           noFreshFoodDays: 0
         },
         activeBuffs: [],
+        // 🏪 商店库存系统初始状态
+        shopInventory: {
+          SLUMS: [],
+          RUST_BELT: [],
+          SUBURBS: [],
+          DOWNTOWN: []
+        },
+        // 🚗 车辆购买区域记录
+        vehiclePurchaseRegion: null,
         // ✅ 注意: activeInsurances 由 createVitalitySlice 提供
         // 这里添加空数组以满足 TypeScript 类型检查
         activeInsurances: []

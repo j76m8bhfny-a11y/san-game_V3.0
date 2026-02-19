@@ -20,7 +20,7 @@ export const SlumsInsuranceFlyer: React.FC<{ onClose: () => void }> = ({ onClose
   const getIsActive = (planId: string) => activeInsurances.some((ins: any) => ins.id === planId);
   const hasAutoInsurance = hasInsurance('AUTO');
   const { inventory } = useGameStore();
-  const hasVehicle = inventory.some((id: string) => id.startsWith('VEH_'));
+  const hasVehicle = inventory.some((id: string) => id.startsWith('CAR_') || id === 'KEY_CAR');
 
   const handleAction = (plan: any) => {
     const isActive = getIsActive(plan.id);

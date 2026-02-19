@@ -141,8 +141,22 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
       activeHousing: null,
       activeInsurances: [],
       inventory: [],
-      bank: { activeLoans: [], lifetimeInterestPaid: 0 }
+      bank: { activeLoans: [], lifetimeInterestPaid: 0 },
+      shopInventory: {
+        [RegionID.Slums]: [],
+        [RegionID.RustBelt]: [],
+        [RegionID.Suburbs]: [],
+        [RegionID.Downtown]: []
+      } // 🏪 将在游戏初始化后由 refreshShopInventory 填充
     }));
+    
+    // 🏪 初始化商店库存
+    setTimeout(() => {
+      const store = get() as any;
+      if (store.refreshShopInventory) {
+        store.refreshShopInventory();
+      }
+    }, 0);
   },
 
   addTransaction: (category, amount, description) => {
@@ -439,6 +453,15 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
         state.addNotification('⚠️ 健康状况堪忧', 'warning');
       }
     }
+    
+    // ===== 步骤6: 刷新商店库存 =====
+    // 异步执行，确保在状态更新后刷新
+    setTimeout(() => {
+      const store = get() as any;
+      if (store.refreshShopInventory) {
+        store.refreshShopInventory();
+      }
+    }, 0);
 
     return {
       vitality: {

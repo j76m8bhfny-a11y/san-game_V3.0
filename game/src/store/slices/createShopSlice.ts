@@ -5,6 +5,14 @@ import shopRules from '@/assets/data/rules/shopRules.json';
 import foodRules from '@/assets/data/rules/foodRules.json';
 import { getVehicleSellPrice } from '@/components/game/vehicle/config/vehicleShopConfig';
 
+// 🚗 区域固定车辆池配置（每区域只有一台车）
+const REGION_VEHICLE_POOL: Record<RegionID, string[]> = {
+  [RegionID.Slums]: ['CAR_JUNK'],           // 贫民窟：只有破皮卡
+  [RegionID.RustBelt]: ['CAR_JUNK', 'CAR_USED'], // 铁锈带：破皮卡或二手轿车
+  [RegionID.Suburbs]: ['KEY_CAR', 'CAR_USED', 'CAR_SUV'], // 郊区：车钥匙、二手轿车、家用SUV
+  [RegionID.Downtown]: ['CAR_SPORTS', 'CAR_LUXURY'] // 市中心：跑车、豪华轿车
+};
+
 // 辅助函数：消耗物品并播放音效
 const consumeItemAndFinish = (itemId: string, state: any, set: Function) => {
   const newInventory = [...state.inventory];
@@ -21,9 +29,73 @@ export interface ShopSlice {
   buyItem: (itemId: string) => void;
   useItem: (itemId: string) => void;
   sellVehicle: (region: RegionID) => { success: boolean; message: string; price?: number };
+  // 🏪 库存管理
+  refreshShopInventory: () => void; // 刷新所有区域商店库存
+  getAvailableItemsInRegion: (region: RegionID) => Item[]; // 获取区域有库存的物品
+  // 🚗 车辆相关
+  getVehiclePurchaseRegion: () => RegionID | null; // 获取车辆购买区域
 }
 
+/**
+ * 为区域生成随机库存（每种物品最多1件）
+ * 🚗 车辆规则：每区域固定一台车，买了就没了
+ */
+const generateRegionInventory = (region: RegionID, allItems: Item[]): string[] => {
+  // 获取该区域的所有可用物品
+  const regionItems = allItems.filter(item => {
+    if (!item.regions) return false;
+    if (item.regions.length === 0) return false;
+    return item.regions.includes(region);
+  });
+
+  // 按类型分组
+  const foodItems = regionItems.filter(i => i.tags?.includes('FOOD'));
+  const medicalItems = regionItems.filter(i => i.tags?.includes('MEDICAL'));
+  // 其他物品（排除车辆和食物、医疗）
+  const otherItems = regionItems.filter(i => 
+    !i.tags?.includes('VEHICLE') && 
+    !i.tags?.includes('FOOD') && 
+    !i.tags?.includes('MEDICAL')
+  );
+
+  // 随机选择
+  const selected: string[] = [];
+  
+  // 食物类：选2-4个
+  const foodCount = Math.min(foodItems.length, 2 + Math.floor(Math.random() * 3));
+  const shuffledFood = [...foodItems].sort(() => Math.random() - 0.5);
+  selected.push(...shuffledFood.slice(0, foodCount).map(i => i.id));
+  
+  // 医疗类：选1-2个
+  if (medicalItems.length > 0) {
+    const medicalCount = Math.min(medicalItems.length, 1 + Math.floor(Math.random() * 2));
+    const shuffledMedical = [...medicalItems].sort(() => Math.random() - 0.5);
+    selected.push(...shuffledMedical.slice(0, medicalCount).map(i => i.id));
+  }
+  
+  // 其他类：选0-2个
+  if (otherItems.length > 0) {
+    const otherCount = Math.min(otherItems.length, Math.floor(Math.random() * 3));
+    const shuffledOther = [...otherItems].sort(() => Math.random() - 0.5);
+    selected.push(...shuffledOther.slice(0, otherCount).map(i => i.id));
+  }
+
+  // 🚗 添加区域固定车辆（从车辆池中随机选一台）
+  const vehiclePool = REGION_VEHICLE_POOL[region];
+  if (vehiclePool && vehiclePool.length > 0) {
+    // 从该区域可用车辆中随机选一台
+    const randomVehicle = vehiclePool[Math.floor(Math.random() * vehiclePool.length)];
+    selected.push(randomVehicle);
+  }
+
+  return selected;
+};
+
 export const createShopSlice: StateCreator<StoreState, [], [], ShopSlice> = (set, get) => ({
+
+  getVehiclePurchaseRegion: () => {
+    return get().vehiclePurchaseRegion;
+  },
 
   getRegionItems: (region) => {
     const allItems: Item[] = get().gameDataCache?.items || [];
@@ -32,6 +104,36 @@ export const createShopSlice: StateCreator<StoreState, [], [], ShopSlice> = (set
       if (item.regions.length === 0) return false;
       return item.regions.includes(region);
     });
+  },
+
+  // 🏪 获取区域有库存的物品（用于UI显示）
+  getAvailableItemsInRegion: (region) => {
+    const state = get();
+    const allItems: Item[] = state.gameDataCache?.items || [];
+    const inventory = state.shopInventory?.[region] || [];
+    
+    return allItems.filter(item => inventory.includes(item.id));
+  },
+
+  // 🏪 刷新所有区域商店库存
+  refreshShopInventory: () => {
+    const state = get();
+    const allItems: Item[] = state.gameDataCache?.items || [];
+    
+    const newInventory: Record<RegionID, string[]> = {
+      [RegionID.Slums]: generateRegionInventory(RegionID.Slums, allItems),
+      [RegionID.RustBelt]: generateRegionInventory(RegionID.RustBelt, allItems),
+      [RegionID.Suburbs]: generateRegionInventory(RegionID.Suburbs, allItems),
+      [RegionID.Downtown]: generateRegionInventory(RegionID.Downtown, allItems),
+    };
+
+    set({ shopInventory: newInventory });
+    
+    // 可选：通知玩家商店已刷新
+    const store = get() as any;
+    if (store.addNotification) {
+      store.addNotification('商店库存已刷新', 'info');
+    }
   },
 
   buyItem: (itemId) => {
@@ -53,6 +155,20 @@ export const createShopSlice: StateCreator<StoreState, [], [], ShopSlice> = (set
         .replace('{current}', String(state.inventory.length))
         .replace('{max}', String(maxInventorySize));
       state.addNotification(msg, "error");
+      return;
+    }
+
+    // 🏪 检查商店库存（现在车辆也受库存限制）
+    const isVehicle = item.tags?.some((tag: string) => tag.startsWith('VEHICLE'));
+    const currentRegion = state.currentRegion;
+    const regionInventory = state.shopInventory?.[currentRegion] || [];
+    
+    if (!regionInventory.includes(itemId)) {
+      if (isVehicle) {
+        state.addNotification("该区域暂无车辆可售", "error");
+      } else {
+        state.addNotification("该物品本回合已售罄", "error");
+      }
       return;
     }
 
@@ -82,7 +198,6 @@ export const createShopSlice: StateCreator<StoreState, [], [], ShopSlice> = (set
     }
 
     // 检查车辆唯一性
-    const isVehicle = item.tags?.some((tag: string) => tag.startsWith('VEHICLE'));
     if (isVehicle && state.inventory.includes(item.id)) {
       state.addNotification("你已经拥有这辆车了", "warning");
       return;
@@ -103,9 +218,24 @@ export const createShopSlice: StateCreator<StoreState, [], [], ShopSlice> = (set
     }
 
     // 进货
-    set((s: any) => ({
-      inventory: [...s.inventory, item.id]
-    }));
+    set((s: any) => {
+      // 🏪 从商店库存中移除（包括车辆）
+      const newShopInventory = {
+        ...s.shopInventory,
+        [currentRegion]: (s.shopInventory?.[currentRegion] || []).filter((id: string) => id !== itemId)
+      };
+      
+      // 🚗 如果是车辆，记录购买区域
+      const updates: any = {
+        inventory: [...s.inventory, item.id],
+        shopInventory: newShopInventory
+      };
+      if (isVehicle) {
+        updates.vehiclePurchaseRegion = currentRegion;
+      }
+      
+      return updates;
+    });
 
     state.addNotification(`获得: ${item.name}`, "success");
   },
@@ -116,9 +246,21 @@ export const createShopSlice: StateCreator<StoreState, [], [], ShopSlice> = (set
       return { success: false, message: "游戏数据未加载" };
     }
 
-    const vehicleId = state.inventory.find(id => id.startsWith('VEH_'));
+    // 🔍 查找车辆（CAR_ 或 KEY_CAR）
+    const vehicleId = state.inventory.find(id => 
+      id.startsWith('CAR_') || id === 'KEY_CAR'
+    );
     if (!vehicleId) {
       return { success: false, message: "没有车辆可出售" };
+    }
+
+    // 🚗 检查是否在购买区域
+    const purchaseRegion = state.vehiclePurchaseRegion;
+    if (purchaseRegion && purchaseRegion !== region) {
+      return { 
+        success: false, 
+        message: `只能在购买区域 (${purchaseRegion}) 出售此车辆` 
+      };
     }
 
     const vehicle = state.gameDataCache.items.find((i: Item) => i.id === vehicleId);
@@ -127,8 +269,29 @@ export const createShopSlice: StateCreator<StoreState, [], [], ShopSlice> = (set
     }
 
     const sellPrice = getVehicleSellPrice(vehicleId, region);
-    const newInventory = state.inventory.filter(id => id !== vehicleId);
-    set({ inventory: newInventory });
+    
+    // 🚗 卖车时返还车辆到原购买区域库存
+    set((s: any) => {
+      // 返还到原购买区域（如果记录存在），否则当前区域
+      const targetRegion = purchaseRegion || region;
+      const targetRegionInventory = s.shopInventory?.[targetRegion] || [];
+      const regionPool = REGION_VEHICLE_POOL[targetRegion] || [];
+      const shouldReturnToPool = regionPool.includes(vehicleId);
+      const isAlreadyInInventory = targetRegionInventory.includes(vehicleId);
+      
+      const newShopInventory = shouldReturnToPool && !isAlreadyInInventory
+        ? {
+            ...s.shopInventory,
+            [targetRegion]: [...targetRegionInventory, vehicleId]
+          }
+        : s.shopInventory;
+      
+      return {
+        inventory: s.inventory.filter((id: string) => id !== vehicleId),
+        shopInventory: newShopInventory,
+        vehiclePurchaseRegion: null // 清除购买区域记录
+      };
+    });
 
     state.addTransaction('INCOME', sellPrice, `出售车辆: ${vehicle.name}`);
     state.addNotification(`出售车辆获得 $${sellPrice}`, "GOLD");

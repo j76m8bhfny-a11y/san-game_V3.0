@@ -54,11 +54,23 @@ export const createJobSlice: StateCreator<StoreState, [], [], JobSlice> = (set, 
     }
 
     // 3. 检查阶级 (向下兼容)
-    const playerWeight = jobRules.classWeights[vitality.identity.currentClass as keyof typeof jobRules.classWeights] ?? 0;
+    const playerClass = vitality.identity.currentClass;
+    const playerWeight = jobRules.classWeights[playerClass as keyof typeof jobRules.classWeights] ?? 0;
     const jobWeight = jobRules.classWeights[job.requiredClass as keyof typeof jobRules.classWeights] ?? 99;
     
     if (playerWeight < jobWeight) {
       return { success: false, message: "你的阶级不够，HR直接把简历扔进了垃圾桶。" };
+    }
+
+    // 3.5 检查"职场黑名单"Buff（辞退后4回合内无法申请同阶级工作）
+    const blacklistBuff = vitality.activeBuffs?.find((b: any) => 
+      b.id.startsWith('buff_job_blacklist') && b.duration > 0
+    );
+    if (blacklistBuff && blacklistBuff.data?.originalClass === job.requiredClass) {
+      return { 
+        success: false, 
+        message: `【职场黑名单】你被列入了${job.requiredClass}阶级的招聘黑名单，还剩${blacklistBuff.duration}回合才能申请。` 
+      };
     }
 
     // 4. 检查房产 (必须有房且在该区域，流浪汉除外)
@@ -68,22 +80,25 @@ export const createJobSlice: StateCreator<StoreState, [], [], JobSlice> = (set, 
       }
     }
 
-    // 5. 检查道具 (如车) - 基于标签匹配
-    if (job.requiredItem) {
+    // 5. 检查道具 (如车、文凭) - 基于标签匹配
+    const requiredItemsList = job.requiredItems || (job.requiredItem ? [job.requiredItem] : []);
+    if (requiredItemsList.length > 0) {
       const gameData = (get() as StoreState).gameDataCache;
       const itemMap = gameData?.itemMap;
       
-      const hasItem = inventory.some(itemId => {
-        // 精确匹配道具ID（兼容性）
-        if (itemId === job.requiredItem) return true;
+      for (const required of requiredItemsList) {
+        const hasItem = inventory.some(itemId => {
+          // 精确匹配道具ID（兼容性）
+          if (itemId === required) return true;
+          
+          // 标签匹配：required 作为标签名，如 "VEHICLE"
+          const item = itemMap?.get(itemId);
+          return item?.tags?.includes(required);
+        });
         
-        // 标签匹配：requiredItem 作为标签名，如 "VEHICLE"
-        const item = itemMap?.get(itemId);
-        return item?.tags?.includes(job.requiredItem!);
-      });
-      
-      if (!hasItem) {
-        return { success: false, message: `缺少必要工具: ${job.requiredItem}` };
+        if (!hasItem) {
+          return { success: false, message: `缺少必要工具: ${required}` };
+        }
       }
     }
 

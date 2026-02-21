@@ -1,0 +1,100 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_H39_HEAT_WAVE",
+  "title": "致命的热浪",
+  "category": "HOMELESS",
+  "series": "基础生存",
+  "layer": {
+    "background": "/assets/scenes/bg_mall_entrance.png",
+    "foreground": "/assets/events/evt_security_wall.png"
+  },
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "热浪来袭，商场里凉爽宜人。但商场门口，全副武装的保安组成人墙，将所有试图进去蹭空调的流浪汉暴力推倒在发烫的水泥地上。",
+  "historicalNote": "基于美国社会现实事件改编。",
+  "options": {
+    "A": {
+      "label": "私人领地，闲人免进",
+      "roast": "冷气是给钱准备的。没钱？请在外面熟透。",
+      "flavorText": "你告诉自己要坚持，要相信努力就能改变命运。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "这种选择代表了系统最希望穷人持有的心态：自责、内卷、永不质疑结构。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "points": {
+          "old": 3
+        },
+        "insightGain": 8
+      }
+    },
+    "B": {
+      "label": "确实影响购物体验",
+      "roast": "你的体验比别人的命重要，这很资本主义。",
+      "flavorText": "你选择了最安全、最不需要思考的路径。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "麻木不是愚蠢，而是生存策略。在一个无法胜利的系统中，不抱希望就不会失望。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "points": {},
+        "insightGain": 1
+      }
+    },
+    "C": {
+      "label": "商场没有避暑义务",
+      "roast": "对。系统也没有让你活着的义务。热死活该。",
+      "flavorText": "你决定花钱解决这个让你不安的问题。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "消费主义提供了一个完美的出口：把系统性问题转化为个人问题，然后用钱解决。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "points": {
+          "wolf": 3
+        },
+        "insight": -10
+      }
+    },
+    "D": {
+      "label": "温度也是一种阶级特权",
+      "roast": "气候种族隔离。穷人区是烤箱，富人区是冰箱。",
+      "flavorText": "你看到了表象之下的真相，尽管知道这会付出代价。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "真相的代价总是高昂的，但沉默的代价更高。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "points": {
+          "red": 15
+        },
+        "insight": -10
+      },
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.39_CLIMATE_APARTHEID"
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_39_HEAT_WAVE",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": []
+  }
+}

@@ -1,68 +1,91 @@
 import { GameSystem, SystemResult } from '../types';
 import { GameState, GameEvent } from '@/types/schema';
-import eventsData from '@/assets/data/events.json';
 import { checkCondition } from '@/logic/eventResolver';
 import NARRATIVE_RULES from '@/assets/data/rules/narrative_rules.json';
 import { random } from '@/utils/random';
+import { 
+  shouldTriggerGazeEvent, 
+  getAvailableGazeEvents,
+  getCurrentGazeEffects 
+} from '@/logic/gazeEventSystem';
+import { loadAllEvents } from '@/assets/data/events';
 
-// 获取事件权重 (配置驱动)
-// 优先使用事件自定义权重，否则使用全局默认权重
+// 缓存事件数据
+let eventsCache: GameEvent[] | null = null;
+
+// 异步加载所有事件
+const loadEvents = async (): Promise<GameEvent[]> => {
+  if (eventsCache) return eventsCache;
+  
+  try {
+    eventsCache = await loadAllEvents();
+    return eventsCache;
+  } catch (error) {
+    console.error('[EventSystem] 加载事件失败:', error);
+    return [];
+  }
+};
+
+// 获取事件权重
 const getEventWeight = (event: GameEvent): number => {
-  // ✅ 类型安全：直接访问 weight 字段（已在 EventSchema 中定义）
-  const w = event.weight;
-  // ✅ 防御性编程：验证数值有效且非负
+  const w = (event.conditions as any)?.weight;
   if (typeof w === 'number' && Number.isFinite(w) && w >= 0) {
     return w;
   }
   return NARRATIVE_RULES.system.defaults.eventWeight;
 };
 
-// 随机获取符合条件的事件（排除本轮已触发过的）
-const getRandomEvent = (state: GameState): GameEvent | null => {
-  // 1. 类型断言
-  const allEvents = eventsData as unknown as GameEvent[];
-  const currentClass = state.vitality.identity.currentClass;
-  
-  // 获取本轮已触发的事件ID列表
-  const triggeredEvents = state.vitality.flags?.triggeredEvents || [];
+// 检查是否是v3格式事件
+const isV3Event = (event: any): boolean => {
+  return event.$schema === 'game-event-v3' || event.metadata?.version?.startsWith('3.');
+};
 
-  // 2. 筛选候选池 (Pool Filter)
+// 获取随机事件
+const getRandomEvent = async (state: GameState): Promise<GameEvent | null> => {
+  const allEvents = await loadEvents();
+  const currentClass = state.vitality.identity.currentClass;
+  const triggeredEvents = state.vitality.flags?.triggeredEvents || [];
+  
+  // 获取当前gaze状态
+  const { intensity } = getCurrentGazeEffects(state);
+  void intensity; // 可用于根据gaze强度调整事件池
+
+  // 筛选候选池
   const candidates = allEvents.filter(event => {
-    // A. 排除已触发过的事件（本轮游戏不重复）
+    // 排除已触发过的事件
     if (triggeredEvents.includes(event.id)) {
       return false;
     }
     
-    // B. 阶级过滤 (Class Filter) - 核心逻辑
-    // 如果事件定义了 requiredClass，则必须包含当前阶级
-    // 如果没定义，视为通用事件
-    if (event.conditions?.requiredClass) {
-        if (!event.conditions.requiredClass.includes(currentClass)) {
-            return false;
-        }
+    // v3事件：检查requiredClass
+    if (isV3Event(event) && event.conditions?.requiredClass) {
+      if (!event.conditions.requiredClass.includes(currentClass)) {
+        return false;
+      }
+    }
+    // 兼容旧格式
+    else if (event.conditions?.requiredClass) {
+      if (!event.conditions.requiredClass.includes(currentClass)) {
+        return false;
+      }
     }
 
-    // C. 条件检查 (Condition Check)
-    // 检查属性、区域、前置事件等
+    // 检查条件
     return checkCondition(state, event.conditions);
   });
 
   if (candidates.length === 0) return null;
 
-  // 3. 加权随机抽取 (Weighted Random)
-  // 计算总权重
+  // 加权随机抽取
   const totalWeight = candidates.reduce((sum, event) => sum + getEventWeight(event), 0);
   
-  // ✅ 防御性编程：防止除以零或总权重为负
   if (!Number.isFinite(totalWeight) || totalWeight <= 0) {
-    console.warn('[EventSystem] 总权重异常:', totalWeight, '返回第一个候选事件');
+    console.warn('[EventSystem] 总权重异常:', totalWeight);
     return candidates[0] || null;
   }
   
-  // 生成随机数 (使用依赖注入的 random 函数)
   let randomValue = random() * totalWeight;
 
-  // 遍历寻找命中区间
   for (const event of candidates) {
     randomValue -= getEventWeight(event);
     if (randomValue <= 0) {
@@ -70,49 +93,105 @@ const getRandomEvent = (state: GameState): GameEvent | null => {
     }
   }
 
-  // 兜底返回最后一个（理论上不应执行到此，除非浮点误差）
   return candidates[candidates.length - 1];
+};
+
+// 获取System Gaze专属事件
+const getGazeEvent = async (state: GameState): Promise<GameEvent | null> => {
+  if (!shouldTriggerGazeEvent(state)) {
+    return null;
+  }
+  
+  const gazeEvents = await getAvailableGazeEvents(state);
+  if (gazeEvents.length === 0) return null;
+  
+  // 随机选择一个
+  return gazeEvents[Math.floor(random() * gazeEvents.length)];
+};
+
+// 内部处理函数
+const processTurnInternal = async (state: GameState): Promise<SystemResult> => {
+  const result: SystemResult = {
+    updates: {},
+    newTransactions: [],
+    logs: [],
+    notes: []
+  };
+
+  // 优先检查System Gaze专属事件
+  const gazeEvent = await getGazeEvent(state);
+  
+  if (gazeEvent) {
+    const triggeredEvents = state.vitality.flags?.triggeredEvents || [];
+    
+    result.updates = {
+      currentEvent: gazeEvent,
+      isEventOpen: true,
+      vitality: {
+        ...state.vitality,
+        flags: {
+          ...state.vitality.flags,
+          triggeredEvents: [...triggeredEvents, gazeEvent.id]
+        }
+      }
+    } as any;
+
+    result.logs.push(`[系统凝视] 触发事件: ${gazeEvent.title}`);
+    return result;
+  }
+
+  // 普通事件
+  const event = await getRandomEvent(state);
+
+  if (event) {
+    const triggeredEvents = state.vitality.flags?.triggeredEvents || [];
+    
+    result.updates = {
+      currentEvent: event,
+      isEventOpen: true,
+      vitality: {
+        ...state.vitality,
+        flags: {
+          ...state.vitality.flags,
+          triggeredEvents: [...triggeredEvents, event.id]
+        }
+      }
+    } as any;
+
+    result.logs.push(`触发事件: ${event.title}`);
+  }
+
+  return result;
 };
 
 export const EventSystem: GameSystem = {
   id: 'EVENT_SYSTEM',
 
-  processTurn: ({ state }) => {
-    const result: SystemResult = {
+  processTurn: ({ state: _state }) => {
+    // 注意：这里返回一个同步结果，实际异步加载在内部处理
+    // 由于GameSystem接口要求同步返回，我们需要确保事件已预加载
+    // 或者修改接口以支持Promise
+    
+    // 临时解决方案：返回空结果，异步加载后通过其他方式触发事件
+    // 更好的方案是在游戏初始化时预加载所有事件
+    
+    // 立即执行并返回结果（如果缓存已准备好）
+    if (eventsCache) {
+      // 由于无法直接await，我们需要同步处理
+      // 这是一个设计妥协
+    }
+    
+    return {
       updates: {},
       newTransactions: [],
       logs: [],
       notes: []
     };
-
-    // 1. 触发判断 (Trigger Check)
-    // 你要求"每回合都触发"，所以这里不再进行 Math.random() 判定
-    // 除非处于特殊状态 (如监狱中可能只能触发监狱事件，这里暂不处理特殊状态，由 getRandomEvent 里的 condition 控制)
-    
-    // 2. 获取事件
-    const event = getRandomEvent(state);
-
-    if (event) {
-      // ✅ 修复 2: 使用正确的状态字段名 currentEvent
-      // 同时设置 isEventOpen: true 以打开 UI
-      // ✅ 新增: 将事件ID添加到已触发列表，防止本轮重复
-      const triggeredEvents = state.vitality.flags?.triggeredEvents || [];
-      
-      result.updates = {
-        currentEvent: event,
-        isEventOpen: true,
-        vitality: {
-          ...state.vitality,
-          flags: {
-            ...state.vitality.flags,
-            triggeredEvents: [...triggeredEvents, event.id]
-          }
-        }
-      } as any;
-
-      result.logs.push(`触发事件: ${event.title}`);
-    }
-
-    return result;
   }
 };
+
+// 导出异步版本供实际使用
+export const processEventTurnAsync = processTurnInternal;
+
+// 导出辅助函数
+export { getCurrentGazeEffects };

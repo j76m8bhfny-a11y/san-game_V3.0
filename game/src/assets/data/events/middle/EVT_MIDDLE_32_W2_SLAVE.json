@@ -1,0 +1,100 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_MIDDLE_32_W2_SLAVE",
+  "title": "只有W-2交税",
+  "category": "MIDDLE",
+  "series": "基础生存",
+  "layer": {
+    "background": "/assets/scenes/bg_tax_form.png",
+    "foreground": "/assets/events/evt_paystub_tax.png"
+  },
+  "conditions": {
+    "requiredClass": [
+      "MIDDLE"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "报税季，你的中产朋友看着工资单崩溃了。他年薪10万，被扣了30%的税。而新闻里说，杰夫·贝佐斯（亚马逊）去年交的税是0。",
+  "historicalNote": "基于美国社会现实事件改编。",
+  "options": {
+    "A": {
+      "label": "富人创造就业，理应减税",
+      "roast": "精神资本家。他赚一秒钟比你干一辈子都多，还要你心疼？",
+      "flavorText": "你告诉自己要坚持，要相信努力就能改变命运。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "这种选择代表了系统最希望穷人持有的心态：自责、内卷、永不质疑结构。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "points": {
+          "old": 3
+        },
+        "insightGain": 8
+      }
+    },
+    "B": {
+      "label": "谁让人家有避税手段",
+      "roast": "无奈。法律是富人写的，也是给富人钻的。",
+      "flavorText": "你选择了最安全、最不需要思考的路径。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "麻木不是愚蠢，而是生存策略。在一个无法胜利的系统中，不抱希望就不会失望。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "points": {},
+        "insightGain": 1
+      }
+    },
+    "C": {
+      "label": "资本利得税率低于个税",
+      "roast": "真相。你的劳动（工资）是最贱的，钱生钱（资本）才是高贵的。",
+      "flavorText": "你决定花钱解决这个让你不安的问题。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "消费主义提供了一个完美的出口：把系统性问题转化为个人问题，然后用钱解决。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "points": {
+          "wolf": 3
+        },
+        "insight": -10
+      }
+    },
+    "D": {
+      "label": "中产阶级是“现金奶牛”",
+      "roast": "被宰的猪。穷人没钱榨，富人榨不到，国库全靠你填。",
+      "flavorText": "你看到了表象之下的真相，尽管知道这会付出代价。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "真相的代价总是高昂的，但沉默的代价更高。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "points": {
+          "red": 15
+        },
+        "insight": -10
+      },
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.M32_TAX_INEQUALITY"
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_MIDDLE_32_W2_SLAVE",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": []
+  }
+}

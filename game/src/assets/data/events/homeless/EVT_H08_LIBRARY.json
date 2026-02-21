@@ -1,0 +1,94 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_H08_LIBRARY",
+  "title": "图书馆驱逐",
+  "category": "HOMELESS",
+  "series": "空间排斥",
+  "layer": {
+    "background": "/assets/scenes/bg_library.png",
+    "foreground": "/assets/events/evt_security_guard.png"
+  },
+  "conditions": {
+    "requiredClass": ["HOMELESS"],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "你想去图书馆吹空调。保安把你拦住，指着你的衣服：“体味过重，禁止入内。”",
+  "historicalNote": "美国公共图书馆越来越多地成为无家可归者避暑/取暖的去处，引发'体面人士'的投诉和图书馆政策收紧。",
+  "options": {
+    "A": {
+      "label": "尊重他人呼吸权",
+      "roast": "你臭，你有罪。文明社会的空气不属于你。",
+      "flavorText": "你告诉自己这是合理的。毕竟其他人也有享受图书馆的权利。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "将穷人的生理存在污名化为'冒犯'，合理化排斥。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 8,
+        "points": { "old": 3 }
+      }
+    },
+    "B": {
+      "label": "确实味儿大，理解一下",
+      "roast": "自我厌恶是流浪汉的美德。你也嫌弃你自己，对吧？",
+      "flavorText": "你闻了闻自己的衣服。也许他们是对的。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "内化的阶级羞耻让穷人主动接受排斥。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "卫生条例规定",
+      "roast": "条例保护书，不保护人。书比你干净。",
+      "flavorText": "你开始为这条规定辩护。毕竟卫生确实重要。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "将结构性问题（没有洗澡设施）转化为个人卫生问题。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": { "wolf": 3 }
+      }
+    },
+    "D": {
+      "label": "最后的避难所没了",
+      "roast": "悲惨事实。知识和空调是会员制的，脏东西不配拥有。",
+      "flavorText": "你明白了：这个社会的规则是设计来排斥像你这样的人的。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "当最后免费的公共空间也关闭，穷人被彻底驱逐出文明社会。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.08_LIBRARY_SMELL_BAN",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": { "red": 15 }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_08_LIBRARY",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [
+      "https://www.npr.org/sections/codeswitch/2014/12/10/369615275/libraries-become-shelter-for-the-homeless"
+    ],
+    "relatedEvents": ["EVT_H09_NO_WATER", "EVT_H30_LAUNDRY_BAN"]
+  }
+}

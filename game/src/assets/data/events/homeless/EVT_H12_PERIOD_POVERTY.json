@@ -1,0 +1,94 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_H12_PERIOD_POVERTY",
+  "title": "经期贫困",
+  "category": "HOMELESS",
+  "series": "性别贫困",
+  "layer": {
+    "background": "/assets/scenes/bg_public_restroom.png",
+    "foreground": "/assets/events/evt_newspaper_pad.png"
+  },
+  "conditions": {
+    "requiredClass": ["HOMELESS"],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 8,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "公厕里，一个衣衫褴褛的年轻女孩因为买不起卫生棉条($8一盒)，正在往内裤里塞从垃圾桶捡来的报纸。",
+  "historicalNote": "经期贫困(Period Poverty)影响全球数亿女性。美国许多州对卫生用品征收'奢侈品税'(Tampon Tax)。",
+  "options": {
+    "A": {
+      "label": "以前没这东西也能活",
+      "roast": "你真该穿越回中世纪，那里不仅没卫生巾，还没活人。",
+      "flavorText": "你告诉自己这是现代消费主义的产物。以前的女人怎么活的？",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "将必需品污名化为'现代奢侈品'，合理化无法获得。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 8,
+        "points": { "old": 3 }
+      }
+    },
+    "B": {
+      "label": "好脏啊，离我远点",
+      "roast": "你嫌弃地捂住了鼻子。贫穷的气味确实不好闻，对吧？",
+      "flavorText": "你不由自主地后退了一步。虽然你知道这不是她的错。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "贫困羞辱内化后，穷人会互相排斥。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "非必需品，不予补贴",
+      "roast": "纳税人的钱不能给你买奢侈品。止血是奢侈的，懂吗？",
+      "flavorText": "你开始为这个政策辩护。毕竟财政预算是有限的。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "将基本卫生需求定义为'非必要'，是性别与阶级的双重压迫。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": { "wolf": 3 }
+      }
+    },
+    "D": {
+      "label": "针对女性的"粉色税"",
+      "roast": "精准打击。作为一个穷女人，活着本身就是一种负债。",
+      "flavorText": "你看到了那个交叉压迫：贫困+性别=双倍的艰难。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "经期贫困是交叉性不平等的经典案例。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.12_PERIOD_POVERTY",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": { "red": 15 }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_12_PERIOD_POVERTY",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [
+      "https://www.aclu.org/news/womens-rights/the-tampon-tax-and-period-poverty"
+    ],
+    "relatedEvents": []
+  }
+}

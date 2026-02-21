@@ -1,0 +1,100 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_CAPITALIST_01_BUY_BORROW_DIE",
+  "title": "借钱避税大法",
+  "category": "CAPITALIST",
+  "series": "基础生存",
+  "layer": {
+    "background": "/assets/scenes/bg_yacht_deck.png",
+    "foreground": "/assets/events/evt_yacht_loan.png"
+  },
+  "conditions": {
+    "requiredClass": [
+      "CAPITALIST"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "一位亿万富翁买了一艘2亿美元的游艇。他没有卖股票套现，而是用股票做抵押向银行借了2亿现金来支付。税务局一分钱税都收不到。",
+  "historicalNote": "基于美国社会现实事件改编。",
+  "options": {
+    "A": {
+      "label": "合理的资产配置",
+      "roast": "合理？是合富人的理。由于借款不算收入，所以他0税负。",
+      "flavorText": "你告诉自己要坚持，要相信努力就能改变命运。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "这种选择代表了系统最希望穷人持有的心态：自责、内卷、永不质疑结构。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "points": {
+          "old": 3
+        },
+        "insightGain": 8
+      }
+    },
+    "B": {
+      "label": "借钱不用还利息吗？",
+      "roast": "图样。借款利率1%，避税率20%。是你你也借。",
+      "flavorText": "你选择了最安全、最不需要思考的路径。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "麻木不是愚蠢，而是生存策略。在一个无法胜利的系统中，不抱希望就不会失望。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "points": {},
+        "insightGain": 1
+      }
+    },
+    "C": {
+      "label": "促进银行业务发展",
+      "roast": "双赢。银行赚利息，富人避税，输家只有纳税的你。",
+      "flavorText": "你决定花钱解决这个让你不安的问题。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "消费主义提供了一个完美的出口：把系统性问题转化为个人问题，然后用钱解决。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "points": {
+          "wolf": 3
+        },
+        "insight": -10
+      }
+    },
+    "D": {
+      "label": "买、借、死 (Buy, Borrow, Die)",
+      "roast": "终极秘籍。只要不卖股票就不交税，死了还能把债务抵消遗产税。",
+      "flavorText": "你看到了表象之下的真相，尽管知道这会付出代价。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "真相的代价总是高昂的，但沉默的代价更高。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "points": {
+          "red": 15
+        },
+        "insight": -10
+      },
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C01_BUY_BORROW_DIE"
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_CAPITALIST_01_BUY_BORROW_DIE",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": []
+  }
+}

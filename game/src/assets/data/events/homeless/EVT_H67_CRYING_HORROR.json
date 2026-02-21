@@ -1,0 +1,100 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_H67_CRYING_HORROR",
+  "title": "恐怖的哭声",
+  "category": "HOMELESS",
+  "series": "基础生存",
+  "layer": {
+    "background": "/assets/scenes/bg_welfare_office.png",
+    "foreground": "/assets/events/evt_screaming_child.png"
+  },
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "福利署门口，一个满身淤青的孩子死死抓着门框，拼命想逃回那个刚虐待过他的寄养家庭。他发出绝望的尖叫：“我不去那里！求你们打我吧，别送我去那里！”",
+  "historicalNote": "基于美国社会现实事件改编。",
+  "options": {
+    "A": {
+      "label": "孩子不懂事，福利院条件更好",
+      "roast": "好？那是从狼窝进虎穴。",
+      "flavorText": "你告诉自己要坚持，要相信努力就能改变命运。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "这种选择代表了系统最希望穷人持有的心态：自责、内卷、永不质疑结构。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "points": {
+          "old": 3
+        },
+        "insightGain": 8
+      }
+    },
+    "B": {
+      "label": "寄养家庭把他打怕了吧",
+      "roast": "他宁愿挨打也不去福利院，你想想为什么。",
+      "flavorText": "你选择了最安全、最不需要思考的路径。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "麻木不是愚蠢，而是生存策略。在一个无法胜利的系统中，不抱希望就不会失望。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "points": {},
+        "insightGain": 1
+      }
+    },
+    "C": {
+      "label": "分离焦虑症",
+      "roast": "不，这是求生本能。",
+      "flavorText": "你决定花钱解决这个让你不安的问题。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "消费主义提供了一个完美的出口：把系统性问题转化为个人问题，然后用钱解决。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "points": {
+          "wolf": 3
+        },
+        "insight": -10
+      }
+    },
+    "D": {
+      "label": "那是通往第18层地狱的灵车",
+      "roast": "寄养家庭是第17层地狱，而公立福利院是第18层。在那里，无人领养的残疾儿童会像垃圾一样被堆积、被强奸、被药物控制等死。",
+      "flavorText": "你看到了表象之下的真相，尽管知道这会付出代价。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "真相的代价总是高昂的，但沉默的代价更高。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "points": {
+          "red": 15
+        },
+        "insight": -10
+      },
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.67_INSTITUTIONAL_ABUSE"
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_67_CRYING_HORROR",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": []
+  }
+}

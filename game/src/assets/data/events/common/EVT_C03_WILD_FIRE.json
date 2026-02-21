@@ -1,0 +1,91 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C03_WILD_FIRE",
+  "title": "山火逼近",
+  "category": "COMMON",
+  "series": "气候变化",
+  "layer": {
+    "background": "/assets/scenes/common/bg_wildfire.png",
+    "foreground": "/assets/events/common/evt_smoke_sky.png"
+  },
+  "conditions": {
+    "requiredClass": ["HOMELESS", "WORKER", "MIDDLE", "CAPITALIST"],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 6,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "远处山火燃烧数周，浓烟遮蔽天空，空气中有烧焦的味道。AQI指数爆表。",
+  "historicalNote": "2020年加州山火烧毁超过400万英亩，气候变化使火灾季延长且更猛烈。",
+  "options": {
+    "A": {
+      "label": "买空气净化器",
+      "roast": "个人解决方案应对集体灾难，典型的中产阶级思维。",
+      "flavorText": "你相信技术能保护你，即使天空正在燃烧。",
+      "ideology": "新自由主义/消费解决",
+      "archiveCommentary": "将环境崩溃个人化，让市场来'解决'生存问题。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": { "old": 3 }
+      }
+    },
+    "B": {
+      "label": "戴口罩凑合过",
+      "roast": "反正你也买不起N95，布口罩就当心理安慰。",
+      "flavorText": "你知道这没什么用，但至少你在做点什么。",
+      "ideology": "犬儒主义/无力感",
+      "archiveCommentary": "当灾难变成日常，人们学会了将就。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "去室内健身房锻炼",
+      "roast": "死了都要健身，中产阶级的身体管理永不停歇。",
+      "flavorText": "你坚持你的生活习惯，这是维持正常幻觉的方式。",
+      "ideology": "消费主义/健康痴迷",
+      "archiveCommentary": "用消费行为维持'正常'幻觉，无视世界正在崩塌。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": { "wolf": 3 }
+      }
+    },
+    "D": {
+      "label": "这是地球对资本主义的反击",
+      "roast": "盖娅理论资本主义版，但大火不会读马克思。",
+      "flavorText": "你看到了因果，但无法阻止火焰。",
+      "ideology": "激进左翼/生态觉醒",
+      "archiveCommentary": "生态危机是资本主义无限积累逻辑的必然产物。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C03_PYROCAPITALISM",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": { "red": 15 }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": ["EVT_C01_HEAT_WAVE", "EVT_C02_FLOOD"]
+  }
+}

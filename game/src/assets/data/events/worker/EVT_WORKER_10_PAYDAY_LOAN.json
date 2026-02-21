@@ -1,0 +1,100 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_WORKER_10_PAYDAY_LOAN",
+  "title": "永远还不完的债",
+  "category": "WORKER",
+  "series": "基础生存",
+  "layer": {
+    "background": "/assets/scenes/bg_loan_shark.png",
+    "foreground": "/assets/events/evt_loan_contract.png"
+  },
+  "conditions": {
+    "requiredClass": [
+      "WORKER"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "离发工资还有一周，工友没钱买菜了。他走进一家挂着“快速放款”招牌的小店，借了300美元，却签下了年化利率400%的合同。",
+  "historicalNote": "基于美国社会现实事件改编。",
+  "options": {
+    "A": {
+      "label": "金融普惠，解燃眉之急",
+      "roast": "普惠？这是把你的眉毛烧了给你取暖。",
+      "flavorText": "你告诉自己要坚持，要相信努力就能改变命运。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "这种选择代表了系统最希望穷人持有的心态：自责、内卷、永不质疑结构。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "points": {
+          "old": 3
+        },
+        "insightGain": 8
+      }
+    },
+    "B": {
+      "label": "省着点花吧，别借高利贷",
+      "roast": "何不食肉糜。孩子饿得哇哇叫，你有别的办法？",
+      "flavorText": "你选择了最安全、最不需要思考的路径。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "麻木不是愚蠢，而是生存策略。在一个无法胜利的系统中，不抱希望就不会失望。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "points": {},
+        "insightGain": 1
+      }
+    },
+    "C": {
+      "label": "高风险对应高利率",
+      "roast": "吸血鬼逻辑。穷人的信用风险，成了资本家的暴利来源。",
+      "flavorText": "你决定花钱解决这个让你不安的问题。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "消费主义提供了一个完美的出口：把系统性问题转化为个人问题，然后用钱解决。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "points": {
+          "wolf": 3
+        },
+        "insight": -10
+      }
+    },
+    "D": {
+      "label": "合法的“掠夺性借贷”",
+      "roast": "债务奴隶。借一次，还一生。欢迎来到高利贷地狱。",
+      "flavorText": "你看到了表象之下的真相，尽管知道这会付出代价。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "真相的代价总是高昂的，但沉默的代价更高。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "points": {
+          "red": 15
+        },
+        "insight": -10
+      },
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.W10_DEBT_TRAP"
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_WORKER_10_PAYDAY_LOAN",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": []
+  }
+}

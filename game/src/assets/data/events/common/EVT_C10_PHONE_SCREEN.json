@@ -1,0 +1,91 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C10_PHONE_SCREEN",
+  "title": "手机碎屏",
+  "category": "COMMON",
+  "series": "现代生活",
+  "layer": {
+    "background": "/assets/scenes/common/bg_sidewalk.png",
+    "foreground": "/assets/events/common/evt_broken_phone.png"
+  },
+  "conditions": {
+    "requiredClass": ["HOMELESS", "WORKER", "MIDDLE", "CAPITALIST"],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 15,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "手一滑，手机从指间滑落，屏幕在水泥地上绽放成蜘蛛网。没有手机，你在这个世界寸步难行。",
+  "historicalNote": "智能手机已成为现代生活的必需品，维修费用高昂且有意设计难以修复。",
+  "options": {
+    "A": {
+      "label": "立即换新机",
+      "roast": "最新款iPhone，为了这个碎屏值了。",
+      "flavorText": "你告诉自己这是必要的，即使旧机还能用。",
+      "ideology": "新自由主义/消费驱动",
+      "archiveCommentary": "计划性淘汰让消费者不断购买新产品。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": { "old": 3 }
+      }
+    },
+    "B": {
+      "label": "用胶带凑合",
+      "roast": "碎玻璃和胶带，穷人的防弹衣。",
+      "flavorText": "你学会了将就，这是预算限制下的艺术。",
+      "ideology": "犬儒主义/凑合主义",
+      "archiveCommentary": "买不起替代品的人只能延长旧物使用。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "买官方维修服务",
+      "roast": "官方维修比新机便宜不了多少，但你愿意为'正品'付费。",
+      "flavorText": "你相信官方服务，尽管第三方更便宜。",
+      "ideology": "消费主义/品牌忠诚",
+      "archiveCommentary": "品牌锁定策略让消费者接受高价服务。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": { "wolf": 3 }
+      }
+    },
+    "D": {
+      "label": "这是计划性淘汰的阴谋",
+      "roast": "说得对，但你现在需要一部能用的手机。",
+      "flavorText": "你明白这是设计好的，但你 still 被困在其中。",
+      "ideology": "激进左翼/反消费主义",
+      "archiveCommentary": "科技产品的计划性淘汰是一种系统性的浪费。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C10_PLANNED_OBSOLESCENCE",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": { "red": 15 }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": ["EVT_C11_WIFI_OUTAGE", "EVT_C12_APP_TRACKING"]
+  }
+}

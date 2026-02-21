@@ -1,0 +1,94 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_H04_SPIKES",
+  "title": "桥下尖刺",
+  "category": "HOMELESS",
+  "series": "敌意建筑",
+  "layer": {
+    "background": "/assets/scenes/bg_underbridge.png",
+    "foreground": "/assets/events/evt_concrete_spikes.png"
+  },
+  "conditions": {
+    "requiredClass": ["HOMELESS"],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "下暴雨了，你跑到立交桥下避雨。发现原本干燥的空地上，密密麻麻铺满了尖锐的水泥锥子。",
+  "historicalNote": "2014年伦敦豪宅安装防流浪汉尖刺引发全英抗议。这种'敌意建筑'旨在阻止流浪者寻找遮蔽。",
+  "options": {
+    "A": {
+      "label": "现代工业风装置艺术",
+      "roast": "你有艺术细菌，可惜没命欣赏。",
+      "flavorText": "你试图从这些尖刺中看出美感。至少它们排列得很整齐。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "当暴力被美学化，压迫就变成了'设计选择'。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 8,
+        "points": { "old": 3 }
+      }
+    },
+    "B": {
+      "label": "大概是为了防老鼠",
+      "roast": "没错，防的就是你这只两条腿的大老鼠。",
+      "flavorText": "你告诉自己这有合理的用途。也许这里以前真的有很多老鼠。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "自我贬低是应对无力感的心理防御机制。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "消除火灾隐患和死角",
+      "roast": "为了安全，把你弄死在雨里，这就很安全了。",
+      "flavorText": "你相信这种解释。安全总是最重要的，不是吗？",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "'安全'和'秩序'是驱逐穷人时最常用的借口。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": { "wolf": 3 }
+      }
+    },
+    "D": {
+      "label": "连站都不让你站",
+      "roast": "完全正确。城市不仅不让你睡，连让你“存在”都觉得碍眼。",
+      "flavorText": "你明白了：这不是为了解决问题，而是为了让你消失。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "敌意建筑的目的是让公共空间对穷人'不适用'，迫使他们离开或死去。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.04_ANTI_HOMELESS_SPIKES",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": { "red": 15 }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_04_SPIKES",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [
+      "https://www.theguardian.com/society/2014/jun/09/anti-homeless-spikes-london-block-of-flats"
+    ],
+    "relatedEvents": ["EVT_H01_BENCH", "EVT_H24_LEAN_BARS", "EVT_H48_SPIKED_ROCKS"]
+  }
+}

@@ -1,6 +1,7 @@
 import { StateCreator } from 'zustand';
 import { GameState, GameEvent, EventOption, WeeklyReport, Ending, FaithID, PlayerClass, RegionID, Bill, NewsItem } from '@/types/schema';
 import { resolveOption } from '@/logic/eventResolver';
+import { getCurrentGazeEffects } from '@/logic/gazeEventSystem';
 import { runTurnSettlement } from '@/systems/SystemRegistry';
 import { resolveEnding } from '@/logic/endings';
 import endingsData from '@/assets/data/endings.json';
@@ -27,7 +28,7 @@ export interface GameSlice {
 
   // --- Actions ---
   triggerEvent: (event: GameEvent) => void;
-  resolveEventOption: (optionId: 'A' | 'B' | 'C' | 'D') => void;
+  resolveEventOption: (optionId: 'A' | 'B' | 'C' | 'D') => { modifiers: string[] } | void;
   closeEvent: () => void;
   resolveBill: () => void;
   
@@ -69,28 +70,40 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
       if (store.addNotification) {
         store.addNotification("请关闭菜单后再做选择", 'warning');
       }
-      return;
+      return { modifiers: [] };
     }
 
     const { currentEvent } = get();
-    if (!currentEvent) return;
+    if (!currentEvent) return { modifiers: [] };
 
     const option = currentEvent.options[optionId];
-    if (!option) return;
+    if (!option) return { modifiers: [] };
 
     // ✅ 内部 slice 调用使用 any，因为 selectOption 在当前 slice 定义中
     // 这是 Zustand 类型系统的已知限制
-    (get() as any).selectOption(option);
+    return (get() as any).selectOption(option);
   },
 
   selectOption: (option: EventOption) => {
     const state = get() as GameState;
     const store = get() as StoreState;
+    const modifiers: string[] = [];
     
     // ✅ 计算动态金钱效果（根据 scaling 模式）
     let actualGoldChange = option.effects.gold || 0;
     const scaling = option.effects.scaling;
     const currentClass = state.vitality.identity.currentClass;
+    
+    // 获取System Gaze效果
+    const totalArchives = state.unlockedArchives?.length || 0;
+    const { intensity, effects: gazeEffects } = getCurrentGazeEffects({ 
+      unlockedArchives: state.unlockedArchives || [],
+      vitality: state.vitality 
+    } as any);
+    
+    if (intensity > 0) {
+      modifiers.push(`系统凝视 ${Math.round(intensity * 100)}%`);
+    }
     
     if (scaling && option.effects.gold) {
       const baseAmount = option.effects.gold;
@@ -99,19 +112,22 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
         case 'LEVERAGE': {
           // 阶级杠杆：不同阶级获得不同倍数的收益/损失
           const leverageMap: Record<string, number> = {
-            'HOMELESS': 1,
-            'WORKER': 1.5,
-            'MIDDLE': 2,
-            'CAPITALIST': 3
+            'HOMELESS': 0.15,
+            'WORKER': 0.5,
+            'MIDDLE': 1.0,
+            'CAPITALIST': 2.0
           };
           const multiplier = leverageMap[currentClass] || 1;
           actualGoldChange = Math.floor(baseAmount * multiplier);
+          modifiers.push(`${currentClass}杠杆 x${multiplier}`);
           break;
         }
         case 'INCOME': {
           // 收入比例：基于当前金钱的比例（用于大额损失）
-          // baseAmount 是小数，如 -0.2 表示损失 20% 的当前金钱
-          actualGoldChange = Math.floor(state.vitality.metrics.gold * baseAmount);
+          // baseAmount 是小数，如 -0.15 表示损失 15% 的当前金钱
+          // 应用gaze效果：gig pay下限
+          const effectiveRate = Math.max(gazeEffects.gigPayLowerBound / 30, Math.abs(baseAmount));
+          actualGoldChange = Math.floor(state.vitality.metrics.gold * (baseAmount > 0 ? effectiveRate : -effectiveRate));
           break;
         }
         case 'FIXED':
@@ -120,6 +136,15 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
           actualGoldChange = baseAmount;
           break;
         }
+      }
+    }
+    
+    // D选项惩罚减免 (通过检查option的特定属性来判断是否为D选项)
+    const isDOption = option.effects?.points?.red && option.effects.points.red > 0;
+    if (isDOption && totalArchives > 0) {
+      const reduction = Math.min(0.67, 1 - 1 / (1 + totalArchives / 20));
+      if (reduction > 0) {
+        modifiers.push(`档案减免 ${Math.round(reduction * 100)}%`);
       }
     }
 
@@ -197,6 +222,9 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
 
     // 7. 打印普通日志
     logs.forEach((log: string) => store.addNotification(log, 'info'));
+    
+    // 返回修改器信息供UI显示
+    return { modifiers };
   },
 
   closeEvent: () => {

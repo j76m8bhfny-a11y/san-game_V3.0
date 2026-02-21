@@ -1,0 +1,91 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C06_BEDBUGS",
+  "title": "床虱危机",
+  "category": "COMMON",
+  "series": "健康危机",
+  "layer": {
+    "background": "/assets/scenes/common/bg_bedroom.png",
+    "foreground": "/assets/events/common/evt_bedbug.png"
+  },
+  "conditions": {
+    "requiredClass": ["HOMELESS", "WORKER", "MIDDLE", "CAPITALIST"],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 8,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "你醒来发现身上布满红点。床虱——这种古老的害虫正在城市中复兴，从廉价旅馆蔓延到豪华公寓。",
+  "historicalNote": "床虱在美国大规模复苏，与全球化旅行和杀虫剂失效有关，灭虫费用可达数千美元。",
+  "options": {
+    "A": {
+      "label": "请专业灭虫公司",
+      "roast": "几千美金换一觉好眠，这就是阶层定价。",
+      "flavorText": "你相信专业服务，尽管它贵得离谱。",
+      "ideology": "新自由主义/专业服务",
+      "archiveCommentary": "将害虫问题外包给市场，让穷人承受 infestation。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": { "old": 3 }
+      }
+    },
+    "B": {
+      "label": "DIY杀虫",
+      "roast": "祝你好运，它们比你想象的更顽强。",
+      "flavorText": "你买不起专业服务，只能自己动手。",
+      "ideology": "犬儒主义/无奈",
+      "archiveCommentary": "买不起解决方案的人只能接受 infestation。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "买新的床上用品",
+      "roast": "治标不治本，但消费让你感觉好些。",
+      "flavorText": "你用购物来缓解焦虑，即使你知道没用。",
+      "ideology": "消费主义/自我安慰",
+      "archiveCommentary": "消费主义提供了虚假的解决方案，让人们为无效产品付费。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": { "wolf": 3 }
+      }
+    },
+    "D": {
+      "label": "这是住房危机的副产品",
+      "roast": "说得对，但它们 still 在咬你。",
+      "flavorText": "你看到了关联：拥挤的住房、削减的公共服务、复原的害虫。",
+      "ideology": "激进左翼/住房正义",
+      "archiveCommentary": "床虱复苏是住房危机和公共卫生投资削减的 symptom。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C06_PUBLIC_HEALTH_CUTS",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": { "red": 15 }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": ["EVT_C04_FOOD_POISONING", "EVT_C05_FLU"]
+  }
+}

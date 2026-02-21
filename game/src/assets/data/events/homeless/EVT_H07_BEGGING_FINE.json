@@ -1,0 +1,94 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_H07_BEGGING_FINE",
+  "title": "乞讨罚单",
+  "category": "HOMELESS",
+  "series": "法律陷阱",
+  "layer": {
+    "background": "/assets/scenes/bg_street_corner.png",
+    "foreground": "/assets/events/evt_police_ticket.png"
+  },
+  "conditions": {
+    "requiredClass": ["HOMELESS"],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "你饿极了在路口举牌子乞讨。警察停下，给你开了一张50美元的罚单，理由是“非法乞讨”。",
+  "historicalNote": "美国多地立法禁止乞讨。'住房而非手铐'(Housing Not Handcuffs)运动记录了这些将贫困刑事化的法律。",
+  "options": {
+    "A": {
+      "label": "鼓励劳动，维护尊严",
+      "roast": "尊严值50块钱吗？你有吗？没有就闭嘴。",
+      "flavorText": "你相信工作是解决一切的答案。乞讨确实不是长久之计。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "将乞讨定为犯罪，将穷人的生存策略污名化。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 8,
+        "points": { "old": 3 }
+      }
+    },
+    "B": {
+      "label": "倒霉催的，快跑吧",
+      "roast": "跑？往哪跑？整个系统都是围墙。",
+      "flavorText": "你知道反抗没用。只能接受这个倒霉的现实。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "当法律被用来惩罚贫困本身，逃避成为唯一的'理性'选择。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "乞讨干扰交通安全",
+      "roast": "为了交通通畅，请你原地蒸发，谢谢配合。",
+      "flavorText": "你能理解这种考虑。毕竟交通秩序很重要。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "用'公共利益'作为借口，将穷人从公共空间中抹除。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": { "wolf": 3 }
+      }
+    },
+    "D": {
+      "label": "贫穷本身就是犯罪",
+      "roast": "正解。没钱交罚款？正好，私营监狱缺苦力了。",
+      "flavorText": "你明白了：他们不是在惩罚乞讨，他们是在惩罚贫穷本身。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "将贫困刑事化创造了免费的监狱劳动力，这是现代奴隶制的经济逻辑。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.07_HOUSING_NOT_HANDCUFFS",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": { "red": 15 }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_07_BEGGING_FINE",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [
+      "https://www.housingnotHandcuffs.org/"
+    ],
+    "relatedEvents": ["EVT_H33_TOILET_CRIME", "EVT_H35_STAY_AWAY", "EVT_H40_FINAL_JUDGMENT"]
+  }
+}

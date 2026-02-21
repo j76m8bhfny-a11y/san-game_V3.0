@@ -1,0 +1,94 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_H14_PET_BAN",
+  "title": "宠物狗",
+  "category": "HOMELESS",
+  "series": "收容所制度",
+  "layer": {
+    "background": "/assets/scenes/bg_snow_shelter.png",
+    "foreground": "/assets/events/evt_hobo_dog.png"
+  },
+  "conditions": {
+    "requiredClass": ["HOMELESS"],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "暴风雪中，收容所管理员指着流浪汉怀里的狗说："狗不能进。"流浪汉看了看温暖的大门，抱紧了狗转身走回雪地。",
+  "historicalNote": "美国许多收容所禁止宠物入内。研究表明，约10-25%的流浪者因此拒绝进入收容所。",
+  "options": {
+    "A": {
+      "label": "管理规范，防止咬人",
+      "roast": "为了安全，请你去死。规则就是规则，冷血但有效。",
+      "flavorText": "你告诉自己这是必要的规定。毕竟收容所要管理很多人。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "用'秩序'作为借口，迫使人放弃情感联结。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 8,
+        "points": { "old": 3 }
+      }
+    },
+    "B": {
+      "label": "人都活不起了还养狗？",
+      "roast": "把狗扔了吧。为了活命，你得先学会背叛。",
+      "flavorText": "你知道这不合理，但生存是第一位的。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "逼迫人在基本生存和情感陪伴之间做选择，是系统性的残酷。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "资源无法覆盖动物",
+      "roast": "收容所是给人住的。虽然你现在的地位还不如一条狗。",
+      "flavorText": "你开始为这个政策辩护。资源确实是有限的。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "将资源稀缺性作为道德豁免，合理化制度性冷漠。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": { "wolf": 3 }
+      }
+    },
+    "D": {
+      "label": "剥夺最后的精神寄托",
+      "roast": "诛心之论。既然当了乞丐，就不配拥有爱和家人。",
+      "flavorText": "你明白了：他们不仅剥夺你的住所，还要剥夺你唯一的爱。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "宠物禁令是一种心理战，目的是摧毁流浪者最后的情感支撑。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.14_SHELTER_PET_BAN",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": { "red": 15 }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_14_PET_BAN",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [
+      "https://www.homelesshub.ca/resource/pets-and-homelessness"
+    ],
+    "relatedEvents": ["EVT_H36_TINY_HOME"]
+  }
+}

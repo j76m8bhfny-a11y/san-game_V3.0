@@ -242,7 +242,10 @@ export const EventOptionSchema = z.object({
     }).optional(),
     deathReason: z.string().optional(), 
   }),
-  archiveId: z.string().optional(), 
+  archiveId: z.string().optional(),
+  // D option specific properties
+  insightLock: z.number().optional(),
+  isGlitched: z.boolean().optional(),
 });
 
 export const EventSchema = z.object({
@@ -254,9 +257,14 @@ export const EventSchema = z.object({
   conditions: z.object({
     minInsight: z.number().optional(),  // 最小灵视值要求（觉醒度不足无法触发）
     maxInsight: z.number().optional(),  // 最大灵视值限制（过于觉醒可能看不到某些世俗事件）
+    minSan: z.number().optional(),      // 最小理智值要求
+    maxSan: z.number().optional(),      // 最大理智值限制
+    minTurn: z.number().optional(),     // 最小回合数要求
+    maxTurn: z.number().optional(),     // 最大回合数限制
     requiredClass: z.array(z.nativeEnum(PlayerClass)).optional(),
     hasItem: z.string().optional(),
     region: z.nativeEnum(RegionID).optional(),
+    weight: z.number().optional(),      // 事件触发权重
   }),
   options: z.object({
     A: EventOptionSchema,
@@ -268,6 +276,16 @@ export const EventSchema = z.object({
     }),
   }),
   weight: z.number().optional(), // ✅ 添加事件权重字段
+  category: z.string().optional(), // 事件分类: HOMELESS, WORKER, MIDDLE, CAPITALIST, COMMON
+  series: z.string().optional(),   // 事件系列ID
+  layer: z.enum(['bg', 'fg']).optional(), // 事件层级: bg=背景事件, fg=前景事件
+  ideology: z.object({
+    red: z.number().optional(),
+    wolf: z.number().optional(),
+    old: z.number().optional(),
+  }).optional(),
+  archiveId: z.string().optional(), // 解锁此档案的ID
+  $schema: z.string().optional(),   // v3事件格式标识
 });
 
 export const EndingSchema = z.object({

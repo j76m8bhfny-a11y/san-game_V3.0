@@ -16,6 +16,7 @@ import { createShopSlice } from './slices/createShopSlice';
 import { createPlayerSlice } from './slices/createPlayerSlice';
 import { createInsuranceSlice } from './slices/createInsuranceSlice';
 import { createVehicleSlice } from './slices/createVehicleSlice';
+import { createGlobalProgressSlice } from './slices/createGlobalProgressSlice';
 
 // --- 从 types/store 重新导出 StoreState ---
 // 避免重复定义导致类型不一致
@@ -74,6 +75,7 @@ export const useGameStore = create<StoreState>()(
         ...createShopSlice(...a),
         ...createInsuranceSlice(...a), // [NEW]
         ...createVehicleSlice(...a), // [NEW]
+        ...createGlobalProgressSlice(...a), // [NEW] 全局进度
         
         // 🍖 饮食系统初始状态
         dietState: {
@@ -119,6 +121,14 @@ export const useGameStore = create<StoreState>()(
           history: state.history,
           unlockedArchives: state.unlockedArchives,
           achievedEndings: state.achievedEndings,
+          archiveUnlockDates: state.archiveUnlockDates,
+          endingUnlockDates: state.endingUnlockDates,
+          totalDeaths: state.totalDeaths,
+          totalPlayTime: state.totalPlayTime,
+          totalRuns: state.totalRuns,
+          longestSurvival: state.longestSurvival,
+          darkWebEchoes: state.darkWebEchoes,
+          systemGaze: state.systemGaze,
 
           // ✅ 3. 子系统数据
           bank: state.bank,

@@ -18,6 +18,7 @@ import { CryptoSlice } from '../store/slices/createCryptoSlice';
 import { SystemSlice } from '../store/slices/createSystemSlice';
 import { InsuranceSlice } from '../store/slices/createInsuranceSlice';
 import { VehicleSlice } from '../store/slices/createVehicleSlice';
+import { GlobalProgressState } from '../store/slices/createGlobalProgressSlice';
 
 /**
  * 完整的 Store 状态类型
@@ -37,6 +38,7 @@ export type StoreState = GameState &
   SystemSlice &
   InsuranceSlice &
   VehicleSlice &
+  GlobalProgressState &
   {
     // 🍖 饮食系统状态
     dietState: {

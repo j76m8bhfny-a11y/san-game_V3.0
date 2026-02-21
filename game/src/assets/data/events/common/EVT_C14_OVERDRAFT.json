@@ -1,0 +1,91 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C14_OVERDRAFT",
+  "title": "透支罚款",
+  "category": "COMMON",
+  "series": "金融系统",
+  "layer": {
+    "background": "/assets/scenes/common/bg_atm.png",
+    "foreground": "/assets/events/common/evt_overdraft_fee.png"
+  },
+  "conditions": {
+    "requiredClass": ["HOMELESS", "WORKER", "MIDDLE", "CAPITALIST"],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 12,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "一杯咖啡让你透支了3美元。银行罚款35美元——超过透支金额的十倍。这被称为'贫困税'。",
+  "historicalNote": "美国银行每年收取超过100亿美元的透支费，主要来源于低收入账户。",
+  "options": {
+    "A": {
+      "label": "申请透支保护",
+      "roast": "保护你不被罚款，但要付保护费。",
+      "flavorText": "你相信有办法避免，即使这意味着更多费用。",
+      "ideology": "新自由主义/风险管理",
+      "archiveCommentary": "将风险商品化，让穷人付费避免被剥削。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": { "old": 3 }
+      }
+    },
+    "B": {
+      "label": "认栽",
+      "roast": "又是被剥削的一天，习惯了。",
+      "flavorText": "你学会了接受这种不公正，这是常态。",
+      "ideology": "犬儒主义/顺从",
+      "archiveCommentary": "对金融剥削的习得性无助。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "换一家'更好'的银行",
+      "roast": "所有的吸血鬼都长一个样，只是獠牙颜色不同。",
+      "flavorText": "你相信市场竞争会带来更好的选择。",
+      "ideology": "消费主义/品牌选择",
+      "archiveCommentary": "用消费选择替代结构性改革，是市场的烟雾弹。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": { "wolf": 3 }
+      }
+    },
+    "D": {
+      "label": "这是针对穷人的罚款",
+      "roast": "说得对，但你 still 欠银行钱。",
+      "flavorText": "你明白这是系统性掠夺，但无力反抗。",
+      "ideology": "激进左翼/金融正义",
+      "archiveCommentary": "透支费是一种累退税，专门从最需要钱的人身上榨取。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C14_POVERTY_TAX",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": { "red": 15 }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": ["EVT_C13_CREDIT_SCORE_DROP", "EVT_C15_DEBT_COLLECTION"]
+  }
+}

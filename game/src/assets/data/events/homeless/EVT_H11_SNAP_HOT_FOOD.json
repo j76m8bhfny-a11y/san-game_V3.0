@@ -1,0 +1,94 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_H11_SNAP_HOT_FOOD",
+  "title": "只要冷的",
+  "category": "HOMELESS",
+  "series": "食物分配",
+  "layer": {
+    "background": "/assets/scenes/bg_supermarket_counter.png",
+    "foreground": "/assets/events/evt_cold_sandwich.png"
+  },
+  "conditions": {
+    "requiredClass": ["HOMELESS"],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "超市收银台，一个单亲妈妈想用食品券(SNAP)给孩子买只刚烤好的热鸡。收银员冷脸把鸡夺了回去："福利卡只能买冷的，热的不卖。"",
+  "historicalNote": "美国SNAP福利(食品券)禁止购买热食。这一规定导致贫困家庭无法获得新鲜热乎的食物。",
+  "options": {
+    "A": {
+      "label": "专款专用，这就是福利",
+      "roast": "要饭还嫌饭凉？有得吃就不错了，别想那些资产阶级的享受。",
+      "flavorText": "你告诉自己福利不是理所当然的。至少还有食物。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "将屈辱条件内化为'合理限制'，让穷人感激地接受次等待遇。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 8,
+        "points": { "old": 3 }
+      }
+    },
+    "B": {
+      "label": "买个冷三明治啃吧",
+      "roast": "只要肚子不叫唤就行，胃痛是穷人的标配。",
+      "flavorText": "你知道这不公平，但抱怨也没用。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "接受不公是贫困者的日常生存策略。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "热食属于餐饮服务",
+      "roast": "严谨。热鸡是服务，冷鸡才是食物。您不配享受服务。",
+      "flavorText": "你开始理解这个分类系统。也许这确实有它的逻辑。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "官僚分类将人的基本需求划分为'允许'和'禁止'。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": { "wolf": 3 }
+      }
+    },
+    "D": {
+      "label": "垃圾食品巨头的阴谋",
+      "roast": "真相帝。只有冷的工业垃圾才允许进入穷人的胃。",
+      "flavorText": "你看到了那个丑陋的真相：这个政策是食品工业游说和贫困羞辱的结合。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "SNAP规定保护加工食品行业，同时羞辱贫困人口。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.11_SNAP_HOT_FOOD_BAN",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": { "red": 15 }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_11_SNAP_HOT_FOOD",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [
+      "https://www.fns.usda.gov/snap/eligible-food-items"
+    ],
+    "relatedEvents": ["EVT_H03_MILK", "EVT_H21_FEEDING_BAN"]
+  }
+}

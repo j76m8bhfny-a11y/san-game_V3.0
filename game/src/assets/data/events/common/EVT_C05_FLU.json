@@ -1,0 +1,91 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C05_FLU",
+  "title": "流感季节",
+  "category": "COMMON",
+  "series": "健康危机",
+  "layer": {
+    "background": "/assets/scenes/common/bg_pharmacy.png",
+    "foreground": "/assets/events/common/evt_medicine.png"
+  },
+  "conditions": {
+    "requiredClass": ["HOMELESS", "WORKER", "MIDDLE", "CAPITALIST"],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 12,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "流感来袭，办公室里咳嗽声此起彼伏。药店里的感冒药被抢购一空。",
+  "historicalNote": "美国每年流感导致数千至数万人死亡，疫苗接种率受医疗不平等影响。",
+  "options": {
+    "A": {
+      "label": "带病上班",
+      "roast": "奉献精神可嘉，记得传染给老板。",
+      "flavorText": "你告诉自己不能倒下，即使你在发烧。",
+      "ideology": "新自由主义/生产主义",
+      "archiveCommentary": "没有带薪病假的制度迫使人们在生病时继续工作。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": { "old": 3 }
+      }
+    },
+    "B": {
+      "label": "请假在家休息",
+      "roast": "如果扣工资的话，祝你早日康复。",
+      "flavorText": "你选择健康优先，尽管这意味着经济损失。",
+      "ideology": "犬儒主义/自我保护",
+      "archiveCommentary": "对许多人来说，生病休息是一种奢侈。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "买最贵的感冒药",
+      "roast": "安慰剂效应也是效应，只要付得起钱。",
+      "flavorText": "你相信贵的就是好的，这是你的消费哲学。",
+      "ideology": "消费主义/品牌信仰",
+      "archiveCommentary": "将健康托付给市场营销，是医疗商品化的成果。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": { "wolf": 3 }
+      }
+    },
+    "D": {
+      "label": "全民医保本可以避免这一切",
+      "roast": "说得对，但你现在需要的是退烧药，不是革命。",
+      "flavorText": "你看到了结构性问题，但此刻你只想不咳嗽。",
+      "ideology": "激进左翼/医疗正义",
+      "archiveCommentary": "医疗私有化将公共卫生危机转化为个人经济负担。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C05_HEALTHCARE_FOR_PROFIT",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": { "red": 15 }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": ["EVT_C04_FOOD_POISONING", "EVT_C06_BEDBUGS"]
+  }
+}

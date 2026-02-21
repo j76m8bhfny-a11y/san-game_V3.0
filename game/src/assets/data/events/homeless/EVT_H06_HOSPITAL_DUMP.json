@@ -1,0 +1,94 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_H06_HOSPITAL_DUMP",
+  "title": "医院弃人",
+  "category": "HOMELESS",
+  "series": "医疗体系",
+  "layer": {
+    "background": "/assets/scenes/bg_hospital_exit.png",
+    "foreground": "/assets/events/evt_wheelchair_dump.png"
+  },
+  "conditions": {
+    "requiredClass": ["HOMELESS"],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "你在急诊室醒来，因为没保险，护士依然拔了针头。保安把你推上轮椅，扔到了几条街外的贫民窟路边。",
+  "historicalNote": "'病人倾倒'(Patient Dumping)在美国是普遍现象。2006年洛杉矶某医院甚至被拍到将病人遗弃在贫民窟街头。",
+  "options": {
+    "A": {
+      "label": "资源留给更需要的人",
+      "roast": "大爱无疆！你为了不占用床位自愿死在路边，感动美国。",
+      "flavorText": "你告诉自己这是正确的选择。那些真正需要的人会感激你的牺牲。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "将资源稀缺性自然化，让受害者为系统的失败承担责任。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 8,
+        "points": { "old": 3 }
+      }
+    },
+    "B": {
+      "label": "没钱千万别生病",
+      "roast": "废话。有钱男子汉，没钱汉子难，等死吧。",
+      "flavorText": "这是残酷的现实。你早就知道这一天会来。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "对美国医疗系统的绝望接受，这是贫困者的日常经验。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "急诊只负责稳定体征",
+      "roast": "技术上说你还没死透，所以扔出去是合规的。",
+      "flavorText": "你开始理解这个系统的逻辑。也许这确实是合理的流程。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "技术官僚用流程合规性掩盖道德失败。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": { "wolf": 3 }
+      }
+    },
+    "D": {
+      "label": "这就叫“病人抛尸”",
+      "roast": "精准概括。在医院眼里，你不是病人，是一笔坏账。",
+      "flavorText": "你看到了那个冰冷的真相：在这个国家，贫穷本身就是一种疾病，而且没有医保。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "美国医疗系统将无力支付者视为需要处置的'废物'而非需要救治的人。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.06_PATIENT_DUMPING",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": { "red": 15 }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_06_HOSPITAL_DUMP",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [
+      "https://www.nytimes.com/2007/06/11/us/11hospital.html"
+    ],
+    "relatedEvents": ["EVT_H28_INSULIN", "EVT_H41_DIY_DENTIST", "EVT_H49_AMBULANCE"]
+  }
+}

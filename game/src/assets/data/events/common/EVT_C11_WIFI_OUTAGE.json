@@ -1,0 +1,91 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C11_WIFI_OUTAGE",
+  "title": "断网恐慌",
+  "category": "COMMON",
+  "series": "现代生活",
+  "layer": {
+    "background": "/assets/scenes/common/bg_living_room.png",
+    "foreground": "/assets/events/common/evt_router.png"
+  },
+  "conditions": {
+    "requiredClass": ["HOMELESS", "WORKER", "MIDDLE", "CAPITALIST"],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "WiFi断了。你本能地刷新、重启、拔插，但网络依然红色。没有网络的世界突然变得陌生而寂静。",
+  "historicalNote": "互联网已成为基础设施，美国仍有数千万人缺乏稳定宽带接入。",
+  "options": {
+    "A": {
+      "label": "立即升级更贵的套餐",
+      "roast": "用钱买可靠性，资本主义的安全感。",
+      "flavorText": "你相信贵的就是好的，这是你的消费哲学。",
+      "ideology": "新自由主义/市场解决",
+      "archiveCommentary": "将基础设施可靠性商品化，让穷人用不起稳定服务。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": { "old": 3 }
+      }
+    },
+    "B": {
+      "label": "去图书馆蹭网",
+      "roast": "公共服务最后的避难所，直到它们被削减预算。",
+      "flavorText": "你找到了替代方案，尽管不方便。",
+      "ideology": "犬儒主义/适应",
+      "archiveCommentary": "公共服务填补了市场失败的空白。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "买移动热点备用",
+      "roast": "双重付费，双重保障，这就是市场逻辑。",
+      "flavorText": "你为安全感付费，即使这意味着冗余支出。",
+      "ideology": "消费主义/冗余消费",
+      "archiveCommentary": "市场创造了需求，然后卖出解决方案。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": { "wolf": 3 }
+      }
+    },
+    "D": {
+      "label": "互联网应该是公共事业",
+      "roast": "说得对，但你的ISP still 在收钱。",
+      "flavorText": "你看到了基础设施私有化的问题，但无解。",
+      "ideology": "激进左翼/公共品",
+      "archiveCommentary": "互联网基础设施的私有化创造了新的数字鸿沟。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C11_DIGITAL_DIVIDE",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": { "red": 15 }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": ["EVT_C10_PHONE_SCREEN", "EVT_C12_APP_TRACKING"]
+  }
+}

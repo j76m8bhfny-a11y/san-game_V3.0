@@ -1,0 +1,100 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_MIDDLE_12_FAKE_SERVICE_DOG",
+  "title": "假冒的“服务犬”",
+  "category": "MIDDLE",
+  "series": "基础生存",
+  "layer": {
+    "background": "/assets/scenes/bg_fancy_restaurant.png",
+    "foreground": "/assets/events/evt_fake_service_dog.png"
+  },
+  "conditions": {
+    "requiredClass": [
+      "MIDDLE"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "高档餐厅里，一个贵妇牵着一只在那乱叫的泰迪。服务员刚想阻拦，她指着狗身上的亚马逊买来的红马甲吼道：“这是我的情感支持动物(ESA)！你敢歧视残疾人？”",
+  "historicalNote": "基于美国社会现实事件改编。",
+  "options": {
+    "A": {
+      "label": "关爱心理健康",
+      "roast": "侮辱。她的心理疾病叫“由于不能带狗炫耀而产生的焦虑”。",
+      "flavorText": "你告诉自己要坚持，要相信努力就能改变命运。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "这种选择代表了系统最希望穷人持有的心态：自责、内卷、永不质疑结构。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "points": {
+          "old": 3
+        },
+        "insightGain": 8
+      }
+    },
+    "B": {
+      "label": "别惹事，万一真是呢",
+      "roast": "真个鬼。真的服务犬受过训练，不会对着牛排流口水。",
+      "flavorText": "你选择了最安全、最不需要思考的路径。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "麻木不是愚蠢，而是生存策略。在一个无法胜利的系统中，不抱希望就不会失望。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "points": {},
+        "insightGain": 1
+      }
+    },
+    "C": {
+      "label": "法律保护ESA的通行权",
+      "roast": "法盲。ADA法律只保护服务犬，不保护你买的“特权背心”。",
+      "flavorText": "你决定花钱解决这个让你不安的问题。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "消费主义提供了一个完美的出口：把系统性问题转化为个人问题，然后用钱解决。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "points": {
+          "wolf": 3
+        },
+        "insight": -10
+      }
+    },
+    "D": {
+      "label": "对残疾人权利的消费",
+      "roast": "特权滥用。为了自己方便，让真正需要导盲犬的人被污名化。",
+      "flavorText": "你看到了表象之下的真相，尽管知道这会付出代价。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "真相的代价总是高昂的，但沉默的代价更高。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "points": {
+          "red": 15
+        },
+        "insight": -10
+      },
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.M12_FAKE_SERVICE_DOG"
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_MIDDLE_12_FAKE_SERVICE_DOG",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": []
+  }
+}

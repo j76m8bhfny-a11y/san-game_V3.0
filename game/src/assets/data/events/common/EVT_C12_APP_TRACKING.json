@@ -1,0 +1,91 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C12_APP_TRACKING",
+  "title": "算法推送",
+  "category": "COMMON",
+  "series": "技术监控",
+  "layer": {
+    "background": "/assets/scenes/common/bg_phone_screen.png",
+    "foreground": "/assets/events/common/evt_algorithm.png"
+  },
+  "conditions": {
+    "requiredClass": ["HOMELESS", "WORKER", "MIDDLE", "CAPITALIST"],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 8,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "你刚和朋友聊到想换工作，打开社交媒体就看到招聘广告。是巧合，还是你的手机一直在听？",
+  "historicalNote": "科技公司的数据收集和算法推荐已成为常态，隐私边界日益模糊。",
+  "options": {
+    "A": {
+      "label": "这就是便利的代价",
+      "roast": "隐私换便利，你还在觉得这笔交易划算吗？",
+      "flavorText": "你接受了监控作为现代生活的一部分。",
+      "ideology": "新自由主义/隐私商品化",
+      "archiveCommentary": "将隐私让渡自然化，让人们相信监控是正常的。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": { "old": 3 }
+      }
+    },
+    "B": {
+      "label": "关掉权限又能怎样",
+      "roast": "关掉一个，还有一百个在偷。",
+      "flavorText": "你感到无力，系统太庞大，个人太渺小。",
+      "ideology": "犬儒主义/顺从",
+      "archiveCommentary": "面对系统性监控的无力感。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "买隐私保护软件",
+      "roast": "用消费解决监控，监控资本主义的双重胜利。",
+      "flavorText": "你相信技术对抗技术，即使这是一场军备竞赛。",
+      "ideology": "消费主义/技术解决方案",
+      "archiveCommentary": "将隐私保护商品化，创造新的市场。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": { "wolf": 3 }
+      }
+    },
+    "D": {
+      "label": "这是监控资本主义的日常",
+      "roast": "说得对，但你 still 在用那个App。",
+      "flavorText": "你明白你被剥削，但你无法退出。",
+      "ideology": "激进左翼/技术批判",
+      "archiveCommentary": "监控资本主义将行为数据转化为利润，人类成为原材料。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C12_SURVEILLANCE_CAPITALISM",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": { "red": 15 }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": ["EVT_C10_PHONE_SCREEN", "EVT_C11_WIFI_OUTAGE"]
+  }
+}

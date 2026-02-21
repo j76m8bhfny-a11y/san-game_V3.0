@@ -1,0 +1,94 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_H13_CASHLESS",
+  "title": "无现金社会",
+  "category": "HOMELESS",
+  "series": "数字排斥",
+  "layer": {
+    "background": "/assets/scenes/bg_modern_mall.png",
+    "foreground": "/assets/events/evt_no_cash_sign.png"
+  },
+  "conditions": {
+    "requiredClass": ["HOMELESS"],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "繁华的商业区，一个乞丐跪在地上乞讨。路过的精英们拿着最新款iPhone，统一摆手冷笑："Sorry, no cash(没现金)。"",
+  "historicalNote": "瑞典成为全球首个接近无现金的社会，但同时估计有约100万人无法使用数字支付系统。",
+  "options": {
+    "A": {
+      "label": "科技强国，支付便捷",
+      "roast": "赢麻了！看着别人用手机支付，你饿肚子的样子更有科技感了。",
+      "flavorText": "你为技术进步感到自豪。这是文明的方向。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "技术乐观主义让穷人相信数字化对他们也是'进步'。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 8,
+        "points": { "old": 3 }
+      }
+    },
+    "B": {
+      "label": "真没钱，谁还带钱包",
+      "roast": "实话。穷人唯一的收入来源被支付宝们消灭了。",
+      "flavorText": "你理解他们的处境。毕竟现在真的很少人用现金了。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "接受被新技术排斥的现实，这是数字鸿沟的后果。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "电子支付减少犯罪",
+      "roast": "没错，也没人抢你了，因为你比抢劫犯还穷。",
+      "flavorText": "你开始为无现金社会辩护。安全确实很重要。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "用'安全'作为借口，将穷人排除在数字金融系统之外。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": { "wolf": 3 }
+      }
+    },
+    "D": {
+      "label": "你在数字世界已死",
+      "roast": "系统性抹杀。没有二维码，你就不算人类，你是Bug。",
+      "flavorText": "你看到了那个可怕的真相：在数字社会中，没有数字身份的人被系统性抹除了。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "无现金社会将最脆弱的人群变成了'数字幽灵'。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.13_THE_UNBANKED",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": { "red": 15 }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_13_CASHLESS",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [
+      "https://www.economist.com/finance-and-economics/2023/06/01/what-happens-when-countries-go-cashless"
+    ],
+    "relatedEvents": ["EVT_H43_DIGITAL_WALL"]
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_H02_TOILET",
+  "title": "上锁的厕所",
+  "category": "HOMELESS",
+  "series": "基础生存",
+  "layer": {
+    "background": "/assets/scenes/bg_cafe_street.png",
+    "foreground": "/assets/events/evt_keypad_lock.png"
+  },
+  "conditions": {
+    "requiredClass": ["HOMELESS"],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "你拉肚子快憋不住了，冲进路边的星巴克借厕所。店员冷冷指着密码锁：“密码在收据上，不买别用。” 你兜里只有两个钢镚。",
+  "historicalNote": "2018年费城星巴克因拒绝非顾客使用厕所引发全国抗议。此后越来越多的商家用密码锁限制厕所。",
+  "options": {
+    "A": {
+      "label": "商业契约，付费天经地义",
+      "roast": "拉裤兜里事小，失信事大。你虽然臭了，但灵魂是香的。",
+      "flavorText": "你告诉自己要尊重商业规则，即便这意味着尴尬的结果。规则就是规则。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "将基本人权商品化后，连上厕所都要先证明自己的购买力。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 8,
+        "points": { "old": 3 }
+      }
+    },
+    "B": {
+      "label": "快走吧，别惹麻烦",
+      "roast": "跑得挺快。“怂”是你最好的护身符。",
+      "flavorText": "你选择了退让。虽然尴尬，但至少没有冲突。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "逃避是一种生存本能，但系统正在逐步消除所有可以逃避的空间。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "设门槛是为了防吸毒",
+      "roast": "都在憋屎了还替老板操心？资本家就需要你这种自带干粮的保安。",
+      "flavorText": "你决定相信这套说辞。毕竟，安全总是第一位的。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "用'安全'作为借口，将最脆弱的人群排除在基本设施之外。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": { "wolf": 3 }
+      }
+    },
+    "D": {
+      "label": "针对穷人的过滤器",
+      "roast": "一针见血。可惜清醒并不能止泻，这下尴尬了。",
+      "flavorText": "你明白这个设计的目的：把负担不起消费的人筛选出去。你也明白这意味着什么。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "城市空间正在变成付费专区，而穷人被系统性地物理排斥。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.02_STARBUCKS_ARREST",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": { "red": 15 }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_02_TOILET",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [
+      "https://www.nytimes.com/2018/04/19/business/starbucks-arrest-philadelphia.html"
+    ],
+    "relatedEvents": ["EVT_H33_TOILET_CRIME"]
+  }
+}

@@ -30,6 +30,8 @@ import { NewsTicker } from './components/game/Crypto/NewsTicker';
 import { CryptoNewsPopup } from './components/game/Crypto/CryptoNewsPopup';
 import JailOverlay from './components/game/JailOverlay';
 import { InsuranceModal } from './components/game/InsuranceModal'; // [NEW] 引入组件
+import { SystemGazeOverlay } from './components/SystemGazeOverlay'; // [NEW] 系统凝视
+import { ArchiveMilestoneModal } from './components/ArchiveMilestoneModal'; // [NEW] 里程碑弹窗
 
 
 const App: React.FC = () => {
@@ -131,6 +133,8 @@ const App: React.FC = () => {
   }
 
   return (
+    <>
+    <SystemGazeOverlay>
     <div className="relative w-screen h-screen overflow-hidden bg-black text-green-500 font-mono select-none">
       <GlobalAtmosphere />
 
@@ -229,6 +233,11 @@ const App: React.FC = () => {
       <TooltipLayer />
       
     </div>
+    </SystemGazeOverlay>
+    
+    {/* 里程碑弹窗 - 在SystemGazeOverlay之外 */}
+    <ArchiveMilestoneModal />
+    </>
   );
 };
 

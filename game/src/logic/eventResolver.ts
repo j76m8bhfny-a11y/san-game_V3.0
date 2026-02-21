@@ -1,6 +1,7 @@
 import { GameState, GameEvent, EventOption, ActionCode, GameAction } from '@/types/schema';
-import { executeAction } from './ActionExecutor';
+import { executeAction } from './ActionExecutorEnhanced'; // 改用增强版
 import { produce } from 'immer';
+import { useGameStore } from '@/store/useGameStore';
 
 // 检查事件触发条件
 export const checkCondition = (state: GameState, condition: GameEvent['conditions']): boolean => {
@@ -26,34 +27,107 @@ export const checkCondition = (state: GameState, condition: GameEvent['condition
   return true;
 };
 
+// 选项类型推断
+function inferOptionType(option: EventOption, eventOptions: GameEvent['options']): 'A' | 'B' | 'C' | 'D' {
+  if (eventOptions.A === option) return 'A';
+  if (eventOptions.B === option) return 'B';
+  if (eventOptions.C === option) return 'C';
+  return 'D';
+}
+
 // ✅ 使用 Immer 简化状态合并逻辑
-export const resolveOption = (state: GameState, option: EventOption): { updates: any; logs: string[]; nextEventId?: string } => {
+export const resolveOption = (
+  state: GameState, 
+  option: EventOption, 
+  event?: GameEvent
+): { 
+  updates: any; 
+  logs: string[]; 
+  nextEventId?: string;
+  modifiers?: string[];
+  archiveUnlocked?: {
+    archiveId: string;
+    isNew: boolean;
+    milestoneTriggered: boolean;
+  };
+} => {
   const logs: string[] = [];
+  const modifiers: string[] = [];
+  let archiveUnlocked: { archiveId: string; isNew: boolean; milestoneTriggered: boolean } | undefined;
+  
+  // 推断选项类型
+  const optionType = event ? inferOptionType(option, event.options) : 'A';
+  const isDOption = optionType === 'D';
   
   // 使用 Immer 的 produce 函数，基于 state 创建 draft，Immer 会自动生成不可变更新
   const updates = produce(state, (draft) => {
     // 1. 基础数值变动 (HP, SAN)
     if (option.effects.hp) {
-      const action: GameAction = { code: ActionCode.MODIFY_STAT, params: { target: 'hp', value: option.effects.hp } };
-      const res = executeAction(state, action);
+      const action: GameAction = { 
+        code: ActionCode.MODIFY_STAT, 
+        params: { target: 'hp', value: option.effects.hp } 
+      };
+      // 传递上下文以应用档案奖励和 System Gaze
+      const res = executeAction(state, action, {
+        optionType,
+        eventData: {
+          scaling: option.effects.scaling,
+          isDOption,
+          archiveId: option.archiveId
+        }
+      });
       
       if (res.updates.vitality?.metrics) {
         Object.assign(draft.vitality.metrics, res.updates.vitality.metrics);
       }
       logs.push(...res.logs);
+      if (res.modifiers) modifiers.push(...res.modifiers);
     }
 
     if (option.effects.insight) {
-      const action: GameAction = { code: ActionCode.MODIFY_STAT, params: { target: 'insight', value: option.effects.insight } };
-      const res = executeAction(state, action);
+      const action: GameAction = { 
+        code: ActionCode.MODIFY_STAT, 
+        params: { target: 'insight', value: option.effects.insight } 
+      };
+      const res = executeAction(state, action, {
+        optionType,
+        eventData: {
+          scaling: option.effects.scaling,
+          isDOption,
+          archiveId: option.archiveId
+        }
+      });
       
       if (res.updates.vitality?.metrics) {
         Object.assign(draft.vitality.metrics, res.updates.vitality.metrics);
       }
       logs.push(...res.logs);
+      if (res.modifiers) modifiers.push(...res.modifiers);
     }
 
-    // 2. 获得物品
+    // 2. 金币变动
+    if (option.effects.gold) {
+      const action: GameAction = { 
+        code: ActionCode.MODIFY_STAT, 
+        params: { target: 'gold', value: option.effects.gold } 
+      };
+      const res = executeAction(state, action, {
+        optionType,
+        eventData: {
+          scaling: option.effects.scaling,
+          isDOption,
+          archiveId: option.archiveId
+        }
+      });
+      
+      if (res.updates.vitality?.metrics) {
+        Object.assign(draft.vitality.metrics, res.updates.vitality.metrics);
+      }
+      logs.push(...res.logs);
+      if (res.modifiers) modifiers.push(...res.modifiers);
+    }
+
+    // 3. 获得物品
     if (option.effects.items?.length) {
       option.effects.items.forEach(item => {
         // 防御性检查：确保 item 和必要字段存在
@@ -67,15 +141,38 @@ export const resolveOption = (state: GameState, option: EventOption): { updates:
       });
     }
 
-    // 3. 触发后续 (Archive)
+    // 4. 触发后续 (Archive)
     if (option.archiveId) {
-      if (!draft.unlockedArchives.includes(option.archiveId)) {
+      const wasUnlocked = state.unlockedArchives.includes(option.archiveId);
+      
+      if (!wasUnlocked) {
         draft.unlockedArchives.push(option.archiveId);
-        logs.push(`解锁档案`);
+        logs.push(`解锁档案: ${option.archiveId}`);
+        
+        // 检查里程碑
+        const newCount = draft.unlockedArchives.length;
+        const isMilestone = newCount % 3 === 0 || [10, 25, 40].includes(newCount);
+        
+        archiveUnlocked = {
+          archiveId: option.archiveId,
+          isNew: true,
+          milestoneTriggered: isMilestone
+        };
+        
+        // 触发全局状态更新
+        setTimeout(() => {
+          useGameStore.getState().unlockArchive(option.archiveId!);
+        }, 0);
+      } else {
+        archiveUnlocked = {
+          archiveId: option.archiveId,
+          isNew: false,
+          milestoneTriggered: false
+        };
       }
     }
 
-    // 4. 政治倾向 (Points)
+    // 5. 政治倾向 (Points)
     if (option.effects.points) {
       const currentPoints = draft.vitality.identity.points;
       
@@ -97,5 +194,5 @@ export const resolveOption = (state: GameState, option: EventOption): { updates:
     }
   });
 
-  return { updates, logs };
+  return { updates, logs, modifiers, archiveUnlocked };
 };

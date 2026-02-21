@@ -1,0 +1,91 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C01_HEAT_WAVE",
+  "title": "极端高温",
+  "category": "COMMON",
+  "series": "气候变化",
+  "layer": {
+    "background": "/assets/scenes/common/bg_hot_street.png",
+    "foreground": "/assets/events/common/evt_heat_wave.png"
+  },
+  "conditions": {
+    "requiredClass": ["HOMELESS", "WORKER", "MIDDLE", "CAPITALIST"],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 8,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "气象台发布红色高温预警，气温将达45度。城市仿佛一个巨大的烤箱，沥青路面开始融化。",
+  "historicalNote": "2021年北美热浪导致超过1400人死亡，热浪已成为最致命的自然灾害之一。",
+  "options": {
+    "A": {
+      "label": "开空调，保持生产力",
+      "roast": "很好，你的电费账单会让你凉快下来的。",
+      "flavorText": "你相信现代技术能解决一切问题，包括天气。",
+      "ideology": "新自由主义/技术乐观主义",
+      "archiveCommentary": "将气候危机个人化，相信消费能解决问题。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": { "old": 3 }
+      }
+    },
+    "B": {
+      "label": "躲进商场蹭空调",
+      "roast": "聪明，把公共空间当避难所用。",
+      "flavorText": "你学会了在系统缝隙中生存，这是一种必要的机智。",
+      "ideology": "犬儒主义/实用主义",
+      "archiveCommentary": "穷人的生存智慧：利用一切可用资源。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "买冷饮降降温",
+      "roast": "消费主义降温法：钱花光了心就凉了。",
+      "flavorText": "你决定用购物来缓解焦虑，这是训练有素的反应。",
+      "ideology": "消费主义/即时满足",
+      "archiveCommentary": "用消费应对气候危机，是一种精心设计的转移策略。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": { "wolf": 3 }
+      }
+    },
+    "D": {
+      "label": "这是资本主义的温室效应",
+      "roast": "说得对，但热浪不会因为你的觉悟而降低一度。",
+      "flavorText": "你看到了背后的系统性问题，但此刻你更需要一个风扇。",
+      "ideology": "激进左翼/生态马克思主义",
+      "archiveCommentary": "气候危机是资本主义无限积累的必然结果。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C01_CLIMATE_APARTHEID",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": { "red": 15 }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": ["https://www.ipcc.ch/report/ar6/wg1/"],
+    "relatedEvents": ["EVT_C02_FLOOD", "EVT_C03_WILD_FIRE"]
+  }
+}

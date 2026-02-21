@@ -117,19 +117,19 @@ export const BankSystem: GameSystem = {
             result.logs.push(`【暴力催收】讨债人打断了你的肋骨！`);
             
             // 读取配置伤害值和数值下限
-            const { hpDamage, sanDamage } = collection.violence;
-            const { minStat } = Config.system.caps;
+            const { hpDamage, insightGain } = collection.violence;
+            const { minStat, maxStat } = Config.system.caps;
             
-            // 获取当前 HP/SAN（优先读取 updates 中的值，如果尚未设置则读取 current）
+            // 获取当前 HP/Insight（优先读取 updates 中的值，如果尚未设置则读取 current）
             const currentHp = (result.updates.vitality as any)?.metrics?.hp ?? vitality.metrics.hp;
-            const currentSan = (result.updates.vitality as any)?.metrics?.san ?? vitality.metrics.san;
+            const currentInsight = (result.updates.vitality as any)?.metrics?.insight ?? vitality.metrics.insight;
             
             result.updates.vitality = {
                ...result.updates.vitality,
                metrics: {
                  ...(result.updates.vitality as any)?.metrics,
                  hp: Math.max(minStat, currentHp - hpDamage),
-                 san: Math.max(minStat, currentSan - sanDamage)
+                 insight: Math.min(maxStat, currentInsight + insightGain)
                }
             } as any;
             

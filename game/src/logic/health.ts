@@ -75,7 +75,7 @@ export const checkDailyDisease = (state: GameState, allDiseases: Disease[] = [])
 
   // -- 修正因子 D: 状态虚弱 --
   const isWeakBody = metrics.hp < metrics.maxHp * modifiers.weakBodyThresholdPct;
-  const isWeakMind = metrics.san < metrics.maxSan * modifiers.weakSanThresholdPct;
+  const isWeakMind = metrics.insight < metrics.maxInsight * modifiers.weakSanThresholdPct;
 
   if (isWeakBody) risk *= modifiers.weakBodyMultiplier;
   if (isWeakMind) risk *= modifiers.weakSanMultiplier;

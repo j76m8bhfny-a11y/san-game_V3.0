@@ -44,11 +44,11 @@ export const EmploymentSystem: GameSystem = {
           result.notes.push(layoffConfig.roast);
 
           // 应用SAN惩罚
-          if (layoffConfig.effects?.san) {
-            const newSan = Math.max(0, vitality.metrics.san + layoffConfig.effects.san);
+          if (layoffConfig.effects?.insight) {
+            const newInsight = Math.max(0, vitality.metrics.insight + layoffConfig.effects.insight);
             (result.updates.vitality as any).metrics = {
               ...((result.updates.vitality as any)?.metrics || {}),
-              san: newSan
+              insight: newInsight
             };
           }
 

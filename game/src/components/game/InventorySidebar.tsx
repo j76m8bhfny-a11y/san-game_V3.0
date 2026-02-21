@@ -188,7 +188,7 @@ export const InventorySidebar: React.FC = () => {
                    );
                  })()}
                  
-                 {selectedItem.effects?.san !== undefined && <div className={selectedItem.effects.san > 0 ? 'text-amber-500' : 'text-purple-500'}>灵视: {selectedItem.effects.san > 0 ? '+' : ''}{selectedItem.effects.san}</div>}
+                 {selectedItem.effects?.insight !== undefined && <div className={selectedItem.effects.insight > 0 ? 'text-amber-500' : 'text-purple-500'}>灵视: {selectedItem.effects.insight > 0 ? '+' : ''}{selectedItem.effects.insight}</div>}
                  {selectedItem.type === ItemType.KEY && <div className="text-amber-300 flex items-center gap-1"><Key size={10}/> {t('inventory.details.unlockHint')}</div>}
               </div>
             </div>

@@ -68,7 +68,7 @@ export function example2_DeterministicOnly() {
   console.log(`基础存活率: ${(baseline.baseRate * 100).toFixed(1)}%`);
   console.log('各项评分:');
   console.log(`  HP: ${(baseline.breakdown.hp * 100).toFixed(0)}%`);
-  console.log(`  SAN: ${(baseline.breakdown.san * 100).toFixed(0)}%`);
+  console.log(`  INS: ${(baseline.breakdown.insight * 100).toFixed(0)}%`);
   console.log(`  饥饿: ${(baseline.breakdown.hunger * 100).toFixed(0)}%`);
   console.log(`  金钱: ${(baseline.breakdown.gold * 100).toFixed(0)}%`);
   console.log('环境修正:', baseline.breakdown);

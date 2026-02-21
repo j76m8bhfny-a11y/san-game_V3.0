@@ -22,7 +22,7 @@
       "weight": 0.25,
       "sources": [
         { "type": "housing", "attribute": "comfortLevel", "weight": 0.35 },
-        { "type": "consumable", "tag": "comfort", "attribute": "sanRestore", "weight": 0.25 },
+        { "type": "consumable", "tag": "comfort", "attribute": "insightRestore", "weight": 0.25 },
         { "type": "faith", "attribute": "sanctuaryLevel", "weight": 0.25 },
         { "type": "buff", "attribute": "sanBonus", "weight": 0.15 }
       ],

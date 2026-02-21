@@ -29,7 +29,7 @@ export interface DailyRoutineConfig {
 
 export interface DailyEffect {
   hpChange: number;
-  sanChange: number;
+  insightChange: number;
   log: string;
 }
 
@@ -68,10 +68,10 @@ export function isDailyEffect(obj: unknown): obj is DailyEffect {
     obj !== null &&
     !Array.isArray(obj) &&
     'hpChange' in obj &&
-    'sanChange' in obj &&
+    'insightChange' in obj &&
     'log' in obj &&
     typeof (obj as DailyEffect).hpChange === 'number' &&
-    typeof (obj as DailyEffect).sanChange === 'number' &&
+    typeof (obj as DailyEffect).insightChange === 'number' &&
     typeof (obj as DailyEffect).log === 'string'
   );
 }

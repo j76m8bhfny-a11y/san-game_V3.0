@@ -57,7 +57,7 @@ export type HousingType = 'RENT' | 'OWN';
 interface GameActionBase {
   code: ActionCode;
   params: {
-    target?: 'hp' | 'san' | 'gold' | 'maxHp';
+    target?: 'hp' | 'insight' | 'gold' | 'maxHp' | 'maxInsight';
     value?: number;
     min?: number;
     max?: number;
@@ -74,7 +74,7 @@ interface GameActionBase {
 export const GameActionSchema: z.ZodType<GameActionBase> = z.lazy(() => z.object({
   code: z.nativeEnum(ActionCode),
   params: z.object({
-    target: z.enum(['hp', 'san', 'gold', 'maxHp']).optional(),
+    target: z.enum(['hp', 'insight', 'gold', 'maxHp', 'maxInsight']).optional(),
     value: z.number().optional(),
     min: z.number().optional(),
     max: z.number().optional(),
@@ -164,7 +164,7 @@ export const JobSchema = z.object({
   // 薪资与消耗 (周为单位)
   baseSalary: z.number(), 
   hpCost: z.number(),     // 每周消耗 HP
-  sanCost: z.number(),    // 每周消耗 灵视值 (Insight) - 高灵视更容易看到真相，但也更难融入世俗工作
+  insightCost: z.number(),    // 每周消耗 灵视值 (Insight) - 高灵视更容易看到真相，但也更难融入世俗工作
 
   // 限制条件
   requiresHousing: z.boolean(), // 是否需要本地房产
@@ -197,7 +197,7 @@ export const BillSchema = z.object({
   triggerCondition: z.object({
     minGold: z.number().optional(),
     maxGold: z.number().optional(),
-    minSan: z.number().optional(),
+    minInsight: z.number().optional(),
     requiredClass: z.array(z.nativeEnum(PlayerClass)).optional(),
     isDebtOnly: z.boolean().optional(),
     hasVehicle: z.string().optional(),
@@ -211,7 +211,7 @@ export const BillSchema = z.object({
   roast: z.string().optional(),
   effects: z.object({
     hp: z.number().optional(),
-    san: z.number().optional(),
+    insight: z.number().optional(),
   }).optional(),
   flavorText: z.string(),
 });
@@ -225,7 +225,7 @@ export const EventOptionSchema = z.object({
     scaling: z.nativeEnum(ScalingMode).optional(),
     hp: z.number().optional(),
     gold: z.number().optional(),
-    san: z.number().optional(),
+    insight: z.number().optional(),
     points: z.object({
       red: z.number().optional(),
       wolf: z.number().optional(),
@@ -252,8 +252,8 @@ export const EventSchema = z.object({
   eventImage: z.string().optional(),
   text: z.string(), // 单一题干文本，不再区分高低灵视
   conditions: z.object({
-    minSan: z.number().optional(),  // 最小灵视值要求（觉醒度不足无法触发）
-    maxSan: z.number().optional(),  // 最大灵视值限制（过于觉醒可能看不到某些世俗事件）
+    minInsight: z.number().optional(),  // 最小灵视值要求（觉醒度不足无法触发）
+    maxInsight: z.number().optional(),  // 最大灵视值限制（过于觉醒可能看不到某些世俗事件）
     requiredClass: z.array(z.nativeEnum(PlayerClass)).optional(),
     hasItem: z.string().optional(),
     region: z.nativeEnum(RegionID).optional(),
@@ -263,7 +263,7 @@ export const EventSchema = z.object({
     B: EventOptionSchema,
     C: EventOptionSchema,
     D: EventOptionSchema.extend({
-      sanLock: z.number().default(70),
+      insightLock: z.number().default(70),
       isGlitched: z.boolean().default(false),
     }),
   }),
@@ -279,8 +279,8 @@ export const EndingSchema = z.object({
   conditions: z.object({
     minTurn: z.number().optional(), // ✅ Day -> Turn
     maxHp: z.number().optional(),
-    minSan: z.number().optional(),  // 最小灵视值要求
-    maxSan: z.number().optional(),  // 最大灵视值限制
+    minInsight: z.number().optional(),  // 最小灵视值要求
+    maxInsight: z.number().optional(),  // 最大灵视值限制
     minGold: z.number().optional(),
     maxGold: z.number().optional(),
     requiredClass: z.nativeEnum(PlayerClass).optional(),
@@ -346,9 +346,9 @@ export interface FaithData {
   joinCost?: { // 改为可选，因为新逻辑下可能不再通过钱直接加入
     gold?: number;
     cleanInventory?: boolean;
-    maxSan?: number;
+    maxInsight?: number;
     minHp?: number;
-    minSan?: number;
+    minInsight?: number;
   };
   
   rite: {
@@ -357,7 +357,7 @@ export interface FaithData {
     baseSanReward?: number;
     baseHpReward?: number;
     hpCost?: number;
-    sanCost?: number;
+    insightCost?: number;    // 仪式消耗的灵视值
     goldReward?: number;
     redPointReward?: number;
   };
@@ -371,7 +371,7 @@ export interface FaithData {
 export type FaithDebuffEffect = {
   incomeMultiplier?: number;
   hpDrain?: number;
-  sanDrain?: number;
+  insightDrain?: number;   // 灵视值流失（Debuff效果）
   goldDrain?: number;
 } & Record<string, number | boolean | string>;
 
@@ -462,8 +462,8 @@ export interface LedgerRecord {
 export interface VitalityMetrics {
   hp: number;
   maxHp: number;
-  san: number;
-  maxSan: number;
+  insight: number;        // 灵视值（原SAN）
+  maxInsight: number;     // 最大灵视值
   gold: number;
   creditScore: number;
   // ✅ 新增
@@ -491,14 +491,14 @@ export interface SurvivalBuff {
   effects: {
     perTurn?: { 
       hp?: number; 
-      san?: number; 
+      insight?: number; 
       gold?: number;
       stackMultiplier?: number; // 层数倍率（毒素累积每层额外扣血）
       ignoreHpDecay?: number; // 忽视HP流失量（止痛药）
     };
     onExpire?: { 
       hp?: number; 
-      san?: number; 
+      insight?: number; 
       gold?: number;
       trigger?: string; // 触发事件ID
       maxHpBonus?: number; // MaxHP恢复值（通常为0）
@@ -715,7 +715,7 @@ export const ItemSchema = z.object({
   
   effects: z.object({
     hp: z.number().optional(),
-    san: z.number().optional(),
+    insight: z.number().optional(),
     maxHp: z.number().optional(),
     addiction: z.number().optional(),   // 增加成瘾度
     resistance: z.number().optional(),  // 增加耐药性
@@ -753,7 +753,7 @@ export const DiseaseSchema = z.object({
   severity: z.number(), // 1-10
   effects: z.object({
     hpDrain: z.number().optional(),      // 每周扣血
-    sanDrain: z.number().optional(),     // 每周扣San
+    insightGain: z.number().optional(),  // 每周增加灵视（疾病让人看透生命）
     statDebuff: z.string().optional(),   // 特殊Debuff标识
   }),
   cureCondition: z.object({
@@ -779,7 +779,7 @@ export const MedicalServiceSchema = z.object({
     cureDiseases: z.array(z.string()).optional(), // 治愈特定ID的病
     cureType: z.array(z.enum(['ACUTE', 'CHRONIC', 'MENTAL'])).optional(), // 治愈某类病
     hpRestore: z.number().optional(),
-    sanRestore: z.number().optional(),
+    insightRestore: z.number().optional(),
     addiction: z.number().optional(), // 增加成瘾度
     hpCapMod: z.number().optional(),  // 修改生命上限 (卖肾-30)
     statMod: z.record(z.string(), z.number()).optional(), // 其他属性修改
@@ -846,7 +846,7 @@ export interface ActiveJobState {
   id: string;
   title: string;
   baseSalary: number;
-  sanCost: number;
+  insightCost: number;
   region: RegionID;
 }
 

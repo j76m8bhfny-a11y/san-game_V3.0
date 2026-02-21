@@ -9,7 +9,7 @@ import rules from '@/assets/data/rules/vitalityRules.json';
  * - 中灵视 (30-70): 正常显示
  * - 高灵视 (>70): 文字闪烁微光，觉醒状态
  */
-export const SanityText: React.FC<{ text: string; san: number }> = ({ text, san }) => {
+export const SanityText: React.FC<{ text: string; insight: number }> = ({ text, insight }) => {
   // ✅ 修复：空值保护
   if (!text) return null;
 
@@ -18,9 +18,9 @@ export const SanityText: React.FC<{ text: string; san: number }> = ({ text, san 
   const insightHigh = rules.visuals?.thresholds?.insightHigh ?? 70;
   
   // 低灵视：文字模糊，被遮蔽
-  const isObscured = san <= insightLow;
+  const isObscured = insight <= insightLow;
   // 高灵视：觉醒辉光
-  const isAwakened = san >= insightHigh;
+  const isAwakened = insight >= insightHigh;
   
   const content = useMemo(() => {
     // 高灵视：偶尔有闪烁效果（觉醒者看到的世界不稳定）

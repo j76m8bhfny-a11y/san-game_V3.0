@@ -6,7 +6,7 @@
     "sellPriceRate": { "slums": 0.1, "default": 0.6 },
     "regions": ["SLUMS"],
     "requiredClass": "HOMELESS",
-    "effects": { "san": -2 },
+    "effects": { "insight": -2 },
     "tags": ["VEHICLE", "TIER_1", "ILLEGAL"],
     "restrictions": {
       "blockedRegions": ["SUBURBS", "DOWNTOWN"],

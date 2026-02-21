@@ -50,7 +50,7 @@
       "requiredClass": ["HOMELESS"]
     },
     "effects": {
-      "san": -20
+      "insightGain": 20
     },
     "flavorText": "网红为了流量给了你$200，强迫你对着镜头痛哭感谢上帝。视频获得了100万点赞，你被拍得像个滑稽的乞丐。",
     "news": {
@@ -111,7 +111,7 @@
       "minGold": 0
     },
     "effects": {
-      "san": -5
+      "insightGain": 5
     },
     "flavorText": "因为推着购物车走得慢，红灯亮时你还在路中间。警察立刻开了一张罚单，因为你没钱交，这很快会变成逮捕令。",
     "news": {
@@ -619,7 +619,7 @@
     },
     "effects": {
       "hp": -10,
-      "san": -5
+      "insightGain": 5
     },
     "flavorText": "你凌晨1点下班，早上5点又要上班。在极度疲劳驾驶中，你撞上了路边护栏。",
     "news": {
@@ -1413,7 +1413,7 @@
       "requiredClass": ["HOMELESS", "WORKER", "MIDDLE", "CAPITALIST"]
     },
     "effects": {
-      "san": 50
+      "insightClear": 50
     },
     "flavorText": "全美疯抢15亿奖池。你花$20买的彩票竟然中了三等奖！看来上帝今天确实看了你一眼。",
     "news": {
@@ -1641,7 +1641,7 @@
     },
     "effects": {
       "hp": -5,
-      "san": -10
+      "insightGain": 10
     },
     "image": "/assets/bills/police_ticket.png",
     "flavorText": "警察拦下你，发现你没有驾照。",
@@ -1663,7 +1663,7 @@
     },
     "effects": {
       "hp": -10,
-      "san": -20
+      "insightGain": 20
     },
     "image": "/assets/bills/police_arrest.png",
     "flavorText": "警察一眼识破了你的假驾照。",
@@ -1684,7 +1684,7 @@
       "noInsuranceType": "AUTO"
     },
     "effects": {
-      "san": -10
+      "insightGain": 10
     },
     "image": "/assets/bills/insurance_ticket.png",
     "flavorText": "你有车有驾照，但没有保险。",
@@ -1706,7 +1706,7 @@
     },
     "effects": {
       "hp": -30,
-      "san": -15
+      "insightGain": 15
     },
     "image": "/assets/bills/car_crash.png",
     "flavorText": "你撞上了护栏，没有保险意味着全额自费。",
@@ -1727,7 +1727,7 @@
       "overdueWeeks": 2
     },
     "effects": {
-      "san": -20
+      "insightGain": 20
     },
     "image": "/assets/bills/tow_truck.png",
     "flavorText": "因为你拖欠车贷，催收公司半夜拖走了你的车。",

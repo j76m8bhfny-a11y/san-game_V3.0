@@ -11,7 +11,7 @@ import vitalityRules from '@/assets/data/rules/vitalityRules.json';
  * - 高灵视 (71+): 觉醒状态，金色辉光（看到真相）
  */
 export const useVisualFilter = () => {
-  const san = useGameStore((state) => state.vitality.metrics.san);
+  const san = useGameStore((state) => state.vitality.metrics.insight);
   const phases = vitalityRules.visuals.phases;
 
   return useMemo(() => {

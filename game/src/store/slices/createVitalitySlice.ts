@@ -46,7 +46,7 @@ export interface VitalitySlice {
   // Buff管理方法
   addSurvivalBuff: (buff: SurvivalBuff) => void;
   removeSurvivalBuff: (buffId: string) => void;
-  processBuffs: () => { hpChange: number; sanChange: number; expiredBuffs: string[] };
+  processBuffs: () => { hpChange: number; insightChange: number; expiredBuffs: string[] };
   applyEventBuff: (eventId: string) => void;
   applyItemBuff: (buffId: string, customDuration?: number) => void;
 }
@@ -79,7 +79,7 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
     const classConfig = CLASS_INITIAL_STATS[selectedClass];
     if (!classConfig) return;
 
-    const { maxSan, maxHunger } = INITIAL_STATE.vitality;
+    const { maxInsight, maxHunger } = INITIAL_STATE.vitality;
     const { startPrice } = INITIAL_STATE.crypto;
     const creditScore = rules.defaults?.creditScore || { homeless: 500, standard: 650 };
 
@@ -91,8 +91,8 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
           gold: classConfig.gold,
           hp: classConfig.hp,
           maxHp: classConfig.maxHp ?? classConfig.hp,
-          san: classConfig.san,
-          maxSan: maxSan, 
+          insight: classConfig.insight,
+          maxInsight: maxInsight, 
           hunger: maxHunger,
           maxHunger: maxHunger,
           resistance: 0,
@@ -247,15 +247,15 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
     // ✅ Fix: 获取“生效中”的最大值。如果 changes 里有 maxHp，优先用 changes 的，否则用当前的
     // 这样可以确保如果 maxHp 被削减（比如信仰惩罚），当前的 hp 钳制逻辑会使用新的更低的 maxHp
     const effectiveMaxHp = changes.maxHp !== undefined ? changes.maxHp : (metrics.maxHp ?? maxStat);
-    const effectiveMaxSan = changes.maxSan !== undefined ? changes.maxSan : (metrics.maxSan ?? maxStat);
+    const effectiveMaxInsight = changes.maxInsight !== undefined ? changes.maxInsight : (metrics.maxInsight ?? maxStat);
     const effectiveMaxHunger = metrics.maxHunger ?? maxStat;
 
     // 对关键属性进行钳制
     if (changes.hp !== undefined) {
       newMetrics.hp = Math.max(minStat, Math.min(effectiveMaxHp, changes.hp));
     }
-    if (changes.san !== undefined) {
-      newMetrics.san = Math.max(minStat, Math.min(effectiveMaxSan, changes.san));
+    if (changes.insight !== undefined) {
+      newMetrics.insight = Math.max(minStat, Math.min(effectiveMaxInsight, changes.insight));
     }
     if (changes.gold !== undefined) {
       newMetrics.gold = Math.max(minStat, changes.gold);
@@ -344,28 +344,28 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
     if (isSuccess) {
         const addictionGain = effects.addiction || 0;
         
-        // 这里的 maxHp/maxSan 使用当前的，如果是手术修改上限，会在 effects.hpCapMod 中体现，
+        // 这里的 maxHp/maxInsight 使用当前的，如果是手术修改上限，会在 effects.hpCapMod 中体现，
         // 但这里简化处理，假设治疗只恢复数值
         const newHp = Math.min(metrics.maxHp, Math.max(minStat, metrics.hp + (effects.hpRestore || 0)));
-        const newSan = Math.min(metrics.maxSan, Math.max(minStat, metrics.san + (effects.sanRestore || 0)));
+        const newInsight = Math.min(metrics.maxInsight, Math.max(minStat, metrics.insight + (effects.insightRestore || 0)));
         const newAddiction = Math.min(maxStat, Math.max(minStat, metrics.addiction + addictionGain));
 
         state.modifyStats({
             hp: newHp,
-            san: newSan,
+            insight: newInsight,
             addiction: newAddiction
         });
         return { success: true, msg: `治疗成功。${service.flavorText || ''}` };
     } else {
-        const failure = rules.medical?.failurePenalty || { hp: -10, san: -5 };
+        const failure = rules.medical?.failurePenalty || { hp: -10, insight: -5 };
         
         const newHp = Math.max(minStat, metrics.hp + (failure.hp || -10));
-        const newSan = Math.max(minStat, metrics.san + (failure.san || -5));
+        const newInsight = Math.max(minStat, metrics.insight + (failure.insight || -5));
         const newAddiction = Math.min(maxStat, metrics.addiction + (effects.addiction || 0));
 
         state.modifyStats({
             hp: newHp, 
-            san: newSan,
+            insight: newInsight,
             addiction: newAddiction
         });
         return { success: false, msg: "治疗失败！产生了严重的排异反应，病情未见好转。" };
@@ -417,20 +417,22 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
     const { decay } = checkSurvival(state);
     
     // ===== 步骤2: 处理Buff效果（新逻辑）=====
-    const { hpChange: buffHpChange, sanChange: buffSanChange } = get().processBuffs();
+    // 方法名保持不变，但内部使用insight相关变量
+    const { hpChange: buffHpChange, insightChange: buffInsightChange } = get().processBuffs();
     
     // ===== 步骤3: 应用总变化 =====
     const currentMetrics = state.vitality.metrics;
     const totalHpChange = decay.hpDecay + buffHpChange;
-    const totalSanChange = decay.sanDecay + buffSanChange;
+    const totalInsightChange = decay.sanDecay + buffInsightChange;
     
     const newHp = Math.max(0, Math.min(currentMetrics.maxHp || 100, currentMetrics.hp + totalHpChange));
-    const newSan = Math.max(0, Math.min(currentMetrics.maxSan || 100, currentMetrics.san + totalSanChange));
+    // Insight机制：insight越高越接近"觉醒"，所以不做上限钳制到0，而是允许自然增长
+    const newInsight = Math.min(currentMetrics.maxInsight || 100, currentMetrics.insight + totalInsightChange);
     
     updates.metrics = {
       ...currentMetrics,
       hp: newHp,
-      san: newSan
+      insight: newInsight
     };
     
     // ===== 步骤4: 死亡判定 =====
@@ -439,9 +441,10 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
         state.triggerEnding('DEATH', `在${decay.level}环境下生命耗尽`);
       }
     }
-    if (newSan <= 0) {
+    // 觉醒判定：insight >= 100 触发 AWAKENING（觉醒结局）
+    if (newInsight >= 100) {
       if (state.triggerEnding) {
-        state.triggerEnding('MADNESS', `精神崩溃于${decay.level}环境`);
+        state.triggerEnding('AWAKENING', `洞察一切，从梦境中觉醒`);
       }
     }
     
@@ -573,7 +576,7 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
     const buffs = state.vitality.activeBuffs || [];
     
     let hpChange = 0;
-    let sanChange = 0;
+    let insightChange = 0;
     let maxHpChange = 0;
     const expiredBuffs: string[] = [];
     const remainingBuffs: SurvivalBuff[] = [];
@@ -583,14 +586,14 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
       if (buff.effects.perTurn) {
         const stacks = buff.stacks || 1;
         const baseHp = buff.effects.perTurn.hp || 0;
-        const baseSan = buff.effects.perTurn.san || 0;
+        const baseInsight = buff.effects.perTurn.insight || 0;
         
         // 如果有stackMultiplier，每层额外增加效果
         const multiplier = buff.effects.perTurn.stackMultiplier || 1;
         const effectiveStacks = stacks > 1 ? 1 + (stacks - 1) * (multiplier - 1) : 1;
         
         hpChange += baseHp * effectiveStacks;
-        sanChange += baseSan * effectiveStacks;
+        insightChange += baseInsight * effectiveStacks;
       }
       
       // 减少持续时间（-1表示永久）
@@ -601,7 +604,7 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
         expiredBuffs.push(buff.id);
         if (buff.effects.onExpire) {
           hpChange += buff.effects.onExpire.hp || 0;
-          sanChange += buff.effects.onExpire.san || 0;
+          insightChange += buff.effects.onExpire.insight || 0;
           
           // 处理MaxHP恢复（maxHpBonus设为0表示恢复）
           const expireEffects = buff.effects.onExpire as any;
@@ -650,7 +653,8 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
       };
     });
     
-    return { hpChange, sanChange, expiredBuffs };
+    // 方法返回值保持为 sanChange 以保持接口兼容性，但内部使用 insightChange
+    return { hpChange, insightChange, expiredBuffs };
   },
 
   applyEventBuff: (eventId: string) => {

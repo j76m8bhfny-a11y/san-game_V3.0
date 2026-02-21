@@ -23,7 +23,7 @@
         "gold": 50
       },
       "reward": {
-        "san": 5
+        "insight": 5
       },
       "regionFlavor": {
         "SLUMS": {
@@ -57,7 +57,7 @@
         "hp": 5
       },
       "reward": {
-        "san": 2,
+        "insight": 2,
         "gold": 15
       },
       "regionFlavor": {

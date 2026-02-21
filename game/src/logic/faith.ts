@@ -75,7 +75,7 @@ export const calculateNoviceActionOutcome = (
     };
   }
   // SAN (不能发疯)
-  if (mechanic.cost?.san && metrics.san <= mechanic.cost.san) {
+  if (mechanic.cost?.insight && metrics.insight <= mechanic.cost.insight) {
     return {
       success: false,
       message: "理智濒临崩溃，无法集中精神。",
@@ -97,16 +97,16 @@ export const calculateNoviceActionOutcome = (
 
   // --- 应用消耗 ---
   let newHp = metrics.hp;
-  let newSan = metrics.san;
+  let newSan = metrics.insight;
 
   if (mechanic.cost?.gold) goldChange -= mechanic.cost.gold;
   if (mechanic.cost?.hp) newHp -= mechanic.cost.hp;
-  if (mechanic.cost?.san) newSan -= mechanic.cost.san;
+  if (mechanic.cost?.insight) newSan -= mechanic.cost.insight;
 
   // --- 应用奖励 ---
   if (mechanic.reward?.gold) goldChange += mechanic.reward.gold;
   if (mechanic.reward?.hp) newHp += mechanic.reward.hp;
-  if (mechanic.reward?.san) newSan += mechanic.reward.san;
+  if (mechanic.reward?.insight) newSan += mechanic.reward.insight;
 
   // --- 应用阵营点数奖励 ---
   if (mechanic.reward?.points) {
@@ -121,7 +121,7 @@ export const calculateNoviceActionOutcome = (
   // --- 封装 Vitality 更新 ---
   // 注意：这里计算的是目标值 (Target Value)，modifyStats 会负责钳制上下限
   if (newHp !== metrics.hp) updates.vitality.metrics.hp = newHp;
-  if (newSan !== metrics.san) updates.vitality.metrics.san = newSan;
+  if (newSan !== metrics.insight) updates.vitality.metrics.insight = newSan;
 
   return {
     success: true,
@@ -159,7 +159,7 @@ export const calculateRiteOutcome = (
   if (rite.hpCost && metrics.hp <= rite.hpCost) {
     return { success: false, message: "体力不足，无法进行仪式。", goldChange: 0, updates: {} };
   }
-  if (rite.sanCost && metrics.san <= rite.sanCost) {
+  if (rite.insightCost && metrics.insight <= rite.insightCost) {
     return { success: false, message: "灵视不足，无法感知仪式的真谛。", goldChange: 0, updates: {} };
   }
 
@@ -191,11 +191,11 @@ export const calculateRiteOutcome = (
   // ==========================
 
   let newHp = metrics.hp;
-  let newSan = metrics.san;
+  let newSan = metrics.insight;
 
   // 消耗
   if (rite.hpCost) newHp -= rite.hpCost;
-  if (rite.sanCost) newSan -= rite.sanCost;
+  if (rite.insightCost) newSan -= rite.insightCost;
 
   // 奖励 (灵视值/HP)
   if (rite.baseSanReward) {
@@ -210,7 +210,7 @@ export const calculateRiteOutcome = (
 
   // 写入更新
   if (newHp !== metrics.hp) updates.vitality.metrics.hp = newHp;
-  if (newSan !== metrics.san) updates.vitality.metrics.san = newSan;
+  if (newSan !== metrics.insight) updates.vitality.metrics.insight = newSan;
 
   // 奖励 (Gold)
   if (rite.goldReward) {

@@ -35,7 +35,7 @@ export function createTestScenarios(): BaselineInput[] {
     {
       name: '新手(健康)',
       hp: 80, maxHp: 100,
-      san: 70, maxSan: 100,
+      insight: 70, maxInsight: 100,
       hunger: 20, maxHunger: 100,
       gold: 200,
       region: RegionID.Slums,
@@ -47,7 +47,7 @@ export function createTestScenarios(): BaselineInput[] {
     {
       name: '中期(受伤)',
       hp: 45, maxHp: 100,
-      san: 60, maxSan: 100,
+      insight: 60, maxInsight: 100,
       hunger: 50, maxHunger: 100,
       gold: 800,
       region: RegionID.RustBelt,
@@ -59,7 +59,7 @@ export function createTestScenarios(): BaselineInput[] {
     {
       name: '危险(重病)',
       hp: 25, maxHp: 100,
-      san: 30, maxSan: 100,
+      insight: 30, maxInsight: 100,
       hunger: 70, maxHunger: 100,
       gold: 100,
       region: RegionID.Slums,
@@ -71,7 +71,7 @@ export function createTestScenarios(): BaselineInput[] {
     {
       name: '富裕(安全)',
       hp: 90, maxHp: 100,
-      san: 80, maxSan: 100,
+      insight: 80, maxInsight: 100,
       hunger: 10, maxHunger: 100,
       gold: 5000,
       region: RegionID.Downtown,
@@ -162,7 +162,7 @@ export function analyzeSensitivity(
   const results: SensitivityResult[] = [];
   
   // 测试各权重参数
-  const weightParams = ['hp', 'san', 'hunger', 'gold'] as const;
+  const weightParams = ['hp', 'insight', 'hunger', 'gold'] as const;
   
   for (const param of weightParams) {
     // -50%
@@ -229,7 +229,7 @@ export function printDebugReport(
   
   if (params) {
     console.log('📊 当前参数配置:');
-    console.log(`   难度权重: HP=${params.weights.hp.toFixed(2)}, SAN=${params.weights.san.toFixed(2)}, Hunger=${params.weights.hunger.toFixed(2)}, Gold=${params.weights.gold.toFixed(2)}`);
+    console.log(`   难度权重: HP=${params.weights.hp.toFixed(2)}, INS=${params.weights.insight.toFixed(2)}, Hunger=${params.weights.hunger.toFixed(2)}, Gold=${params.weights.gold.toFixed(2)}`);
     console.log(`   疾病惩罚: 普通-${(params.diseasePenalty * 100).toFixed(0)}%, 急性-${(params.acuteDiseasePenalty * 100).toFixed(0)}%`);
     console.log(`   随机浮动: ±${(params.variance.baseRange * 100).toFixed(0)}%`);
     console.log('');

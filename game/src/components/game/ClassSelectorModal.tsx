@@ -66,7 +66,7 @@ export const ClassSelectorModal: React.FC<ClassSelectorProps> = ({ onConfirm }) 
       desc: (stats as any).desc || 'No description', 
       gold: (stats as any).gold || 0,
       hp: (stats as any).hp || 0,
-      san: (stats as any).san || 0
+      insight: (stats as any).insight || 0
     };
   });
 
@@ -112,8 +112,8 @@ export const ClassSelectorModal: React.FC<ClassSelectorProps> = ({ onConfirm }) 
                   <span className={cls.color}>${cls.gold}</span>
                 </div>
                 <div className="flex justify-between border-b border-white/10 pb-1">
-                  <span className="text-gray-500">{t('classSelector.stats.san')}</span>
-                  <span className={cls.color}>{cls.san}</span>
+                  <span className="text-gray-500">{t('classSelector.stats.insight')}</span>
+                  <span className={cls.color}>{cls.insight}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">{t('classSelector.stats.hp')}</span>

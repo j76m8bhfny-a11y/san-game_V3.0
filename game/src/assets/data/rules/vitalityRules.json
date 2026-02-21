@@ -31,7 +31,7 @@
     "starvationDamage": 15
   },
   "medical": {
-    "failurePenalty": { "hp": -10, "san": -5 }
+    "failurePenalty": { "hp": -10, "insight": -5 }
   },
   "disease": {
     "infectionRates": {

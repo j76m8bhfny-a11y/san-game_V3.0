@@ -51,7 +51,7 @@
     },
     "stats": {
       "hp": "生命值", "hp_short": "HP",
-      "san": "灵视", "san_short": "灵视",
+      "insight": "灵视值", "insight_short": "灵视",
       "gold": "现金", "hunger": "饱食度",
       "addiction": "成瘾度", "credit": "信用评分"
     },
@@ -124,7 +124,7 @@
     "categories": { "income": "收入", "housing": "住房", "food": "食物", "medical": "医疗", "bill": "账单", "bank": "银行", "tax": "税务", "misc": "其他" }
   },
   "messageWindow": { "continue": "点击继续..." },
-  "classSelector": { "title": "选择你的阶级", "subtitle": "这决定了你的起点，但不决定你的终点", "select": "选择", "stats": { "initial": "初始资金", "hp": "生命值", "san": "灵视值" } },
+  "classSelector": { "title": "选择你的阶级", "subtitle": "这决定了你的起点，但不决定你的终点", "select": "选择", "stats": { "initial": "初始资金", "hp": "生命值", "insight": "灵视值" } },
   "settings": {
     "title": "设置",
     "openEnvelope": "打开档案袋",
@@ -150,7 +150,7 @@
     "stickyNote": "勿忘", "version": "版本", "build": "构建", "status": "状态", "online": "在线", "docId": "文档编号", "devMode": "开发者入口", "toggle": "切换"
   },
   "bank": { "title": "银行", "balance": "账户余额", "deposit": "存款", "withdraw": "取款", "loan": { "title": "贷款", "apply": "申请贷款", "current": "当前贷款", "amount": "贷款金额", "interest": "利率", "term": "期限", "repay": "还款", "overdue": "已逾期 {turns} 周" }, "credit": "信用评分", "ledger": { "title": "账本", "empty": "暂无交易记录", "income": "收入", "expense": "支出" } },
-  "hospital": { "title": "医院", "services": "医疗服务", "treatment": "治疗", "drug": "药品", "surgery": "手术", "therapy": "心理治疗", "emergency": "急诊", "insurance": { "covered": "医保报销", "uncovered": "自费", "copay": "自付 {rate}%" }, "disease": { "current": "当前疾病", "none": "身体健康", "cure": "治愈" }, "effect": { "hpRestore": "生命恢复", "sanRestore": "灵视觉醒", "addiction": "成瘾风险" } },
+  "hospital": { "title": "医院", "services": "医疗服务", "treatment": "治疗", "drug": "药品", "surgery": "手术", "therapy": "心理治疗", "emergency": "急诊", "insurance": { "covered": "医保报销", "uncovered": "自费", "copay": "自付 {rate}%" }, "disease": { "current": "当前疾病", "none": "身体健康", "cure": "治愈" }, "effect": { "hpRestore": "生命恢复", "insightRestore": "灵视觉醒", "addiction": "成瘾风险" } },
   "shop": { "title": "商店", "buy": "购买", "sell": "出售", "insufficient": "资金不足", "full": "背包已满", "categories": { "food": "食物", "medical": "医疗", "tool": "工具", "other": "其他" } },
   "housing": { "title": "住房", "rent": "租房", "buy": "购房", "current": "当前住所", "none": "露宿街头", "weeklyCost": "周费用", "defense": "防御等级", "regen": "HP恢复", "moveIn": "入住", "moveOut": "搬出", "mortgage": "房贷" },
   "insurance": { 
@@ -182,7 +182,7 @@
     "invitationOnly": "仅限受邀",
     "memberSignature": "会员签名"
   },
-  "job": { "title": "工作", "board": "招聘板", "apply": "申请", "quit": "辞职", "salary": "薪资", "requirement": "要求", "type": { "fulltime": "全职", "gig": "零工" }, "cost": { "hp": "消耗 HP", "san": "消耗灵视" } },
+  "job": { "title": "工作", "board": "招聘板", "apply": "申请", "quit": "辞职", "salary": "薪资", "requirement": "要求", "type": { "fulltime": "全职", "gig": "零工" }, "cost": { "hp": "消耗 HP", "insight": "消耗灵视" } },
   "faith": { "title": "信仰", "join": "加入", "leave": "离开", "rite": "仪式", "offer": "献祭", "pray": "祈祷", "donate": "捐赠", "faiths": { "none": "无信仰", "church": "教会", "brotherhood": "兄弟会", "cult": "隐秘教派", "revolution": "革命" } },
   "crypto": {
     "title": "暗网交易终端",
@@ -242,7 +242,7 @@
   "archive": { "title": "档案", "unlocked": "已解锁档案", "locked": "未解锁", "read": "阅读" },
   "roast": { "title": "系统消息", "subtitle": "你今天被资本主义暴打了" },
   "gameOver": { "title": "游戏结束", "restart": "重新开始", "endings": { "death": "死亡", "survival": "生存", "alienation": "异化", "stance": "立场" } },
-  "debug": { "title": "开发者面板", "cheat": "作弊菜单", "addGold": "增加金钱", "addHp": "增加生命", "addSan": "增加灵视", "unlockAll": "解锁全部", "reset": "重置游戏" },
+  "debug": { "title": "开发者面板", "cheat": "作弊菜单", "addGold": "增加金钱", "addHp": "增加生命", "addInsight": "增加灵视", "unlockAll": "解锁全部", "reset": "重置游戏" },
   "vehicle": {
     "junk": {
       "name": "破皮卡",

@@ -18,20 +18,22 @@ export const JobSystem: GameSystem = {
 
     if (vitality.activeJobs.length === 0) return result;
 
-    const currentSan = vitality.metrics.san;
+    const currentInsight = vitality.metrics.insight;
     
     // 强制类型断言，防止 TS 因 JSON 推断错误而报红
     // (修复 JSON 后，这里的 as Item[] 其实是多余的，但能提供双重保险)
     const allItems = itemsData as unknown as Item[];
 
     // --- 核心逻辑: 灵视效率曲线 (Refactored) ---
-    // ✅ 查找符合当前 SAN 值的配置项 (从小到大排序的 JSON 数组)
-    // 逻辑：找到第一个 maxSan 大于等于 currentSan 的配置
+    // ✅ 查找符合当前 Insight 值的配置项 (从大到小排序，0=蒙昧/高效，100=通透/低效)
+    // 逻辑：找到第一个 minInsight 小于等于 currentInsight 的配置（从高到低遍历）
 
     // 防御性检查：确保 efficiencyCurve 配置存在且非空
     const curve = jobRules.efficiencyCurve || [];
-    const efficiencyConfig = curve.length > 0 
-      ? (curve.find(config => currentSan <= config.maxSan) || curve[curve.length - 1])
+    // 按 minInsight 从大到小排序后查找（因为高 insight = 低效率）
+    const sortedCurve = [...curve].sort((a, b) => b.minInsight - a.minInsight);
+    const efficiencyConfig = sortedCurve.length > 0 
+      ? (sortedCurve.find(config => currentInsight >= config.minInsight) || sortedCurve[sortedCurve.length - 1])
       : { modifier: 1.0, statusText: '正常' }; // 兜底配置
 
     const efficiency = efficiencyConfig.modifier;
@@ -50,7 +52,7 @@ export const JobSystem: GameSystem = {
     // 遍历所有工作进行结算
     let totalIncome = 0;
     let totalHpCost = 0;
-    let totalSanCost = 0;
+    let totalInsightCost = 0;
 
     // 计算信仰 Debuff 的收入总倍率（防御性处理）
     const faithDebuffs = (state.faith?.debuffs || []) as FaithDebuff[];
@@ -104,7 +106,7 @@ export const JobSystem: GameSystem = {
       }
 
       totalHpCost += actualHpCost;
-      totalSanCost += job.sanCost;
+      totalInsightCost += job.insightCost;
 
       // 4. 计算工资 (效率 × 信仰Debuff倍率)
       const actualSalary = Math.floor(job.baseSalary * efficiency * incomeMultiplier);
@@ -129,10 +131,10 @@ export const JobSystem: GameSystem = {
         timestamp: Date.now()
       });
 
-      // 5. 额外事件: 极高灵视被视为疯子
-      const { highSanThreshold, probability, penaltyRate } = jobRules.accidents;
+      // 5. 额外事件: 极高灵视说出真相被视为疯子
+      const { highInsightThreshold, probability, penaltyRate } = jobRules.accidents;
 
-      if (currentSan > highSanThreshold && Math.random() < probability) {
+      if (currentInsight > highInsightThreshold && Math.random() < probability) {
         const penalty = Math.floor(job.baseSalary * penaltyRate);
         result.newTransactions!.push({
           id: `${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 5)}`,
@@ -146,15 +148,15 @@ export const JobSystem: GameSystem = {
       }
     });
 
-    if (totalHpCost > 0 || totalSanCost > 0) {
+    if (totalHpCost > 0 || totalInsightCost > 0) {
       result.updates.vitality = {
         metrics: {
           hp: Math.max(0, vitality.metrics.hp - totalHpCost),
-          san: Math.max(0, vitality.metrics.san - totalSanCost)
+          insight: Math.max(0, vitality.metrics.insight - totalInsightCost)
         }
       } as any;
       
-      result.logs.push(`本周工作结算: HP -${totalHpCost}, SAN -${totalSanCost}`);
+      result.logs.push(`本周工作结算: HP -${totalHpCost}, INSIGHT -${totalInsightCost}`);
     }
 
     // 添加信仰Debuff影响通知

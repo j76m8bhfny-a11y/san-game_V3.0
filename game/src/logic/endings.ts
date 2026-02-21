@@ -15,8 +15,8 @@ const checkCondition = (state: GameState, condition: Ending['conditions']): bool
   
   if (condition.maxHp !== undefined && metrics.hp > condition.maxHp) return false;
   
-  if (condition.minSan !== undefined && metrics.san < condition.minSan) return false;
-  if (condition.maxSan !== undefined && metrics.san > condition.maxSan) return false;
+  if (condition.minInsight !== undefined && metrics.insight < condition.minInsight) return false;
+  if (condition.maxInsight !== undefined && metrics.insight > condition.maxInsight) return false;
 
   if (condition.minGold !== undefined && metrics.gold < condition.minGold) return false;
   if (condition.maxGold !== undefined && metrics.gold > condition.maxGold) return false;

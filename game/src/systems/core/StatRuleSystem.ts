@@ -109,22 +109,22 @@ export const StatRuleSystem: GameSystem = {
       const { processVehicleEffects } = state as any;
       const effects = processVehicleEffects();
       
-      if (effects.hpChange !== 0 || effects.sanChange !== 0 || effects.addictionChange !== 0) {
+      if (effects.hpChange !== 0 || effects.insightChange !== 0 || effects.addictionChange !== 0) {
         if (!result.updates.vitality) result.updates.vitality = { metrics: {} };
         if (!result.updates.vitality.metrics) result.updates.vitality.metrics = {};
         
         const vitMetrics = result.updates.vitality.metrics;
         const currentHp = vitMetrics.hp ?? metrics.hp;
-        const currentSan = vitMetrics.san ?? metrics.san;
+        const currentInsight = vitMetrics.insight ?? metrics.insight;
         const currentAddiction = vitMetrics.addiction ?? metrics.addiction;
         
         vitMetrics.hp = Math.max(0, currentHp + effects.hpChange);
-        vitMetrics.san = Math.max(0, Math.min(100, currentSan + effects.sanChange));
+        vitMetrics.insight = Math.max(0, Math.min(100, currentInsight + effects.insightChange));
         vitMetrics.addiction = Math.max(0, Math.min(100, currentAddiction + effects.addictionChange));
         
         const effectDesc = [];
         if (effects.hpChange !== 0) effectDesc.push(`HP ${effects.hpChange > 0 ? '+' : ''}${effects.hpChange}`);
-        if (effects.sanChange !== 0) effectDesc.push(`SAN ${effects.sanChange > 0 ? '+' : ''}${effects.sanChange}`);
+        if (effects.insightChange !== 0) effectDesc.push(`SAN ${effects.insightChange > 0 ? '+' : ''}${effects.insightChange}`);
         if (effects.addictionChange !== 0) effectDesc.push(`成瘾 ${effects.addictionChange > 0 ? '+' : ''}${effects.addictionChange}`);
         
         result.logs.push(`车辆效果: ${effectDesc.join(', ')}`);
@@ -296,7 +296,7 @@ export const StatRuleSystem: GameSystem = {
         
         if (diseaseDef && diseaseDef.effects) {
             if (diseaseDef.effects.hpDrain) diseaseHpLoss += diseaseDef.effects.hpDrain;
-            if (diseaseDef.effects.sanDrain) diseaseSanLoss += diseaseDef.effects.sanDrain;
+            if (diseaseDef.effects.insightGain) diseaseSanLoss -= diseaseDef.effects.insightGain;  // insightGain正值=增加灵视(对系统来说是"损失"，因为灵视越高越痛苦)
         }
 
         // 心脏病随机发作
@@ -331,10 +331,10 @@ export const StatRuleSystem: GameSystem = {
         
         const vitMetrics = result.updates.vitality.metrics;
         const currentHp = vitMetrics.hp ?? metrics.hp;
-        const currentSan = vitMetrics.san ?? metrics.san;
+        const currentInsight = vitMetrics.insight ?? metrics.insight;
 
         vitMetrics.hp = Math.max(0, currentHp - diseaseHpLoss);
-        vitMetrics.san = Math.max(0, currentSan - diseaseSanLoss);
+        vitMetrics.insight = Math.max(0, currentInsight - diseaseSanLoss);
 
         result.logs.push(`疾病折磨: HP -${diseaseHpLoss}${diseaseSanLoss > 0 ? `, SAN -${diseaseSanLoss}` : ''}`);
     }

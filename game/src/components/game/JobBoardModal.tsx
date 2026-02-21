@@ -227,7 +227,7 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
                   canApply={ok}
                   lockReason={reason}
                   onAction={() => isActive ? handleQuit(job.id) : handleApply(job)}
-                  currentSan={vitality.metrics.san}
+                  currentInsight={vitality.metrics.insight}
                 />
               );
             })

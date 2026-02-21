@@ -7,10 +7,10 @@ export const checkCondition = (state: GameState, condition: GameEvent['condition
   if (!condition) return true;
 
   // 1. 灵视值检查 (Insight Check)
-  // minSan: 觉醒度不足则无法看到此事件（需要更高灵视）
-  // maxSan: 过于觉醒则看不到某些世俗事件（灵视太高无法触发）
-  if (condition.minSan !== undefined && state.vitality.metrics.san < condition.minSan) return false;
-  if (condition.maxSan !== undefined && state.vitality.metrics.san > condition.maxSan) return false;
+  // minInsight: 觉醒度不足则无法看到此事件（需要更高灵视）
+  // maxInsight: 过于觉醒则看不到某些世俗事件（灵视太高无法触发）
+  if (condition.minInsight !== undefined && state.vitality.metrics.insight < condition.minInsight) return false;
+  if (condition.maxInsight !== undefined && state.vitality.metrics.insight > condition.maxInsight) return false;
 
   // 2. Class Check (使用新的 identity 路径)
   if (condition.requiredClass) {
@@ -43,8 +43,8 @@ export const resolveOption = (state: GameState, option: EventOption): { updates:
       logs.push(...res.logs);
     }
 
-    if (option.effects.san) {
-      const action: GameAction = { code: ActionCode.MODIFY_STAT, params: { target: 'san', value: option.effects.san } };
+    if (option.effects.insight) {
+      const action: GameAction = { code: ActionCode.MODIFY_STAT, params: { target: 'insight', value: option.effects.insight } };
       const res = executeAction(state, action);
       
       if (res.updates.vitality?.metrics) {

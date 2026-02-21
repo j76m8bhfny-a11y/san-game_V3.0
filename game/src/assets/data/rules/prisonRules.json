@@ -13,18 +13,18 @@
   "dailyRoutine": {
     "default": {
       "hpChange": -20,
-      "sanChange": -25,
+      "insightChange": -25,
       "log": "这是地狱。帮派分子抢走了你的饭，狱警对此视而不见。"
     },
     "classOverrides": {
       "CAPITALIST": {
         "hpChange": 5,
-        "sanChange": 5,
+        "insightChange": 5,
         "log": "你在最低安保级别的'度假村'里打了一天高尔夫，结识了几位参议员。"
       },
       "MIDDLE": {
         "hpChange": -5,
-        "sanChange": -10,
+        "insightChange": -10,
         "log": "你在单人牢房里读了一整天书。隔壁的尖叫声让你有点神经衰弱。"
       },
       "WORKER": "default",

@@ -35,7 +35,7 @@ export const RustBeltMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy
         </div>
         <div className="text-[10px] text-gray-500 group-hover:text-gray-400">
           {service.effects?.hpRestore && <span>REPAIR: +{service.effects.hpRestore} HP</span>}
-          {service.effects?.sanRestore && <span className="ml-2 text-amber-600">INSIGHT: +{service.effects.sanRestore}</span>}
+          {service.effects?.insightRestore && <span className="ml-2 text-amber-600">INSIGHT: +{service.effects.insightRestore}</span>}
         </div>
       </div>
 

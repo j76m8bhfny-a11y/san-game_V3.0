@@ -2,8 +2,8 @@
   "vitality": {
     "hp": 100,
     "maxHp": 100,
-    "san": 100,
-    "maxSan": 100,
+    "insight": 0,
+    "maxInsight": 100,
     "gold": 0,
     "creditScore": 500,
     "hunger": 100,

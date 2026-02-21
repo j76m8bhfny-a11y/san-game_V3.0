@@ -390,7 +390,7 @@ export function checkSurvival(
   
   // 预测是否会死亡（用于UI警告）
   const currentHp = state.vitality.metrics.hp;
-  const currentSan = state.vitality.metrics.san;
+  const currentSan = state.vitality.metrics.insight;
   const wouldDie = (currentHp + decay.hpDecay <= 0) || (currentSan + decay.sanDecay <= 0);
   
   return { decay, wouldDie };

@@ -325,7 +325,7 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
       const prevMetrics = prev.vitality.metrics;
       const updateMetrics = updates.vitality?.metrics || {};
       
-      const rawSan = updateMetrics.san !== undefined ? updateMetrics.san : prevMetrics.san;
+      const rawInsight = updateMetrics.insight !== undefined ? updateMetrics.insight : prevMetrics.insight;
       const rawHp = updateMetrics.hp !== undefined ? updateMetrics.hp : prevMetrics.hp;
 
       return {
@@ -337,7 +337,7 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
           metrics: {
             ...prev.vitality.metrics,
             ...updateMetrics,
-            san: Math.max(minStat, Math.min(maxStat, rawSan)),
+            insight: Math.max(minStat, Math.min(maxStat, rawInsight)),
             hp: Math.max(minStat, Math.min(maxStat, rawHp))
           },
           identity: { ...prev.vitality.identity, ...(updates.vitality.identity || {}) }
@@ -418,7 +418,7 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
     set({
         // 1. Vitality 重置 (从 JSON 读取)
         vitality: {
-            metrics: { ...INITIAL_STATE.vitality }, // 读取 hp, san, gold, creditScore 等
+            metrics: { ...INITIAL_STATE.vitality }, // 读取 hp, insight, gold, creditScore 等
             identity: {
                 // ✅ 类型断言：JSON 中的 string 需要转换为 PlayerClass enum
                 currentClass: INITIAL_STATE.identity.defaultClass as PlayerClass,

@@ -41,9 +41,9 @@
     "violence": {
       "maxTurn": 3,
       "hpDamage": 20,
-      "sanDamage": 15,
+      "insightGain": 15,
       "scorePenalty": 50,
-      "description": "逾期第2-3周：暴力催收，扣除HP/SAN"
+      "description": "逾期第2-3周：暴力催收，债务压力让人痛苦却更清醒（+Insight）"
     },
     "seizure": {
       "maxTurn": 8,

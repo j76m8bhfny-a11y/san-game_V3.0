@@ -44,7 +44,7 @@ export interface VehicleSlice {
   };
   
   // ===== 车辆效果处理 =====
-  processVehicleEffects: () => { hpChange: number; sanChange: number; addictionChange: number };
+  processVehicleEffects: () => { hpChange: number; insightChange: number; addictionChange: number };
 }
 
 // 辅助函数：获取车辆配置
@@ -575,7 +575,7 @@ export const createVehicleSlice: StateCreator<StoreState, [], [], VehicleSlice> 
     const { inventory } = state;
     
     let hpChange = 0;
-    let sanChange = 0;
+    let insightChange = 0;
     let addictionChange = 0;
     
     // 获取所有车辆效果
@@ -587,10 +587,10 @@ export const createVehicleSlice: StateCreator<StoreState, [], [], VehicleSlice> 
     // 汇总效果
     for (const effects of vehicleEffects) {
       if (effects.hp) hpChange += effects.hp;
-      if (effects.san) sanChange += effects.san;
+      if (effects.insight) insightChange += effects.insight;
       if (effects.addiction) addictionChange += effects.addiction;
     }
     
-    return { hpChange, sanChange, addictionChange };
+    return { hpChange, insightChange, addictionChange };
   }
 });

@@ -14,7 +14,7 @@
   },
   "eviction": {
     "enableEviction": true,
-    "sanPenalty": 20,
+    "insightPenalty": 20,
     "hpPenalty": 0,
     "retainInventory": true,
     "fallbackState": null

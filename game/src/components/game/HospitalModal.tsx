@@ -158,7 +158,7 @@ const DefaultHospitalView: React.FC<{ onClose: () => void }> = ({ onClose }) => 
                     {/* Effects Preview */}
                     <div className="grid grid-cols-2 gap-4 bg-black/30 p-4 rounded-lg border border-white/5">
                         <EffectRow label={t('hospital.effect.hpRestore')} value={selectedService.effects?.hpRestore} icon={<Heart size={14}/>} color="text-green-400" />
-                        <EffectRow label={t('hospital.effect.sanRestore')} value={selectedService.effects?.sanRestore} icon={<Activity size={14}/>} color="text-amber-400" />
+                        <EffectRow label={t('hospital.effect.insightRestore')} value={selectedService.effects?.insightRestore} icon={<Activity size={14}/>} color="text-amber-400" />
                         {selectedService.effects?.addiction && (
                             <EffectRow label={t('hospital.effect.addiction')} value={selectedService.effects.addiction} icon={<AlertTriangle size={14}/>} color="text-purple-500" />
                         )}

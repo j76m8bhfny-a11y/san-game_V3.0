@@ -223,7 +223,7 @@ export function generateEventImpact(
 ): {
   hpEffect: number;
   goldEffect: number;
-  sanEffect: number;
+  insightEffect: number;
   expectedNewRate: number;
 } {
   // 目标新存活率
@@ -242,7 +242,7 @@ export function generateEventImpact(
   
   let hpEffect = 0;
   let goldEffect = 0;
-  let sanEffect = 0;
+  let insightEffect = 0;
   
   if (targetSurvivalChange < 0) {
     // 负面事件
@@ -263,14 +263,14 @@ export function generateEventImpact(
     const mentalImpact = scoreDelta * 0.5;
     const medicalImpact = scoreDelta * 0.5;
     
-    sanEffect = Math.round(mentalImpact / 0.25 * 3);
+    insightEffect = Math.round(mentalImpact / 0.25 * 3);
     hpEffect = Math.round(medicalImpact / 0.15 * 2);
   }
   
   return {
     hpEffect,
     goldEffect,
-    sanEffect,
+    insightEffect,
     expectedNewRate: targetRate,
   };
 }
@@ -420,7 +420,7 @@ export function generateItemJson(
       tags = ['MEDICAL'];
       break;
     case 'COMFORT':
-      effects = { san: Math.round(targetSurvivalBoost * 30) };
+      effects = { insight: Math.round(targetSurvivalBoost * 30) };
       tags = ['COMFORT'];
       break;
   }
@@ -462,7 +462,7 @@ export function generateEventJson(
         effects: {
           hp: impact.hpEffect,
           gold: impact.goldEffect,
-          san: impact.sanEffect,
+          insight: impact.insightEffect,
         },
       },
     },

@@ -338,7 +338,7 @@ export const createShopSlice: StateCreator<StoreState, [], [], ShopSlice> = (set
       const metrics = state.vitality.metrics;
       state.modifyStats({
         hp: (metrics.hp || 0) + finalHpGain,
-        san: effects.san !== undefined ? (metrics.san || 0) + effects.san : undefined,
+        insight: effects.insight !== undefined ? (metrics.insight || 0) + effects.insight : undefined,
         maxHp: effects.maxHp !== undefined ? (metrics.maxHp || 100) + effects.maxHp : undefined,
         hunger: (metrics.hunger || 0) + hungerRestore,
         addiction: effects.addiction !== undefined ? (metrics.addiction || 0) + effects.addiction : undefined,

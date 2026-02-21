@@ -96,12 +96,12 @@ export const MiniHUD: React.FC = () => {
   // 属性面板开关状态
   const [isStatsPanelOpen, setStatsPanelOpen] = useState(false);
 
-  const { hp, maxHp, san, gold, addiction } = vitality.metrics;
+  const { hp, maxHp, insight, gold, addiction } = vitality.metrics;
   const { currentClass } = vitality.identity;
   const { activeDiseases } = vitality;
 
-  // ✅ 2. 从 JSON 读取动态上限 (Sanity 上限未来可能随装备变动，但目前是固定的)
-  const maxSan = (vitality.metrics as any).maxSan || INITIAL_STATE.vitality.maxSan;
+  // ✅ 2. 从 JSON 读取动态上限 (Insight 上限未来可能随装备变动，但目前是固定的)
+  const maxInsight = (vitality.metrics as any).maxInsight || INITIAL_STATE.vitality.maxInsight;
   // 获取全局属性上限 (用于 Addiction 等没有 explicit max 的属性)
   const GLOBAL_MAX = SYSTEM_RULES.caps.maxStat; 
 
@@ -182,13 +182,13 @@ export const MiniHUD: React.FC = () => {
               className="flex flex-col gap-0.5 min-w-[60px] cursor-pointer hover:opacity-80 transition-opacity"
             >
                <div className="flex items-center justify-between">
-                  <span className={`text-[10px] md:text-xs font-bold tracking-wider ${san > insightHigh ? 'text-amber-400' : san > insightMedium ? 'text-purple-400' : 'text-gray-400'}`}>
-                    {t('hud.stats.san_short')}
+                  <span className={`text-[10px] md:text-xs font-bold tracking-wider ${insight > insightHigh ? 'text-amber-400' : insight > insightMedium ? 'text-purple-400' : 'text-gray-400'}`}>
+                    {t('hud.stats.insight_short')}
                   </span>
-                  <span className="font-mono font-bold text-xs md:text-sm text-white">{san}<span className="text-[10px] text-gray-500 opacity-50">/{maxSan}</span></span>
+                  <span className="font-mono font-bold text-xs md:text-sm text-white">{insight}<span className="text-[10px] text-gray-500 opacity-50">/{maxInsight}</span></span>
                </div>
                <div className="w-16 md:w-24 h-1.5 bg-gray-800 rounded-full overflow-hidden border border-white/5">
-                  <div className={`h-full transition-all duration-500 ${san > insightHigh ? 'bg-amber-500 shadow-[0_0_10px_amber]' : san > insightMedium ? 'bg-purple-500 shadow-[0_0_8px_purple]' : san > insightLow ? 'bg-blue-500' : 'bg-gray-500'}`} style={{ width: `${Math.min((san / maxSan) * 100, 100)}%` }} />
+                  <div className={`h-full transition-all duration-500 ${insight > insightHigh ? 'bg-amber-500 shadow-[0_0_10px_amber]' : insight > insightMedium ? 'bg-purple-500 shadow-[0_0_8px_purple]' : insight > insightLow ? 'bg-blue-500' : 'bg-gray-500'}`} style={{ width: `${Math.min((insight / maxInsight) * 100, 100)}%` }} />
                </div>
             </button>
           </div>

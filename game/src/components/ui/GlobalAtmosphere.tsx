@@ -32,7 +32,7 @@ const AwakenedEye = ({ index }: { index: number }) => {
 
 // --- 主组件 ---
 export const GlobalAtmosphere: React.FC = () => {
-  const san = useGameStore((state) => state.vitality.metrics.san);
+  const san = useGameStore((state) => state.vitality.metrics.insight);
   
   // 灵视值阈值
   const insightHigh = rules.visuals.thresholds.insightHigh ?? 70;

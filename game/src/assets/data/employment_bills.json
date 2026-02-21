@@ -13,7 +13,7 @@
       "baseChance": 0.08,
       "minTurnsEmployed": 4,
       "effects": {
-        "san": -10
+        "insight": -10
       },
       "flavorText": "HR用充满同情的语气告诉你这是'艰难的决定'，然后让你在一小时内收拾东西离开。",
       "roast": "你的岗位被外包给了一个月薪300美元的越南人。这就是全球化。"
@@ -26,7 +26,7 @@
       "baseChance": 0.12,
       "minTurnsEmployed": 6,
       "effects": {
-        "san": -15
+        "insight": -15
       },
       "flavorText": "你在全体会议上被告知公司要'扁平化管理'。会后，你的直属上司把你叫进办公室。",
       "roast": "公司需要有人为CEO的奖金买单，而你就是那个'成本优化'的数字。"
@@ -39,7 +39,7 @@
       "baseChance": 0.15,
       "minTurnsEmployed": 4,
       "effects": {
-        "san": -20
+        "insight": -20
       },
       "flavorText": "尽职调查完成后的第30天，你收到了'职位冗余'的通知信。遣散费刚好够付一个月的房贷。",
       "roast": "资本的游戏规则：吃掉公司，吐出员工。"
@@ -52,7 +52,7 @@
     "duration": 4,
     "effects": {
       "perTurn": {
-        "san": -1
+        "insight": -1
       }
     },
     "blockSameClassJobs": true

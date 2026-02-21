@@ -14,32 +14,32 @@
   },
   "efficiencyCurve": [
     {
-      "maxSan": 30,
-      "modifier": 1.0,
-      "label": "蒙昧",
-      "statusText": "蒙昧 (100%)"
+      "minInsight": 85,
+      "modifier": 0.4,
+      "label": "通透",
+      "statusText": "通透 (40%)"
     },
     {
-      "maxSan": 70,
-      "modifier": 0.8,
-      "label": "初觉",
-      "statusText": "初觉 (80%)"
-    },
-    {
-      "maxSan": 85,
+      "minInsight": 70,
       "modifier": 0.6,
       "label": "觉醒",
       "statusText": "觉醒 (60%)"
     },
     {
-      "maxSan": 100,
-      "modifier": 0.4,
-      "label": "通透",
-      "statusText": "通透 (40%)"
+      "minInsight": 30,
+      "modifier": 0.8,
+      "label": "初觉",
+      "statusText": "初觉 (80%)"
+    },
+    {
+      "minInsight": 0,
+      "modifier": 1.0,
+      "label": "蒙昧",
+      "statusText": "蒙昧 (100%)"
     }
   ],
   "accidents": {
-    "highSanThreshold": 85,
+    "highInsightThreshold": 85,
     "probability": 0.15,
     "penaltyRate": 0.25
   }

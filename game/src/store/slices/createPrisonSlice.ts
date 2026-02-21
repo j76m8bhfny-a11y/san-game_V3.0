@@ -66,7 +66,7 @@ const applyJailPenalty = (
       metrics: {
         ...state.vitality.metrics,
         hp: Math.max(minStat, state.vitality.metrics.hp + effect.hpChange),
-        san: Math.max(minStat, state.vitality.metrics.san + effect.sanChange)
+        insight: Math.max(minStat, state.vitality.metrics.insight + effect.insightChange)
       }
     }
   };
@@ -149,7 +149,7 @@ const showSettlementNotifications = (
  * 检查死亡条件
  */
 const checkDeathCondition = (state: GameState): boolean => {
-  return (state.vitality.metrics.hp <= 0 || state.vitality.metrics.san <= 0);
+  return (state.vitality.metrics.hp <= 0 || state.vitality.metrics.insight <= 0);
 };
 
 export interface PrisonSlice {
@@ -239,7 +239,7 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
       // 死亡时强制钳制HP/SAN为0，避免UI显示负数
       if (died) {
         nextState.vitality.metrics.hp = Math.max(0, nextState.vitality.metrics.hp);
-        nextState.vitality.metrics.san = Math.max(0, nextState.vitality.metrics.san);
+        nextState.vitality.metrics.insight = Math.max(0, nextState.vitality.metrics.insight);
         // ✅ 修复：保存死亡状态
         set(nextState);
         // ✅ 修复：触发死亡结局

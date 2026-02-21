@@ -13,11 +13,11 @@ export const executeAction = (state: GameState, action: GameAction): ActionResul
 
   switch (code) {
     case ActionCode.MODIFY_STAT: {
-      const target = params.target; // 'hp', 'san', 'gold', 'maxHp', 'maxSan'
+      const target = params.target; // 'hp', 'insight', 'gold', 'maxHp', 'maxInsight'
       const value = params.value || 0;
 
       // ✅ 修复：映射到 vitality.metrics
-      if (target && ['hp', 'san', 'gold', 'maxHp', 'maxSan'].includes(target)) {
+      if (target && ['hp', 'insight', 'gold', 'maxHp', 'maxInsight'].includes(target)) {
         // 安全获取当前值
         const metricKey = target as keyof typeof state.vitality.metrics;
         const currentVal = state.vitality.metrics[metricKey] || 0;
@@ -29,8 +29,8 @@ export const executeAction = (state: GameState, action: GameAction): ActionResul
            const max = state.vitality.metrics.maxHp;
            newVal = Math.min(max, Math.max(0, newVal));
         }
-        if (target === 'san') {
-           const max = state.vitality.metrics.maxSan;
+        if (target === 'insight') {
+           const max = state.vitality.metrics.maxInsight;
            newVal = Math.min(max, Math.max(0, newVal));
         }
         

@@ -256,7 +256,7 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
   if (!event || !event.options) return null;
   const { resolveEventOption, vitality } = useGameStore();
   const { playSfx } = useAudioStore();
-  const currentInsight = vitality.metrics.san;
+  const currentInsight = vitality.metrics.insight;
   
   const [isFocusMode, setIsFocusMode] = useState(false);
   const [stage, setStage] = useState<'INIT' | 'TYPING_TITLE' | 'TYPING_BODY' | 'INTERACTIVE'>('INIT');
@@ -320,9 +320,9 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
   
 
   // 根据灵视值决定是否显示D选项（觉醒选项）
-  // sanLock: 需要达到的灵视值阈值才能看到这个选项
-  const canSeeDOption = event.options.D?.sanLock 
-    ? currentInsight >= event.options.D.sanLock 
+  // insightLock: 需要达到的灵视值阈值才能看到这个选项
+  const canSeeDOption = event.options.D?.insightLock 
+    ? currentInsight >= event.options.D.insightLock 
     : currentInsight >= 40; // 默认需要40灵视值
   
   const options = [

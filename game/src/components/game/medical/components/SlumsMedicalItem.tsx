@@ -76,7 +76,7 @@ export const SlumsMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy })
         {/* 效果预览 (不确定的感觉) */}
         <div className="text-[10px] font-bold font-mono">
           {service.effects?.hpRestore && <span className="text-green-700 block">HP: +{service.effects.hpRestore}?</span>}
-          {service.effects?.sanRestore && <span className="text-amber-700 block">灵视+{service.effects.sanRestore}?</span>}
+          {service.effects?.insightRestore && <span className="text-amber-700 block">灵视+{service.effects.insightRestore}?</span>}
         </div>
 
         {!canAfford && (

@@ -1,76 +1,236 @@
 [
   {
-    "id": "SLUM_MYSTERY_PILL",
-    "name": "散装止痛片",
+    "id": "SLUM_OTC_COLD_MED",
+    "name": "CVS货架底层非处方感冒药",
     "region": "SLUMS",
     "type": "DRUG",
-    "baseCost": 20,
-    "effects": { "hpRestore": 15, "addiction": 10 },
-    "requirements": { "riskRate": 0.2 },
+    "baseCost": 18,
+    "effects": { 
+      "hpRestore": 5, 
+      "insightRestore": -2,
+      "cureDisease": ["FLU_LOW"]
+    },
+    "requirements": { "riskRate": 0.1 },
     "insurance": { "isCovered": false, "baseCopayRate": 1.0 },
-    "flavorText": "没有任何标签。可能是药，可能是老鼠药，反正能止痛。"
+    "flavorText": "含有大量伪麻黄碱。它不能杀死病毒，但能让你在发烧39度时依然有力气站起来去快餐店翻垃圾桶。"
   },
   {
-    "id": "SLUM_SELL_KIDNEY",
-    "name": "器官捐赠(左肾)",
-    "region": "SLUMS",
-    "type": "SPECIAL",
-    "baseCost": -3000, 
-    "effects": { "hpCapMod": -30, "hpRestore": -20 },
-    "insurance": { "isCovered": false, "baseCopayRate": 0 },
-    "flavorText": "一手交钱，一手交肾。这就是这里的规矩。"
-  },
-  {
-    "id": "SLUM_STREET_DOC",
-    "name": "街头急救",
+    "id": "SLUM_BACK_ALLEY_STITCH",
+    "name": "地下黑诊所缝合",
     "region": "SLUMS",
     "type": "SURGERY",
     "baseCost": 150,
-    "effects": { "cureType": ["ACUTE"], "hpRestore": 20 },
+    "effects": { 
+      "hpRestore": 30, 
+      "cureDisease": ["FOOD_POISONING"],
+      "addBuff": "buff_infection_risk"
+    },
     "requirements": { "riskRate": 0.5 },
     "insurance": { "isCovered": false, "baseCopayRate": 1.0 },
-    "flavorText": "医生用的手术刀看起来像是餐刀磨出来的。"
+    "flavorText": "兽医用处理宠物的麻药为你缝合了伤口。便宜，迅速，且不用查验你的合法身份。"
   },
   {
-    "id": "RUST_WORKER_SURGERY",
-    "name": "基础外科手术",
+    "id": "SLUM_PUBLIC_ER",
+    "name": "公立医院急诊室",
+    "region": "SLUMS",
+    "type": "EMERGENCY",
+    "baseCost": 3500,
+    "effects": { 
+      "cureDisease": ["SEPSIS", "ACUTE"],
+      "insightRestore": 10
+    },
+    "requirements": { "hpThreshold": 30 },
+    "insurance": { "isCovered": true, "baseCopayRate": 0.0, "specialPolicy": "EMTALA_HOMELESS" },
+    "flavorText": "法律规定急诊室不能拒绝濒死的人。你在走廊的轮椅上等待了14个小时才见到医生，出院时留下了一个假名字以逃避这笔天价账单。"
+  },
+  {
+    "id": "SLUM_PLASMA_DONATION",
+    "name": "血浆有偿捐献",
+    "region": "SLUMS",
+    "type": "SPECIAL",
+    "baseCost": -40,
+    "effects": { 
+      "hpRestore": -15, 
+      "maxHpMod": -2
+    },
+    "cooldown": { "turns": 1, "maxPerWeek": 1 },
+    "requirements": { "minHp": 30 },
+    "insurance": { "isCovered": false, "baseCopayRate": 0 },
+    "flavorText": "合法的'卖血'。用你身体里的一点生命流失，换取今晚能吃上一顿热饭的现金。"
+  },
+  {
+    "id": "RUST_URGENT_CARE",
+    "name": "街角Urgent Care快速问诊",
+    "region": "RUST_BELT",
+    "type": "EMERGENCY",
+    "baseCost": 250,
+    "effects": { 
+      "hpRestore": 40,
+      "cureDisease": ["FLU_LOW", "FOOD_POISONING"]
+    },
+    "requirements": { "riskRate": 0.05 },
+    "insurance": { "isCovered": true, "baseCopayRate": 0.3 },
+    "flavorText": "设在脱衣舞俱乐部旁边的连锁医疗点。这里的医生看起来比你还要疲惫，五分钟的问诊结束，给你开了一堆止痛药。"
+  },
+  {
+    "id": "RUST_GENERIC_MEDS",
+    "name": "印度仿制降压/降糖药",
+    "region": "RUST_BELT",
+    "type": "DRUG",
+    "baseCost": 80,
+    "effects": { 
+      "suppressDisease": ["HYPERTENSION", "TYPE_2_DIABETES"],
+      "insightRestore": -3
+    },
+    "ongoingCost": { "weekly": 80 },
+    "requirements": { "riskRate": 0.05 },
+    "insurance": { "isCovered": true, "baseCopayRate": 0.2 },
+    "flavorText": "药房告诉你原研药需要$800，于是你选择了这种包装简陋的替代品。它刚好能保证你在流水线上不会突然晕倒。"
+  },
+  {
+    "id": "RUST_PHYSICAL_THERAPY",
+    "name": "厂区网络内理疗",
+    "region": "RUST_BELT",
+    "type": "THERAPY",
+    "baseCost": 400,
+    "effects": { 
+      "hpRestore": 20, 
+      "insightRestore": -10,
+      "cureDisease": ["WORKER_LUNG_EARLY"]
+    },
+    "requirements": { 
+      "waitTurns": [2, 4],
+      "insuranceRequired": ["mentalCovered"]
+    },
+    "insurance": { "isCovered": true, "baseCopayRate": 0.3 },
+    "flavorText": "针对你常年搬运重物导致的腰肌劳损。理疗师一直暗示你这是自然老化，绝口不提'工伤赔偿'四个字。"
+  },
+  {
+    "id": "RUST_BASIC_SURGERY",
+    "name": "基础切除手术",
     "region": "RUST_BELT",
     "type": "SURGERY",
-    "baseCost": 2000,
-    "effects": { "cureType": ["ACUTE", "CHRONIC"], "hpRestore": 50 },
+    "baseCost": 8000,
+    "effects": { 
+      "hpRestore": 50,
+      "cureDisease": ["WORKER_LUNG"]
+    },
     "requirements": { "waitTurns": [4, 8] },
-    "insurance": { "isCovered": true, "baseCopayRate": 0.3, "isHiddenInfo": true },
-    "flavorText": "标准的流水线作业。缝合线很粗糙，但能保命。"
+    "insurance": { "isCovered": true, "baseCopayRate": 0.3 },
+    "flavorText": "一个极其标准的小手术，但账单上会列出'无菌纱布$50/块'、'点滴架租赁费$200'等让你大开眼界的收费项目。"
   },
   {
-    "id": "RUST_TEST_DRUG",
-    "name": "二期临床试药",
-    "region": "RUST_BELT",
+    "id": "SUBURBS_PCP_CHECKUP",
+    "name": "家庭医生年度体检",
+    "region": "SUBURBS",
     "type": "SPECIAL",
-    "baseCost": -500,
-    "effects": { "hpRestore": -10, "addiction": 5, "sanRestore": -5 },
-    "insurance": { "isCovered": false, "baseCopayRate": 0 },
-    "flavorText": "签署免责协议，以此换取微薄的报酬。"
+    "baseCost": 600,
+    "effects": { 
+      "maxHpMod": 5,
+      "detectHiddenDisease": true,
+      "insightRestore": -5
+    },
+    "requirements": { "waitTurns": [1, 2] },
+    "insurance": { "isCovered": true, "baseCopayRate": 0.0 },
+    "flavorText": "你的家庭医生用十分钟听了听你的心跳，告诉你少吃红肉，然后向你的保险公司收取了六百美元。"
   },
   {
-    "id": "DOWNTOWN_THERAPY",
-    "name": "深度心理重构",
+    "id": "SUBURBS_AMBULANCE",
+    "name": "救护车呼叫",
+    "region": "SUBURBS",
+    "type": "EMERGENCY",
+    "baseCost": 2500,
+    "effects": { 
+      "hpRestore": 10,
+      "transportTo": "HOSPITAL",
+      "insightRestore": 15
+    },
+    "requirements": { "hpThreshold": 20 },
+    "insurance": { 
+      "isCovered": true, 
+      "baseCopayRate": 0.8,
+      "outOfNetwork": true,
+      "alwaysSurpriseBill": true
+    },
+    "flavorText": "在美国，失去意识前最后一句话通常是'别叫救护车'。因为这辆车永远不属于你的保险网络，两英里的路程足以清空你的月薪。"
+  },
+  {
+    "id": "SUBURBS_ANTIDEPRESSANT",
+    "name": "处方级抗焦虑药物",
+    "region": "SUBURBS",
+    "type": "DRUG",
+    "baseCost": 450,
+    "effects": { 
+      "insightRestore": -60,
+      "addBuff": "buff_drug_addiction"
+    },
+    "requirements": { 
+      "insuranceRequired": ["mentalCovered"],
+      "minInsight": 40
+    },
+    "insurance": { "isCovered": true, "baseCopayRate": 0.2 },
+    "flavorText": "现代中产阶级的真正口粮。它切断了你的焦虑神经，让你在面对下个月房贷时，依然能露出标准的八颗牙齿微笑。"
+  },
+  {
+    "id": "SUBURBS_STENT_SURGERY",
+    "name": "心脏支架介入手术",
+    "region": "SUBURBS",
+    "type": "SURGERY",
+    "baseCost": 65000,
+    "effects": { 
+      "hpRestore": 80,
+      "cureDisease": ["HEART_DISEASE"],
+      "insightRestore": 20
+    },
+    "requirements": { "waitTurns": [2, 4] },
+    "insurance": { "isCovered": true, "baseCopayRate": 0.1 },
+    "flavorText": "挽救你生命的现代医学奇迹。出院时你拿到了一本厚达十页的账单明细，你开始怀疑是不是直接死掉在财务上更划算。"
+  },
+  {
+    "id": "DOWNTOWN_CONCIERGE_ER",
+    "name": "私人礼宾医生上门",
+    "region": "DOWNTOWN",
+    "type": "EMERGENCY",
+    "baseCost": 8000,
+    "effects": { 
+      "hpRestore": 100,
+      "cureDisease": ["ACUTE", "CHRONIC"]
+    },
+    "requirements": { "responseTime": 1 },
+    "insurance": { "isCovered": true, "baseCopayRate": 0.0 },
+    "flavorText": "只要一个电话，带着全套急救设备的直升机会直接降落在大平层的停机坪上。在富人区，死神也是要看排号的。"
+  },
+  {
+    "id": "DOWNTOWN_LUXURY_REHAB",
+    "name": "顶级私立静修康复中心",
     "region": "DOWNTOWN",
     "type": "THERAPY",
-    "baseCost": 5000,
-    "effects": { "sanRestore": 60, "cureType": ["MENTAL"] },
-    "requirements": { "waitTurns": [1, 3] },
-    "insurance": { "isCovered": true, "baseCopayRate": 0.2 },
-    "flavorText": "在这里，连你的童年阴影都可以被格式化。"
+    "baseCost": 45000,
+    "effects": { 
+      "insightRestore": -100,
+      "cureDisease": ["MENTAL"],
+      "removeBuff": ["addiction"]
+    },
+    "requirements": { 
+      "waitTurns": [1, 2],
+      "insuranceRequired": ["addictionCovered"]
+    },
+    "insurance": { "isCovered": true, "baseCopayRate": 0.0 },
+    "flavorText": "设在风景宜人的海岛上。为你提供瑜伽、冥想和马术课程，以治疗你因为做空市场而产生的轻微心理不适。"
   },
   {
-    "id": "DOWNTOWN_STEM_CELL",
-    "name": "干细胞再生疗法",
+    "id": "DOWNTOWN_ORGAN_TRANSPLANT",
+    "name": "器官优先移植协议",
     "region": "DOWNTOWN",
-    "type": "SPECIAL",
-    "baseCost": 50000,
-    "effects": { "hpCapMod": 20, "hpRestore": 100 },
+    "type": "SURGERY",
+    "baseCost": 250000,
+    "effects": { 
+      "hpRestore": 100,
+      "maxHpMod": 30,
+      "cureDisease": ["HEART_DISEASE", "LIVER_FAILURE", "KIDNEY_FAILURE"]
+    },
+    "requirements": { "cashOnly": true },
     "insurance": { "isCovered": false, "baseCopayRate": 1.0 },
-    "flavorText": "只有顶层阶级才配拥有的永生科技雏形。"
+    "flavorText": "当你拥有足够的净资产时，全美的器官捐献数据库会自动把你排到列表的第一位。"
   }
 ]

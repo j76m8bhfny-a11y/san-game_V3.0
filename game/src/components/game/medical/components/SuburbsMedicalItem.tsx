@@ -75,10 +75,10 @@ export const SuburbsMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy 
               <span>+{service.effects.hpRestore}</span>
             </div>
           )}
-          {service.effects?.sanRestore && (
+          {service.effects?.insightRestore && (
             <div className="flex justify-between text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">
               <span>Insight</span>
-              <span>+{service.effects.sanRestore}</span>
+              <span>+{service.effects.insightRestore}</span>
             </div>
           )}
         </div>

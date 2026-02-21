@@ -9,7 +9,7 @@
     "rite": {
       "name": "缴纳什一税",
       "description": "消耗 10% 现金(最少$20) 换取理智",
-      "baseSanReward": 15
+      "baseInsightReward": 15
     }
   },
   {
@@ -22,7 +22,7 @@
     "rite": {
       "name": "参加聚礼",
       "description": "免费。恢复少量HP/SAN，需保持身家清白",
-      "baseSanReward": 5,
+      "baseInsightReward": 5,
       "baseHpReward": 10
     }
   },
@@ -32,7 +32,7 @@
     "description": "疯子的狂欢。理智是枷锁，痛苦是货币。",
     "color": "text-purple-500",
     "baseRegion": "SLUMS",
-    "joinCost": { "maxSan": 40 },
+    "joinCost": { "maxInsight": 40 },
     "rite": {
       "name": "进行血祭",
       "description": "消耗 15 HP 换取大量金钱",
@@ -46,11 +46,11 @@
     "description": "觉醒者的道路。只有这里才有真正的未来。",
     "color": "text-red-600",
     "baseRegion": "DOWNTOWN",
-    "joinCost": { "minHp": 80, "minSan": 80 },
+    "joinCost": { "minHp": 80, "minInsight": 80 },
     "rite": {
       "name": "理论学习",
       "description": "消耗 10 SAN 换取 5 革命点数",
-      "sanCost": 10,
+      "insightCost": 10,
       "redPointReward": 5
     }
   }

@@ -32,7 +32,7 @@
     "name": "虚空精神病",
     "type": "MENTAL",
     "severity": 5,
-    "effects": { "sanDrain": 10 },
+    "effects": { "insightGain": 10 },
     "description": "你开始看见不存在的霓虹灯，听见资本的低语。"
   },
 

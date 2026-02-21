@@ -1,5 +1,5 @@
 import { StateCreator } from 'zustand';
-import { GameState, Job, JobType, PlayerClass, RegionID } from '@/types/schema';
+import { GameState, Job } from '@/types/schema';
 import { StoreState } from '@/types/store';
 import jobsData from '@/assets/data/jobs.json';
 import jobRules from '@/assets/data/rules/jobRules.json';
@@ -23,9 +23,9 @@ export const createJobSlice: StateCreator<StoreState, [], [], JobSlice> = (set, 
     let usedSlots = 0;
     
     activeJobIds.forEach(id => {
-      const job = jobsData.find((j): j is Job => j.id === id);
+      const job = jobsData.find((j: any) => j.id === id) as Job | undefined;
       if (job) {
-        const cost = jobRules.settings.slotCosts[job.type] || 1; 
+        const cost = (jobRules.settings.slotCosts as Record<string, number>)[job.type] || 1; 
         usedSlots += cost;
       }
     });
@@ -35,7 +35,7 @@ export const createJobSlice: StateCreator<StoreState, [], [], JobSlice> = (set, 
   acceptJob: (jobId) => {
     const state = get() as GameState;
     const { vitality, activeHousing, inventory } = state;
-    const job = jobsData.find((j): j is Job => j.id === jobId);
+    const job = jobsData.find((j: any) => j.id === jobId) as Job | undefined;
 
     if (!job) return { success: false, message: "工作不存在" };
 
@@ -46,7 +46,7 @@ export const createJobSlice: StateCreator<StoreState, [], [], JobSlice> = (set, 
 
     // 2. 检查槽位限制 (全职=2, 零工=1, 上限3)
     const currentSlots = get().getJobSlotsUsed();
-    const requiredSlots = jobRules.settings.slotCosts[job.type] || 1;
+    const requiredSlots = (jobRules.settings.slotCosts as Record<string, number>)[job.type] || 1;
     const maxSlots = jobRules.settings.maxSlotCapacity;
     
     if (currentSlots + requiredSlots > maxSlots) {

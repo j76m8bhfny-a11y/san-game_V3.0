@@ -271,11 +271,11 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
     // === 应用惩罚 ===
     if (penaltyConfig) {
       // 1. SAN 变化
-      if (penaltyConfig.sanChange !== undefined) {
+      if (penaltyConfig.insightChange !== undefined) {
         const { minStat } = SYSTEM_RULES.caps;
-        const currentSan = state.vitality.metrics.san;
-        const newSan = Math.max(minStat, Math.min(state.vitality.metrics.maxSan, currentSan + penaltyConfig.sanChange));
-        state.modifyStats({ san: newSan });
+        const currentInsight = state.vitality.metrics.insight;
+        const newInsight = Math.max(minStat, Math.min(state.vitality.metrics.maxInsight, currentInsight + penaltyConfig.insightChange));
+        state.modifyStats({ insight: newInsight });
       }
 
       // 2. 最大 HP 减少（永久）

@@ -49,7 +49,7 @@ export const BillSystem: GameSystem = {
 
     const bill = forcedBill || triggerBill(
       metrics.gold,
-      metrics.san,
+      metrics.insight,
       identity.currentClass,
       Config.bills as any,
       Config.global.billConfig,
@@ -86,7 +86,7 @@ export const BillSystem: GameSystem = {
         vitality: {
           metrics: {
             hp: metrics.hp + (bill.effects?.hp || 0),
-            san: metrics.san + (bill.effects?.san || 0),
+            insight: metrics.insight + (bill.effects?.insight || 0),
           } as Partial<VitalityMetrics>
         } as any 
       },
@@ -97,13 +97,13 @@ export const BillSystem: GameSystem = {
     
     // ✅ 获取前置系统可能已更新的 HP/SAN 最新值
     const currentHp = (result.updates?.vitality?.metrics?.hp as number) ?? metrics.hp;
-    const currentSan = (result.updates?.vitality?.metrics?.san as number) ?? metrics.san;
+    const currentInsight = (result.updates?.vitality?.metrics?.insight as number) ?? metrics.insight;
     
     // 更新 HP/SAN（累加模式）
     result.updates.vitality = {
       metrics: {
         hp: currentHp + (bill.effects?.hp || 0),
-        san: currentSan + (bill.effects?.san || 0),
+        insight: currentInsight + (bill.effects?.insight || 0),
       } as Partial<VitalityMetrics>
     } as any;
     

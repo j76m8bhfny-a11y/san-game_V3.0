@@ -417,7 +417,7 @@ function getAttribute(item: Item, attribute: string): number {
   // 特殊处理
   if (attribute === 'defense' && effects.maxHp) return effects.maxHp * 0.2;
   if (attribute === 'hpRestore' && effects.hp) return effects.hp;
-  if (attribute === 'sanRestore' && effects.san) return effects.san;
+  if (attribute === 'insightRestore' && effects.insight) return effects.insight;
   if (attribute === 'hungerRestore' && effects.hunger) return effects.hunger;
   
   return 0;

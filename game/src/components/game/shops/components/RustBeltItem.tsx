@@ -70,7 +70,7 @@ export const RustBeltItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
          
          <div className="mt-2 flex gap-1 text-[10px]">
             {item.effects?.hp !== undefined && <span className="bg-red-900/50 text-red-400 px-1 rounded">HP {item.effects.hp > 0 ? '+' : ''}{item.effects.hp}</span>}
-            {item.effects?.san !== undefined && <span className="bg-amber-900/50 text-amber-400 px-1 rounded">灵视{item.effects.san > 0 ? '+' : ''}{item.effects.san}</span>}
+            {item.effects?.insight !== undefined && <span className="bg-amber-900/50 text-amber-400 px-1 rounded">灵视{item.effects.insight > 0 ? '+' : ''}{item.effects.insight}</span>}
          </div>
 
          {!canAfford && (

@@ -43,12 +43,12 @@ export interface NoviceMechanic {
   cost: {
     gold?: number;
     hp?: number;
-    san?: number;
+    insight?: number;  // 灵视值消耗
   };
   reward: {
     gold?: number;
     hp?: number;
-    san?: number;
+    insight?: number;  // 灵视值奖励
     points?: {
       red?: number;
       wolf?: number;
@@ -97,7 +97,7 @@ export interface FaithMechanics {
 export type DebuffEffect = {
   incomeMultiplier?: number;
   hpDrain?: number;
-  sanDrain?: number;
+  insightDrain?: number;  // 灵视值流失（Debuff效果）
   goldDrain?: number;
 } & Record<string, number | boolean | string>;
 
@@ -114,7 +114,7 @@ export interface DebuffConfig {
 // ==========================================
 
 export interface LeavePenalty {
-  sanChange?: number;
+  insightChange?: number;
   maxHpChange?: number;
   permanentBan?: boolean;
   description?: string;

@@ -50,13 +50,13 @@ export const PlayerStatsPanel: React.FC<Props> = ({ isOpen, onClose }) => {
     inventory
   } = useGameStore();
 
-  const { hp, maxHp, san, gold, addiction, hunger, creditScore } = vitality.metrics;
+  const { hp, maxHp, insight, gold, addiction, hunger, creditScore } = vitality.metrics;
   const { currentClass, points } = vitality.identity;
   const { activeDiseases, activeInsurances } = vitality;
   
   // 获取医疗保险
   const activeInsurance = activeInsurances.find((ins: any) => ins.type === 'MEDICAL') || null;
-  const maxSan = (vitality.metrics as any).maxSan || INITIAL_STATE.vitality.maxSan;
+  const maxInsight = (vitality.metrics as any).maxInsight || INITIAL_STATE.vitality.maxInsight;
   const GLOBAL_MAX = SYSTEM_RULES.caps.maxStat;
 
   const classInfo = CLASS_CONFIG[currentClass as PlayerClass] || CLASS_CONFIG[PlayerClass.Homeless];
@@ -157,11 +157,11 @@ export const PlayerStatsPanel: React.FC<Props> = ({ isOpen, onClose }) => {
                 />
                 <MiniBar 
                   icon={<Brain size={12} />} 
-                  label={t('hud.stats.san_short')} 
-                  value={san} 
-                  max={maxSan} 
-                  color={san > (thresholds.insightHigh ?? 70) ? "bg-amber-500" : "bg-purple-500"} 
-                  warning={san > (thresholds.insightAwaken ?? 85)} 
+                  label={t('hud.stats.insight_short')} 
+                  value={insight} 
+                  max={maxInsight} 
+                  color={insight > (thresholds.insightHigh ?? 70) ? "bg-amber-500" : "bg-purple-500"} 
+                  warning={insight > (thresholds.insightAwaken ?? 85)} 
                 />
                 <MiniBar 
                   icon={<Utensils size={12} />} 

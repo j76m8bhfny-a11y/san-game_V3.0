@@ -21,7 +21,7 @@ export const DebugPanel: React.FC<DebugPanelProps> = ({ onClose }) => {
   const nextTurn = useGameStore((state: any) => state.nextTurn);
   const triggerEnding = useGameStore((state: any) => state.triggerEnding);
 
-  const { gold, hp, san, maxHp, maxSan } = vitality.metrics;
+  const { gold, hp, insight, maxHp, maxInsight } = vitality.metrics;
 
   // --- 预设的测试指令 (SOP Macros) ---
 
@@ -37,12 +37,12 @@ export const DebugPanel: React.FC<DebugPanelProps> = ({ onClose }) => {
 
   // 测试用例：濒死状态 (测试死亡判定)
   const handleNearDeath = () => {
-    modifyStats({ hp: 1, san: 1 });
+    modifyStats({ hp: 1, insight: 1 });
   };
 
   // 测试用例：状态回满 (测试恢复逻辑)
   const handleFullHeal = () => {
-    modifyStats({ hp: maxHp, san: maxSan });
+    modifyStats({ hp: maxHp, insight: maxInsight });
   };
 
   return (
@@ -71,8 +71,8 @@ export const DebugPanel: React.FC<DebugPanelProps> = ({ onClose }) => {
             <div className="text-xl font-bold text-red-400">{hp} / {maxHp}</div>
           </div>
           <div className="border border-green-500/20 p-2 rounded">
-            <div className="text-gray-500">{t('common.san')}</div>
-            <div className="text-xl font-bold text-amber-400">{san} / {maxSan}</div>
+            <div className="text-gray-500">{t('hud.stats.insight')}</div>
+            <div className="text-xl font-bold text-amber-400">{insight} / {maxInsight}</div>
           </div>
           <div className="border border-green-500/20 p-2 rounded">
             <div className="text-gray-500">{t('common.turn')}</div>
@@ -115,10 +115,10 @@ export const DebugPanel: React.FC<DebugPanelProps> = ({ onClose }) => {
               <button onClick={() => modifyStats({ hp: Math.max(0, hp - 10) })} className="bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded transition-all">
                 {t('debug.hpMinus10')}
               </button>
-              <button onClick={() => modifyStats({ san: Math.max(0, san - 10) })} className="bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded transition-all" title="降低灵视（更加蒙昧）">
+              <button onClick={() => modifyStats({ insight: Math.max(0, insight - 10) })} className="bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded transition-all" title="降低灵视（更加蒙昧）">
                 灵视-10
               </button>
-              <button onClick={() => modifyStats({ san: Math.min(maxSan, san + 10) })} className="bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded transition-all" title="提升灵视（更加觉醒）">
+              <button onClick={() => modifyStats({ insight: Math.min(maxInsight, insight + 10) })} className="bg-gray-700 hover:bg-gray-600 py-2 px-4 rounded transition-all" title="提升灵视（更加觉醒）">
                 灵视+10
               </button>
             </div>

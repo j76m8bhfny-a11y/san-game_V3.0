@@ -10,7 +10,7 @@
     "initialStats": {
       "gold": 50,
       "hp": 60,
-      "san": 40
+      "insight": 40
     },
     "description": "【严寒】每月被动 HP-10。依靠 A 选项施舍和 I01 罐头苟活。",
     "visualTheme": {
@@ -29,7 +29,7 @@
     "initialStats": {
       "gold": 200,
       "hp": 100,
-      "san": 60
+      "insight": 60
     },
     "description": "【月光】存款在贫困线上震荡。一旦失业或生病将立即破产。",
     "visualTheme": {
@@ -48,7 +48,7 @@
     "initialStats": {
       "gold": 2000,
       "hp": 90,
-      "san": 70
+      "insight": 70
     },
     "description": "【泡沫】看似体面。C 选项价格翻倍。极易因股市熔断跌落。",
     "visualTheme": {
@@ -67,7 +67,7 @@
     "initialStats": {
       "gold": 10000,
       "hp": 80,
-      "san": 50
+      "insight": 50
     },
     "description": "【虚无】D 选项 SAN 加倍。只要不作死选 D，想死都难。",
     "visualTheme": {

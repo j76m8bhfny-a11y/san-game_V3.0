@@ -54,7 +54,7 @@ export const DowntownMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy
         
         <div className="flex gap-4 text-[9px] font-mono text-cyan-600">
            {service.effects?.hpRestore && <span>VITALS++</span>}
-           {service.effects?.sanRestore && <span className="text-amber-400">INSIGHT+{service.effects.sanRestore}</span>}
+           {service.effects?.insightRestore && <span className="text-amber-400">INSIGHT+{service.effects.insightRestore}</span>}
         </div>
 
         <div className="mt-2 text-cyan-400 text-[10px] border border-cyan-800 px-2 py-0.5 animate-pulse">

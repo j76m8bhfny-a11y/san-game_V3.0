@@ -6,15 +6,15 @@ import prisonRules from '@/assets/data/rules/prisonRules.json';
 // ------------------------------------------------------------------
 // 核心公式 1: 动态压力系数
 // ------------------------------------------------------------------
-export const calcPressure = (san: number, divisor: number): number => {
-  return 1 + (Math.pow(san, 2) / divisor);
+export const calcPressure = (insight: number, divisor: number): number => {
+  return 1 + (Math.pow(insight, 2) / divisor);
 };
 
 // ------------------------------------------------------------------
 // 核心公式 2: 薪资效率系数
 // ------------------------------------------------------------------
-export const calcSalary = (baseSalary: number, currentSan: number, config: any[]): number => {
-  const match = config.find((c: any) => currentSan <= c.maxSan);
+export const calcSalary = (baseSalary: number, currentInsight: number, config: any[]): number => {
+  const match = config.find((c: any) => currentInsight >= c.minInsight);
   const efficiency = match ? match.efficiency : 0.1;
   return Math.floor(baseSalary * efficiency);
 };
@@ -51,7 +51,7 @@ export const calcDynamicGold = (
 // ------------------------------------------------------------------
 export const triggerBill = (
   gold: number,
-  san: number,
+  insight: number,
   currentClass: PlayerClass,
   billPool: Bill[],
   config: { baseProb: number; debtProb: number },
@@ -70,7 +70,7 @@ export const triggerBill = (
   const validBills = billPool.filter(bill => {
     if (!bill.triggerCondition) return true;
     const { 
-      isDebtOnly, requiredClass, minGold, minSan, maxGold,
+      isDebtOnly, requiredClass, minGold, minInsight, maxGold,
       hasVehicle, hasHousing,
       hasItem, hasItemTag, noItem, noItemTag,
       noInsuranceType
@@ -80,7 +80,7 @@ export const triggerBill = (
     if (requiredClass && !requiredClass.includes(currentClass)) return false;
     if (minGold !== undefined && gold < minGold) return false;
     if (maxGold !== undefined && gold > maxGold) return false;
-    if (minSan !== undefined && san < minSan) return false;
+    if (minInsight !== undefined && insight < minInsight) return false;
 
     if (hasVehicle && !assets.vehicleTags.includes(hasVehicle)) return false;
 

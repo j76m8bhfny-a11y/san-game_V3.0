@@ -72,13 +72,13 @@ export const HousingSystem: GameSystem = {
         result.notes.push(`你失去了住所。`);
         
         // SAN 惩罚（带默认值）
-        const penalty = evictionConfig?.sanPenalty ?? 20;
-        const currentSan = result.updates.vitality?.metrics?.san ?? vitality.metrics.san;
+        const penalty = evictionConfig?.insightPenalty ?? 20;
+        const currentInsight = result.updates.vitality?.metrics?.insight ?? vitality.metrics.insight;
         result.updates.vitality = {
           ...result.updates.vitality,
           metrics: {
             ...(result.updates.vitality as any)?.metrics,
-            san: Math.max(0, currentSan - penalty)
+            insight: Math.max(0, currentInsight - penalty)
           }
         } as any;
         

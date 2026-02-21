@@ -15,7 +15,7 @@
     "effects": {
       "hunger": 15,
       "hp": -2,
-      "san": 2
+      "insightClear": 2
     },
     "tags": ["FOOD", "JUNK_FOOD", "EXPIRED", "TIER_1"],
     "flavorText": "包装袋上说它已经过期半年了，但里面的防腐剂能确保它比你活得更久。"
@@ -49,7 +49,7 @@
     "effects": {
       "hunger": 5,
       "hp": -3,
-      "san": 8
+      "insightClear": 8
     },
     "activeEffect": {
       "type": "APPLY_BUFF",
@@ -88,7 +88,7 @@
     "price": 5,
     "regions": ["SLUMS"],
     "effects": {
-      "san": 5
+      "insightClear": 5
     },
     "tags": ["GEAR", "SHELTER", "TIER_1"],
     "flavorText": "一面反射你仅存的体温，另一面反射这个社会对你绝对的冷漠。"
@@ -106,7 +106,7 @@
     "effects": {
       "hunger": 5,
       "hp": -2,
-      "san": -3
+      "insightGain": 3
     },
     "activeEffect": {
       "type": "APPLY_BUFF",
@@ -147,7 +147,7 @@
     "regions": ["RUST_BELT"],
     "effects": {
       "hunger": 35,
-      "san": -2
+      "insightGain": 2
     },
     "tags": ["FOOD", "PROCESSED", "TIER_2"],
     "flavorText": "里面的5号黄色素，是你这周在暗无天日的流水线上能看到的唯一一抹阳光。"
@@ -160,7 +160,7 @@
     "regions": ["RUST_BELT"],
     "effects": {
       "hp": 15,
-      "san": -5
+      "insightGain": 5
     },
     "activeEffect": {
       "type": "APPLY_BUFF",
@@ -179,7 +179,7 @@
     "price": 5,
     "regions": ["RUST_BELT", "SLUMS"],
     "effects": {
-      "san": -10
+      "insightGain": 10
     },
     "activeEffect": {
       "type": "LOTTERY",
@@ -206,7 +206,7 @@
     "effects": {
       "hunger": 20,
       "hp": 2,
-      "san": -15
+      "insightGain": 15
     },
     "tags": ["FOOD", "ORGANIC", "VEGAN", "SANITY_DAMAGE", "TIER_3"],
     "flavorText": "标价相当于收银员三个小时的时薪。吃起来有一股浓烈的中产阶级道德优越感。"
@@ -220,7 +220,7 @@
     "effects": {
       "hunger": 40,
       "hp": 5,
-      "san": -5
+      "insightGain": 5
     },
     "tags": ["FOOD", "ORGANIC", "PREMIUM", "TIER_3"],
     "flavorText": "这头牛生前享受的医疗保健水平，甚至比正在购买它的你还要好。"
@@ -233,7 +233,7 @@
     "regions": ["SUBURBS"],
     "effects": {
       "hp": 5,
-      "san": -20
+      "insightGain": 20
     },
     "activeEffect": {
       "type": "APPLY_BUFF",
@@ -252,7 +252,7 @@
     "price": 80,
     "regions": ["SUBURBS"],
     "effects": {
-      "san": -25
+      "insightGain": 25
     },
     "activeEffect": {
       "type": "APPLY_BUFF",
@@ -276,7 +276,7 @@
     "regions": ["DOWNTOWN"],
     "effects": {
       "hunger": 5,
-      "san": 30
+      "insightClear": 30
     },
     "tags": ["FOOD", "LUXURY", "ELITE", "INSIGHT", "TIER_4"],
     "flavorText": "金箔没有任何营养价值，食用它仅仅是为了向消化系统证明你的购买力。排泄也成了一种身份象征。"
@@ -290,7 +290,7 @@
     "effects": {
       "hunger": 20,
       "hp": 15,
-      "san": 10
+      "insightClear": 10
     },
     "tags": ["FOOD", "LUXURY", "ELITE", "ENDANGERED", "TIER_4"],
     "flavorText": "当你咽下这口肉的时候，一个物种离灭绝又近了一步。权力的味道惊人的丰腴。"
@@ -303,7 +303,7 @@
     "regions": ["DOWNTOWN"],
     "effects": {
       "hp": 100,
-      "san": 40
+      "insightClear": 40
     },
     "activeEffect": {
       "type": "APPLY_BUFF",
@@ -827,7 +827,7 @@
     "id": "I01",
     "name": "临期罐头",
     "price": 10,
-    "effects": { "hp": 10, "san": -5 },
+    "effects": { "hp": 10, "insightGain": 5 },
     "tags": ["CONSUMER"],
     "flavorText": "流浪汉的神器。"
   },
@@ -835,7 +835,7 @@
     "id": "I02",
     "name": "廉价酒精",
     "price": 40,
-    "effects": { "hp": 5, "san": -15 },
+    "effects": { "hp": 5, "insightGain": 15 },
     "tags": ["CONSUMER"],
     "flavorText": "工人的止痛药。"
   },
@@ -843,7 +843,7 @@
     "id": "I03",
     "name": "处方镇静剂",
     "price": 150,
-    "effects": { "hp": 5, "san": -40 },
+    "effects": { "hp": 5, "insightGain": 40 },
     "tags": ["CONSUMER"],
     "flavorText": "中产阶级重置药。"
   },
@@ -851,7 +851,7 @@
     "id": "I04",
     "name": "强效抗生素",
     "price": 400,
-    "effects": { "hp": 40, "san": 0 },
+    "effects": { "hp": 40, "insightClear": 0 },
     "tags": ["CONSUMER"],
     "flavorText": "阶级过滤器。"
   },
@@ -859,7 +859,7 @@
     "id": "I05",
     "name": "全效维生舱",
     "price": 3000,
-    "effects": { "hp": 100, "san": 0 },
+    "effects": { "hp": 100, "insightClear": 0 },
     "tags": ["CONSUMER"],
     "flavorText": "富人特权。"
   },
@@ -867,7 +867,7 @@
     "id": "I06",
     "name": "地下出版物",
     "price": 120,
-    "effects": { "hp": -10, "san": 15 },
+    "effects": { "hp": -10, "insightClear": 15 },
     "tags": ["AWAKENING"],
     "flavorText": "危险的知识。"
   },
@@ -875,7 +875,7 @@
     "id": "I07",
     "name": "赎罪券NFT",
     "price": 1000,
-    "effects": { "hp": 0, "san": 5 },
+    "effects": { "hp": 0, "insightClear": 5 },
     "tags": ["AWAKENING"],
     "flavorText": "优雅的觉醒。"
   },
@@ -883,7 +883,7 @@
     "id": "I13",
     "name": "强力球彩票",
     "price": 10,
-    "effects": { "hp": 0, "san": 1 },
+    "effects": { "hp": 0, "insightClear": 1 },
     "tags": ["TICKET"],
     "activeEffect": {
       "type": "LOTTERY",
@@ -916,7 +916,7 @@
     "id": "D03",
     "name": "一期临床试药",
     "price": -500,
-    "effects": { "hp": 0, "san": 0, "maxHp": -10 },
+    "effects": { "hp": 0, "insightClear": 0, "maxHp": -10 },
     "tags": ["DARK_WEB"],
     "flavorText": "透支未来。"
   },
@@ -970,7 +970,7 @@
     "type": "PASSIVE",
     "price": 800,
     "regions": ["RUST_BELT", "SLUMS"],
-    "effects": { "hp": 0, "san": -2 },
+    "effects": { "hp": 0, "insightGain": 2 },
     "tags": ["VEHICLE", "VEHICLE_T1"],
     "flavorText": "锈迹斑斑，但至少四个轮子还能转。"
   },
@@ -980,7 +980,7 @@
     "type": "PASSIVE",
     "price": 3500,
     "regions": ["RUST_BELT", "SUBURBS"],
-    "effects": { "hp": 0, "san": 3 },
+    "effects": { "hp": 0, "insightClear": 3 },
     "tags": ["VEHICLE", "VEHICLE_T2"],
     "flavorText": "前任车主可能死在里面了。"
   },
@@ -990,7 +990,7 @@
     "type": "PASSIVE",
     "price": 8000,
     "regions": ["SUBURBS"],
-    "effects": { "hp": 0, "san": 8 },
+    "effects": { "hp": 0, "insightClear": 8 },
     "tags": ["VEHICLE", "VEHICLE_T2"],
     "flavorText": "中产阶级的标准配置。"
   },
@@ -1000,7 +1000,7 @@
     "type": "PASSIVE",
     "price": 25000,
     "regions": ["DOWNTOWN"],
-    "effects": { "hp": 0, "san": 15 },
+    "effects": { "hp": 0, "insightClear": 15 },
     "tags": ["VEHICLE", "VEHICLE_T3"],
     "flavorText": "速度可以杀死烦恼。"
   },
@@ -1010,7 +1010,7 @@
     "type": "PASSIVE",
     "price": 50000,
     "regions": ["DOWNTOWN"],
-    "effects": { "hp": 0, "san": 25 },
+    "effects": { "hp": 0, "insightClear": 25 },
     "tags": ["VEHICLE", "VEHICLE_T4"],
     "flavorText": "真皮座椅，车载香槟。"
   },

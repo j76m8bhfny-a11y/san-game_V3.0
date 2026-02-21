@@ -15,7 +15,7 @@ interface JobPaperProps {
   canApply: boolean;
   lockReason?: string;
   onAction: () => void;
-  currentSan?: number; // 当前 SAN 值，用于显示效率
+  currentInsight?: number; // 当前 Insight 值，用于显示效率
 }
 
 export const JobPaper: React.FC<JobPaperProps> = ({ 
@@ -25,7 +25,7 @@ export const JobPaper: React.FC<JobPaperProps> = ({
   canApply, 
   lockReason, 
   onAction,
-  currentSan = 50, // 默认正常状态
+  currentInsight = 50, // 默认正常状态
 }) => {
   const { t } = useI18n();
   
@@ -33,7 +33,7 @@ export const JobPaper: React.FC<JobPaperProps> = ({
   const buttonLabels = JOB_BUTTON_LABELS[theme];
   
   // 获取当前效率等级
-  const efficiency = getEfficiencyLevel(currentSan);
+  const efficiency = getEfficiencyLevel(currentInsight);
   const expectedEarnings = Math.floor(job.baseSalary * efficiency.modifier);
 
   // --- 风格 1: 贫民窟 (电线杆上的小广告) ---

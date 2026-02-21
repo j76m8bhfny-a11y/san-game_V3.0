@@ -10,8 +10,8 @@
       "description": "露宿街头带来的持续心理压力",
       "duration": 3,
       "effects": {
-        "perTurn": { "san": -2 },
-        "onExpire": { "san": 5 }
+        "perTurn": { "insight": -2 },
+        "onExpire": { "insight": 5 }
       },
       "stackable": false,
       "icon": "buff_homeless"
@@ -22,8 +22,8 @@
       "description": "失去工作的不安全感",
       "duration": 5,
       "effects": {
-        "perTurn": { "san": -1 },
-        "onExpire": { "san": 3 }
+        "perTurn": { "insight": -1 },
+        "onExpire": { "insight": 3 }
       },
       "stackable": true,
       "maxStacks": 3,
@@ -35,7 +35,7 @@
       "description": "疾病带来的身体不适",
       "duration": 7,
       "effects": {
-        "perTurn": { "hp": -1, "san": -1 },
+        "perTurn": { "hp": -1, "insight": -1 },
         "onExpire": { "hp": 3 }
       },
       "stackable": false,
@@ -47,7 +47,7 @@
       "description": "医疗保险带来的安全感",
       "duration": -1,
       "effects": {
-        "perTurn": { "san": 1 }
+        "perTurn": { "insight": 1 }
       },
       "stackable": false,
       "icon": "buff_insured"
@@ -71,9 +71,9 @@
       "description": "廉价的工业酒精开始侵蚀你的理智",
       "duration": 10,
       "effects": {
-        "perTurn": { "san": -1 },
+        "perTurn": { "insight": -1 },
         "onExpire": { 
-          "san": -5,
+          "insight": -5,
           "trigger": "WITHDRAWAL_ALCOHOL"
         }
       },
@@ -89,12 +89,12 @@
       "duration": 3,
       "effects": {
         "perTurn": { 
-          "san": -1,
+          "insight": -1,
           "workHpCostModifier": 0
         },
         "onExpire": { 
           "hp": -5,
-          "san": -3
+          "insight": -3
         }
       },
       "stackable": false,
@@ -122,12 +122,12 @@
       "duration": 5,
       "effects": {
         "perTurn": { 
-          "san": -1,
+          "insight": -1,
           "ignoreHpDecay": 2
         },
         "onExpire": { 
           "hp": -3,
-          "san": 2
+          "insight": 2
         }
       },
       "stackable": false,
@@ -141,12 +141,12 @@
       "duration": 3,
       "effects": {
         "perTurn": { 
-          "san": -3,
+          "insight": -3,
           "eventSanCostModifier": 0
         },
         "onExpire": { 
           "trigger": "ANXIETY_REBOUND",
-          "san": -10
+          "insight": -10
         }
       },
       "stackable": false,
@@ -160,10 +160,10 @@
       "effects": {
         "perTurn": { 
           "hp": 2,
-          "san": -2
+          "insight": -2
         },
         "onExpire": { 
-          "san": -5,
+          "insight": -5,
           "trigger": "REALITY_CRASH"
         }
       },
@@ -179,12 +179,12 @@
       "effects": {
         "perTurn": { 
           "hp": 2,
-          "san": 1
+          "insight": 1
         },
         "maxHpBonus": 20,
         "onExpire": { 
           "hp": -10,
-          "san": -5,
+          "insight": -5,
           "maxHpBonus": 0,
           "trigger": "AGING_CRASH"
         }
@@ -203,7 +203,7 @@
           "diseaseResistance": 1.0
         },
         "onExpire": { 
-          "san": -3,
+          "insight": -3,
           "trigger": "IMMUNITY_DROP"
         }
       },

@@ -20,7 +20,7 @@
       "middle": { "label": "Middle Class", "desc": "Comfort Trap" },
       "capitalist": { "label": "Capitalist", "desc": "Top Predator" }
     },
-    "stats": { "hp": "Health", "hp_short": "HP", "san": "Insight", "san_short": "INS", "gold": "Cash", "hunger": "Hunger", "addiction": "Addiction", "credit": "Credit Score" },
+    "stats": { "hp": "Health", "hp_short": "HP", "insight": "Insight", "insight_short": "INS", "gold": "Cash", "hunger": "Hunger", "addiction": "Addiction", "credit": "Credit Score" },
     "buttons": { "bag": "Bag", "data": "Data", "sys": "System" },
     "status": { "hasHousing": "Housed", "homeless": "Homeless", "hasInsurance": "Insured", "noInsurance": "No Insurance", "employed": "{count} Jobs", "unemployed": "Jobless", "inventory": "{current}/{max}", "good": "Good", "disease": "Disease", "overdue": "Overdue", "addiction": "Addicted", "hunger": "Hungry" }
   },
@@ -50,7 +50,7 @@
   "titleScreen": { "newGame": "New Game", "continue": "Continue", "settings": "Settings", "quit": "Quit", "subtitle": { "new": "Start from hell", "continue": "Week {turn}", "settings": "Adjust experience", "quit": "See you later" }, "hover": { "new": "Abandon save and restart", "continue": "Continue from last progress", "settings": "Volume, language, etc.", "quit": "Leave game" } },
   "weeklySettlement": { "title": "Week {turn} Settlement", "income": "Income", "expense": "Expense", "net": "Net Change", "balance": "Current Balance", "categories": { "income": "Income", "housing": "Housing", "food": "Food", "medical": "Medical", "bill": "Bill", "bank": "Bank", "tax": "Tax", "misc": "Misc" } },
   "messageWindow": { "continue": "Click to continue..." },
-  "classSelector": { "title": "Choose Your Class", "subtitle": "This determines your starting point, but not your destination", "select": "Select", "stats": { "initial": "Initial Funds", "hp": "Health", "san": "Insight" } },
+  "classSelector": { "title": "Choose Your Class", "subtitle": "This determines your starting point, but not your destination", "select": "Select", "stats": { "initial": "Initial Funds", "hp": "Health", "insight": "Insight" } },
   "settings": {
     "title": "Settings",
     "openEnvelope": "OPEN ENVELOPE",
@@ -76,7 +76,7 @@
     "stickyNote": "DO NOT\\nFORGET", "version": "VERSION", "build": "BUILD", "status": "STATUS", "online": "ONLINE", "docId": "DOC-ID", "devMode": "DEVELOPER ACCESS", "toggle": "TOGGLE"
   },
   "bank": { "title": "Bank", "balance": "Balance", "deposit": "Deposit", "withdraw": "Withdraw", "loan": { "title": "Loan", "apply": "Apply", "current": "Current Loan", "amount": "Amount", "interest": "Interest", "term": "Term", "repay": "Repay", "overdue": "Overdue {turns} weeks" }, "credit": "Credit Score", "ledger": { "title": "Ledger", "empty": "No transactions", "income": "Income", "expense": "Expense" } },
-  "hospital": { "title": "Hospital", "services": "Services", "treatment": "Treatment", "drug": "Drugs", "surgery": "Surgery", "therapy": "Therapy", "emergency": "Emergency", "insurance": { "covered": "Covered", "uncovered": "Not Covered", "copay": "Copay {rate}%" }, "disease": { "current": "Current Disease", "none": "Healthy", "cure": "Cure" }, "effect": { "hpRestore": "Health Restore", "sanRestore": "Insight Awaken", "addiction": "Addiction Risk" } },
+  "hospital": { "title": "Hospital", "services": "Services", "treatment": "Treatment", "drug": "Drugs", "surgery": "Surgery", "therapy": "Therapy", "emergency": "Emergency", "insurance": { "covered": "Covered", "uncovered": "Not Covered", "copay": "Copay {rate}%" }, "disease": { "current": "Current Disease", "none": "Healthy", "cure": "Cure" }, "effect": { "hpRestore": "Health Restore", "insightRestore": "Insight Awaken", "addiction": "Addiction Risk" } },
   "shop": { "title": "Shop", "buy": "Buy", "sell": "Sell", "insufficient": "Insufficient funds", "full": "Inventory full", "categories": { "food": "Food", "medical": "Medical", "tool": "Tools", "other": "Other" } },
   "housing": { "title": "Housing", "rent": "Rent", "buy": "Buy", "current": "Current", "none": "Homeless", "weeklyCost": "Weekly Cost", "defense": "Defense", "regen": "HP Regen", "moveIn": "Move In", "moveOut": "Move Out", "mortgage": "Mortgage" },
   "insurance": { 
@@ -108,7 +108,7 @@
     "invitationOnly": "Invitation Only",
     "memberSignature": "Member Signature"
   },
-  "job": { "title": "Job", "board": "Job Board", "apply": "Apply", "quit": "Quit", "salary": "Salary", "requirement": "Requirement", "type": { "fulltime": "Full-time", "gig": "Gig" }, "cost": { "hp": "HP Cost", "san": "INS Cost" } },
+  "job": { "title": "Job", "board": "Job Board", "apply": "Apply", "quit": "Quit", "salary": "Salary", "requirement": "Requirement", "type": { "fulltime": "Full-time", "gig": "Gig" }, "cost": { "hp": "HP Cost", "insight": "INS Cost" } },
   "faith": { "title": "Faith", "join": "Join", "leave": "Leave", "rite": "Rite", "offer": "Offer", "pray": "Pray", "donate": "Donate", "faiths": { "none": "None", "church": "Church", "brotherhood": "Brotherhood", "cult": "Cult", "revolution": "Revolution" } },
   "crypto": {
     "title": "Darknet Trading Terminal",
@@ -168,7 +168,7 @@
   "archive": { "title": "Archive", "unlocked": "Unlocked", "locked": "Locked", "read": "Read" },
   "roast": { "title": "System Message", "subtitle": "You've been beaten by capitalism today" },
   "gameOver": { "title": "Game Over", "restart": "Restart", "endings": { "death": "Death", "survival": "Survival", "alienation": "Alienation", "stance": "Stance" } },
-  "debug": { "title": "Developer Panel", "cheat": "Cheat Menu", "addGold": "Add Gold", "addHp": "Add HP", "addSan": "Add INS", "unlockAll": "Unlock All", "reset": "Reset Game" },
+  "debug": { "title": "Developer Panel", "cheat": "Cheat Menu", "addGold": "Add Gold", "addHp": "Add HP", "addInsight": "Add INS", "unlockAll": "Unlock All", "reset": "Reset Game" },
   "vehicle": {
     "junk": {
       "name": "Junk Pickup",

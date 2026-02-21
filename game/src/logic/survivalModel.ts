@@ -23,7 +23,7 @@ export interface SurvivalModelParams {
   // --- 资源权重 (决定各资源对存活的重要性) ---
   weights: {
     hp: number;           // HP 权重 (生命)
-    san: number;          // SAN 权重 (理智)
+    insight: number;      // Insight 权重 (灵视)
     hunger: number;       // 饥饿度权重
     gold: number;         // 金钱权重
   };
@@ -32,8 +32,8 @@ export interface SurvivalModelParams {
   thresholds: {
     hpCritical: number;   // HP 危险线 (%)
     hpSafe: number;       // HP 安全线 (%)
-    sanCritical: number;  // SAN 危险线 (%)
-    sanSafe: number;      // SAN 安全线 (%)
+    insightCritical: number;  // Insight 危险线 (%)
+    insightSafe: number;      // Insight 安全线 (%)
     hungerCritical: number; // 饥饿危险线 (%)
   };
   
@@ -126,8 +126,8 @@ let currentParams: SurvivalModelParams = { ...DEFAULT_MODEL_PARAMS };
 export interface BaselineInput {
   hp: number;
   maxHp: number;
-  san: number;
-  maxSan: number;
+  insight: number;
+  maxInsight: number;
   hunger: number;
   maxHunger: number;
   gold: number;
@@ -146,7 +146,7 @@ export interface BaselineResult {
   statusPenalty: number;   // 状态惩罚
   breakdown: {             // 详细分解
     hp: number;
-    san: number;
+    insight: number;
     hunger: number;
     gold: number;
     region: number;
@@ -172,7 +172,7 @@ export function calculateBaseline(
   
   // --- 1. 资源评分计算 (Sigmoid 函数平滑过渡) ---
   const hpRatio = input.hp / input.maxHp;
-  const sanRatio = input.san / input.maxSan;
+  const insightRatio = input.insight / input.maxInsight;
   const hungerRatio = 1 - (input.hunger / input.maxHunger); // 饥饿反转：越饱越高
   
   // 使用 Sigmoid 函数计算资源健康度
@@ -181,7 +181,7 @@ export function calculateBaseline(
   const sigmoid = (x: number, x0: number, k: number = 10) => 1 / (1 + Math.exp(-k * (x - x0)));
   
   const hpScore = sigmoid(hpRatio, thresholds.hpCritical);
-  const sanScore = sigmoid(sanRatio, thresholds.sanCritical);
+  const insightScore = sigmoid(insightRatio, thresholds.insightCritical);
   const hungerScore = sigmoid(hungerRatio, thresholds.hungerCritical);
   
   // 金钱评分：对数缩放，避免后期金钱过多影响
@@ -211,7 +211,7 @@ export function calculateBaseline(
   // --- 4. 加权汇总 ---
   const resourceScore = 
     weights.hp * hpScore +
-    weights.san * sanScore +
+    weights.insight * insightScore +
     weights.hunger * hungerScore +
     weights.gold * goldScore;
   
@@ -228,7 +228,7 @@ export function calculateBaseline(
     statusPenalty,
     breakdown: {
       hp: hpScore,
-      san: sanScore,
+      insight: insightScore,
       hunger: hungerScore,
       gold: goldScore,
       region: regionMod,
@@ -338,8 +338,8 @@ export function calculateSurvivalProbability(
   const baselineInput: BaselineInput = {
     hp: state.vitality.metrics.hp,
     maxHp: state.vitality.metrics.maxHp,
-    san: state.vitality.metrics.san,
-    maxSan: state.vitality.metrics.maxSan,
+    insight: state.vitality.metrics.insight,
+    maxSan: state.vitality.metrics.maxInsight,
     hunger: state.vitality.metrics.hunger,
     maxHunger: state.vitality.metrics.maxHunger,
     gold: state.vitality.metrics.gold,
@@ -367,7 +367,7 @@ export function calculateSurvivalProbability(
   // 生成建议
   const recommendations: string[] = [];
   if (baseline.breakdown.hp < 0.5) recommendations.push('优先恢复生命值');
-  if (baseline.breakdown.san < 0.4) recommendations.push('注意精神状态');
+  if (baseline.breakdown.insight < 0.4) recommendations.push('注意精神状态');
   if (baseline.breakdown.hunger < 0.5) recommendations.push('需要补充食物');
   if (baseline.breakdown.diseases < -0.1) recommendations.push('建议治疗疾病');
   if (!baselineInput.hasHousing) recommendations.push('寻找住所可提高生存率');
@@ -461,8 +461,8 @@ export function quickSurvivalCheck(state: StoreState): number {
   const baselineInput: BaselineInput = {
     hp: state.vitality.metrics.hp,
     maxHp: state.vitality.metrics.maxHp,
-    san: state.vitality.metrics.san,
-    maxSan: state.vitality.metrics.maxSan,
+    insight: state.vitality.metrics.insight,
+    maxSan: state.vitality.metrics.maxInsight,
     hunger: state.vitality.metrics.hunger,
     maxHunger: state.vitality.metrics.maxHunger,
     gold: state.vitality.metrics.gold,

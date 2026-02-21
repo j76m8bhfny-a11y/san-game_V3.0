@@ -5,10 +5,10 @@ import { checkDailyDisease } from '@/logic/health';
 import { checkClassUpdate } from '@/logic/core';
 import diseasesData from '@/assets/data/diseases.json';
 import { Disease } from '@/types/schema';
-import vitalityRules from '@/assets/data/rules/vitalityRules.json';
+import vitalityRules from '@/assets/data/rules/vitality_rules.json';
 import classesData from '@/assets/data/classes.json';
-import vehicleRules from '@/assets/data/rules/vehicleRules.json';
-import foodRules from '@/assets/data/rules/foodRules.json';
+import vehicleRules from '@/assets/data/rules/vehicle_rules.json';
+import foodRules from '@/assets/data/rules/food_rules.json';
 
 export const StatRuleSystem: GameSystem = {
   id: 'STAT_RULES',

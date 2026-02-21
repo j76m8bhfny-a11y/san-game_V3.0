@@ -210,6 +210,49 @@
       "stackable": false,
       "refreshRule": "extend",
       "icon": "buff_shield"
+    },
+
+    "_comment": "========== 新增：医疗债务系统Debuff ==========",
+    "buff_medical_collection": {
+      "name": "医疗债务催收",
+      "description": "未支付的医疗账单已进入催收程序。信用评分严重受损，无法申请正规贷款或购买中产房产。每周都有催收电话骚扰。",
+      "duration": 999,
+      "effects": {
+        "perTurn": { 
+          "insight": 1,
+          "hp": -1
+        },
+        "onApply": {
+          "creditScoreModifier": -200,
+          "loanBlacklist": true,
+          "housingBlacklist": ["MIDDLE", "CAPITALIST"],
+          "jobBlacklist": ["CORPORATE"]
+        },
+        "onExpire": {
+          "insight": -5,
+          "creditScoreModifier": 50
+        }
+      },
+      "stackable": true,
+      "maxStacks": 3,
+      "icon": "buff_debt"
+    },
+
+    "buff_black_market_medical": {
+      "name": "黑市医疗依赖",
+      "description": "正规医疗机构拒绝为你服务，只能依赖贫民窟的地下诊所。治疗风险大幅增加。",
+      "duration": -1,
+      "effects": {
+        "perTurn": { 
+          "insight": 2
+        },
+        "onApply": {
+          "medicalRiskModifier": 0.3,
+          "legalMedicalBlocked": true
+        }
+      },
+      "stackable": false,
+      "icon": "buff_black_market"
     }
   },
   
@@ -225,6 +268,16 @@
       "buffId": "shock_illness", 
       "probability": 1.0,
       "overrideDuration": 3
+    },
+    
+    "_comment": "新增：医疗债务系统事件",
+    "MEDICAL_DEBT_COLLECTIONS": {
+      "buffId": "buff_medical_collection",
+      "probability": 1.0
+    },
+    "BLACK_MARKET_MEDICAL_ONLY": {
+      "buffId": "buff_black_market_medical",
+      "probability": 1.0
     }
   }
 }

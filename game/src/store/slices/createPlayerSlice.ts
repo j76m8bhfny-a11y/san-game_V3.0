@@ -2,7 +2,6 @@ import { StateCreator } from 'zustand';
 import {
   PlayerClass,
   RegionID,
-  ActiveHousingState,
   ActiveHousing,
   DMVQueueState,
   ActiveLease

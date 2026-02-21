@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useAudioStore } from '@/store/useAudioStore';
 import { NewsItem } from '@/types/schema';
-import marketRules from '@/assets/data/rules/marketRules.json';
+import marketRules from '@/assets/data/rules/market_rules.json';
 
 interface CryptoNewsPopupProps {
   news: NewsItem;

@@ -63,7 +63,7 @@ export const LicenseBuySection: React.FC<LicenseBuySectionProps> = ({
           const canAfford = playerGold >= license.price;
           const isFake = license.type === 'FAKE';
           const isEliteLicense = license.type === 'ELITE';
-          const isValid = license.type === 'VALID';
+
           
           // 购买条件判断
           let canBuy = canAfford;

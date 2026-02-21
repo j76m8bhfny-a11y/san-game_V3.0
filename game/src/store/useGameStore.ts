@@ -32,7 +32,7 @@ type Logger = <
   name?: string
 ) => StateCreator<T, Mps, Mcs>;
 
-const loggerImpl: Logger = (f, name) => (set, get, store) => {
+const loggerImpl: Logger = (f, _name) => (set, get, store) => {
   // 1. 定义拦截函数，接受任意参数
   const loggedSet = (...args: any[]) => {
     const prevState = get();

@@ -5,7 +5,7 @@ import { MarketChart } from './MarketChart';
 import { useAudioStore } from '@/store/useAudioStore';
 import { useI18n } from '@/i18n';
 // ✅ 1. 引入数值配置文件
-import marketRules from '@/assets/data/rules/marketRules.json';
+import marketRules from '@/assets/data/rules/market_rules.json';
 
 export const CryptoSidebar: React.FC = () => {
   const { t } = useI18n();

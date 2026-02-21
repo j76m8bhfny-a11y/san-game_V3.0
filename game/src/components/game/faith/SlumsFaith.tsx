@@ -1,5 +1,5 @@
 import React from 'react';
-import { useI18n } from '@/i18n';
+
 import { SlumsShrineInterior } from './components/SlumsShrineInterior';
 
 interface Props {
@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const SlumsFaith: React.FC<Props> = ({ onClose }) => {
-  const { t } = useI18n();
+
   return (
     <div 
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm" 

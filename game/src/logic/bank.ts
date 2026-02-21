@@ -1,5 +1,5 @@
 import { ActiveLoan, LoanProduct } from '../types/schema';
-import bankRules from '@/assets/data/rules/bankRules.json';
+import bankRules from '@/assets/data/rules/bank_rules.json';
 
 /**
  * 信用分评级文案 (保持不变)

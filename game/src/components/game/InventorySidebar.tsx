@@ -4,7 +4,7 @@ import { Item, ItemType } from '@/types/schema';
 import { useAudioStore } from '@/store/useAudioStore'; 
 import { useI18n } from '@/i18n';
 import { Package, Zap, Key, Info, AlertTriangle } from 'lucide-react'; // ✅ 新增 AlertTriangle 图标
-import shopRules from '@/assets/data/rules/shopRules.json'; // ✅ 引入 Source of Truth
+import shopRules from '@/assets/data/rules/shop_rules.json'; // ✅ 引入 Source of Truth
 
 export const InventorySidebar: React.FC = () => {
   const { t } = useI18n();

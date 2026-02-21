@@ -3,7 +3,7 @@ import { useI18n } from '@/i18n';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import insuranceData from '@/assets/data/insurance.json';
-import { Heart, Car, Shield } from 'lucide-react';
+import { Heart, Car } from 'lucide-react';
 
 export const CapitalistInsuranceCard: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { t } = useI18n();

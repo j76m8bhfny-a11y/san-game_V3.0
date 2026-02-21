@@ -2,12 +2,12 @@ import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import insuranceData from '@/assets/data/insurance.json';
-import { Shield, ChevronLeft, Heart, Car } from 'lucide-react';
+import { ChevronLeft, Heart, Car } from 'lucide-react';
 import { useI18n } from '@/i18n';
 
 export const DowntownInsuranceApp: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { t } = useI18n();
-  const { signInsurance, cancelInsurance, vitality, hasInsurance } = useGameStore();
+  const { signInsurance, cancelInsurance, vitality } = useGameStore();
   const { playSfx } = useAudioStore();
 
   const { inventory } = useGameStore();

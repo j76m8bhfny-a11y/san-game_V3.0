@@ -1,0 +1,116 @@
+{
+  "$schema": "lease-products-config",
+  "description": "车辆租赁产品配置 - 被VehicleSystem使用，定义可租赁的车辆套餐",
+  "version": "1.0.0",
+  "usage": "createVehicleSlice.ts 中的租赁系统使用此配置创建ActiveLease",
+  
+  "products": [
+    {
+      "id": "LEASE_JUNK_SLUMS",
+      "name": "贫民窟代步方案",
+      "description": "一辆快要散架的破车，但比走路强。没有保险，没有保障，随时可能抛锚。",
+      "vehicleId": "VEH_JUNK",
+      "region": "SLUMS",
+      "weeklyPayment": 25,
+      "downPayment": 100,
+      "termTurns": 12,
+      "mileageLimit": 500,
+      "overageCharge": 0.5,
+      "wearAndTearPenalty": 200,
+      "requiredClass": "HOMELESS",
+      "creditScoreRequired": 0,
+      "descriptionKey": "lease.junk.description",
+      "risks": ["高故障率", "无保险覆盖", "被警方拦截风险"]
+    },
+    {
+      "id": "LEASE_PICKUP_RUSTBELT",
+      "name": "工人阶级实用套餐",
+      "description": "适合工业区通勤的皮卡车。耐用但需要定期维护。",
+      "vehicleId": "VEH_PICKUP",
+      "region": "RUST_BELT",
+      "weeklyPayment": 80,
+      "downPayment": 400,
+      "termTurns": 24,
+      "mileageLimit": 1500,
+      "overageCharge": 1,
+      "wearAndTearPenalty": 800,
+      "requiredClass": "WORKER",
+      "creditScoreRequired": 450,
+      "descriptionKey": "lease.pickup.description",
+      "risks": ["维护成本较高"]
+    },
+    {
+      "id": "LEASE_SEDAN_SUBURBS",
+      "name": "中产阶级体面套餐",
+      "description": "一辆体面的家用轿车，足以让你在同事面前保持形象。包含基础保险。",
+      "vehicleId": "VEH_SEDAN",
+      "region": "SUBURBS",
+      "weeklyPayment": 120,
+      "downPayment": 1200,
+      "termTurns": 24,
+      "mileageLimit": 2000,
+      "overageCharge": 3,
+      "wearAndTearPenalty": 500,
+      "requiredClass": "MIDDLE",
+      "creditScoreRequired": 650,
+      "descriptionKey": "lease.sedan.description",
+      "benefits": ["包含基础保险", "免费保养"],
+      "risks": ["逾期将严重影响信用"]
+    },
+    {
+      "id": "LEASE_SEDAN_RUSTBELT",
+      "name": "中产降级过渡方案",
+      "description": "搬到工业区后的折中选择。车还是那辆车，但价格更实惠。",
+      "vehicleId": "VEH_SEDAN",
+      "region": "RUST_BELT",
+      "weeklyPayment": 100,
+      "downPayment": 1000,
+      "termTurns": 24,
+      "mileageLimit": 1800,
+      "overageCharge": 2.5,
+      "wearAndTearPenalty": 500,
+      "requiredClass": "MIDDLE",
+      "creditScoreRequired": 600,
+      "descriptionKey": "lease.sedan.rustbelt.description"
+    },
+    {
+      "id": "LEASE_LIMO_DOWNTOWN",
+      "name": "资本家尊享方案",
+      "description": "彰显身份的象征。专属司机、顶级保险、优先通行权。租的不是车，是地位。",
+      "vehicleId": "VEH_LIMO",
+      "region": "DOWNTOWN",
+      "weeklyPayment": 500,
+      "downPayment": 10000,
+      "termTurns": 12,
+      "mileageLimit": 5000,
+      "overageCharge": 10,
+      "wearAndTearPenalty": 5000,
+      "requiredClass": "CAPITALIST",
+      "creditScoreRequired": 750,
+      "descriptionKey": "lease.limo.description",
+      "benefits": ["全险覆盖", "专属司机", "警察免疫", "VIP停车位"],
+      "risks": ["极高违约成本"]
+    }
+  ],
+  
+  "rules": {
+    "description": "租赁系统通用规则",
+    "earlyTermination": {
+      "description": "提前终止合同",
+      "penaltyRate": 0.3,
+      "formula": "违约金 = 剩余租期周数 × 周租金 × 30%"
+    },
+    "latePayment": {
+      "description": "逾期付款处理",
+      "gracePeriod": 1,
+      "lateFee": 50,
+      "creditPenalty": 20
+    },
+    "returnConditions": {
+      "description": "还车状态评级",
+      "good": { "threshold": 0.9, "description": "车况良好，无额外费用" },
+      "fair": { "threshold": 0.7, "description": "正常磨损，收取部分折旧费" },
+      "poor": { "threshold": 0, "description": "严重损坏，收取全额磨损费" }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { MedicalService } from '@/types/schema';
 import { SuburbsMedicalItem } from './SuburbsMedicalItem';
 import { useI18n } from '@/i18n';

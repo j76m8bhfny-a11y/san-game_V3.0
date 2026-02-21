@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useGameStore } from '@/store/useGameStore';
+
 import { useAudioStore } from '@/store/useAudioStore';
 import ENDINGS from '@/assets/data/endings.json';
 import { motion } from 'framer-motion';

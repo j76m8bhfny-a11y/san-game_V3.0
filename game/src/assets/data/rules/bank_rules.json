@@ -1,9 +1,15 @@
 {
+  "$schema": "bank-rules-config",
+  "description": "金融系统风控与借贷规则配置表，被BankSystem使用",
+  "version": "1.0.0",
+  
   "meta": {
     "version": "1.0",
     "description": "金融系统风控与借贷规则配置表"
   },
+  
   "creditScore": {
+    "description": "信用评分系统配置",
     "minScore": 300,
     "maxScore": 850,
     "ratings": [
@@ -24,7 +30,9 @@
       "loanCleared": 5
     }
   },
+  
   "mortgage": {
+    "description": "房贷相关配置",
     "foreclosureTurns": 4,
     "warningPenalty": 10,
     "foreclosurePenalty": 100,
@@ -32,7 +40,9 @@
     "weeklyServiceFee": 10,
     "description": "房贷断供相关的触发周数与惩罚"
   },
+  
   "collection": {
+    "description": "债务催收阶段配置",
     "warning": {
       "turn": 1,
       "scorePenalty": 30,
@@ -58,7 +68,9 @@
       "bailBondRate": 0.1
     }
   },
+  
   "insurance": {
+    "description": "保险系统配置",
     "contractDuration": 12,
     "description": "保险签约时长（周）"
   }

@@ -7,10 +7,8 @@
 import {
   calculateDimensions,
   calculateSurvivalChance,
-  quickSurvivalChance,
   rollSurvival,
   exportDimensionAnalysis,
-  DimensionId,
 } from './dimensionModel';
 import { GameState, RegionID, PlayerClass } from '@/types/schema';
 
@@ -21,7 +19,7 @@ import { GameState, RegionID, PlayerClass } from '@/types/schema';
 export function example1_CheckDimensions(state: GameState) {
   console.log('\n=== 当前生存维度分析 ===\n');
   
-  const dimensions = calculateDimensions(state);
+  const dimensions = calculateDimensions(state as any);
   
   // 打印各维度
   for (const [id, dim] of Object.entries(dimensions)) {
@@ -101,7 +99,7 @@ export function example2_CompareConfigurations() {
   ];
   
   for (const config of configs) {
-    const result = calculateSurvivalChance(config.state);
+    const result = calculateSurvivalChance(config.state as any);
     const name = config.name.padEnd(10);
     const rate = `${(result.survivalProbability * 100).toFixed(1)}%`.padStart(6);
     const risk = result.riskLevel.padStart(8);
@@ -138,7 +136,7 @@ export function example3_ItemValueImpact() {
   console.log('食物名称        预期分值   实际分值   存活率变化');
   console.log('─────────────────────────────────────────────────');
   
-  const baseResult = calculateSurvivalChance(baseState);
+  const baseResult = calculateSurvivalChance(baseState as any); // 基准计算
   
   for (const food of foods) {
     const stateWithFood = {
@@ -184,7 +182,7 @@ export function example4_DiseaseImpact() {
   console.log('疾病组合        存活率    风险等级');
   console.log('─────────────────────────────────────');
   
-  const baseResult = calculateSurvivalChance(baseState);
+  calculateSurvivalChance(baseState as any); // 基准计算
   
   for (const scenario of diseaseScenarios) {
     const state = {
@@ -197,6 +195,7 @@ export function example4_DiseaseImpact() {
     
     const result = calculateSurvivalChance(state as any);
     
+    // @ts-ignore - 示例代码，仅用于调试
     const name = scenario.name.padEnd(12);
     const rate = `${(result.survivalProbability * 100).toFixed(1)}%`.padStart(6);
     const risk = result.riskLevel.padStart(8);
@@ -223,7 +222,7 @@ export function example5_TurnResolution() {
     diseases: ['FLU'],
   });
   
-  const result = calculateSurvivalChance(state);
+  const result = calculateSurvivalChance(state as any);
   
   console.log(`当前存活概率: ${(result.survivalProbability * 100).toFixed(1)}%`);
   console.log(`风险等级: ${result.riskLevel}`);
@@ -234,7 +233,7 @@ export function example5_TurnResolution() {
   console.log('模拟 10 次回合判定:');
   let survived = 0;
   for (let i = 0; i < 10; i++) {
-    const roll = rollSurvival(state);
+    const roll = rollSurvival(state as any);
     const status = roll.survived ? '✓ 存活' : '✗ 死亡';
     const dice = `${(roll.roll * 100).toFixed(1)}%`;
     console.log(`  第 ${i + 1} 次: ${status} (骰子: ${dice}, 阈值: ${(roll.chance * 100).toFixed(1)}%)`);
@@ -263,7 +262,7 @@ export function example6_FullReport() {
     diseases: [],
   });
   
-  console.log(exportDimensionAnalysis(state));
+  console.log(exportDimensionAnalysis(state as any));
 }
 
 // ==========================================

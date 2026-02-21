@@ -1,7 +1,7 @@
 import { StateCreator } from 'zustand';
-import { BankState, LoanProduct, GameState, ActiveLoan } from '@/types/schema';
+import { BankState, LoanProduct, ActiveLoan } from '@/types/schema';
 import loansData from '@/assets/data/loans.json';
-import bankRules from '@/assets/data/rules/bankRules.json';
+import bankRules from '@/assets/data/rules/bank_rules.json';
 
 // ✅ 引入类型安全工具
 import { StoreState } from '@/types/store';
@@ -31,14 +31,25 @@ export const createBankSlice: StateCreator<StoreState, [], [], BankSlice> = (set
     const state = get() as StoreState;
     const { vitality } = state;
     const currentScore = vitality.metrics.creditScore;
+    
+    // ✅ 计算有效信用分（考虑催收Debuff影响）
+    let effectiveScore = currentScore;
+    const collectionBuff = vitality.activeBuffs?.find((b: any) => b.id?.includes('buff_medical_collection'));
+    if (collectionBuff?.data?.creditScoreModifier) {
+      effectiveScore += collectionBuff.data.creditScoreModifier;
+    }
+    effectiveScore = Math.max(300, Math.min(850, effectiveScore));
 
     const rawProduct = (loansData as unknown as LoanProduct[]).find(p => p.id === productId);
     
     if (!rawProduct) return { success: false, message: "信贷产品不存在" };
     
-    // 门槛检查
-    if (currentScore < rawProduct.minScore) {
-      return { success: false, message: `信用分不足 (当前: ${currentScore}, 需要: ${rawProduct.minScore})` };
+    // 门槛检查（使用有效信用分）
+    if (effectiveScore < rawProduct.minScore) {
+      const reason = collectionBuff 
+        ? `信用分不足 (当前: ${currentScore}, 有效: ${effectiveScore}, 需要: ${rawProduct.minScore})。医疗催收记录严重影响信用。`
+        : `信用分不足 (当前: ${currentScore}, 需要: ${rawProduct.minScore})`;
+      return { success: false, message: reason };
     }
     
     if (amount > rawProduct.maxAmount) {

@@ -7,19 +7,19 @@
 
 // ==================== 规则配置 ====================
 
-import bankRules from '@/assets/data/rules/bankRules.json';
-import billRules from '@/assets/data/rules/billRules.json';
+import bankRules from '@/assets/data/rules/bank_rules.json';
+import billRules from '@/assets/data/rules/bill_rules.json';
 import endingRules from '@/assets/data/rules/ending_rules.json';
-import faithRules from '@/assets/data/rules/faithRules.json';
-import housingRules from '@/assets/data/rules/housingRules.json';
-import jobRules from '@/assets/data/rules/jobRules.json';
-import marketRules from '@/assets/data/rules/marketRules.json';
-import medicalRules from '@/assets/data/rules/medicalRules.json';
+import faithRules from '@/assets/data/rules/faith_rules.json';
+import housingRules from '@/assets/data/rules/housing_rules.json';
+import jobRules from '@/assets/data/rules/job_rules.json';
+import marketRules from '@/assets/data/rules/market_rules.json';
+import medicalRules from '@/assets/data/rules/medical_rules.json';
 import narrativeRules from '@/assets/data/rules/narrative_rules.json';
-import prisonRules from '@/assets/data/rules/prisonRules.json';
-import shopRules from '@/assets/data/rules/shopRules.json';
+import prisonRules from '@/assets/data/rules/prison_rules.json';
+import shopRules from '@/assets/data/rules/shop_rules.json';
 import systemRules from '@/assets/data/config/system_rules.json';
-import vitalityRules from '@/assets/data/rules/vitalityRules.json';
+import vitalityRules from '@/assets/data/rules/vitality_rules.json';
 
 // ==================== 数据配置 ====================
 

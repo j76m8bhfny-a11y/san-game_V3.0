@@ -6,7 +6,7 @@ import { runTurnSettlement } from '@/systems/SystemRegistry';
 import { DailyEffect } from '@/types/prisonRules';
 
 // ✅ 1. 引入数值配置文件
-import prisonRules from '@/assets/data/rules/prisonRules.json';
+import prisonRules from '@/assets/data/rules/prison_rules.json';
 import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 
 // ==================== 辅助函数 ====================
@@ -287,7 +287,7 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
         return { success: false, msg: getMessage('insufficientFundsForBail') };
       }
 
-      set((s) => ({
+      set(() => ({
         prison: INITIAL_PRISON
       }));
       return { success: true, msg: getMessage('cashBailSuccess') };
@@ -338,7 +338,7 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
       }
 
       // 3. 释放
-      set((s) => ({
+      set(() => ({
         prison: INITIAL_PRISON
       }));
 

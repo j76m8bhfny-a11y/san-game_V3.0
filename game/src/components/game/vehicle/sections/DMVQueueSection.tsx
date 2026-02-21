@@ -18,7 +18,6 @@ export const DMVQueueSection: React.FC<DMVQueueSectionProps> = ({
     dmvQueue, 
     startDMVQueue, 
     cancelDMVQueue, 
-    vitality,
     inventory
   } = useGameStore();
   

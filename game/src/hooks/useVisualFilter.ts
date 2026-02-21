@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useGameStore } from '../store/useGameStore';
-import vitalityRules from '@/assets/data/rules/vitalityRules.json';
+import vitalityRules from '@/assets/data/rules/vitality_rules.json';
 
 /**
  * 视觉滤镜 Hook

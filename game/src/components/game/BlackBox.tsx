@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { useI18n } from '@/i18n';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import ARCHIVES from '@/assets/data/archives.json';
@@ -60,7 +60,7 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
     }
   }, [viewingId]);
 
-  const openItem = (id: string, isEnding = false) => {
+  const openItem = (id: string, _isEnding = false) => {
     playSfx('sfx_click');
     setSelectedId(id);
     setMode('READER');

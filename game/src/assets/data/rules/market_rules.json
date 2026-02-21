@@ -1,5 +1,10 @@
 {
+  "$schema": "market-rules-config",
+  "description": "加密货币交易系统配置，被MarketSystem使用",
+  "version": "1.0.0",
+  
   "crypto": {
+    "description": "加密货币基础配置",
     "initialPrice": 15000,
     "accountFee": 500,
     "kyc": {
@@ -7,7 +12,9 @@
       "acceptedLicenses": ["LICENSE_FAKE", "LICENSE_VALID", "LICENSE_ELITE"]
     }
   },
+  
   "trading": {
+    "description": "交易规则配置",
     "leverage": {
       "presets": [2, 10, 20, 50, 100],
       "default": 10,
@@ -21,7 +28,9 @@
     "liquidationThreshold": -1.0,
     "quickAmounts": [0.25, 0.5, 1.0]
   },
+  
   "market": {
+    "description": "市场波动配置",
     "baseVolatility": 0.15,
     "price": {
       "min": 500
@@ -33,7 +42,9 @@
       "doomMultiplierBase": 0.4
     }
   },
+  
   "ui": {
+    "description": "UI显示配置",
     "header": {
       "networkStatus": "NET: UNSTABLE",
       "networkStatusColor": "#ef4444",
@@ -74,7 +85,9 @@
       "speedSeconds": 20
     }
   },
+  
   "news": {
+    "description": "新闻弹窗配置",
     "popup": {
       "prefix": ">>> BREAKING:",
       "widthPercent": 70,

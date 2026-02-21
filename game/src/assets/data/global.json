@@ -1,18 +1,31 @@
-
 {
+  "$schema": "global-config",
+  "description": "全局游戏数值配置 - 包含游戏规则、薪资效率曲线、账单配置等",
+  "version": "1.0.0",
+  
   "gameRules": {
-    "maxDays": 40,
+    "maxTurns": 52,
     "victoryHpThreshold": 0,
-    "pressureDivisor": 2000
+    "pressureDivisor": 2000,
+    "description": "maxTurns: 游戏总回合数（周），52周=1年；victoryHpThreshold: 胜利HP阈值"
   },
-  "salaryConfig": [
-    { "maxSan": 30, "efficiency": 1.1, "desc": "工贼" },
-    { "maxSan": 70, "efficiency": 1.0, "desc": "装傻" },
-    { "maxSan": 90, "efficiency": 0.6, "desc": "排挤" },
-    { "maxSan": 100, "efficiency": 0.1, "desc": "疯癫" }
-  ],
+  
+  "salaryConfig": {
+    "description": "薪资效率配置 - 根据SAN值（理智）决定工作效率，被JobSystem使用",
+    "usage": "JobSystem.ts 根据当前insight值匹配对应档位，计算工作效率modifier",
+    "calculation": "实际收入 = 基础薪资 × efficiencyModifier × 其他倍率",
+    "tiers": [
+      { "maxSan": 30, "efficiency": 1.1, "desc": "工贼", "note": "低SAN时更顺从，工作效率最高" },
+      { "maxSan": 70, "efficiency": 1.0, "desc": "装傻", "note": "正常工作效率" },
+      { "maxSan": 90, "efficiency": 0.6, "desc": "排挤", "note": "SAN较高开始质疑，效率下降" },
+      { "maxSan": 100, "efficiency": 0.1, "desc": "疯癫", "note": "SAN过高无法正常工作" }
+    ]
+  },
+  
   "billConfig": {
+    "description": "账单系统配置 - 被BillSystem使用",
     "baseProb": 0.3,
-    "debtProb": 0.5
+    "debtProb": 0.5,
+    "usage": "控制每周账单生成的概率"
   }
 }

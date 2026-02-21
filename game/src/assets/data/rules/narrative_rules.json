@@ -1,19 +1,28 @@
 {
+  "$schema": "narrative-rules-config",
+  "description": "叙事/故事系统配置 - 定义节奏、UI样式、档案分类等，被NarrativeSystem使用",
+  "version": "1.0.0",
+  
   "system": {
+    "description": "系统基础配置",
     "priority": 10,
     "defaults": {
       "optionSanLock": 70,
       "eventWeight": 10
     }
   },
+  
   "pacing": {
+    "description": "叙事节奏配置",
     "typewriterSpeedMs": 30,
     "delayTitleToBodyMs": 3500,
     "delayBodyToInteractionMs": 1500,
     "delayPhoneSlideInMs": 1200,
     "autoResolveDelayMs": 500
   },
+  
   "ui": {
+    "description": "UI样式配置",
     "bubbleColors": {
       "safe": "#007AFF",
       "risk": "#FF3B30",
@@ -50,7 +59,9 @@
       "SAN": "bg-purple-600/90 border-purple-300 text-purple-50 font-bold"
     }
   },
+  
   "archives": {
+    "description": "档案系统配置",
     "categories": [
       { "id": "HOMELESS", "label": "流浪汉", "prefix": null },
       { "id": "WORKER", "label": "工人", "prefix": "No.W" },
@@ -59,7 +70,9 @@
       { "id": "ENDING", "label": "结局", "prefix": null }
     ]
   },
+  
   "classChange": {
+    "description": "阶级变化文案配置",
     "descriptions": {
       "HOMELESS->WORKER": "你终于有了固定住所，不再是流浪者了。",
       "WORKER->HOMELESS": "你失去了住所，重回街头。",

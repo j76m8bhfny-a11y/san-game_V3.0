@@ -437,7 +437,10 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
             },
             activeJobs: [],
             activeInsurances: [],
-            activeBuffs: []
+            activeBuffs: [],
+            pendingMedicalBills: [],
+            deductibleTrackers: [],
+            medicalAppointments: []
         },
         
         // 2. Systems 重置

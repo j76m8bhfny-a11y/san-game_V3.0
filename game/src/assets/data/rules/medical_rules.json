@@ -1,9 +1,16 @@
 {
+  "$schema": "medical-rules-config",
+  "description": "医疗系统配置，被MedicalSystem使用",
+  "version": "1.0.0",
+  
   "settings": {
+    "description": "基础设置",
     "baseRiskMultiplier": 1.0,
     "maxAddictionLevel": 100
   },
+  
   "messages": {
+    "description": "系统消息",
     "noInsurance": "无保险覆盖",
     "notInCatalog": "此服务不在医保目录内",
     "planNotCover": "您的保险计划不包含此类服务",
@@ -11,12 +18,16 @@
     "invalidService": "无效服务",
     "invalidCost": "无效费用"
   },
+  
   "uiText": {
+    "description": "UI文本",
     "confirmSurgery": "签署免责协议并手术",
     "payAndTreat": "支付并治疗",
     "insufficientFunds": "余额不足"
   },
+  
   "policies": {
+    "description": "特殊医疗政策",
     "specialAid": [
       {
         "id": "HOMELESS_EMERGENCY_ACT",
@@ -31,7 +42,9 @@
       }
     ]
   },
+  
   "hospitalThemes": {
+    "description": "医院主题配置（按区域）",
     "SLUMS": {
       "name": "地下诊所",
       "desc": "只收现金和器官。",

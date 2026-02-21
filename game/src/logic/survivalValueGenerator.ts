@@ -122,8 +122,7 @@ function generateItemValues(
   medicalScore: number,
   hasHousing: boolean
 ): GeneratedValues['items'] {
-  const dimConfig = config.dimensions as any;
-  
+
   // nutritionSupply 计算反推
   // nutritionScore = diet(50) * 0.5 + food * 0.4 + kitchen * 0.2
   // 假设 diet 平均 40分，kitchen 有则 30分

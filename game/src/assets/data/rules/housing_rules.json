@@ -1,31 +1,45 @@
 {
+  "$schema": "housing-rules-config",
+  "description": "房产系统核心规则配置，被HousingSystem使用",
+  "version": "1.0.0",
+  
   "settings": {
     "systemName": "HOUSING",
     "description": "房产系统核心规则配置"
   },
+  
   "sell": {
+    "description": "卖房规则",
     "discountRate": 0.9,
     "description": "卖房时的折扣率"
   },
+  
   "access": {
+    "description": "区域访问控制",
     "homelessAllowedRegions": ["SLUMS"],
     "homelessClassId": "HOMELESS",
     "allowWorkWithoutHome": false
   },
+  
   "eviction": {
+    "description": "驱逐/退租规则",
     "enableEviction": true,
     "insightPenalty": 20,
     "hpPenalty": 0,
     "retainInventory": true,
     "fallbackState": null
   },
+  
   "mortgage": {
+    "description": "房贷显示配置",
     "displayEstimation": {
       "includePrincipal": true,
       "includeInterest": true
     }
   },
+  
   "defaults": {
+    "description": "默认属性值",
     "baseRegenHp": 0,
     "baseDefense": 0
   }

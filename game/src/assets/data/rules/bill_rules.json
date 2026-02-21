@@ -1,0 +1,93 @@
+{
+  "$schema": "bill-rules-config",
+  "description": "账单系统配置 - 定义账单生成算法、UI配置和结算规则，被BillSystem使用",
+  "version": "1.0.0",
+  
+  "generation": {
+    "description": "账单生成配置",
+    "defaultWeight": 10,
+    "minAmountClamp": 0,
+    "baseProbability": 0.3,
+    "debtProbability": 0.5,
+    "usage": "BillSystem.ts 每周根据概率和权重随机生成账单",
+    "algorithms": {
+      "selection": {
+        "description": "账单选择算法 - 加权随机",
+        "steps": [
+          "1. 筛选符合触发条件的账单（阶级、区域、前置条件）",
+          "2. 计算总权重 = sum(符合条件的账单.weight)",
+          "3. 随机数 r = random(0, totalWeight)",
+          "4. 遍历账单列表，累加权重直到 >= r，选中该账单"
+        ]
+      },
+      "amountCalculation": {
+        "description": "账单金额计算",
+        "formula": "实际金额 = 基础金额 × 阶级系数 × 随机波动(0.8-1.2)",
+        "classMultipliers": {
+          "HOMELESS": 0.5,
+          "WORKER": 1.0,
+          "MIDDLE": 1.5,
+          "CAPITALIST": 3.0
+        }
+      }
+    },
+    "categories": {
+      "description": "账单类型分类",
+      "JUMP_SCARE": { "description": "突发事件账单，通常有负面效果", "frequency": "低概率", "example": "B_HOMELESS_ARSON" },
+      "HOUSING": { "description": "住房相关账单，如房租、维修", "frequency": "每周固定", "example": "B_RENT" },
+      "UTILITIES": { "description": "公用事业账单，水电煤等", "frequency": "每月", "example": "B_ELECTRICITY" },
+      "MEDICAL": { "description": "医疗账单", "frequency": "触发式", "example": "B_HOSPITAL_EMERGENCY" },
+      "LEGAL": { "description": "法律相关账单", "frequency": "触发式", "example": "B_FINE" },
+      "VEHICLE": { "description": "车辆相关账单", "frequency": "拥有车辆时", "example": "B_CAR_INSURANCE" }
+    },
+    "triggers": {
+      "description": "账单触发条件配置",
+      "conditions": {
+        "requiredClass": ["HOMELESS", "WORKER", "MIDDLE", "CAPITALIST"],
+        "requiredRegion": ["SLUMS", "RUST_BELT", "SUBURBS", "DOWNTOWN"],
+        "requiredFlags": ["isHomeless", "hasVehicle", "hasInsurance"],
+        "minTurn": "整数，最早触发回合",
+        "maxTurn": "整数，最晚触发回合",
+        "probability": "0-1之间，触发概率"
+      }
+    }
+  },
+
+  "settlement": {
+    "description": "账单结算配置",
+    "autoPay": {
+      "enabled": true,
+      "description": "余额充足时自动扣款",
+      "order": ["HOUSING", "MEDICAL", "UTILITIES", "LEGAL", "OTHER"]
+    },
+    "overdue": {
+      "description": "逾期处理规则",
+      "stages": [
+        { "turn": 1, "action": "warning", "creditPenalty": 30 },
+        { "turn": 2, "action": "collection", "creditPenalty": 50, "hpDamage": 20 },
+        { "turn": 4, "action": "seizure", "creditPenalty": 80 },
+        { "turn": 8, "action": "jail", "sentence": 8 }
+      ]
+    },
+    "animationScale": 0.95,
+    "modalZIndex": 60
+  },
+
+  "ui": {
+    "description": "账单UI配置",
+    "paymentDelayMs": 800,
+    "overlayZIndex": 6000,
+    "animation": {
+      "initialScale": 0.9,
+      "initialY": 50
+    },
+    "icons": {
+      "HOUSING": "🏠",
+      "MEDICAL": "🏥",
+      "UTILITIES": "💡",
+      "LEGAL": "⚖️",
+      "VEHICLE": "🚗",
+      "OTHER": "📄"
+    }
+  }
+}

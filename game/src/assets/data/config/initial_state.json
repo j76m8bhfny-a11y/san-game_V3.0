@@ -1,5 +1,22 @@
 {
+  "$schema": "initial-state-config",
+  "description": "游戏初始状态配置 - 定义新游戏时的玩家初始属性，被createVitalitySlice和createGameSlice使用",
+  "version": "1.0.0",
+  
   "vitality": {
+    "description": "玩家核心生存属性",
+    "fields": {
+      "hp": { "value": 100, "description": "生命值(Health Points)，0时死亡", "system": "VitalitySystem/HealthSystem", "range": "0-100" },
+      "maxHp": { "value": 100, "description": "最大生命值上限，可通过某些道具/效果提升", "system": "VitalitySystem", "range": "100+" },
+      "insight": { "value": 0, "description": "灵视/觉醒值，影响工作态度和事件选项", "system": "JobSystem/NarrativeSystem", "range": "0-100" },
+      "maxInsight": { "value": 100, "description": "灵视上限", "system": "VitalitySystem", "range": "100" },
+      "gold": { "value": 0, "description": "金钱，游戏核心资源", "system": "BankSystem/ShopSystem", "range": "0+" },
+      "creditScore": { "value": 500, "description": "信用评分，影响贷款额度和利率", "system": "BankSystem", "range": "300-850" },
+      "hunger": { "value": 100, "description": "饱腹度，100=饱食，0=饥饿", "system": "FoodSystem", "range": "0-100" },
+      "maxHunger": { "value": 100, "description": "饱腹度上限", "system": "FoodSystem", "range": "100" },
+      "addiction": { "value": 0, "description": "成瘾值，影响理智和HP恢复", "system": "BuffSystem/FoodSystem", "range": "0-100" },
+      "resistance": { "value": 0, "description": "药物抗性，影响道具效果", "system": "ShopSystem/BuffSystem", "range": "0+" }
+    },
     "hp": 100,
     "maxHp": 100,
     "insight": 0,
@@ -11,17 +28,39 @@
     "addiction": 0,
     "resistance": 0
   },
+  
   "identity": {
+    "description": "玩家身份和阵营属性",
+    "fields": {
+      "defaultClass": { "value": "HOMELESS", "description": "初始阶级，影响可用工作和住所", "system": "ClassSystem/HousingSystem/JobSystem", "options": ["HOMELESS", "WORKER", "MIDDLE", "CAPITALIST"] },
+      "points": { "value": { "red": 0, "wolf": 0, "old": 0 }, "description": "阵营点数（红/狼/老），影响特定结局", "system": "FaithSystem/EndingSystem" }
+    },
     "defaultClass": "HOMELESS",
     "points": { "red": 0, "wolf": 0, "old": 0 }
   },
+  
   "time": {
+    "description": "游戏时间系统",
+    "fields": {
+      "startTurn": { "value": 1, "description": "起始回合（第几周）", "system": "GameLoop", "range": "1-52" }
+    },
     "startTurn": 1
   },
+  
   "crypto": {
+    "description": "加密货币市场初始状态",
+    "fields": {
+      "startPrice": { "value": 15000, "description": "比特币初始价格（美元）", "system": "MarketSystem", "range": "500+" }
+    },
     "startPrice": 15000
   },
+  
   "flags": {
+    "description": "游戏状态标志位",
+    "fields": {
+      "isHomeless": { "value": true, "description": "是否处于无家可归状态", "system": "HousingSystem", "effect": "影响可用区域和工作" },
+      "debtTurns": { "value": 0, "description": "连续负债周数，影响信用和催收", "system": "BankSystem", "range": "0+" }
+    },
     "isHomeless": true,
     "debtTurns": 0
   }

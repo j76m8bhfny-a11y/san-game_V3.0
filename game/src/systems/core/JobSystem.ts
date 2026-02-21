@@ -2,7 +2,7 @@ import { GameSystem, SystemResult } from '../types';
 import { Job, Item, FaithDebuff } from '@/types/schema';
 import jobsData from '@/assets/data/jobs.json';
 import itemsData from '@/assets/data/items.json';
-import jobRules from '@/assets/data/rules/jobRules.json';
+import jobRules from '@/assets/data/rules/job_rules.json';
 
 export const JobSystem: GameSystem = {
   id: 'JOB_SYSTEM',
@@ -29,7 +29,7 @@ export const JobSystem: GameSystem = {
     // 逻辑：找到第一个 minInsight 小于等于 currentInsight 的配置（从高到低遍历）
 
     // 防御性检查：确保 efficiencyCurve 配置存在且非空
-    const curve = jobRules.efficiencyCurve || [];
+    const curve = jobRules.efficiencyCurve?.curve || [];
     // 按 minInsight 从大到小排序后查找（因为高 insight = 低效率）
     const sortedCurve = [...curve].sort((a, b) => b.minInsight - a.minInsight);
     const efficiencyConfig = sortedCurve.length > 0 

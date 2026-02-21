@@ -1,7 +1,7 @@
 import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { NoviceActionType } from '@/types/schema';
-import faithRulesUntyped from '@/assets/data/rules/faithRules.json';
+import faithRulesUntyped from '@/assets/data/rules/faith_rules.json';
 import { useI18n } from '@/i18n';
 
 // 确保类型安全 (简单的类型定义，实际应从 types 引入)

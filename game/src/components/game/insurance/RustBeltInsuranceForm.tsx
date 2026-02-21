@@ -7,7 +7,7 @@ import { Car, Heart } from 'lucide-react';
 
 export const RustBeltInsuranceForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { t } = useI18n();
-  const { signInsurance, cancelInsurance, vitality, hasInsurance } = useGameStore();
+  const { signInsurance, cancelInsurance, vitality } = useGameStore();
   const { playSfx } = useAudioStore();
 
   const { inventory } = useGameStore();

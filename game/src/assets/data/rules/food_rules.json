@@ -1,7 +1,11 @@
 {
+  "$schema": "food-rules-config",
+  "description": "食物系统配置 - 饥饿系统、SNAP福利、饮食追踪等，被FoodSystem使用",
+  "version": "1.0.0",
   "_comment": "美国社会食物系统规则配置 - 反映食物荒漠、SNAP福利、快餐成瘾等现实",
   
   "hungerSystem": {
+    "description": "饥饿系统配置",
     "maxHunger": 100,
     "decayPerTurn": 20,
     "starvationDamage": 15,
@@ -14,6 +18,7 @@
   },
 
   "dietTracker": {
+    "description": "饮食追踪配置",
     "enabled": true,
     "junkFoodPoints": {
       "max": 100,
@@ -40,6 +45,7 @@
   },
 
   "snapBenefits": {
+    "description": "SNAP食品券福利配置",
     "enabled": true,
     "weeklyAmount": 60,
     "eligibleClasses": ["HOMELESS", "WORKER"],
@@ -49,6 +55,7 @@
   },
 
   "foodBank": {
+    "description": "食物银行配置",
     "enabled": true,
     "weeklyLimit": 3,
     "eligibleClasses": ["HOMELESS", "WORKER"],
@@ -63,6 +70,7 @@
   },
 
   "classFoodTiers": {
+    "description": "阶级食物分层配置",
     "HOMELESS": {
       "tier": 1,
       "accessibleRegions": ["SLUMS"],
@@ -101,6 +109,7 @@
   },
 
   "dietRelatedDiseases": {
+    "description": "饮食相关疾病配置",
     "triggers": {
       "type2_diabetes": {
         "junkFoodPoints": 80,
@@ -151,6 +160,7 @@
   },
 
   "diseaseTreatment": {
+    "description": "疾病治疗费用配置",
     "type2_diabetes": {
       "insulinCostPerWeek": 50,
       "untreatedHpDrain": 8
@@ -170,6 +180,7 @@
   },
 
   "addiction": {
+    "description": "成瘾系统配置",
     "sugar": {
       "thresholds": {
         "mild": 20,
@@ -196,6 +207,7 @@
   },
 
   "foodEffects": {
+    "description": "食物效果处理配置",
     "immediate": {
       "hungerRestore": "effects.hunger",
       "hpChange": "effects.hp",
@@ -219,12 +231,14 @@
   },
 
   "ledgerMapping": {
+    "description": "消费分类映射",
     "FOOD": { "category": "FOOD", "priority": 3 },
     "JUNK_FOOD": { "category": "FOOD", "priority": 3, "tag": "unhealthy" },
     "SNAP_PURCHASE": { "category": "FOOD", "paymentMethod": "SNAP" }
   },
 
   "ui": {
+    "description": "UI配置",
     "hungerBar": {
       "color": "#f97316",
       "warningThreshold": 30,

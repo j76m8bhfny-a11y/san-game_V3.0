@@ -12,7 +12,6 @@ import {
   checkSurvival, 
   printSurvivalAnalysis,
   SurvivalResult,
-  VitalityDecay
 } from '@/logic/survivalCalculator';
 
 export interface SurvivalSlice {
@@ -50,7 +49,7 @@ export interface SurvivalSlice {
  * 2. 在 advanceTurn 中调用 checkDeath()
  * 3. 在 UI 中调用 getSurvivalRate() 显示存活率
  */
-export const createSurvivalSlice: StateCreator<StoreState, [], [], SurvivalSlice> = (set, get) => ({
+export const createSurvivalSlice: StateCreator<StoreState, [], [], SurvivalSlice> = (_set, get) => ({
   
   getSurvivalAnalysis: () => {
     const state = get();

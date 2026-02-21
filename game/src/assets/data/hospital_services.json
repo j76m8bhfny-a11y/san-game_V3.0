@@ -152,6 +152,13 @@
       "outOfNetwork": true,
       "alwaysSurpriseBill": true
     },
+    "deferredPayment": {
+      "upfrontCopay": 0,
+      "delayTurns": 2,
+      "description": "救护车服务网络外'惊喜账单'",
+      "isSurprise": true,
+      "collectionsRisk": 0.5
+    },
     "flavorText": "在美国，失去意识前最后一句话通常是'别叫救护车'。因为这辆车永远不属于你的保险网络，两英里的路程足以清空你的月薪。"
   },
   {
@@ -184,6 +191,12 @@
     },
     "requirements": { "waitTurns": [2, 4] },
     "insurance": { "isCovered": true, "baseCopayRate": 0.1 },
+    "deferredPayment": {
+      "upfrontCopay": 500,
+      "delayTurns": 3,
+      "description": "心脏支架手术保险后自付部分",
+      "isSurprise": false
+    },
     "flavorText": "挽救你生命的现代医学奇迹。出院时你拿到了一本厚达十页的账单明细，你开始怀疑是不是直接死掉在财务上更划算。"
   },
   {
@@ -229,8 +242,11 @@
       "maxHpMod": 30,
       "cureDisease": ["HEART_DISEASE", "LIVER_FAILURE", "KIDNEY_FAILURE"]
     },
-    "requirements": { "cashOnly": true },
+    "requirements": { 
+      "cashOnly": true,
+      "waitTurns": [0, 0]
+    },
     "insurance": { "isCovered": false, "baseCopayRate": 1.0 },
-    "flavorText": "当你拥有足够的净资产时，全美的器官捐献数据库会自动把你排到列表的第一位。"
+    "flavorText": "当你拥有足够的净资产时，全美的器官捐献数据库会自动把你排到列表的第一位。无需等待，即时手术。"
   }
 ]

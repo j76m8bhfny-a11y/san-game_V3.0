@@ -1,5 +1,10 @@
 {
+  "$schema": "faith-rules-config",
+  "description": "信仰/宗教系统配置，被FaithSystem使用",
+  "version": "1.0.0",
+  
   "defaults": {
+    "description": "默认配置",
     "initialLevel": 1,
     "dailyReset": true,
     "transactionCategories": {
@@ -10,11 +15,15 @@
       "riteIncome": "INCOME"
     }
   },
+  
   "constraints": {
+    "description": "约束条件",
     "forbiddenItemIds": ["I_CONTRABAND_01", "I_CONTRABAND_02"],
     "checkCleanInventoryMessage": "你身上带着不干净的东西，神灵拒绝注视你。"
   },
+  
   "noviceMechanics": {
+    "description": "新手/见习机制配置",
     "DEDICATE": {
       "id": "DEDICATE",
       "targetFaithId": "CHURCH",
@@ -131,7 +140,9 @@
       }
     }
   },
+  
   "leavePenalties": {
+    "description": "退出信仰的惩罚",
     "CHURCH": {
       "sanChange": 15,
       "description": "摆脱虚伪的救赎，你感到前所未有的清醒。",
@@ -161,7 +172,9 @@
       "confirmMessage": "⚠️ 警告：退出星星之火后你将永远无法再次加入，确定要退出吗？"
     }
   },
+  
   "text": {
+    "description": "文本提示",
     "streakBroken": "你的行为模式发生了改变，之前的虔诚积累已消散。",
     "streakProgress": "连续次数: {current}/{max}",
     "unlockTitle": "信仰觉醒",

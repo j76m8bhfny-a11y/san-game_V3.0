@@ -1,6 +1,6 @@
 import { PlayerClass } from '../types/schema';
 import { DailyEffect, isDailyEffect } from '../types/prisonRules';
-import prisonRules from '@/assets/data/rules/prisonRules.json';
+import prisonRules from '@/assets/data/rules/prison_rules.json';
 
 /**
  * 计算每日坐牢的生理与心理影响

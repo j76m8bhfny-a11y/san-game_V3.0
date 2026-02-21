@@ -6,7 +6,7 @@ import { PlayerClass, Disease } from '@/types/schema';
 import { PlayerStatsPanel } from './PlayerStatsPanel';
 
 // ✅ 1. 引入配置文件群 (Configuration Swarm)
-import vitalityRules from '@/assets/data/rules/vitalityRules.json';
+import vitalityRules from '@/assets/data/rules/vitality_rules.json';
 import INITIAL_STATE from '@/assets/data/config/initial_state.json';
 import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 

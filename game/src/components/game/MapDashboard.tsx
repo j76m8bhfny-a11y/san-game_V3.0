@@ -4,10 +4,10 @@ import { RegionID } from '@/types/schema';
 import { checkMovePermission } from '@/logic/core';
 import { MAP_CONFIG } from '@/config/mapConfig';
 import { MapPin } from './MapPin'; // 注意引用路径，如果还没创建文件夹可以直接放在同级
-import { useI18n } from '@/i18n';
+
 
 export const MapDashboard: React.FC = () => {
-  const { t } = useI18n();
+
   const { 
     currentRegion, 
     vitality, 

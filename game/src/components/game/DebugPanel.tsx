@@ -17,7 +17,7 @@ export const DebugPanel: React.FC<DebugPanelProps> = ({ onClose }) => {
   // 1. 从 Store 中提取我们需要的数据和方法
   const vitality = useGameStore((state: any) => state.vitality);
   const modifyStats = useGameStore((state: any) => state.modifyStats);
-  const addTransaction = useGameStore((state: any) => state.addTransaction);
+
   const nextTurn = useGameStore((state: any) => state.nextTurn);
   const triggerEnding = useGameStore((state: any) => state.triggerEnding);
 

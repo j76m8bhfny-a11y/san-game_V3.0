@@ -8,9 +8,9 @@ import {
 } from '@/types/schema';
 
 // 导入JSON配置
-import dmvRules from '@/assets/data/rules/dmvRules.json';
-import vehicleRules from '@/assets/data/rules/vehicleRules.json';
-import leaseProducts from '@/assets/data/rules/leaseProducts.json';
+import dmvRules from '@/assets/data/rules/dmv_rules.json';
+import vehicleRules from '@/assets/data/rules/vehicle_rules.json';
+import leaseProducts from '@/assets/data/rules/lease_products.json';
 import vehiclesData from '@/assets/data/vehicles.json';
 import licensesData from '@/assets/data/licenses.json';
 
@@ -223,9 +223,9 @@ export const createVehicleSlice: StateCreator<StoreState, [], [], VehicleSlice> 
       return { success: false, message: '您已有正在进行的租赁合同' };
     }
     
-    // 获取租赁产品
-    const leaseProduct = (leaseProducts as any[]).find(
-      p => p.vehicleId === vehicleId && p.region === region
+    // 获取租赁产品（从新的 JSON 结构中提取）
+    const leaseProduct = (leaseProducts as any).products?.find(
+      (p: any) => p.vehicleId === vehicleId && p.region === region
     );
     
     if (!leaseProduct) {

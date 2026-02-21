@@ -2,7 +2,7 @@ import { StateCreator } from 'zustand';
 import { GameState, Job } from '@/types/schema';
 import { StoreState } from '@/types/store';
 import jobsData from '@/assets/data/jobs.json';
-import jobRules from '@/assets/data/rules/jobRules.json';
+import jobRules from '@/assets/data/rules/job_rules.json';
 
 export interface JobSlice {
   // Actions

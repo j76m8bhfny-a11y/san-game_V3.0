@@ -10,7 +10,7 @@ interface Props {
   onClose: () => void;
 }
 
-export const DowntownInterior: React.FC<Props> = ({ housing, onSleep, onDrink, onMoveOut, onClose }) => {
+export const DowntownInterior: React.FC<Props> = ({ housing: _housing, onSleep, onDrink, onMoveOut, onClose }) => {
   const { t } = useI18n();
   return (
     <div className="relative w-full h-full flex flex-col p-6 overflow-hidden select-none">

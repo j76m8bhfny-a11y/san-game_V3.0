@@ -5,7 +5,7 @@ import { useI18n } from '@/i18n';
 import { Job, RegionID } from '@/types/schema';
 import { JobPaper } from './Jobs/JobPaper';
 import { JobTheme } from '@/config/jobUIConfig';
-import jobRules from '@/assets/data/rules/jobRules.json';
+import jobRules from '@/assets/data/rules/job_rules.json';
 
 // 映射 Region 到主题
 const THEME_MAP: Record<RegionID, JobTheme> = {

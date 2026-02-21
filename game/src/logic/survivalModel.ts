@@ -13,7 +13,7 @@
 
 import { RegionID, PlayerClass, Disease } from '@/types/schema';
 import type { StoreState } from '@/types/store';
-import modelConfig from '@/assets/data/rules/survivalModel.json';
+import modelConfig from '@/assets/data/rules/survival_model.json';
 
 // ==========================================
 // 1. 可配置参数 (数值设计师的主要调整区域)
@@ -339,7 +339,7 @@ export function calculateSurvivalProbability(
     hp: state.vitality.metrics.hp,
     maxHp: state.vitality.metrics.maxHp,
     insight: state.vitality.metrics.insight,
-    maxSan: state.vitality.metrics.maxInsight,
+    maxInsight: state.vitality.metrics.maxInsight,
     hunger: state.vitality.metrics.hunger,
     maxHunger: state.vitality.metrics.maxHunger,
     gold: state.vitality.metrics.gold,
@@ -462,7 +462,7 @@ export function quickSurvivalCheck(state: StoreState): number {
     hp: state.vitality.metrics.hp,
     maxHp: state.vitality.metrics.maxHp,
     insight: state.vitality.metrics.insight,
-    maxSan: state.vitality.metrics.maxInsight,
+    maxInsight: state.vitality.metrics.maxInsight,
     hunger: state.vitality.metrics.hunger,
     maxHunger: state.vitality.metrics.maxHunger,
     gold: state.vitality.metrics.gold,

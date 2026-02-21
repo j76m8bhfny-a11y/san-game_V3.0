@@ -1,11 +1,11 @@
 import React, { useMemo } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { AnimatePresence } from 'framer-motion';
-import rules from '@/assets/data/rules/vitalityRules.json';
+import rules from '@/assets/data/rules/vitality_rules.json';
 
 // --- 子组件：觉醒之眼（象征看到真相）---
 // 高灵视时出现的视觉元素
-const AwakenedEye = ({ index }: { index: number }) => {
+const AwakenedEye = ({ index: _index }: { index: number }) => {
   const styleConfig = useMemo(() => {
     return {
       top: Math.floor(Math.random() * 80) + 10 + '%',

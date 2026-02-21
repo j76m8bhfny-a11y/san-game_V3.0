@@ -5,7 +5,7 @@ import { useAudioStore } from '@/store/useAudioStore';
 import { useI18n } from '@/i18n';
 import { PlayerClass } from '@/types/schema';
 import { X, Heart, Brain, Wallet, Utensils, Syringe, Shield, Home, Briefcase, AlertTriangle } from 'lucide-react';
-import vitalityRules from '@/assets/data/rules/vitalityRules.json';
+import vitalityRules from '@/assets/data/rules/vitality_rules.json';
 import INITIAL_STATE from '@/assets/data/config/initial_state.json';
 import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 

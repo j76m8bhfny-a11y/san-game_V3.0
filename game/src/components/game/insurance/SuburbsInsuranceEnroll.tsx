@@ -7,7 +7,7 @@ import { useI18n } from '@/i18n';
 
 export const SuburbsInsuranceEnroll: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { t } = useI18n();
-  const { signInsurance, cancelInsurance, vitality, hasInsurance } = useGameStore();
+  const { signInsurance, cancelInsurance, vitality } = useGameStore();
   const { playSfx } = useAudioStore();
 
   const { inventory } = useGameStore();

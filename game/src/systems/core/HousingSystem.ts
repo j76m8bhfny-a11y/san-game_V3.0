@@ -1,8 +1,8 @@
 import { GameSystem, SystemResult } from '../types';
-import { Housing, ActiveHousingState } from '@/types/schema';
+import { Housing } from '@/types/schema';
 import housingData from '@/assets/data/housing.json';
-import bankRules from '@/assets/data/rules/bankRules.json';
-import housingRules from '@/assets/data/rules/housingRules.json';
+
+import housingRules from '@/assets/data/rules/housing_rules.json';
 import { calculateMortgagePayment } from '@/logic/bank';
 
 export const HousingSystem: GameSystem = {

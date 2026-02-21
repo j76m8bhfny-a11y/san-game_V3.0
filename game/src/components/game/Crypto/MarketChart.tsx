@@ -1,7 +1,7 @@
 import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { useI18n } from '@/i18n';
-import marketRules from '@/assets/data/rules/marketRules.json'; // ✅ Import
+import marketRules from '@/assets/data/rules/market_rules.json'; // ✅ Import
 
 export const MarketChart: React.FC = () => {
   const { t } = useI18n();

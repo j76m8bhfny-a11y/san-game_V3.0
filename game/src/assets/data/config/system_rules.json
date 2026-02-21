@@ -1,11 +1,24 @@
 {
+  "$schema": "system-rules-config",
+  "description": "核心系统规则配置 - 包含游戏循环、系统优先级、UI配置等",
+  "version": "1.0.0",
+  
+  "gameLoop": {
+    "maxTurns": 52,
+    "startTurn": 1,
+    "description": "游戏总回合数（周），52周=1年"
+  },
+  
   "caps": {
     "minStat": 0,
     "maxStat": 100,
-    "minCreditScore": 0,
-    "maxCreditScore": 999
+    "minCreditScore": 300,
+    "maxCreditScore": 850,
+    "description": "属性值和信用评分的上下限"
   },
+  
   "executionOrder": {
+    "description": "系统执行优先级（数字越大优先级越高，先执行）",
     "housing": 100,
     "bank": 90,
     "employment": 85,
@@ -15,6 +28,7 @@
     "statRule": 5,
     "event": 10
   },
+  
   "ui": {
     "notificationDuration": 3000,
     "titleScreen": {
@@ -26,6 +40,7 @@
       "flavorText": "Time is money. Interest is compounding."
     }
   },
+  
   "audio": {
     "defaultVolume": 50
   }

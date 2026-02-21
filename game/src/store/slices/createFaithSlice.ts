@@ -12,7 +12,7 @@ import { StoreState } from '@/types/store';
 
 // 引入数据配置
 import faithsDataUntyped from '@/assets/data/faiths.json';
-import faithRulesUntyped from '@/assets/data/rules/faithRules.json';
+import faithRulesUntyped from '@/assets/data/rules/faith_rules.json';
 import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 
 // 引入逻辑计算 (纯函数)

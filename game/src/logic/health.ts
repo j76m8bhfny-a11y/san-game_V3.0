@@ -2,7 +2,7 @@
 
 import { GameState, Disease } from '@/types/schema';
 // ✅ 引入数值配置文件
-import vitalityRules from '@/assets/data/rules/vitalityRules.json';
+import vitalityRules from '@/assets/data/rules/vitality_rules.json';
 
 /**
  * 每日健康检查 (Daily Checkup)

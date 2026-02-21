@@ -1,18 +1,28 @@
 {
+  "$schema": "ending-rules-config",
+  "description": "结局系统配置 - 定义游戏结束条件和结局判定规则",
+  "version": "1.0.0",
+  
   "constraints": {
-    "maxTurns": 40
+    "maxTurns": 52,
+    "description": "游戏最大回合数，超过此回合强制进入结局判定"
   },
+  
   "deathReasons": {
+    "description": "特定死因映射到结局ID，用于resolveEnding函数",
     "DISMANTLED": "ED-03",
     "COP": "ED-04",
     "SUICIDE": "ED-05"
   },
+  
   "mappings": {
     "fallbackDeath": {
+      "description": "未匹配特定死因时的默认结局",
       "homeless": "ED-01",
       "default": "ED-02"
     }
   },
+  
   "ui": {
     "categories": {
       "death": "DEATH",

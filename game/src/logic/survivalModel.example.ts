@@ -29,7 +29,7 @@ export function example1_BasicUsage(state: GameState) {
     playerChoices: 0,   // 玩家做了一般选择
   };
   
-  const result = calculateSurvivalProbability(state, varianceInput);
+  const result = calculateSurvivalProbability(state as any, varianceInput);
   
   console.log('=== 存活概率报告 ===');
   console.log(`基线概率: ${(result.baseline.baseRate * 100).toFixed(1)}%`);
@@ -50,8 +50,8 @@ export function example2_DeterministicOnly() {
   const baselineInput: BaselineInput = {
     hp: 60,
     maxHp: 100,
-    san: 40,
-    maxSan: 100,
+    insight: 40,
+    maxInsight: 100,
     hunger: 30,
     maxHunger: 100,
     gold: 500,
@@ -112,15 +112,15 @@ export function example4_TuningParams() {
   const hardParams: Partial<SurvivalModelParams> = {
     weights: {
       hp: 0.50,      // HP更重要
-      san: 0.30,
+      insight: 0.30,
       hunger: 0.15,
       gold: 0.05,    // 金钱作用降低
     },
     thresholds: {
       hpCritical: 0.35,    // 更早进入危险
       hpSafe: 0.80,
-      sanCritical: 0.30,
-      sanSafe: 0.70,
+      insightCritical: 0.30,
+      insightSafe: 0.70,
       hungerCritical: 0.30,
     },
     diseasePenalty: 0.08,     // 疾病惩罚更重
@@ -155,7 +155,7 @@ export function example5_DeathCheck(state: GameState) {
     playerChoices: 0,
   };
   
-  const result = rollForSurvival(state, varianceInput);
+  const result = rollForSurvival(state as any, varianceInput);
   
   console.log('=== 死亡判定 ===');
   console.log(`存活阈值: ${(result.threshold * 100).toFixed(1)}%`);
@@ -175,7 +175,7 @@ export function example5_DeathCheck(state: GameState) {
 // ==========================================
 
 export function example6_UIIntegration(state: GameState) {
-  const survivalRate = quickSurvivalCheck(state);
+  const survivalRate = quickSurvivalCheck(state as any);
   
   // 根据概率返回不同的UI提示
   if (survivalRate >= 0.90) {
@@ -199,7 +199,7 @@ export function example7_AutoTuning(state: GameState) {
   // 假设你希望一个中等难度状态的存活率是 65%
   const targetRate = 0.65;
   
-  const suggestedParams = tuneParamsForTargetRate(targetRate, state);
+  const suggestedParams = tuneParamsForTargetRate(targetRate, state as any);
   
   console.log('=== 参数自动调优建议 ===');
   console.log(`目标存活率: ${(targetRate * 100).toFixed(0)}%`);
@@ -219,7 +219,7 @@ export function example8_FullTurnFlow(state: GameState) {
   console.log('\n========== 回合开始 ==========');
   
   // 1. 回合开始时显示当前存活概率
-  const startRate = quickSurvivalCheck(state);
+  const startRate = quickSurvivalCheck(state as any);
   console.log(`回合开始存活率: ${(startRate * 100).toFixed(1)}%`);
   
   // 2. 玩家进行各种操作...
@@ -231,7 +231,7 @@ export function example8_FullTurnFlow(state: GameState) {
     playerChoices: 0, // 玩家选择影响
   };
   
-  const result = calculateSurvivalProbability(state, varianceInput);
+  const result = calculateSurvivalProbability(state as any, varianceInput);
   
   console.log(`回合结束存活率: ${(result.finalProbability * 100).toFixed(1)}%`);
   console.log(`风险等级: ${result.riskLevel}`);
@@ -246,7 +246,7 @@ export function example8_FullTurnFlow(state: GameState) {
   }
   
   // 5. 死亡判定 (如果需要)
-  const deathRoll = rollForSurvival(state, varianceInput);
+  const deathRoll = rollForSurvival(state as any, varianceInput);
   if (!deathRoll.survived) {
     console.log('💀 你没能挺过这个夜晚...');
   }

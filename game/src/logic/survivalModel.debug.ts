@@ -9,7 +9,6 @@ import {
   calculateVariance,
   SurvivalModelParams,
   BaselineInput,
-  VarianceInput,
   DEFAULT_MODEL_PARAMS,
 } from './survivalModel';
 import { RegionID, PlayerClass } from '@/types/schema';

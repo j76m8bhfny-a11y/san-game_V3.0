@@ -1,7 +1,7 @@
 import { PlayerClass, Bill, ScalingMode, RegionID, Item, Housing, Insurance } from '../types/schema';
 // ✅ 1. 确保正确引入配置
-import housingRules from '@/assets/data/rules/housingRules.json';
-import prisonRules from '@/assets/data/rules/prisonRules.json';
+import housingRules from '@/assets/data/rules/housing_rules.json';
+import prisonRules from '@/assets/data/rules/prison_rules.json';
 
 // ------------------------------------------------------------------
 // 核心公式 1: 动态压力系数

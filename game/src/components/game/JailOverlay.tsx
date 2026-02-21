@@ -3,7 +3,7 @@ import { useI18n } from '@/i18n';
 import { useGameStore } from '@/store/useGameStore';
 import { motion } from 'framer-motion';
 // ✅ Refactor: 引入新设计的监狱规则配置
-import prisonRules from '@/assets/data/rules/prisonRules.json';
+import prisonRules from '@/assets/data/rules/prison_rules.json';
 
 const JailOverlay: React.FC = () => {
   const { t } = useI18n();

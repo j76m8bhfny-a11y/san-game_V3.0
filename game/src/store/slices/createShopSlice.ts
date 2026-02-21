@@ -1,8 +1,8 @@
 import { StateCreator } from 'zustand';
 import { Item, RegionID, LedgerCategory, ItemType } from '@/types/schema';
 import { StoreState } from '@/types/store';
-import shopRules from '@/assets/data/rules/shopRules.json';
-import foodRules from '@/assets/data/rules/foodRules.json';
+import shopRules from '@/assets/data/rules/shop_rules.json';
+import foodRules from '@/assets/data/rules/food_rules.json';
 import { getVehicleSellPrice } from '@/components/game/vehicle/config/vehicleShopConfig';
 
 // 🚗 区域固定车辆池配置（每区域只有一台车）
@@ -205,7 +205,7 @@ export const createShopSlice: StateCreator<StoreState, [], [], ShopSlice> = (set
 
     // 执行交易
     let category: LedgerCategory = 'MISC';
-    const mapping = shopRules.ledgerMapping.find((rule) => item.tags?.includes(rule.tag));
+    const mapping = shopRules.ledgerMapping.mappings.find((rule: any) => item.tags?.includes(rule.tag));
     if (mapping) {
       category = mapping.category as LedgerCategory;
     }

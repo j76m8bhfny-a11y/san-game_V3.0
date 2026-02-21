@@ -7,7 +7,7 @@ import { Car, Heart } from 'lucide-react';
 
 export const SlumsInsuranceFlyer: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { t } = useI18n();
-  const { signInsurance, cancelInsurance, vitality, hasInsurance } = useGameStore();
+  const { signInsurance, cancelInsurance, vitality } = useGameStore();
   const { playSfx } = useAudioStore();
 
   // 筛选贫民窟保险
@@ -18,7 +18,7 @@ export const SlumsInsuranceFlyer: React.FC<{ onClose: () => void }> = ({ onClose
   // 检查激活状态
   const activeInsurances = vitality.activeInsurances || [];
   const getIsActive = (planId: string) => activeInsurances.some((ins: any) => ins.id === planId);
-  const hasAutoInsurance = hasInsurance('AUTO');
+
   const { inventory } = useGameStore();
   const hasVehicle = inventory.some((id: string) => id.startsWith('CAR_') || id === 'KEY_CAR');
 

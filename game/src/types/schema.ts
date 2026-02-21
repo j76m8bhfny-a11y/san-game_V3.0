@@ -540,6 +540,11 @@ export interface VitalityState {
   };
   activeJobs: string[];
   activeInsurances: Insurance[]; // 支持多保险（医疗+车险）
+  
+  // ✅ 新增：医疗系统史诗级增强
+  pendingMedicalBills: PendingMedicalBill[]; // 延迟医疗账单（达摩克利斯之剑）
+  deductibleTrackers: DeductibleTracker[];   // 免赔额追踪（HDHP机制）
+  medicalAppointments: MedicalAppointment[]; // 手术排期队列
 }
 
 // ==========================================
@@ -801,10 +806,62 @@ export const MedicalServiceSchema = z.object({
     isHiddenInfo: z.boolean().optional(), // 是否隐藏报销详情(坑)
   }),
   
+  // ✅ 新增：延迟支付配置 (达摩克利斯之剑机制)
+  deferredPayment: z.object({
+    upfrontCopay: z.number(),      // 当场支付的挂号费
+    delayTurns: z.number(),        // 延迟回合数
+    description: z.string(),       // 账单描述
+    isSurprise: z.boolean().optional(),    // 是否"惊喜账单"
+    collectionsRisk: z.number().optional(), // 催收风险
+  }).optional(),
+  
   flavorText: z.string(),
 });
 
 export type MedicalService = z.infer<typeof MedicalServiceSchema>;
+
+// --- 2.5 延迟医疗账单 (达摩克利斯之剑机制) ---
+export const PendingMedicalBillSchema = z.object({
+  id: z.string(),
+  originalServiceId: z.string(),           // 原始医疗服务ID
+  originalCost: z.number(),                // 原始费用
+  upfrontCopay: z.number(),                // 当场已支付的挂号费
+  deferredAmount: z.number(),              // 延迟账单金额(保险后自付)
+  delayTurns: z.number(),                  // 延迟回合数
+  triggerTurn: z.number(),                 // 触发回合(当前回合+delayTurns)
+  description: z.string(),                 // 账单描述
+  isSurprise: z.boolean().default(false),  // 是否"惊喜账单"(网络外)
+  collectionsRisk: z.number().default(0.3), // 转为催收的概率
+  hospitalRegion: z.nativeEnum(RegionID),  // 医院区域(用于催收强度)
+  issuedTurn: z.number(),                  // 发出账单的回合
+});
+
+export type PendingMedicalBill = z.infer<typeof PendingMedicalBillSchema>;
+
+// 免赔额追踪器 (HDHP机制)
+export const DeductibleTrackerSchema = z.object({
+  insuranceId: z.string(),
+  deductible: z.number(),                  // 年度免赔额目标
+  currentSpent: z.number().default(0),     // 今年已花费
+  remaining: z.number(),                   // 剩余需自付
+  planYear: z.number(),                    // 保险年度
+  isMet: z.boolean().default(false),       // 是否已满足
+});
+
+export type DeductibleTracker = z.infer<typeof DeductibleTrackerSchema>;
+
+// 排期状态追踪（手术等待队列）
+export const MedicalAppointmentSchema = z.object({
+  id: z.string(),
+  serviceId: z.string(),           // 预约的服务ID
+  serviceName: z.string(),         // 服务名称
+  scheduledTurn: z.number(),       // 预约的手术回合
+  depositPaid: z.number(),         // 已支付的定金
+  canCancel: z.boolean().default(true), // 是否可取消
+  refundRate: z.number().default(0.5),  // 取消时退还比例
+});
+
+export type MedicalAppointment = z.infer<typeof MedicalAppointmentSchema>;
 
 // --- 3. 保险产品升级 ---
 // 覆盖原有的 InsuranceSchema
@@ -818,6 +875,7 @@ export const InsuranceSchema = z.object({
   // 报销能力
   coverage: z.object({
     copayModifier: z.number(), // 自付比例修正 (0.0 = 全额报销, 1.0 = 无报销)
+    deductible: z.number().optional(), // 年度免赔额 (HDHP机制)
     emergencyCovered: z.boolean(), // 是否包急诊
     mentalCovered: z.boolean(),    // 是否包精神科
     addictionCovered: z.boolean(), // 是否包成瘾治疗

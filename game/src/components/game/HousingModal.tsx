@@ -1,7 +1,7 @@
 import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { RegionID } from '@/types/schema';
-import { useI18n } from '@/i18n';
+
 
 
 import { SlumsHousing } from './housing/SlumsHousing';
@@ -17,7 +17,7 @@ interface HousingModalProps {
 }
 
 export const HousingModal: React.FC<HousingModalProps> = ({ isOpen, onClose }) => {
-  const { t } = useI18n();
+
   const { currentRegion } = useGameStore();
 
   if (!isOpen) return null;

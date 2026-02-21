@@ -6,7 +6,7 @@ import { calculateNextPrice, calculatePnL, checkLiquidation } from '@/logic/mark
 // 引入新闻数据
 import newsData from '@/assets/data/news.json';
 // ✅ 1. 引入配置文件 (Source of Truth)
-import marketRules from '@/assets/data/rules/marketRules.json';
+import marketRules from '@/assets/data/rules/market_rules.json';
 
 const generateId = () => `${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 5)}`;
 

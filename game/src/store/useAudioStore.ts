@@ -98,7 +98,7 @@ export const useAudioStore = create<AudioState & AudioActions>()(
             // 这里可能会因为文件不存在报 404，但在开发阶段不影响代码运行
             const audio = new Audio(AUDIO_ASSETS[key]);
             audio.volume = volume / 100;
-            audio.play().catch(e => {
+            audio.play().catch(_e => {
               // 忽略因为没有用户交互导致的播放失败，或者文件缺失
               // console.warn('SFX play failed:', e) 
             });

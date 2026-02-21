@@ -6,7 +6,6 @@
 
 import {
   generateValuesForState,
-  generateEventImpact,
   generateItemJson,
   generateEventJson,
   generateDesignReport,

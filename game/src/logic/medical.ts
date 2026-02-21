@@ -1,7 +1,7 @@
 // src/logic/medical.ts
 import { MedicalService, PlayerClass, RegionID, Insurance, GameDataCache } from '@/types/schema';
 // ✅ 引入新设计的医疗规则配置
-import medicalRules from '@/assets/data/rules/medicalRules.json';
+import medicalRules from '@/assets/data/rules/medical_rules.json';
 
 interface CostResult {
   originalCost: number;
@@ -9,6 +9,13 @@ interface CostResult {
   coveredAmount: number;
   copayRate: number;
   reason: string;
+  insuranceCoverage?: number; // 保险覆盖比例（用于延迟账单计算）
+  deductibleStatus?: {        // 免赔额状态
+    currentSpent: number;
+    deductible: number;
+    remaining: number;
+    isMet: boolean;
+  };
 }
 
 // 默认配置兜底
@@ -38,11 +45,16 @@ const getMessage = (key: keyof typeof defaultMessages): string => {
 /**
  * 计算医疗服务最终费用
  * 逻辑流：基础费用 -> 保险报销计算 -> 特殊政策覆盖(JSON配置)
+ * 
+ * ✅ 新增：支持HDHP高免赔额健康计划
+ * - 免赔额未满足前：基础门诊全额自付，急诊部分自付
+ * - 免赔额满足后：正常报销
  */
 export const calculateMedicalCost = (
   service: MedicalService,
   insurance: Insurance | null,
-  playerClass: PlayerClass
+  playerClass: PlayerClass,
+  deductibleTracker?: { currentSpent: number; deductible: number; isMet: boolean }
 ): CostResult => {
   // 参数校验
   if (!service || typeof service.baseCost !== 'number') {
@@ -70,6 +82,7 @@ export const calculateMedicalCost = (
   // 2. 初始状态：无保险全额自付
   let copayRate = 1.0;
   let reason = getMessage('noInsurance');
+  let insuranceCoverage = 0;
 
   // 3. 计算商业保险报销 (Standard Insurance Logic)
   if (insurance) {
@@ -77,19 +90,44 @@ export const calculateMedicalCost = (
       let isPlanCovering = true;
       
       // 检查具体险种条款 (EMERGENCY/MENTAL/ADDICTION)
-      // 这些逻辑属于保险产品的核心机制，保留在代码逻辑中较为稳妥，
-      // 具体的 true/false 状态由 insurance.json 数据控制。
       if (service.type === 'EMERGENCY' && !insurance.coverage?.emergencyCovered) isPlanCovering = false;
       if (service.type === 'THERAPY' && !insurance.coverage?.mentalCovered) isPlanCovering = false;
       if (service.type === 'DRUG' && !insurance.coverage?.addictionCovered) isPlanCovering = false;
 
-      if (isPlanCovering) {
-        // 取最大值：服务本身的基础自付 vs 保险计划的自付修正
-        // 边界检查：确保 copayRate 在 [0, 1] 范围内
+      // ✅ HDHP免赔额机制检查
+      const hasDeductible = insurance.coverage?.deductible && (insurance.coverage as any).deductible > 0;
+      
+      if (isPlanCovering && hasDeductible && deductibleTracker && !deductibleTracker.isMet) {
+        // 免赔额未满足
+        const isEmergency = service.type === 'EMERGENCY';
+        
+        if (!isEmergency && (service.type === 'DRUG' || service.type === 'THERAPY')) {
+          // 基础门诊在免赔额内：全额自付
+          copayRate = 1.0;
+          reason = `保险提示：未达免赔额$${(insurance.coverage as any).deductible}，此项全额自付`;
+          insuranceCoverage = 0;
+        } else if (isEmergency) {
+          // 急诊在免赔额内：部分覆盖（模拟网络外急诊）
+          copayRate = 0.8; // 80%自付
+          reason = `急诊部分覆盖：未达免赔额，需自付80%`;
+          insuranceCoverage = 0.2;
+        } else {
+          // 其他服务正常计算
+          const serviceCopay = Math.max(0, Math.min(1, service.insurance.baseCopayRate ?? 1.0));
+          const planCopay = Math.max(0, Math.min(1, insurance.coverage.copayModifier ?? 1.0));
+          copayRate = Math.max(serviceCopay, planCopay);
+          reason = `保险报销 ${((1 - copayRate) * 100).toFixed(0)}% (免赔额进度: $${deductibleTracker.currentSpent}/$${deductibleTracker.deductible})`;
+          insuranceCoverage = 1 - copayRate;
+        }
+      } else if (isPlanCovering) {
+        // 免赔额已满足或无免赔额：正常报销
         const serviceCopay = Math.max(0, Math.min(1, service.insurance.baseCopayRate ?? 1.0));
         const planCopay = Math.max(0, Math.min(1, insurance.coverage.copayModifier ?? 1.0));
         copayRate = Math.max(serviceCopay, planCopay);
-        reason = `保险报销 ${((1 - copayRate) * 100).toFixed(0)}%`;
+        reason = deductibleTracker?.isMet 
+          ? `保险报销 ${((1 - copayRate) * 100).toFixed(0)}% (免赔额已满足)`
+          : `保险报销 ${((1 - copayRate) * 100).toFixed(0)}%`;
+        insuranceCoverage = 1 - copayRate;
       } else {
         reason = getMessage('planNotCover');
       }
@@ -99,33 +137,40 @@ export const calculateMedicalCost = (
   }
 
   // 4. ✅ 重构：特殊政策覆盖 (Special Policies Override)
-  // 不再硬编码 if (Homeless && Emergency)...
-  // 而是遍历 rules.json 中的 policies.specialAid 数组
   if (medicalRules.policies?.specialAid) {
     for (const policy of medicalRules.policies.specialAid) {
-      // 防御性检查：确保 policy 结构完整
       if (!policy.match || !policy.effect) continue;
       
-      // 检查阶级匹配 (支持 "ANY" 通配符)
       const matchClass = policy.match.class === "ANY" || policy.match.class === playerClass;
-      // 检查服务类型匹配 (支持 "ANY" 通配符)
       const matchType = policy.match.serviceType === "ANY" || policy.match.serviceType === service.type;
       
       if (matchClass && matchType) {
-        // 命中策略，强制覆盖自付比例和文案
         copayRate = Math.max(0, Math.min(1, policy.effect.copayRate ?? 1.0));
         reason = policy.effect.reason || reason;
-        break; // 找到最高优先级的策略即停止（假设配置顺序即优先级）
+        insuranceCoverage = 1 - copayRate;
+        break;
       }
     }
   }
 
   // 5. 计算最终金额
-  // 边界检查：确保最终费用不为负数
   const finalCost = Math.max(0, Math.floor(cost * copayRate));
   const coveredAmount = cost - finalCost;
 
-  return { originalCost: cost, finalCost, coveredAmount, copayRate, reason };
+  return { 
+    originalCost: cost, 
+    finalCost, 
+    coveredAmount, 
+    copayRate, 
+    reason,
+    insuranceCoverage,
+    deductibleStatus: deductibleTracker ? {
+      currentSpent: deductibleTracker.currentSpent,
+      deductible: deductibleTracker.deductible,
+      remaining: Math.max(0, deductibleTracker!.deductible - deductibleTracker!.currentSpent),
+      isMet: deductibleTracker.isMet
+    } : undefined
+  };
 };
 
 /**

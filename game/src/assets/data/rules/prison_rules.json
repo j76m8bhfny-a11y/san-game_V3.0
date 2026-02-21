@@ -1,16 +1,26 @@
 {
+  "$schema": "prison-rules-config",
+  "description": "监狱系统配置，被PrisonSystem和SystemRegistry使用",
+  "version": "1.0.0",
+  
   "settings": {
+    "description": "监狱系统基础设置",
     "systemPriority": 100,
     "blockedSystems": ["JOB_SYSTEM", "EVENT_SYSTEM", "BILL_SYSTEM"],
     "blockMovement": true
   },
+  
   "bail": {
+    "description": "保释系统配置",
     "enableCashBail": true,
     "enableBond": true,
     "bondDownPaymentRate": 0.1,
-    "linkedLoanProductId": "LOAN_BAIL_BOND"
+    "linkedLoanProductId": "LOAN_BAIL_BOND",
+    "formula": "保释金 = 刑期 × 基础费率；保释贷款首付 = 保释金 × 10%"
   },
+  
   "dailyRoutine": {
+    "description": "每日监狱生活配置",
     "default": {
       "hpChange": -20,
       "insightChange": -25,
@@ -31,7 +41,9 @@
       "HOMELESS": "default"
     }
   },
+  
   "messages": {
+    "description": "系统消息配置",
     "invalidSentence": "刑期异常，已释放",
     "invalidBailAmount": "保释金金额异常。",
     "invalidDownPayment": "首付金额异常。",

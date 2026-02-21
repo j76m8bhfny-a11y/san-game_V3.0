@@ -3,7 +3,7 @@ import {
   GameState,
   NoviceActionType 
 } from '../types/schema';
-import faithRulesUntyped from '@/assets/data/rules/faithRules.json';
+import faithRulesUntyped from '@/assets/data/rules/faith_rules.json';
 import type { FaithRules } from '../types/faithRules';
 
 // 类型断言：确保 JSON 符合 FaithRules 接口

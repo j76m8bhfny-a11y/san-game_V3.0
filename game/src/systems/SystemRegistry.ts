@@ -1,4 +1,4 @@
-import { GameSystem, SystemResult } from './types';
+import { GameSystem } from './types';
 import { GameState, LedgerRecord, VitalityState } from '@/types/schema';
 import { BankSystem } from './core/BankSystem'; 
 import { HousingSystem } from './core/HousingSystem';
@@ -7,12 +7,12 @@ import { BillSystem } from './core/BillSystem';
 import { EmploymentSystem } from './core/EmploymentSystem';
 import { FaithSystem } from './core/FaithSystem';
 import { EventSystem } from './core/EventSystem';
-import systemRules from '@/assets/data/rules/systemRules.json';
-import prisonRules from '@/assets/data/rules/prisonRules.json';
-import NARRATIVE_RULES from '@/assets/data/rules/narrative_rules.json';
+
+import prisonRules from '@/assets/data/rules/prison_rules.json';
+
 import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 
-const { priorities } = systemRules;
+
 const { executionOrder } = SYSTEM_RULES;
 
 // ✅ 防御性编程：安全获取监狱阻断系统列表

@@ -4,7 +4,7 @@ import { useI18n } from '@/i18n';
 import { MedicalService, PlayerClass, RegionID } from '@/types/schema';
 import { calculateMedicalCost, getHospitalTheme, calculateRiskRate } from '@/logic/medical';
 import { Heart, Activity, Shield, CreditCard, AlertTriangle, Activity as ActivityIcon } from 'lucide-react';
-import medicalRules from '@/assets/data/rules/medicalRules.json';
+
 import hospitalData from '@/assets/data/hospital_services.json';
 
 // ✅ 1. 引入特定阶级的医疗组件
@@ -44,17 +44,6 @@ export const HospitalModal: React.FC<{ isOpen: boolean; onClose: () => void }> =
 // ==========================================
 // 默认通用医院视图 (原代码封装)
 // ==========================================
-
-// 默认 UI 文案兜底
-const defaultUiText = {
-  confirmSurgery: "hospital.surgery.confirm",
-  payAndTreat: "hospital.treatment.pay",
-  insufficientFunds: "hospital.insufficientFunds"
-};
-
-const getUiText = (key: keyof typeof defaultUiText): string => {
-  return (medicalRules.uiText as any)?.[key] ?? defaultUiText[key];
-};
 
 const DefaultHospitalView: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const { t } = useI18n();

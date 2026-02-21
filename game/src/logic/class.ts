@@ -4,7 +4,7 @@
  * 优先级：资本家 > 中产 > 工人 > 流浪汉
  */
 
-import { PlayerClass, RegionID, GameState, Housing } from '@/types/schema';
+import { PlayerClass, GameState, Housing } from '@/types/schema';
 import housingData from '@/assets/data/housing.json';
 import narrativeRules from '@/assets/data/rules/narrative_rules.json';
 

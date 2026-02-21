@@ -1,9 +1,9 @@
 import { StateCreator } from 'zustand';
-import { GameState, Housing, ActiveHousingState, RegionID, ActiveHousing } from '@/types/schema';
+import { GameState, Housing, ActiveHousingState, RegionID } from '@/types/schema';
 import { StoreState } from '@/types/store';
 import housingData from '@/assets/data/housing.json';
-import housingRules from '@/assets/data/rules/housingRules.json';
-import jobRules from '@/assets/data/rules/jobRules.json';
+import housingRules from '@/assets/data/rules/housing_rules.json';
+import jobRules from '@/assets/data/rules/job_rules.json';
 
 
 
@@ -111,6 +111,28 @@ export const createHousingSlice: StateCreator<StoreState, [], [], HousingSlice> 
     const houseWeight = jobRules.classWeights[house.requiredClass as keyof typeof jobRules.classWeights] ?? 99;
     if (playerWeight < houseWeight) {
       return { success: false, message: "你的身份不足以购买此地产业。" };
+    }
+    
+    // ✅ 检查信用分（针对中产/资本家房产）
+    if (house.requiredClass === 'MIDDLE' || house.requiredClass === 'CAPITALIST') {
+      const currentScore = gameState.vitality.metrics.creditScore;
+      let effectiveScore = currentScore;
+      
+      // 检查催收Debuff影响
+      const collectionBuff = gameState.vitality.activeBuffs?.find((b: any) => b.id?.includes('buff_medical_collection'));
+      if (collectionBuff?.data?.creditScoreModifier) {
+        effectiveScore += collectionBuff.data.creditScoreModifier;
+      }
+      
+      // 中产房产需要信用分 >= 600，资本家房产 >= 700
+      const minCreditScore = house.requiredClass === 'CAPITALIST' ? 700 : 600;
+      
+      if (effectiveScore < minCreditScore) {
+        const reason = collectionBuff
+          ? `信用检查失败 (当前: ${currentScore}, 有效: ${effectiveScore}, 需要: ${minCreditScore})。医疗催收记录使你无法获得房贷批准。`
+          : `信用检查失败 (当前: ${currentScore}, 需要: ${minCreditScore})。银行拒绝了你的房贷申请。`;
+        return { success: false, message: reason };
+      }
     }
     
     // 1. 检查是否已有房产

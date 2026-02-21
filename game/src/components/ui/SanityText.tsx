@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import rules from '@/assets/data/rules/vitalityRules.json';
+import rules from '@/assets/data/rules/vitality_rules.json';
 
 /**
  * 灵视文本组件

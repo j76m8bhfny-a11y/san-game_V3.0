@@ -1,7 +1,7 @@
 // src/logic/market.ts
 import { CryptoPosition } from '@/types/schema';
 // ✅ 1. 引入数值配置 (Source of Truth)
-import marketRules from '@/assets/data/rules/marketRules.json';
+import marketRules from '@/assets/data/rules/market_rules.json';
 
 /**
  * 计算下一周 BTC 价格 (Juicy Version)

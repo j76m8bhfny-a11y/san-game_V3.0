@@ -4,7 +4,7 @@ import { PlayerClass } from '@/types/schema';
 import { useGameStore } from '@/store/useGameStore';
 import { useI18n } from '@/i18n';
 // ✅ 1. 引入新规则配置 (请确保文件路径正确)
-import rules from '@/assets/data/rules/vitalityRules.json';
+import rules from '@/assets/data/rules/vitality_rules.json';
 
 interface ClassSelectorProps {
   onConfirm: () => void;

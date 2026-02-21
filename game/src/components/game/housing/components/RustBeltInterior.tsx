@@ -9,7 +9,7 @@ interface Props {
   onClose: () => void;
 }
 
-export const RustBeltInterior: React.FC<Props> = ({ housing, onSleep, onMoveOut, onClose }) => {
+export const RustBeltInterior: React.FC<Props> = ({ housing: _housing, onSleep, onMoveOut, onClose }) => {
   const { t } = useI18n();
   const [isTvOn, setIsTvOn] = useState(false);
 

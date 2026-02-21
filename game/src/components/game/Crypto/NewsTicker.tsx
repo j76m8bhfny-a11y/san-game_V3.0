@@ -1,6 +1,6 @@
 import React from 'react';
 import { useGameStore } from '@/store/useGameStore';
-import marketRules from '@/assets/data/rules/marketRules.json';
+import marketRules from '@/assets/data/rules/market_rules.json';
 
 export const NewsTicker: React.FC = () => {
   const { crypto } = useGameStore();

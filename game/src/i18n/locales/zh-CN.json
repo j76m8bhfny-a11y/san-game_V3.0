@@ -284,6 +284,43 @@
       "perk": "免疫所有警察检查"
     }
   },
+  "systemAlert": {
+    "irsAudit": {
+      "title": "⚠ 系统警告 ⚠",
+      "message": "纳税人编号 #{id} 已被标记为审计对象。",
+      "consequence": "不遵守将导致资产立即扣押。",
+      "confirm": "我知道了",
+      "footer": "美国国税局自动化系统 v2.4.1"
+    },
+    "creditFreeze": {
+      "title": "⚠ 账户冻结通知 ⚠",
+      "message": "由于异常活动，您的账户已被暂时冻结。",
+      "consequence": "请联系当地分行解冻。",
+      "confirm": "我明白了",
+      "footer": "国家安全银行风控系统"
+    },
+    "algorithmBan": {
+      "title": "⚠ 算法封禁 ⚠",
+      "message": "您的账户行为违反平台服务条款。",
+      "consequence": "永久禁止访问零工平台。",
+      "confirm": "确认",
+      "footer": "平台治理算法 v9.2.0"
+    },
+    "mediaSmear": {
+      "title": "⚠ 声誉警告 ⚠",
+      "message": "您的数字足迹已被标记。",
+      "consequence": "雇主可见度降低 40%。",
+      "confirm": "收到",
+      "footer": "舆情监控系统"
+    },
+    "generic": {
+      "title": "⚠ 系统通知 ⚠",
+      "message": "系统已检测到异常行为。",
+      "consequence": "请配合调查。",
+      "confirm": "确认",
+      "footer": "自动化监控系统"
+    }
+  },
   "vehicleShop": {
     "common": {
       "buy": "购买",

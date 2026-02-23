@@ -279,5 +279,42 @@
       "repossessionWarning": "⚠️ Vehicle repossessed after {weeks} weeks overdue",
       "signContract": "Sign Contract"
     }
+  },
+  "systemAlert": {
+    "irsAudit": {
+      "title": "⚠ SYSTEM ALERT ⚠",
+      "message": "Taxpayer ID #{id} has been flagged for audit.",
+      "consequence": "Non-compliance will result in immediate asset seizure.",
+      "confirm": "I UNDERSTAND",
+      "footer": "IRS Automated System v2.4.1"
+    },
+    "creditFreeze": {
+      "title": "⚠ ACCOUNT FREEZE NOTICE ⚠",
+      "message": "Your account has been temporarily frozen due to suspicious activity.",
+      "consequence": "Contact your local branch to unfreeze.",
+      "confirm": "I UNDERSTAND",
+      "footer": "National Security Bank Risk Control"
+    },
+    "algorithmBan": {
+      "title": "⚠ ALGORITHM BAN ⚠",
+      "message": "Your account violates platform Terms of Service.",
+      "consequence": "Permanent ban from gig platforms.",
+      "confirm": "ACKNOWLEDGE",
+      "footer": "Platform Governance Algorithm v9.2.0"
+    },
+    "mediaSmear": {
+      "title": "⚠ REPUTATION WARNING ⚠",
+      "message": "Your digital footprint has been flagged.",
+      "consequence": "Employer visibility reduced by 40%.",
+      "confirm": "RECEIVED",
+      "footer": "Public Opinion Monitoring System"
+    },
+    "generic": {
+      "title": "⚠ SYSTEM NOTICE ⚠",
+      "message": "System has detected anomalous behavior.",
+      "consequence": "Please cooperate with investigation.",
+      "confirm": "ACKNOWLEDGE",
+      "footer": "Automated Monitoring System"
+    }
   }
 }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useGameStore } from './store/useGameStore';
 import { loadAllGameData } from './utils/dataLoader';
 import { preloadAllEvents } from './systems/core/EventSystem';
@@ -35,16 +35,50 @@ import { SystemGazeOverlay } from './components/SystemGazeOverlay'; // [NEW] 系
 import { ArchiveMilestoneModal } from './components/ArchiveMilestoneModal'; // [NEW] 里程碑弹窗
 import { DeathSummary } from './components/game/DeathSummary'; // [NEW] 死亡结算
 
+// [NEW] UI/交互增强组件
+import { AtmosphereOverlay } from './components/ui/AtmosphereOverlay';
+import { ResourceHintBar, useResourceHint } from './components/ui/ResourceHint';
+import { GlitchUI } from './components/fx/GlitchUI';
+import { SystemAlertModal } from './components/ui/SystemAlertModal';
+import { useHeartbeat } from './hooks/useHeartbeat';
+import { calculateGazeIntensity } from './logic/systemGaze';
+
+// [NEW] 新手引导系统
+import { IntroExperience } from './components/game/IntroExperience';
+import { GuardianHints } from './components/ui/GuardianHints';
+import { InsightMilestones } from './components/ui/InsightMilestones';
+import { ProgressiveUnlock } from './components/ui/ProgressiveUnlock';
+import { DangerHints } from './components/ui/DangerHints';
+import { ModalQueueProvider } from './components/ui/ModalQueueManager';
+import { DeathEffectProvider } from './components/ui/DeathEffectPause';
+
 
 const App: React.FC = () => {
+  // [NEW] 初始化心跳系统（危险时播放心跳声）
+  useHeartbeat();
+  
+  // [NEW] 资源暗示系统
+  const { hoveredImpact } = useResourceHint();
+  
+  // [NEW] System Alert弹窗状态
+  const [systemAlert, setSystemAlert] = useState<{
+    isOpen: boolean;
+    type: 'irsAudit' | 'creditFreeze' | 'algorithmBan' | 'mediaSmear' | 'generic';
+  }>({ isOpen: false, type: 'generic' });
+  
+  // [NEW] 开场引导状态
+  const [showIntro, setShowIntro] = useState(true);
+  const [introCompleted, setIntroCompleted] = useState(false);
   const { 
     currentEvent, 
     activeBill, 
     ending, 
     weeklyReport,
-    currentCryptoNews,  // 🔴 新增
-    hideCryptoNews,     // 🔴 新增
+    currentCryptoNews,
+    hideCryptoNews,
     _hasHydrated,
+    unlockedArchives, // [NEW] 用于计算Gaze强度
+    vitality, // [NEW] 用于ResourceHint
     isShopOpen,
     isJobBoardOpen,
     isHousingOpen,
@@ -68,13 +102,19 @@ const App: React.FC = () => {
     setMenuOpen,
     restartGame,
     showDeathSummary,  // [NEW] 死亡结算显示状态
-    showDeathSummaryView // [NEW] 手动显示死亡结算
+    showDeathSummaryView, // [NEW] 手动显示死亡结算
+    activeHousing // [NEW] 用于DangerHints
   } = useGameStore();
 
   const [viewState, setViewState] = useState<'TITLE' | 'SELECT_CLASS' | 'GAME'>('TITLE');
   const [loading, setLoading] = useState(false);
-  // ✨ 新增：错误状态，用于捕获 JSON 加载失败
   const [initError, setInitError] = useState<string | null>(null);
+  
+  // [NEW] 计算当前Gaze强度
+  const gazeIntensity = useMemo(() => 
+    calculateGazeIntensity(unlockedArchives?.length || 0),
+    [unlockedArchives]
+  );
 
   useEffect(() => {
     const init = async () => {
@@ -141,10 +181,57 @@ const App: React.FC = () => {
     );
   }
 
+  // [NEW] 完成开场引导后的回调
+  const handleIntroComplete = () => {
+    setIntroCompleted(true);
+    setShowIntro(false);
+  };
+
   return (
     <>
+    <DeathEffectProvider>
+    <ModalQueueProvider>
+    {/* [NEW] 开场引导体验 */}
+    {showIntro && !introCompleted && (
+      <IntroExperience onComplete={handleIntroComplete} />
+    )}
+    
+    <GlitchUI intensity={gazeIntensity}>
     <SystemGazeOverlay>
+    <AtmosphereOverlay>
     <div className="relative w-screen h-screen overflow-hidden bg-black text-green-500 font-mono select-none">
+      {/* [NEW] 资源暗示条 */}
+      <ResourceHintBar
+        hoveredImpact={hoveredImpact}
+        currentValues={{
+          hp: vitality.metrics.hp,
+          maxHp: vitality.metrics.maxHp,
+          san: vitality.metrics.insight,
+          maxSan: vitality.metrics.maxInsight,
+          gold: vitality.metrics.gold,
+        }}
+      />
+      
+      {/* [NEW] 危险状态文字提示 */}
+      <DangerHints
+        hpPercent={vitality.metrics.hp / vitality.metrics.maxHp}
+        insightPercent={vitality.metrics.insight / vitality.metrics.maxInsight}
+        hungerPercent={vitality.metrics.hunger / vitality.metrics.maxHunger}
+        hasHousing={!!activeHousing}
+        hasInsurance={vitality.activeInsurances.length > 0}
+        activeDiseases={vitality.activeDiseases}
+        isNewPlayer={vitality.time.currentTurn <= 3}
+      />
+      
+      {/* [NEW] 守护灵新手提示 */}
+      <GuardianHints />
+      
+      {/* [NEW] 灵视里程碑提示 */}
+      <InsightMilestones />
+      
+      {/* [NEW] 渐进式机制解锁 */}
+      <ProgressiveUnlock />
+      
       <GlobalAtmosphere />
 
       {ending ? (
@@ -246,7 +333,11 @@ const App: React.FC = () => {
       <TooltipLayer />
       
     </div>
+    </AtmosphereOverlay>
     </SystemGazeOverlay>
+    </GlitchUI>
+    </ModalQueueProvider>
+    </DeathEffectProvider>
     
     {/* 里程碑弹窗 - 在SystemGazeOverlay之外 */}
     <ArchiveMilestoneModal />
@@ -255,6 +346,14 @@ const App: React.FC = () => {
     {showDeathSummary && (
       <DeathSummary onRestart={handleRestart} />
     )}
+    
+    {/* [NEW] System Alert弹窗 - 用于Gaze惩罚事件 */}
+    <SystemAlertModal
+      isOpen={systemAlert.isOpen}
+      type={systemAlert.type}
+      playerId={(vitality.identity as any).name || 'UNKNOWN'}
+      onConfirm={() => setSystemAlert({ ...systemAlert, isOpen: false })}
+    />
     </>
   );
 };

@@ -6,6 +6,7 @@ import { GameEvent } from '@/types/schema';
 import NARRATIVE_RULES from '@/assets/data/rules/narrative_rules.json';
 import { getCurrentGazeEffects, getGazeNarrative } from '@/logic/gazeEventSystem';
 import { calculateDOptionReduction } from '@/logic/archiveModifier';
+import { DOptionConfirm, isHighRiskOption } from '@/components/ui/DOptionConfirm';
 
 const { pacing, ui } = NARRATIVE_RULES;
 
@@ -353,6 +354,12 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
   const [modifiers, setModifiers] = useState<string[]>([]);
   const [showReductionModal, setShowReductionModal] = useState(false);
   
+  // [NEW] D选项确认弹窗
+  const [dOptionConfirm, setDOptionConfirm] = useState<{
+    isOpen: boolean;
+    impact: { hp?: number; san?: number; gold?: number; unlocksArchive?: boolean };
+  }>({ isOpen: false, impact: {} });
+  
   // 🌟 是否已看过D选项引导（本次游戏会话）
   const [hasSeenDOptionGuide, setHasSeenDOptionGuide] = useState(() => {
     return sessionStorage.getItem('sanguo_seen_d_guide') === 'true';
@@ -394,27 +401,53 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
     }, ui.animationTimings.stageTransitionDelay);
   }, [playSfx]);
 
-  const handleOptionClick = (id: string) => {
+  // [NEW] 实际执行选项选择
+  const executeOptionSelect = (id: string) => {
     playSfx('sfx_click');
     setSelectedOptId(id);
     
     // 如果选择D选项且有减免，显示结算动画
     if (id === 'D' && dOptionReduction > 0) {
       setShowReductionModal(true);
-      // 3秒后自动关闭结算动画
       setTimeout(() => setShowReductionModal(false), 3000);
     }
     
     if (optionClickTimerRef.current) clearTimeout(optionClickTimerRef.current);
     optionClickTimerRef.current = setTimeout(() => {
       if (resolveEventOption) {
-        // 传递选项类型和事件数据以应用修改器
         const result = resolveEventOption(id as 'A' | 'B' | 'C' | 'D');
         if (result?.modifiers) {
           setModifiers(result.modifiers);
         }
       }
     }, pacing.autoResolveDelayMs);
+  };
+  
+  const handleOptionClick = (id: string) => {
+    // [NEW] D选项高风险确认流程
+    if (id === 'D') {
+      const impact = {
+        hp: event.options.D?.effects?.hp,
+        san: event.options.D?.effects?.insight,
+        gold: event.options.D?.effects?.gold,
+        unlocksArchive: true,
+      };
+      
+      // 高风险D选项显示确认弹窗
+      if (isHighRiskOption(impact)) {
+        setDOptionConfirm({ isOpen: true, impact });
+        return;
+      }
+    }
+    
+    // 普通选项直接执行
+    executeOptionSelect(id);
+  };
+  
+  // [NEW] D选项确认后执行
+  const handleDOptionConfirm = () => {
+    setDOptionConfirm({ ...dOptionConfirm, isOpen: false });
+    executeOptionSelect('D');
   };
   
   // 检查D选项是否可用 (支持 insightLock 或 sanLock)
@@ -499,6 +532,14 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
           </div>
         </motion.div>
       )}
+      
+      {/* [NEW] D选项确认弹窗 */}
+      <DOptionConfirm
+        isOpen={dOptionConfirm.isOpen}
+        impact={dOptionConfirm.impact}
+        onConfirm={handleDOptionConfirm}
+        onCancel={() => setDOptionConfirm({ ...dOptionConfirm, isOpen: false })}
+      />
 
       {/* 事件插图 */}
       <motion.div 

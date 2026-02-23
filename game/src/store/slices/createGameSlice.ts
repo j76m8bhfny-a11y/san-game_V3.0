@@ -41,6 +41,7 @@ export interface GameSlice {
   showCryptoNews: (news: NewsItem) => void;
   hideCryptoNews: () => void;
   maybeTriggerCryptoNews: () => void;
+  scheduleCryptoNewsAfterEvent: () => void;  // 事件后延迟触发
   
   // 🔴 新增：游戏暂停控制
   pauseGame: () => void;
@@ -255,6 +256,28 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
 
   closeEvent: () => {
     set({ isEventOpen: false, currentEvent: null, isPaused: false }); // 🔴 关闭事件时恢复游戏
+    
+    // 🔴 事件关闭后，随机延迟触发加密新闻（如果已开户）
+    get().scheduleCryptoNewsAfterEvent();
+  },
+  
+  // 🔴 新增：事件后随机延迟触发新闻
+  scheduleCryptoNewsAfterEvent: () => {
+    const { crypto } = get();
+    
+    // 只有开通账户的玩家才会收到推送
+    if (!crypto.isAccountOpen) return;
+    
+    // ✅ 每回合必定触发，只是延迟随机（0.5-3秒）
+    const delay = 500 + Math.random() * 2500;
+    
+    setTimeout(() => {
+      const store = get();
+      // 再次检查：确保玩家还开着账户，且当前没有正在显示的新闻
+      if (store.crypto.isAccountOpen && !store.currentCryptoNews) {
+        store.maybeTriggerCryptoNews();
+      }
+    }, delay);
   },
 
   // 🔴 调整点3: 加密新闻弹窗控制
@@ -271,9 +294,6 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
     
     // 只有开通比特币账户的才会收到推送
     if (!crypto.isAccountOpen) return;
-    
-    // 30%概率推送
-    if (Math.random() > 0.3) return;
     
     // 随机选择一条新闻
     const allNews = newsData as NewsItem[];

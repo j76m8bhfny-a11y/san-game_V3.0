@@ -1,9 +1,11 @@
 import { StateCreator } from 'zustand';
-import { GameState, LedgerCategory } from '@/types/schema';
+import { GameState, LedgerCategory, Ending } from '@/types/schema';
 import { StoreState } from '@/types/store';
 import { calculateDailyJailEffect } from '@/logic/prison';
 import { runTurnSettlement } from '@/systems/SystemRegistry';
 import { DailyEffect } from '@/types/prisonRules';
+import { resolveEnding } from '@/logic/endings';
+import endingsData from '@/assets/data/endings.json';
 
 // ✅ 1. 引入数值配置文件
 import prisonRules from '@/assets/data/rules/prison_rules.json';
@@ -107,6 +109,7 @@ const mergeStateUpdates = (
 
 /**
  * 检查释放条件并更新监狱状态
+ * 注意：出狱时保留重罪记录标记
  */
 const updatePrisonStatus = (
   state: GameState,
@@ -115,8 +118,15 @@ const updatePrisonStatus = (
 ): Partial<GameState> => {
   const released = turnsServed >= sentenceTurns;
   
+  if (released) {
+    // 出狱时重置监狱状态，但保留重罪记录
+    return {
+      prison: INITIAL_PRISON
+    };
+  }
+  
   return {
-    prison: released ? INITIAL_PRISON : {
+    prison: {
       ...state.prison,
       turnsServed
     }
@@ -152,6 +162,48 @@ const checkDeathCondition = (state: GameState): boolean => {
   return (state.vitality.metrics.hp <= 0 || state.vitality.metrics.insight <= 0);
 };
 
+/**
+ * 🔴 监狱疾病处理 - 毒药补丁1
+ * 疾病在监狱中继续扣血，但无法去医院治疗
+ */
+const processPrisonDiseases = (
+  state: GameState
+): { hpChange: number; insightChange: number; logs: string[] } => {
+  const { activeDiseases } = state.vitality;
+  const logs: string[] = [];
+  let totalHpChange = 0;
+  let totalInsightChange = 0;
+  
+  if (!activeDiseases || activeDiseases.length === 0) {
+    return { hpChange: 0, insightChange: 0, logs };
+  }
+  
+  // 导入疾病数据（需要在函数外部导入，这里简化处理）
+  // 实际疾病效果应该从 diseases.json 中读取
+  // 这里使用简化逻辑：每种疾病每周扣5-15 HP
+  
+  for (const diseaseId of activeDiseases) {
+    // 根据疾病ID判断严重程度
+    let hpDrain = 5;
+    if (diseaseId.includes('SEPSIS') || diseaseId.includes('ACUTE')) {
+      hpDrain = 15;
+    } else if (diseaseId.includes('CHRONIC') || diseaseId.includes('LUNG')) {
+      hpDrain = 8;
+    } else if (diseaseId.includes('MENTAL') || diseaseId.includes('PSYCHOSIS')) {
+      hpDrain = 0;
+      totalInsightChange += 5; // 精神疾病增加Insight
+    }
+    
+    totalHpChange -= hpDrain;
+    
+    if (hpDrain > 0) {
+      logs.push(`【狱中疾病】${diseaseId}: -${hpDrain} HP (无法就医，只能硬扛)`);
+    }
+  }
+  
+  return { hpChange: totalHpChange, insightChange: totalInsightChange, logs };
+};
+
 export interface PrisonSlice {
   prison: {
     inJail: boolean;
@@ -159,13 +211,15 @@ export interface PrisonSlice {
     sentenceTurns: number;
     turnsServed: number;
     bailAmount: number;
+    totalDebtAtConviction?: number;
   };
 
   // Actions
-  imprison: (reason: string, turns: number, bail: number) => void;
+  imprison: (reason: string, turns: number, bail: number, totalDebt?: number) => void;
   serveTime: () => { released: boolean; msg: string; died: boolean };
   payCashBail: () => { success: boolean; msg: string };
   signBailBond: () => { success: boolean; msg: string };
+  buyBlackMarketMedicine: () => { success: boolean; msg: string; hpRestored?: number };
 }
 
 const INITIAL_PRISON = {
@@ -173,20 +227,22 @@ const INITIAL_PRISON = {
   crime: '',
   sentenceTurns: 0,
   turnsServed: 0,
-  bailAmount: 0
+  bailAmount: 0,
+  totalDebtAtConviction: undefined
 };
 
 export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = (set, get) => ({
   prison: INITIAL_PRISON,
 
-  imprison: (reason, turns, bail) => {
+  imprison: (reason, turns, bail, totalDebt) => {
     set({
       prison: {
         inJail: true,
         crime: reason,
         sentenceTurns: turns,
         turnsServed: 0,
-        bailAmount: bail
+        bailAmount: bail,
+        totalDebtAtConviction: totalDebt
       }
     });
   },
@@ -205,8 +261,17 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
       // 1. 执行系统结算
       const settlementResult = applySystemSettlement(state);
 
-      // 2. 计算坐牢的物理惩罚
+      // 2. 计算坐牢的物理惩罚（阶级差异化）
       const jailEffect = calculateDailyJailEffect(vitality.identity.currentClass);
+      
+      // 2.5 🔴 毒药补丁1：监狱内疾病继续扣血
+      const diseaseEffect = processPrisonDiseases(state);
+      if (diseaseEffect.hpChange !== 0 || diseaseEffect.insightChange !== 0) {
+        jailEffect.hpChange += diseaseEffect.hpChange;
+        jailEffect.insightChange += diseaseEffect.insightChange;
+        diseaseEffect.logs.forEach(log => settlementResult.logs.push(log));
+      }
+      
       const jailPenalty = applyJailPenalty(state, jailEffect);
 
       // 3. 合并状态更新
@@ -242,18 +307,25 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
         nextState.vitality.metrics.insight = Math.max(0, nextState.vitality.metrics.insight);
         // ✅ 修复：保存死亡状态
         set(nextState);
-        // ✅ 修复：触发死亡结局
+        // ✅ 修复：触发死亡结局 - 使用 resolveEnding 进行完整判定
         setTimeout(() => {
           const store = get();
           if (store.triggerEnding) {
-            store.triggerEnding('ENDING_DEATH_PRISON');
+            const state = get() as GameState;
+            const endingId = resolveEnding(state, endingsData as unknown as Ending[], 52, 'PRISON_DEATH');
+            store.triggerEnding(endingId);
           }
         }, 0);
       }
 
-      // ✅ 新增：出狱时自动发送通知
+      // ✅ 新增：出狱时自动发送通知（带重罪记录提示）
       if (released && !died) {
-        state.addNotification(getMessage('released'), 'success');
+        const hasFelony = nextState.vitality.flags.hasFelonyRecord;
+        if (hasFelony) {
+          state.addNotification(getMessage('releasedWithFelony') || '【重罪记录】你带着犯罪记录出狱。中产阶级的门永远对你关闭了。', 'error');
+        } else {
+          state.addNotification(getMessage('released'), 'success');
+        }
       }
 
       return {
@@ -287,12 +359,71 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
         return { success: false, msg: getMessage('insufficientFundsForBail') };
       }
 
+      // 检查是否有重罪记录（用于消息提示）
+      const hasFelony = state.vitality.flags.hasFelonyRecord;
+
       set(() => ({
         prison: INITIAL_PRISON
       }));
-      return { success: true, msg: getMessage('cashBailSuccess') };
+      
+      return { 
+        success: true, 
+        msg: hasFelony 
+          ? (getMessage('releasedWithFelony') || '【重罪记录】你带着犯罪记录出狱。中产阶级的门永远对你关闭了。')
+          : getMessage('cashBailSuccess')
+      };
     } catch (error) {
       const errorMsg = handlePrisonError(error, 'payCashBail');
+      return { success: false, msg: errorMsg };
+    }
+  },
+
+  // 🔴 新增：黑市医疗（监狱内购药）
+  buyBlackMarketMedicine: () => {
+    try {
+      const state = get();
+      const prisonMedical = prisonRules?.prisonMedical;
+      
+      if (!prisonMedical?.enableBlackMarketMedicine) {
+        return { success: false, msg: '当前监狱不提供黑市医疗服务' };
+      }
+
+      const cost = prisonMedical.blackMarketPainkillerCost;
+      const effect = prisonMedical.blackMarketPainkillerEffect;
+      
+      // 检查资金
+      if (state.vitality.metrics.gold < cost) {
+        return { success: false, msg: `资金不足，需要 $${cost} 购买黑市止痛药` };
+      }
+
+      // 扣除费用
+      const txResult = state.addTransaction('MEDICAL' as LedgerCategory, -cost, '黑市止痛药');
+      if (!txResult.success) {
+        return { success: false, msg: '资金不足' };
+      }
+
+      // 恢复HP
+      const { maxStat } = SYSTEM_RULES.caps;
+      const currentHp = state.vitality.metrics.hp;
+      const newHp = Math.min(maxStat, currentHp + effect.hpRestore);
+      
+      set((prev) => ({
+        vitality: {
+          ...prev.vitality,
+          metrics: {
+            ...prev.vitality.metrics,
+            hp: newHp
+          }
+        }
+      }));
+
+      return { 
+        success: true, 
+        msg: getMessage('blackMarketMedicine', { cost }) || `你花了 $${cost} 从狱警那里买了黑市止痛药，恢复了 ${effect.hpRestore} HP。`,
+        hpRestored: effect.hpRestore
+      };
+    } catch (error) {
+      const errorMsg = handlePrisonError(error, 'buyBlackMarketMedicine');
       return { success: false, msg: errorMsg };
     }
   },
@@ -338,11 +469,19 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
       }
 
       // 3. 释放
+      // 检查是否有重罪记录（用于消息提示）
+      const hasFelony = state.vitality.flags.hasFelonyRecord;
+      
       set(() => ({
         prison: INITIAL_PRISON
       }));
 
-      return { success: true, msg: getMessage('bondSuccess') };
+      return { 
+        success: true, 
+        msg: hasFelony
+          ? (getMessage('releasedWithFelony') || '【重罪记录】你带着犯罪记录出狱。中产阶级的门永远对你关闭了。')
+          : getMessage('bondSuccess')
+      };
     } catch (error) {
       const errorMsg = handlePrisonError(error, 'signBailBond');
       return { success: false, msg: errorMsg };

@@ -32,6 +32,13 @@ const AUDIO_ASSETS = {
   // 建议音效：大铁门关闭声、沉重的心跳声、或者赌场筹码推倒声
   sfx_all_in: '/assets/audio/sfx_all_in.mp3',             // 梭哈/ALL IN 按钮音效
 
+  // === ✅ 新增：结局系统 SFX ===
+  // 真结局 ED-22 "觉醒者" 专用音效 - 庄重史诗风格
+  sfx_ending_awakened: '/assets/audio/sfx_ending_awakened.mp3',  // 系统重置的史诗感
+  sfx_ending_ur: '/assets/audio/sfx_ending_ur.mp3',              // UR结局通用音效
+  sfx_ending_stance: '/assets/audio/sfx_ending_stance.mp3',      // STANCE结局音效
+  sfx_ending_death: '/assets/audio/sfx_ending_death.mp3',        // 死亡结局音效（替代glitch）
+
   // 铁锈区
   sfx_keys_jingle: '/assets/audio/sfx_keys_jingle.mp3',   // 钥匙晃动
   sfx_neon_hum: '/assets/audio/sfx_neon_hum.mp3',         // 霓虹灯电流声

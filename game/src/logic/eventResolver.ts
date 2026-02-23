@@ -24,6 +24,25 @@ export const checkCondition = (state: GameState, condition: GameEvent['condition
   // 4. Item Check
   if (condition.hasItem && !state.inventory.includes(condition.hasItem)) return false;
 
+  // 🔴 监狱系统相关条件检查
+  // 5. 重罪记录检查
+  if (condition.hasFelonyRecord !== undefined) {
+    const playerHasFelony = state.vitality.flags?.hasFelonyRecord ?? false;
+    if (condition.hasFelonyRecord !== playerHasFelony) return false;
+  }
+
+  // 6. 保险暂停检查
+  if (condition.insuranceSuspended !== undefined) {
+    const playerInsuranceSuspended = state.vitality.flags?.insuranceSuspended ?? false;
+    if (condition.insuranceSuspended !== playerInsuranceSuspended) return false;
+  }
+
+  // 7. 活跃疾病检查
+  if (condition.hasActiveDisease !== undefined) {
+    const hasDisease = (state.vitality.activeDiseases?.length ?? 0) > 0;
+    if (condition.hasActiveDisease !== hasDisease) return false;
+  }
+
   return true;
 };
 

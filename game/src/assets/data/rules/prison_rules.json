@@ -1,13 +1,23 @@
 {
   "$schema": "prison-rules-config",
-  "description": "监狱系统配置，被PrisonSystem和SystemRegistry使用",
-  "version": "1.0.0",
+  "description": "监狱系统配置 - 阶级再生产的暴力机器",
+  "version": "2.0.0",
   
   "settings": {
     "description": "监狱系统基础设置",
     "systemPriority": 100,
     "blockedSystems": ["JOB_SYSTEM", "EVENT_SYSTEM", "BILL_SYSTEM"],
-    "blockMovement": true
+    "blockMovement": true,
+    "allowMedicalInPrison": true,
+    "allowInsuranceCancellation": true
+  },
+  
+  "sentence": {
+    "description": "动态刑期计算配置",
+    "baseTurns": 2,
+    "debtIncrement": 5000,
+    "maxTurns": 8,
+    "formula": "刑期 = 2 + floor(总欠款 / 5000)，上限8周"
   },
   
   "bail": {
@@ -16,11 +26,19 @@
     "enableBond": true,
     "bondDownPaymentRate": 0.1,
     "linkedLoanProductId": "LOAN_BAIL_BOND",
-    "formula": "保释金 = 刑期 × 基础费率；保释贷款首付 = 保释金 × 10%"
+    "interestRate": 0.15,
+    "formula": "保释金 = 刑期 × 基础费率；保释贷款首付 = 保释金 × 10%；周利率15%(年化780%)"
+  },
+  
+  "penalty": {
+    "description": "信用分与记录惩罚",
+    "creditScorePenalty": -250,
+    "addFelonyRecord": true,
+    "felonyRecordDescription": "重罪记录：永久剥夺重返中产资格"
   },
   
   "dailyRoutine": {
-    "description": "每日监狱生活配置",
+    "description": "每日监狱生活配置 - 阶级差异化惩罚",
     "default": {
       "hpChange": -20,
       "insightChange": -25,
@@ -28,18 +46,44 @@
     },
     "classOverrides": {
       "CAPITALIST": {
-        "hpChange": 5,
-        "insightChange": 5,
-        "log": "你在最低安保级别的'度假村'里打了一天高尔夫，结识了几位参议员。"
+        "hpChange": 15,
+        "insightChange": 10,
+        "log": "你在最低安保级别的'度假村'里打了一天高尔夫，结识了几位参议员。入狱对你只是带薪休假。"
       },
       "MIDDLE": {
-        "hpChange": -5,
-        "insightChange": -10,
-        "log": "你在单人牢房里读了一整天书。隔壁的尖叫声让你有点神经衰弱。"
+        "hpChange": -10,
+        "insightChange": -40,
+        "log": "你在单人禁闭室里度过了一天。没有书，没有窗，只有对房子被法拍的恐惧。你的反抗思想被洗白了。"
       },
-      "WORKER": "default",
-      "HOMELESS": "default"
+      "WORKER": {
+        "hpChange": -25,
+        "insightChange": -20,
+        "log": "私营监狱的缝纫机踩了一整天。你的手指在流血，但产出配额还没完成。"
+      },
+      "HOMELESS": {
+        "hpChange": -15,
+        "insightChange": -30,
+        "log": "县级拘留所的帮派混战让你彻夜未眠。医疗室？那是给有钱人的。"
+      }
     }
+  },
+  
+  "prisonMedical": {
+    "description": "监狱内医疗系统（黑市药品）",
+    "enableBlackMarketMedicine": true,
+    "blackMarketPainkillerCost": 100,
+    "blackMarketPainkillerEffect": {
+      "hpRestore": 10,
+      "description": "狱警偷偷塞给你的布洛芬，效果有限但价格高昂"
+    },
+    "diseaseDamageMultiplier": 1.0,
+    "cannotAccessHospital": true
+  },
+  
+  "insuranceInPrison": {
+    "description": "监狱内保险断供机制",
+    "suspendAfterMissedPayments": 2,
+    "suspensionMessage": "【保险断供】由于狱中资金枯竭，你的医疗保险已被暂停。"
   },
   
   "messages": {
@@ -51,8 +95,9 @@
     "missingLoanProductId": "配置错误：缺少贷款产品ID。",
     "stateError": "状态异常，无法服刑",
     "cashBailSuccess": "你支付了保释金。有钱真好。",
-    "bondSuccess": "你签下了高利贷保释单。记得按时还款。",
-    "released": "刑满释放。你自由了...暂时。",
+    "bondSuccess": "你签下了高利贷保释单。记得按时还款——如果还得起的话。",
+    "released": "刑满释放。你自由了...暂时。但你带着重罪记录，社会性死亡才刚刚开始。",
+    "releasedWithFelony": "【重罪记录】你带着犯罪记录出狱。中产阶级的门永远对你关闭了。",
     "insufficientFunds": "资金不足。",
     "insufficientFundsForBail": "资金不足以支付保释金。",
     "insufficientFundsForDownPayment": "资金不足以支付保释金首付。",
@@ -60,6 +105,8 @@
     "transactionFailed": "资金不足以支付保释金。",
     "downPaymentTransactionFailed": "资金不足以支付保释金首付。",
     "downPaymentFailed": "甚至付不起 {rate}% 的首付 (${amount})。",
-    "serveTimeError": "服刑过程中发生系统错误，请重试"
+    "serveTimeError": "服刑过程中发生系统错误，请重试",
+    "blackMarketMedicine": "你花了 ${cost} 从狱警那里买了黑市止痛药。",
+    "insuranceSuspended": "【保险断供】你的医疗保险因资金不足已被暂停。"
   }
 }

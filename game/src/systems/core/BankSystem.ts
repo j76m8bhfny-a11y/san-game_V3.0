@@ -2,6 +2,17 @@ import { GameSystem, SystemResult } from '../types';
 import { PlayerClass } from '@/types/schema';
 import { processTurnInterest } from '@/logic/bank';
 import { Config } from '@/config';
+import bankNarratives from '@/assets/data/rules/bank_narratives.json';
+import prisonRules from '@/assets/data/rules/prison_rules.json';
+import { calculateDynamicSentence } from '@/types/prisonRules';
+
+/**
+ * 从消息数组中随机获取一条消息
+ */
+const getRandomMessage = (messages: string[]): string => {
+  if (!messages || messages.length === 0) return '';
+  return messages[Math.floor(Math.random() * messages.length)];
+};
 
 export const BankSystem: GameSystem = {
   id: 'BANK_SYSTEM',
@@ -21,9 +32,35 @@ export const BankSystem: GameSystem = {
     // 1. 🛡️ 保险费用自动扣除 (Insurance Logic)
     // ====================================================
     const activeInsurances = vitality.activeInsurances || [];
+    const remainingInsurances = [];
+    
     for (const insurance of activeInsurances) {
       const cost = insurance.weeklyCost;
       if (cost > 0) {
+        // 🔴 监狱保险断供补丁：检查资金是否足够支付保险
+        const currentGold = (result.updates.vitality as any)?.metrics?.gold ?? vitality.metrics.gold;
+        const pendingChanges = result.newTransactions?.reduce((sum, t) => sum + t.amount, 0) ?? 0;
+        const projectedGold = currentGold + pendingChanges;
+        const canAfford = projectedGold >= cost;
+        
+        if (!canAfford && state.prison?.inJail) {
+          // 狱中资金不足，保险断供
+          result.logs.push(`【保险断供】${insurance.name}因资金不足已暂停。出狱后你将面临全额医疗费用。`);
+          result.notes.push(`⚠️ 保险断供：你的${insurance.type === 'AUTO' ? '车险' : '医疗保险'}已被取消。`);
+          
+          // 更新保险断供标记
+          result.updates.vitality = {
+            ...result.updates.vitality,
+            flags: {
+              ...(result.updates.vitality as any)?.flags ?? vitality.flags,
+              insuranceSuspended: true
+            }
+          } as any;
+          
+          // 不将此保险加入剩余保险列表（相当于移除）
+          continue;
+        }
+        
         const category = insurance.type === 'AUTO' ? 'BILL' : 'MEDICAL';
         result.newTransactions!.push({
           id: `ins_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
@@ -34,7 +71,16 @@ export const BankSystem: GameSystem = {
           timestamp: Date.now()
         });
         result.logs.push(`支付了 $${cost} 的${insurance.type === 'AUTO' ? '车险' : '医疗保险'}费用`);
+        remainingInsurances.push(insurance);
       }
+    }
+    
+    // 更新保险列表（移除已断供的）
+    if (remainingInsurances.length !== activeInsurances.length) {
+      (result.updates as any).vitality = {
+        ...(result.updates as any).vitality,
+        activeInsurances: remainingInsurances
+      };
     }
 
     // ====================================================
@@ -67,8 +113,10 @@ export const BankSystem: GameSystem = {
            // 🛑 达到断供阈值 -> 强制收房
            if (t >= mortgage.foreclosureTurns) {
               const houseName = currentHousing?.loanId === loan.id ? currentHousing.name : '你名下的房产';
+              const foreclosureMsg = getRandomMessage(bankNarratives.mortgage.foreclosure.messages)
+                .replace('{houseName}', houseName);
              
-             result.logs.push(`【法拍执行】房屋 ${houseName} 因断供被银行强制收回！`);
+             result.logs.push(foreclosureMsg);
              result.notes.push("你失去了房子，变回了流浪汉，信用分崩盘。");
              
              // 移除房产
@@ -94,8 +142,10 @@ export const BankSystem: GameSystem = {
 
            } else {
              // ⚠️ 断供警告
-             const houseName = currentHousing?.loanId === loan.id ? currentHousing.name : '某处房产';
-             result.logs.push(`【房贷警告】${houseName} 逾期 ${t} 周。${mortgage.foreclosureTurns - t}周后将收回房产。`);
+             const warningMsg = getRandomMessage(bankNarratives.mortgage.warning.messages)
+               .replace('{weeks}', String(t))
+               .replace('{remaining}', String(mortgage.foreclosureTurns - t));
+             result.logs.push(warningMsg);
              totalScoreChange -= mortgage.warningPenalty;
            }
         } 
@@ -108,13 +158,15 @@ export const BankSystem: GameSystem = {
         else if (currentTurn > loan.dueTurn) {
           // 🛑 阶段 1: 早期警告
           if (t === collection.warning.turn) {
-            result.logs.push(`贷款逾期警告: 信用评分下降。`);
+            const warningMsg = getRandomMessage(bankNarratives.collection.warning.messages);
+            result.logs.push(warningMsg);
             totalScoreChange -= collection.warning.scorePenalty;
           }
           
           // 🛑 阶段 2: 暴力催收 (扣 HP/SAN)
           else if (t <= collection.violence.maxTurn) {
-            result.logs.push(`【暴力催收】讨债人打断了你的肋骨！`);
+            const violenceMsg = getRandomMessage(bankNarratives.collection.violence.messages);
+            result.logs.push(violenceMsg);
             
             // 读取配置伤害值和数值下限
             const { hpDamage, insightGain } = collection.violence;
@@ -144,12 +196,13 @@ export const BankSystem: GameSystem = {
              const seizeAmount = Math.min(currentGold, limit); 
              
              if (seizeAmount > 0) {
+               const seizureDesc = getRandomMessage(bankNarratives.collection.seizure.messages);
                result.newTransactions!.push({
                  id: `${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 5)}`,
                  turn: currentTurn,
                  category: 'BANK',
                  amount: -seizeAmount,
-                 description: '【强制执行】银行冻结并划扣资产',
+                 description: seizureDesc,
                  timestamp: Date.now()
                });
                
@@ -161,7 +214,7 @@ export const BankSystem: GameSystem = {
                    principal: Math.max(0, processedLoans[loanIndex].principal - seizeAmount)
                  };
                }
-               result.logs.push(`银行强制划扣了 $${seizeAmount}`);
+               result.logs.push(seizureDesc);
              } else {
                result.logs.push(`【强制执行失败】你名下无任何资产可供冻结。`);
              }
@@ -169,18 +222,40 @@ export const BankSystem: GameSystem = {
              totalScoreChange -= collection.seizure.scorePenalty;
           }
           
-          // 🛑 阶段 4: 司法介入 (入狱)
+          // 🛑 阶段 4: 司法介入 (入狱) - 动态刑期计算
           else {
-             result.logs.push(`【司法介入】因长期恶意拖欠，你被逮捕了。`);
+             const jailMsg = getRandomMessage(bankNarratives.collection.jail.messages);
+             result.logs.push(jailMsg);
+             
+             // 计算总债务用于动态刑期
+             const totalDebt = processedLoans.reduce((sum, l) => sum + l.principal + l.interest, 0);
+             
+             // 使用动态刑期计算: 2周基础 + 每$5000欠款加1周，上限8周
+             const dynamicSentence = calculateDynamicSentence(totalDebt, prisonRules.sentence);
+             
+             // 应用重罪记录惩罚（-250分）
+             const felonyPenalty = prisonRules.penalty?.creditScorePenalty ?? -250;
              
              (result.updates as any).prison = {
                inJail: true,
-               sentenceTurns: collection.jail.sentenceTurns, // 读取配置刑期
+               sentenceTurns: dynamicSentence,
                crime: "金融诈骗与恶意欠款",
-               bailAmount: 0
+               bailAmount: 0,
+               totalDebtAtConviction: totalDebt // 记录定罪时的债务
              } as any;
              
-             totalScoreChange -= collection.jail.scorePenalty;
+             // 添加重罪记录标记
+             (result.updates as any).vitality = {
+               ...(result.updates as any).vitality,
+               flags: {
+                 ...(result.updates as any).vitality?.flags ?? vitality.flags,
+                 hasFelonyRecord: true,
+                 felonyRecordTurn: currentTurn
+               }
+             };
+             
+             totalScoreChange += felonyPenalty; // 使用配置的惩罚值（负数）
+             result.notes.push("【重罪记录】你被判定为金融罪犯，社会性死亡开始。");
           }
         }
       });

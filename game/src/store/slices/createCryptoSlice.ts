@@ -95,8 +95,15 @@ export const createCryptoSlice: StateCreator<StoreState, [], [], CryptoSlice> = 
       return;
     }
 
-    // 🔴 扣除网络费 (固定损耗)
-    const networkFee = marketRules.trading.networkFee;
+    // 🔴 高杠杆风险免责声明检查 (50x及以上)
+    if (leverage >= 50) {
+      state.addNotification(`⚠️ 警告: ${leverage}x杠杆极易遭遇插针(Flash Crash)爆仓，历史概率60%`, 'warning');
+    }
+
+    // 🔴 扣除网络费 (动态计算: 基础费$50 + 交易额2%)
+    const networkFeeBase = marketRules.trading.networkFeeBase ?? 50;
+    const networkFeeRate = marketRules.trading.networkFeeRate ?? 0.02;
+    const networkFee = Math.floor(networkFeeBase + principal * networkFeeRate);
     const totalCost = principal + networkFee;
 
     // 1. 检查资金 (包含网络费)
@@ -187,10 +194,18 @@ export const createCryptoSlice: StateCreator<StoreState, [], [], CryptoSlice> = 
   },
 
   processWeeklyMarket: (allNews) => {
-    const state = get() as GameState & { addTransaction: Function };
+    const state = get() as GameState & { addTransaction: Function; modifyStats: Function; addNotification: Function };
     const { btcPrice, weeklyNews, positions } = state.crypto;
     const logs: string[] = [];
     const notes: string[] = [];
+    let totalInsightChange = 0;
+
+    // 0. 持仓盯盘精神内耗：每周持有仓位+5灵视
+    if (positions.length > 0) {
+      const holdingInsightCost = marketRules.insight?.holdingPositionPerTurn ?? 5;
+      totalInsightChange += holdingInsightCost * positions.length;
+      notes.push(`[盯盘焦虑] 持有${positions.length}个加密仓位，精神内耗灵视+${holdingInsightCost * positions.length}`);
+    }
 
     // 1. 计算下周价格 (使用本周新闻)
     // ⚠️ 注意: calculateNextPrice 内部现在已经读取 marketRules.json 的波动率配置了
@@ -200,7 +215,7 @@ export const createCryptoSlice: StateCreator<StoreState, [], [], CryptoSlice> = 
     // 2. 检查爆仓
     const remainingPositions: CryptoPosition[] = [];
     positions.forEach((pos: CryptoPosition) => {
-      // ⚠️ 注意: checkLiquidation 内部也读取了 configuration 的阈值
+      // ⚠️ 注意: checkLiquidation 内部也读取了 configuration 阈值，且包含高杠杆插针机制
       const isLiquidated = checkLiquidation(pos, nextPrice);
       
       if (isLiquidated) {
@@ -208,10 +223,27 @@ export const createCryptoSlice: StateCreator<StoreState, [], [], CryptoSlice> = 
         notes.push(`[强平通知] 市场剧烈波动，你的 ${pos.leverage}x ${pos.type} 仓位已爆仓，本金归零。`);
         // 记录爆仓损失到账本
         state.addTransaction('MISC', -pos.principal, `爆仓强平: ${pos.type} x${pos.leverage} 仓位`);
+        
+        // 🔴 爆仓灵视暴击: +30 Insight
+        const liquidationInsightSpike = marketRules.insight?.liquidationSpike ?? 30;
+        totalInsightChange += liquidationInsightSpike;
+        notes.push(`[存在主义危机] 看着归零的账户，你瞬间看透了去中心化金融的本质。灵视+${liquidationInsightSpike}！`);
+        
+        // 🔴 添加PTSD debuff (如果配置了)
+        if (marketRules.insight?.ptsdBuff) {
+          const ptsd = marketRules.insight.ptsdBuff;
+          state.addNotification(`获得状态: ${ptsd.name} (${ptsd.duration}回合)`, 'warning');
+          // 注意: 实际的debuff添加需要通过buff系统，这里先做通知
+        }
       } else {
         remainingPositions.push(pos);
       }
     });
+    
+    // 应用灵视变更
+    if (totalInsightChange !== 0) {
+      state.modifyStats({ insight: state.vitality.metrics.insight + totalInsightChange });
+    }
 
     // 3. 生成给下周看的新闻 (Forecast)
     const nextWeekNews = allNews.length > 0 

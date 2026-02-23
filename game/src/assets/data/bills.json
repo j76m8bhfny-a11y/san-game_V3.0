@@ -1736,5 +1736,39 @@
       "content": "Predatory auto lending: repossession rates soar in low-income communities."
     },
     "roast": "车没了，贷款还在，欢迎来到美国梦。"
+  },
+  {
+    "id": "B_CRYPTO_TAX_AUDIT",
+    "name": "IRS加密税务审计",
+    "amount": -0.4,
+    "scaling": "INCOME",
+    "type": "LEGAL",
+    "weight": 200,
+    "triggerCondition": {
+      "minGold": 10000,
+      "hasCrypto": true
+    },
+    "flavorText": "你以为去中心化就能逃税？国税局(IRS)花了三千万美元购买了区块链追踪软件，精确地计算出你欠他们40%的资本利得税，外加滞纳金。",
+    "roast": "在收税这件事上，美国政府比任何智能合约都高效。",
+    "effects": {
+      "insightGain": 10
+    }
+  },
+  {
+    "id": "B_CRYPTO_EXCHANGE_HACK",
+    "name": "FTX 2.0破产重组",
+    "amount": -1.0,
+    "scaling": "INCOME",
+    "type": "JUMP_SCARE",
+    "weight": 15,
+    "triggerCondition": {
+      "hasCryptoPosition": true
+    },
+    "flavorText": "你使用的加密交易所昨晚宣布暂停提币。今早，年仅26岁的CEO在巴哈马被捕，而你的资产已经被挪用去填补他旗下对冲基金的窟窿。",
+    "roast": "Not your keys, not your coins。但就算是你自己的钱包，也防不住创始人直接拔网线。",
+    "effects": {
+      "insightGain": 40,
+      "hp": -20
+    }
   }
 ]

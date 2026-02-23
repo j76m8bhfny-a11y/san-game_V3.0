@@ -2,10 +2,11 @@
  * fileName: src/components/game/DebugPanel.tsx
  * 说明: 开发者专用调试面板，用于快速调整数值进行测试
  */
-import React from 'react';
+import React, { useState } from 'react';
 import { useI18n } from '@/i18n';
 import { useGameStore } from '@/store/useGameStore';
 import { motion } from 'framer-motion';
+import ENDINGS from '@/assets/data/endings.json';
 
 interface DebugPanelProps {
   onClose: () => void;
@@ -13,6 +14,9 @@ interface DebugPanelProps {
 
 export const DebugPanel: React.FC<DebugPanelProps> = ({ onClose }) => {
   const { t } = useI18n();
+  
+  // ✅ 添加结局选择状态
+  const [selectedEnding, setSelectedEnding] = useState('ED-01');
   
   // 1. 从 Store 中提取我们需要的数据和方法
   const vitality = useGameStore((state: any) => state.vitality);
@@ -131,8 +135,26 @@ export const DebugPanel: React.FC<DebugPanelProps> = ({ onClose }) => {
               <button onClick={() => nextTurn()} className="bg-blue-500/20 hover:bg-blue-500/40 text-blue-300 py-2 px-4 rounded border border-blue-500/30 transition-all">
                 {t('debug.forceNextTurn')}
               </button>
-              <button onClick={() => triggerEnding('ENDING_DEBUG_WIN')} className="bg-purple-500/20 hover:bg-purple-500/40 text-purple-300 py-2 px-4 rounded border border-purple-500/30 transition-all">
-                {t('debug.triggerEnding')}
+            </div>
+            
+            {/* 结局触发器 */}
+            <div className="mt-4 flex gap-3 items-center">
+              <select 
+                value={selectedEnding} 
+                onChange={(e) => setSelectedEnding(e.target.value)}
+                className="bg-slate-800 text-white px-3 py-2 rounded border border-slate-600 text-sm flex-1"
+              >
+                {ENDINGS.map((ending: any) => (
+                  <option key={ending.id} value={ending.id}>
+                    {ending.id} - {ending.title} ({ending.type})
+                  </option>
+                ))}
+              </select>
+              <button 
+                onClick={() => triggerEnding(selectedEnding)} 
+                className="bg-purple-500/20 hover:bg-purple-500/40 text-purple-300 py-2 px-4 rounded border border-purple-500/30 transition-all whitespace-nowrap"
+              >
+                触发结局
               </button>
             </div>
           </div>

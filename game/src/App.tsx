@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useGameStore } from './store/useGameStore';
 import { loadAllGameData } from './utils/dataLoader';
+import { preloadAllEvents } from './systems/core/EventSystem';
 
 // Components
 import { TitleScreen } from './components/game/TitleScreen';
@@ -32,6 +33,7 @@ import JailOverlay from './components/game/JailOverlay';
 import { InsuranceModal } from './components/game/InsuranceModal'; // [NEW] 引入组件
 import { SystemGazeOverlay } from './components/SystemGazeOverlay'; // [NEW] 系统凝视
 import { ArchiveMilestoneModal } from './components/ArchiveMilestoneModal'; // [NEW] 里程碑弹窗
+import { DeathSummary } from './components/game/DeathSummary'; // [NEW] 死亡结算
 
 
 const App: React.FC = () => {
@@ -64,7 +66,9 @@ const App: React.FC = () => {
     setShopOpen,
     setArchiveOpen,
     setMenuOpen,
-    restartGame 
+    restartGame,
+    showDeathSummary,  // [NEW] 死亡结算显示状态
+    showDeathSummaryView // [NEW] 手动显示死亡结算
   } = useGameStore();
 
   const [viewState, setViewState] = useState<'TITLE' | 'SELECT_CLASS' | 'GAME'>('TITLE');
@@ -77,7 +81,12 @@ const App: React.FC = () => {
       setLoading(true);
       setInitError(null); // 重置错误
       try {
-        const data = await loadAllGameData();
+        // ✅ 并行加载游戏数据和事件
+        const [data, _] = await Promise.all([
+          loadAllGameData(),
+          preloadAllEvents() // 预加载所有事件到缓存
+        ]);
+        
         // 🛡️ 防御性检查：确保数据不是 undefined
         if (!data) throw new Error("LoadData returned empty result");
         
@@ -139,7 +148,11 @@ const App: React.FC = () => {
       <GlobalAtmosphere />
 
       {ending ? (
-        <GameEnding endingId={ending} onRestart={handleRestart} />
+        <GameEnding 
+          endingId={ending} 
+          onRestart={handleRestart} 
+          onViewDeathSummary={showDeathSummaryView}
+        />
       ) : viewState === 'TITLE' ? (
         <TitleScreen 
           onStart={(type: 'NEW' | 'CONTINUE') => {
@@ -237,6 +250,11 @@ const App: React.FC = () => {
     
     {/* 里程碑弹窗 - 在SystemGazeOverlay之外 */}
     <ArchiveMilestoneModal />
+    
+    {/* 死亡结算 - 在SystemGazeOverlay之外 */}
+    {showDeathSummary && (
+      <DeathSummary onRestart={handleRestart} />
+    )}
     </>
   );
 };

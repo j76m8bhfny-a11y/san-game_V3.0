@@ -78,9 +78,21 @@ export const calculatePnL = (position: CryptoPosition, currentPrice: number) => 
  * @param currentPrice 当前市场价格
  */
 export const checkLiquidation = (position: CryptoPosition, currentPrice: number): boolean => {
+  const { leverage } = position;
+  
+  // 🔴 高杠杆插针机制（华尔街定向爆破）
+  // 50x及以上杠杆有60%概率遭遇量化资金极端插针直接爆仓
+  const flashCrashConfig = marketRules.trading.flashCrash;
+  if (flashCrashConfig?.enabled && leverage >= (flashCrashConfig.leverageThreshold ?? 50)) {
+    if (Math.random() < (flashCrashConfig.probability ?? 0.6)) {
+      // 遭遇插针，直接爆仓
+      return true;
+    }
+  }
+  
   const { roi } = calculatePnL(position, currentPrice);
   
   // ✅ 逻辑重构：爆仓线读取 JSON 配置
-  // 默认是 -1.0 (即亏损 100% 本金时爆仓)
+  // 默认是 -0.8 (即亏损 80% 本金时爆仓，模拟交易所强平机制)
   return roi <= marketRules.trading.liquidationThreshold; 
 };

@@ -164,13 +164,28 @@ export const calculateRiteOutcome = (
   }
 
   // ==========================
-  // 2. 特殊逻辑：什一税 (Tithe)
+  // 2. 特殊逻辑：百分比金币消耗 (如什一税)
   // ==========================
-  // 通过配置 ID 判断是否启用特殊逻辑 (保持配置化)
-  if (faithRules.mechanics?.tithe?.enabled && faith.id === faithRules.mechanics.tithe.targetFaithId) {
+  // 优先使用 faiths.json 中的配置，如果不存在则回退到 faithRules
+  if (rite.goldCostPercent && rite.goldCostPercent > 0) {
+    const minAmount = rite.minGoldCost ?? 20;
+    const tithe = Math.max(minAmount, Math.floor(metrics.gold * rite.goldCostPercent));
+    
+    if (metrics.gold < tithe) {
+        return { 
+          success: false, 
+          message: `资金不足 (需要 $${tithe})`, 
+          goldChange: 0,
+          updates: {}
+        };
+    }
+    
+    goldChange -= tithe;
+    resultMsg += `缴纳 ${tithe} 什一税。 `;
+  } else if (faithRules.mechanics?.tithe?.enabled && faith.id === faithRules.mechanics.tithe.targetFaithId) {
+    // 向后兼容：使用 faithRules.mechanics 配置
     const { rate, minAmount, description } = faithRules.mechanics.tithe;
     
-    // 动态计算：最大值(保底, 当前金钱 * 税率)
     const tithe = Math.max(minAmount, Math.floor(metrics.gold * rate));
     
     if (metrics.gold < tithe) {
@@ -198,14 +213,18 @@ export const calculateRiteOutcome = (
   if (rite.insightCost) newSan -= rite.insightCost;
 
   // 奖励 (灵视值/HP)
-  if (rite.baseSanReward) {
-    newSan += rite.baseSanReward;
-    resultMsg += `灵视 +${rite.baseSanReward}。`;
+  // 优先使用 baseInsightReward，如果不存在则使用 baseSanReward（向后兼容）
+  const insightReward = rite.baseInsightReward ?? rite.baseSanReward ?? 0;
+  if (insightReward !== 0) {
+    newSan += insightReward;
+    const insightSign = insightReward > 0 ? '+' : '';
+    resultMsg += `灵视 ${insightSign}${insightReward}。`;
   }
   
   if (rite.baseHpReward) {
     newHp += rite.baseHpReward;
-    resultMsg += `健康 +${rite.baseHpReward}。`;
+    const hpSign = rite.baseHpReward > 0 ? '+' : '';
+    resultMsg += `健康 ${hpSign}${rite.baseHpReward}。`;
   }
 
   // 写入更新

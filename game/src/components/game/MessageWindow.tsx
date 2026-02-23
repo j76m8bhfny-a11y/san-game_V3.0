@@ -5,6 +5,7 @@ import { useAudioStore } from '@/store/useAudioStore';
 import { GameEvent } from '@/types/schema';
 import NARRATIVE_RULES from '@/assets/data/rules/narrative_rules.json';
 import { getCurrentGazeEffects, getGazeNarrative } from '@/logic/gazeEventSystem';
+import { calculateDOptionReduction } from '@/logic/archiveModifier';
 
 const { pacing, ui } = NARRATIVE_RULES;
 
@@ -78,6 +79,62 @@ const GlitchOverlay: React.FC<{ intensity: number }> = ({ intensity }) => {
   );
 };
 
+// 🌟 Gaze低语组件
+const GAZE_WHISPERS = {
+  low: [ // 30-50%
+    "有人在看你...",
+    "你感觉到了吗？",
+    "系统正在记录",
+    "他们开始注意你了",
+  ],
+  medium: [ // 50-75%
+    "不要继续挖掘了...",
+    "有些真相不该被知道",
+    "你已经被标记了",
+    "回头还来得及",
+    "他们在监听",
+  ],
+  high: [ // 75%+
+    "我们知道你是谁",
+    "所有门都在关闭",
+    "系统正在自我修复",
+    "你逃不掉的",
+    "这是最后的警告",
+    "成为系统的一部分",
+  ],
+};
+
+const GazeWhisper: React.FC<{ intensity: number }> = ({ intensity }) => {
+  const [whisper, setWhisper] = React.useState('');
+  
+  React.useEffect(() => {
+    let pool: string[];
+    if (intensity >= 0.75) pool = GAZE_WHISPERS.high;
+    else if (intensity >= 0.5) pool = GAZE_WHISPERS.medium;
+    else pool = GAZE_WHISPERS.low;
+    
+    setWhisper(pool[Math.floor(Math.random() * pool.length)]);
+    
+    // 每15-20秒更换一次低语（降低干扰频率）
+    const interval = setInterval(() => {
+      setWhisper(pool[Math.floor(Math.random() * pool.length)]);
+    }, 15000 + Math.random() * 5000);
+    
+    return () => clearInterval(interval);
+  }, [intensity]);
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: [0.3, 0.8, 0.3] }}
+      transition={{ duration: 3, repeat: Infinity }}
+      className="text-[9px] text-red-500/60 italic max-w-[150px] truncate"
+    >
+      "{whisper}"
+    </motion.div>
+  );
+};
+
 // 气泡组件
 const PixelSMSBubble: React.FC<{
   label: string;
@@ -86,7 +143,12 @@ const PixelSMSBubble: React.FC<{
   onClick: () => void;
   disabled?: boolean;
   glitch?: boolean;
-}> = ({ label, id, type, onClick, disabled, glitch }) => {
+  reductionInfo?: {
+    reductionPercent: number;
+    originalHp: number;
+    actualHp: number;
+  } | null;
+}> = ({ label, id, type, onClick, disabled, glitch, reductionInfo }) => {
   
   const getBubbleColor = (type: string): string => {
     const validTypes = ['safe', 'risk', 'special', 'awakening'] as const;
@@ -102,9 +164,28 @@ const PixelSMSBubble: React.FC<{
       || (ui.bubbleStyles as Record<string, { bg: string; text: string; shadow: string }>)['#E9E9EB'];
   };
   const theme = getBubbleStyles(color);
+  
+  const isDOption = id === 'D';
+  const hasReduction = isDOption && reductionInfo && reductionInfo.reductionPercent > 0;
 
   return (
     <div className={`flex justify-end items-end gap-2 group w-full pl-2 ${disabled ? 'opacity-50' : ''}`}>
+      {/* 档案减免标签 - D选项专用 */}
+      {hasReduction && (
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="absolute -top-6 left-1/2 -translate-x-1/2 z-20"
+        >
+          <div className="px-2 py-0.5 bg-cyan-900/90 border border-cyan-500/50 rounded-full text-[9px] text-cyan-300 flex items-center gap-1 whitespace-nowrap">
+            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+            </svg>
+            档案减免 {reductionInfo?.reductionPercent}%
+          </div>
+        </motion.div>
+      )}
+      
       <div className="text-[10px] text-gray-400 font-pixel mb-1 opacity-60 group-hover:opacity-100 transition-opacity">
         [{id}]
       </div>
@@ -119,6 +200,46 @@ const PixelSMSBubble: React.FC<{
         }}
       >
         {label}
+        
+        {/* 悬停时的详细提示 - D选项专用 */}
+        {isDOption && (
+          <div className="hidden group-hover:block absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-48 p-3 bg-gray-900/95 border border-red-500/30 rounded-lg text-xs z-50 shadow-xl">
+            <div className="text-gray-400 mb-2 text-center font-bold">⚠️ 真相的代价</div>
+            
+            {/* 伤害对比 */}
+            <div className="bg-black/30 rounded p-2 mb-2">
+              <div className="flex justify-between text-red-400/70 line-through text-[10px]">
+                <span>原始伤害</span>
+                <span>{reductionInfo?.originalHp || -18} HP</span>
+              </div>
+              <div className="flex justify-between text-green-400 font-bold">
+                <span>档案减免后</span>
+                <span>{reductionInfo?.actualHp || -18} HP</span>
+              </div>
+              {hasReduction && (
+                <div className="text-center text-cyan-400 text-[9px] mt-1">
+                  💚 节省 {reductionInfo!.originalHp - reductionInfo!.actualHp} HP
+                </div>
+              )}
+            </div>
+            
+            {/* 解锁档案提示 */}
+            <div className="border-t border-gray-700 pt-2">
+              <div className="flex items-center gap-1 text-amber-400 mb-1">
+                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                </svg>
+                <span className="font-bold">首次选择解锁档案</span>
+              </div>
+              <div className="text-gray-400 text-[9px] leading-relaxed">
+                解锁的档案将永久保存，下次轮回中D选项伤害降低
+              </div>
+            </div>
+            
+            <div className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-gray-900/95 border-r border-b border-red-500/30 rotate-45"></div>
+          </div>
+        )}
+        
         <div className={`absolute bottom-0 -right-[6px] w-[6px] h-[6px] ${theme.bg}`} style={{ clipPath: 'polygon(0 0, 0 100%, 100% 100%)' }} />
         <div className={`absolute bottom-[0px] right-[0px] w-[4px] h-[4px] ${theme.bg}`} />
       </motion.button>
@@ -230,6 +351,12 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
   const [stage, setStage] = useState<'INIT' | 'TYPING_TITLE' | 'TYPING_BODY' | 'INTERACTIVE'>('INIT');
   const [selectedOptId, setSelectedOptId] = useState<string | null>(null);
   const [modifiers, setModifiers] = useState<string[]>([]);
+  const [showReductionModal, setShowReductionModal] = useState(false);
+  
+  // 🌟 是否已看过D选项引导（本次游戏会话）
+  const [hasSeenDOptionGuide, setHasSeenDOptionGuide] = useState(() => {
+    return sessionStorage.getItem('sanguo_seen_d_guide') === 'true';
+  });
   
   const bodyCompleteTimerRef = useRef<NodeJS.Timeout | null>(null);
   const optionClickTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -271,6 +398,13 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
     playSfx('sfx_click');
     setSelectedOptId(id);
     
+    // 如果选择D选项且有减免，显示结算动画
+    if (id === 'D' && dOptionReduction > 0) {
+      setShowReductionModal(true);
+      // 3秒后自动关闭结算动画
+      setTimeout(() => setShowReductionModal(false), 3000);
+    }
+    
     if (optionClickTimerRef.current) clearTimeout(optionClickTimerRef.current);
     optionClickTimerRef.current = setTimeout(() => {
       if (resolveEventOption) {
@@ -283,21 +417,36 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
     }, pacing.autoResolveDelayMs);
   };
   
-  // 检查D选项是否可用 (insightLock is the property name in schema)
-  const dOptionInsightLock = (event.options.D as any)?.insightLock || 70;
+  // 检查D选项是否可用 (支持 insightLock 或 sanLock)
+  const dOptionInsightLock = (event.options.D as any)?.insightLock 
+    || (event.options.D as any)?.sanLock 
+    || 70;
   const canSeeDOption = currentInsight >= dOptionInsightLock;
   const dOptionGlitch = event.options.D?.isGlitched || isGazeEvent;
   
+  // 计算D选项减免信息
+  const totalArchives = unlockedArchives?.length || 0;
+  const dOptionReduction = calculateDOptionReduction(totalArchives);
+  const dOptionOriginalHp = event.options.D?.effects?.hp || -18;
+  const dOptionActualHp = Math.round(dOptionOriginalHp * (1 - dOptionReduction));
+  
+  const dOptionReductionInfo = {
+    reductionPercent: Math.round(dOptionReduction * 100),
+    originalHp: dOptionOriginalHp,
+    actualHp: dOptionActualHp
+  };
+  
   // 构建选项列表
   const options = [
-    { id: 'A', label: event.options.A?.label || '', type: 'risk' },
-    { id: 'B', label: event.options.B?.label || '', type: 'safe' },
-    { id: 'C', label: event.options.C?.label || '', type: 'special' },
+    { id: 'A', label: event.options.A?.label || '', type: 'risk', reductionInfo: null },
+    { id: 'B', label: event.options.B?.label || '', type: 'safe', reductionInfo: null },
+    { id: 'C', label: event.options.C?.label || '', type: 'special', reductionInfo: null },
     ...(canSeeDOption ? [{ 
       id: 'D', 
       label: event.options.D?.label || '', 
       type: 'awakening',
-      glitch: dOptionGlitch
+      glitch: dOptionGlitch,
+      reductionInfo: dOptionReductionInfo
     }] : []),
   ].filter(opt => opt.label);
 
@@ -420,6 +569,80 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
           ))}
         </motion.div>
       )}
+      
+      {/* D选项减免结算动画 */}
+      <AnimatePresence>
+        {showReductionModal && selectedOptId === 'D' && dOptionReduction > 0 && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, y: 50 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: -50 }}
+            transition={{ type: "spring", damping: 20 }}
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50"
+          >
+            <div className="bg-gray-900/95 border-2 border-cyan-500 rounded-2xl p-6 shadow-[0_0_50px_rgba(34,211,238,0.3)] min-w-[280px]">
+              <div className="text-center">
+                <motion.div 
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.2, type: "spring" }}
+                  className="text-4xl mb-3"
+                >
+                  📜
+                </motion.div>
+                <div className="text-cyan-400 font-bold text-lg mb-1">档案已激活</div>
+                <div className="text-gray-400 text-xs mb-4">来自过去轮回的记忆保护着你</div>
+                
+                {/* 减免对比可视化 */}
+                <div className="bg-black/40 rounded-xl p-4 mb-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="text-center flex-1">
+                      <div className="text-red-400 text-2xl font-bold">{dOptionOriginalHp}</div>
+                      <div className="text-gray-500 text-xs">原始伤害</div>
+                    </div>
+                    
+                    <div className="text-cyan-500 flex flex-col items-center px-2">
+                      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </svg>
+                      <div className="text-xs font-bold">-{Math.round(dOptionReduction * 100)}%</div>
+                    </div>
+                    
+                    <div className="text-center flex-1">
+                      <motion.div 
+                        initial={{ scale: 1.5, color: '#4ade80' }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.5 }}
+                        className="text-green-400 text-2xl font-bold"
+                      >
+                        {dOptionActualHp}
+                      </motion.div>
+                      <div className="text-gray-500 text-xs">实际伤害</div>
+                    </div>
+                  </div>
+                  
+                  {/* 节省的HP */}
+                  <div className="border-t border-gray-700 pt-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-gray-400 text-xs">你避免了</span>
+                      <span className="text-green-400 font-bold">
+                        {dOptionOriginalHp - dOptionActualHp} HP 的损失
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="text-xs text-gray-500">
+                  已解锁 {totalArchives} 份档案
+                </div>
+                <div className="text-[10px] text-cyan-400/70 mt-1">
+                  继续收集以降低更多代价
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {stage === 'INTERACTIVE' && (
@@ -433,6 +656,39 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
             >
               <img src="/assets/scenes/player_back.png" alt="Player" className="w-full object-contain drop-shadow-[0_0_20px_rgba(0,0,0,0.8)]" />
             </motion.div>
+
+            {/* 🌟 能看到D选项时的引导提示（只显示一次） */}
+            {canSeeDOption && !selectedOptId && stage === 'INTERACTIVE' && !hasSeenDOptionGuide && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1 }}
+                className="absolute bottom-[400px] right-[50px] z-[55] max-w-[200px]"
+                onAnimationComplete={() => {
+                  sessionStorage.setItem('sanguo_seen_d_guide', 'true');
+                  setHasSeenDOptionGuide(true);
+                }}
+              >
+                <div className="bg-cyan-900/90 border border-cyan-500/50 rounded-xl p-4 shadow-xl relative">
+                  <button 
+                    onClick={() => setHasSeenDOptionGuide(true)}
+                    className="absolute top-1 right-1 text-cyan-500/50 hover:text-cyan-400 text-xs"
+                  >
+                    ✕
+                  </button>
+                  <div className="flex items-start gap-2">
+                    <span className="text-xl">⚠️</span>
+                    <div>
+                      <div className="text-cyan-400 font-bold text-sm mb-1">真相选项已解锁</div>
+                      <div className="text-gray-300 text-xs leading-relaxed">
+                        选择 ⚠️ 会承受伤害，但将<span className="text-cyan-400 font-bold">解锁档案</span>，永久降低未来代价
+                      </div>
+                    </div>
+                  </div>
+                  <div className="absolute -bottom-2 right-8 w-4 h-4 bg-cyan-900/90 border-b border-r border-cyan-500/50 rotate-45"></div>
+                </div>
+              </motion.div>
+            )}
 
             {/* 右下角手机 */}
             <motion.div
@@ -452,6 +708,67 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
           </>
         )}
       </AnimatePresence>
+      
+      {/* 底部状态栏 - 档案与System Gaze状态 */}
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+        className="absolute bottom-0 left-0 right-0 h-10 bg-black/60 border-t border-gray-700/50 
+                   flex items-center justify-between px-6 text-xs z-40 pointer-events-auto"
+      >
+        <div className="flex items-center gap-6">
+          {/* 档案数量 */}
+          <div className="flex items-center gap-2 text-cyan-400">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+            <span className="font-pixel">档案: {totalArchives}</span>
+          </div>
+          
+          {/* D选项减免率 */}
+          {dOptionReduction > 0 && (
+            <div className="flex items-center gap-2 text-green-400">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                      d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span className="font-pixel">D选项减免: {Math.round(dOptionReduction * 100)}%</span>
+              {/* 进度条 */}
+              <div className="w-20 h-1.5 bg-gray-700 rounded-full overflow-hidden">
+                <motion.div 
+                  initial={{ width: 0 }}
+                  animate={{ width: `${(dOptionReduction / 0.67) * 100}%` }}
+                  transition={{ duration: 0.5 }}
+                  className="h-full bg-green-500 rounded-full"
+                />
+              </div>
+              <span className="text-[9px] text-gray-500">上限67%</span>
+            </div>
+          )}
+        </div>
+        
+        {/* System Gaze强度（如果>0） */}
+        {gazeEffects.intensity > 0 && (
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 text-red-400">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
+                      d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+              <span className="font-pixel">系统关注: {Math.round(gazeEffects.intensity * 100)}%</span>
+            </div>
+            
+            {/* 🌟 Gaze低语提示（高Gaze时显示） */}
+            {gazeEffects.intensity >= 0.3 && (
+              <GazeWhisper intensity={gazeEffects.intensity} />
+            )}
+          </div>
+        )}
+      </motion.div>
     </div>
   );
 };

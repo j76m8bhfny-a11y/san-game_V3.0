@@ -20,7 +20,9 @@
   "executionOrder": {
     "description": "系统执行优先级（数字越大优先级越高，先执行）",
     "housing": 100,
+    "diet": 95,
     "bank": 90,
+    "vehicle": 88,
     "employment": 85,
     "job": 80,
     "bill": 70,

@@ -62,6 +62,16 @@ export const createJobSlice: StateCreator<StoreState, [], [], JobSlice> = (set, 
       return { success: false, message: "你的阶级不够，HR直接把简历扔进了垃圾桶。" };
     }
 
+    // 3.1 🔴 背景调查：重罪记录检查（中产及以上工作）
+    // 如果玩家有重罪记录，且申请的是MIDDLE或CAPITALIST阶级的工作，直接拒绝
+    const hasFelonyRecord = vitality.flags?.hasFelonyRecord;
+    if (hasFelonyRecord && (job.requiredClass === 'MIDDLE' || job.requiredClass === 'CAPITALIST')) {
+      return { 
+        success: false, 
+        message: "【背景调查未通过】我们有义务告知雇主：你的犯罪记录不符合本职位要求。建议你去试试不需要背景调查的工作。" 
+      };
+    }
+
     // 3.5 检查"职场黑名单"Buff（辞退后4回合内无法申请同阶级工作）
     const blacklistBuff = vitality.activeBuffs?.find((b: any) => 
       b.id.startsWith('buff_job_blacklist') && b.duration > 0

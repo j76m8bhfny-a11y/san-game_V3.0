@@ -41,6 +41,13 @@ export interface GlobalProgressState {
   unlockedArchives: string[];
   archiveUnlockDates: Record<string, string>;
   
+  // 本次运行状态（死亡后重置）
+  currentRun: {
+    unlockedArchives: string[];  // 本次解锁的档案
+    startTime: number;
+    endingId: string | null;
+  };
+  
   // 结局
   achievedEndings: string[];
   endingUnlockDates: Record<string, string>;
@@ -60,16 +67,18 @@ export interface GlobalProgressState {
   // UI状态
   showMilestoneModal: boolean;
   pendingMilestone: ArchiveMilestone | null;
+  showDeathSummary: boolean;  // 显示死亡结算
   
   // Actions
   unlockArchive: (archiveId: string, triggerEventId?: string) => void;
   unlockEnding: (endingId: string) => void;
   recordDeath: (survivedWeeks: number) => void;
-  addPlayTime: (minutes: number) => void;
+  showDeathSummaryView: () => void; // [NEW] 手动显示死亡结算
   startNewRun: () => void;
   addDarkWebEcho: (memoryId: string, narrativeFragment: string) => void;
   recordGazeEvent: (eventId: string) => void;
   dismissMilestone: () => void;
+  dismissDeathSummary: () => void;
   resetProgress: () => void;
   
   // Selectors
@@ -87,6 +96,11 @@ export interface GlobalProgressState {
 const initialGlobalProgress = {
   unlockedArchives: [],
   archiveUnlockDates: {},
+  currentRun: {
+    unlockedArchives: [],
+    startTime: Date.now(),
+    endingId: null
+  },
   achievedEndings: [],
   endingUnlockDates: {},
   totalDeaths: 0,
@@ -104,7 +118,8 @@ const initialGlobalProgress = {
     exclusiveEventsSeen: []
   },
   showMilestoneModal: false,
-  pendingMilestone: null
+  pendingMilestone: null,
+  showDeathSummary: false
 };
 
 // ==========================================
@@ -182,8 +197,9 @@ export const createGlobalProgressSlice: StateCreator<
   unlockArchive: (archiveId: string, _triggerEventId?: string) => {
     const state = get();
     const currentArchives = state.unlockedArchives;
+    const isNew = !currentArchives.includes(archiveId);
     
-    if (!currentArchives.includes(archiveId)) {
+    if (isNew) {
       const newArchives = [...currentArchives, archiveId];
       const newCount = newArchives.length;
       
@@ -196,12 +212,19 @@ export const createGlobalProgressSlice: StateCreator<
         newDarkWebEchoes.unlockedMilestones = [...newDarkWebEchoes.unlockedMilestones, newCount];
       }
       
+      // 记录本次运行解锁的档案
+      const newCurrentRun = {
+        ...state.currentRun,
+        unlockedArchives: [...state.currentRun.unlockedArchives, archiveId]
+      };
+      
       set({
         unlockedArchives: newArchives,
         archiveUnlockDates: {
           ...state.archiveUnlockDates,
           [archiveId]: new Date().toISOString()
         },
+        currentRun: newCurrentRun,
         systemGaze: {
           ...state.systemGaze,
           currentIntensity: calculateGazeIntensity(newCount)
@@ -227,14 +250,20 @@ export const createGlobalProgressSlice: StateCreator<
     }
   },
 
-  // 记录死亡
+  // 记录死亡（不再自动显示结算，改为手动触发）
   recordDeath: (survivedWeeks: number) => {
     const state = get();
     set({
       totalDeaths: state.totalDeaths + 1,
       totalRuns: state.totalRuns + 1,
       longestSurvival: Math.max(state.longestSurvival, survivedWeeks)
+      // showDeathSummary 不再自动设置为true
     });
+  },
+  
+  // 显示死亡结算（玩家主动触发）
+  showDeathSummaryView: () => {
+    set({ showDeathSummary: true });
   },
 
   // 增加游戏时间
@@ -246,7 +275,15 @@ export const createGlobalProgressSlice: StateCreator<
   // 开始新游戏
   startNewRun: () => {
     const state = get();
-    set({ totalRuns: state.totalRuns + 1 });
+    set({ 
+      totalRuns: state.totalRuns + 1,
+      currentRun: {
+        unlockedArchives: [],
+        startTime: Date.now(),
+        endingId: null
+      },
+      showDeathSummary: false
+    });
   },
 
   // 添加暗网回响
@@ -281,6 +318,11 @@ export const createGlobalProgressSlice: StateCreator<
   // 关闭里程碑弹窗
   dismissMilestone: () => {
     set({ showMilestoneModal: false, pendingMilestone: null });
+  },
+
+  // 关闭死亡结算
+  dismissDeathSummary: () => {
+    set({ showDeathSummary: false });
   },
 
   // 重置进度

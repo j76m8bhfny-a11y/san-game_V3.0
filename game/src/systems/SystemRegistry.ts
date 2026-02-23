@@ -7,6 +7,8 @@ import { BillSystem } from './core/BillSystem';
 import { EmploymentSystem } from './core/EmploymentSystem';
 import { FaithSystem } from './core/FaithSystem';
 import { EventSystem } from './core/EventSystem';
+import { VehicleSystem } from './core/VehicleSystem';
+import { DietSystem } from './core/DietSystem';
 
 import prisonRules from '@/assets/data/rules/prison_rules.json';
 
@@ -21,10 +23,12 @@ const getBlockedSystems = (): string[] => {
 };
 
 // ✅ 按照优先级注册系统
-// 核心生存(100) -> 金融(90) -> 就业辞退(85) -> 工作结算(80) -> 账单(70)
+// 核心生存(100) -> 饮食(95) -> 住房(93) -> 金融(90) -> 车辆(88) -> 就业辞退(85) -> 工作结算(80) -> 账单(70)
 const activeSystems: GameSystem[] = [
   { ...HousingSystem, priority: executionOrder.housing },
+  { ...DietSystem, priority: executionOrder.diet || 95 },
   { ...BankSystem, priority: executionOrder.bank },
+  { ...VehicleSystem, priority: executionOrder.vehicle || 88 },
   { ...EmploymentSystem, priority: executionOrder.employment || 85 },
   { ...JobSystem, priority: executionOrder.job },
   { ...BillSystem, priority: executionOrder.bill },

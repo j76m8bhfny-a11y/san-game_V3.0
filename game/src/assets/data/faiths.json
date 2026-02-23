@@ -8,8 +8,11 @@
     "joinCost": { "gold": 100 },
     "rite": {
       "name": "缴纳什一税",
-      "description": "消耗 10% 现金(最少$20) 换取理智",
-      "baseInsightReward": 15
+      "description": "消耗10%现金(最少$50)换取理智清醒，洗掉你看透的太多真相",
+      "goldCostPercent": 0.1,
+      "minGoldCost": 50,
+      "baseInsightReward": -15,
+      "baseHpReward": 5
     }
   },
   {
@@ -21,8 +24,8 @@
     "joinCost": { "cleanInventory": true },
     "rite": {
       "name": "参加聚礼",
-      "description": "免费。恢复少量HP/SAN，需保持身家清白",
-      "baseInsightReward": 5,
+      "description": "免费。恢复HP，降低灵视——抱团取暖让你暂时忘记苦难",
+      "baseInsightReward": -5,
       "baseHpReward": 10
     }
   },
@@ -35,9 +38,10 @@
     "joinCost": { "maxInsight": 40 },
     "rite": {
       "name": "进行血祭",
-      "description": "消耗 15 HP 换取大量金钱",
-      "hpCost": 15,
-      "goldReward": 150
+      "description": "消耗10HP换取现金和灵视觉醒——出卖肉体让你看清吃人本质",
+      "hpCost": 10,
+      "goldReward": 120,
+      "baseInsightReward": 8
     }
   },
   {
@@ -49,9 +53,10 @@
     "joinCost": { "minHp": 80, "minInsight": 80 },
     "rite": {
       "name": "理论学习",
-      "description": "消耗 10 SAN 换取 5 革命点数",
-      "insightCost": 10,
-      "redPointReward": 5
+      "description": "消耗10HP换取灵视觉醒和红色倾向——阅读剥削理论让你痛苦但清醒",
+      "hpCost": 10,
+      "baseInsightReward": 15,
+      "redPointReward": 10
     }
   }
 ]

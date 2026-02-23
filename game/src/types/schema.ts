@@ -265,6 +265,10 @@ export const EventSchema = z.object({
     hasItem: z.string().optional(),
     region: z.nativeEnum(RegionID).optional(),
     weight: z.number().optional(),      // 事件触发权重
+    // 🔴 监狱系统相关条件
+    hasFelonyRecord: z.boolean().optional(),    // 是否有重罪记录
+    insuranceSuspended: z.boolean().optional(), // 保险是否被暂停
+    hasActiveDisease: z.boolean().optional(),   // 是否有活跃疾病
   }),
   options: z.object({
     A: EventOptionSchema,
@@ -296,6 +300,7 @@ export const EndingSchema = z.object({
   type: z.enum(['DEATH', 'SURVIVAL', 'ALIENATION', 'STANCE', 'UR']),
   conditions: z.object({
     minTurn: z.number().optional(), // ✅ Day -> Turn
+    maxTurn: z.number().optional(), // 最大回合数限制
     maxHp: z.number().optional(),
     minInsight: z.number().optional(),  // 最小灵视值要求
     maxInsight: z.number().optional(),  // 最大灵视值限制
@@ -372,10 +377,13 @@ export interface FaithData {
   rite: {
     name: string;
     description: string;
-    baseSanReward?: number;
+    baseSanReward?: number;  // 灵视值奖励（可为负数表示降低）
+    baseInsightReward?: number; // 同 baseSanReward，推荐使用
     baseHpReward?: number;
     hpCost?: number;
     insightCost?: number;    // 仪式消耗的灵视值
+    goldCostPercent?: number; // 金币消耗百分比（如0.1表示10%）
+    minGoldCost?: number;     // 金币消耗保底值
     goldReward?: number;
     redPointReward?: number;
   };
@@ -456,6 +464,7 @@ export interface PrisonState {
   sentenceTurns: number; // ✅ Days -> Turns
   turnsServed: number;   // ✅ Days -> Turns
   bailAmount: number;
+  totalDebtAtConviction?: number; // 定罪时的总债务（用于动态刑期计算）
 }
 
 // ==========================================
@@ -554,6 +563,9 @@ export interface VitalityState {
     isHomeless: boolean;
     debtTurns: number;
     hiddenTags: string[];
+    hasFelonyRecord: boolean;      // 🔴 新增：重罪记录（社会性死亡）
+    felonyRecordTurn: number | null;     // 🔴 新增：获得重罪记录的回合
+    insuranceSuspended: boolean;   // 🔴 新增：保险是否被暂停
     [key: string]: any;
   };
   activeJobs: string[];

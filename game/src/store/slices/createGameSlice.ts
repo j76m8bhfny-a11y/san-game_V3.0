@@ -7,6 +7,7 @@ import { resolveEnding } from '@/logic/endings';
 import endingsData from '@/assets/data/endings.json';
 import ENDING_RULES from '@/assets/data/rules/ending_rules.json';
 import newsData from '@/assets/data/news.json';
+import { processEventTurn } from '@/systems/core/EventSystem';
 
 // ✅ 引入 UI 清理函数
 import { clearAllNotificationTimers } from './createUISlice';
@@ -25,6 +26,7 @@ export interface GameSlice {
   weeklyReport: WeeklyReport | null;
   activeBill: Bill | null;  // ✅ 修复：与 UISlice 和 schema.ts 保持一致
   currentCryptoNews: NewsItem | null;  // 🔴 新增：当前显示的加密新闻
+  isPaused: boolean;  // 🔴 新增：游戏暂停状态
 
   // --- Actions ---
   triggerEvent: (event: GameEvent) => void;
@@ -39,6 +41,10 @@ export interface GameSlice {
   showCryptoNews: (news: NewsItem) => void;
   hideCryptoNews: () => void;
   maybeTriggerCryptoNews: () => void;
+  
+  // 🔴 新增：游戏暂停控制
+  pauseGame: () => void;
+  resumeGame: () => void;
   
   // 全局重置
   restartGame: () => void;
@@ -59,9 +65,20 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
   weeklyReport: null,
   activeBill: null,  // 初始状态
   currentCryptoNews: null,  // 🔴 初始状态
+  isPaused: false,  // 🔴 新增：初始未暂停
 
   triggerEvent: (event) => {
-    set({ isEventOpen: true, currentEvent: event });
+    set({ isEventOpen: true, currentEvent: event, isPaused: true }); // 触发事件时暂停
+  },
+  
+  // 🔴 新增：暂停游戏
+  pauseGame: () => {
+    set({ isPaused: true });
+  },
+  
+  // 🔴 新增：恢复游戏
+  resumeGame: () => {
+    set({ isPaused: false });
   },
 
   resolveEventOption: (optionId) => {
@@ -169,6 +186,15 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
 
     // 2. 计算并应用其他效果（HP/SAN/物品等）
     const { updates, logs } = resolveOption(state, option);
+    
+    // 🌟 D选项额外奖励：+3灵视（真相觉醒）
+    if (isDOption) {
+      if (!updates.vitality) updates.vitality = {};
+      if (!updates.vitality.metrics) updates.vitality.metrics = {};
+      const currentInsight = updates.vitality.metrics.insight || state.vitality.metrics.insight;
+      updates.vitality.metrics.insight = currentInsight + 3;
+      modifiers.push('真相觉醒 +3灵视');
+    }
 
     // ✅ 修复：深合并 Vitality，防止抹除 time, identity 等数据
     if (Object.keys(updates).length > 0) {
@@ -228,7 +254,7 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
   },
 
   closeEvent: () => {
-    set({ isEventOpen: false, currentEvent: null });
+    set({ isEventOpen: false, currentEvent: null, isPaused: false }); // 🔴 关闭事件时恢复游戏
   },
 
   // 🔴 调整点3: 加密新闻弹窗控制
@@ -272,10 +298,35 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
   // ============================================================
   nextTurn: () => {
     if (get().isMenuOpen) return;
+    if (get().isPaused) return; // 🔴 暂停状态下不执行回合
     if (get().prison?.inJail) return; // 监狱状态下不执行普通回合结算
 
     const state = get() as GameState;
     const store = get() as StoreState;
+
+    // ✅ 0. 回合开始时触发事件（在结算之前）
+    const eventResult = processEventTurn(state);
+    if (eventResult.updates.currentEvent) {
+      // 如果有事件触发，更新状态并暂停结算
+      set((prev) => ({
+        currentEvent: eventResult.updates.currentEvent as GameEvent,
+        isEventOpen: true,
+        vitality: {
+          ...prev.vitality,
+          flags: {
+            ...prev.vitality.flags,
+            triggeredEvents: eventResult.updates.vitality?.flags?.triggeredEvents || 
+              prev.vitality.flags.triggeredEvents
+          }
+        }
+      }));
+      
+      // 添加事件日志
+      eventResult.logs.forEach(log => store.addNotification?.(log, 'info'));
+      
+      // 事件触发后暂停，等待玩家处理
+      return;
+    }
 
     // 1. 回合上限检查
     if (get().checkTurnLimit(state, store)) return;
@@ -305,7 +356,9 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
   checkTurnLimit: (state, store) => {
     const maxTurns = ENDING_RULES.constraints.maxTurns;
     if (state.vitality.time.currentTurn >= maxTurns) {
-      const endingId = resolveEnding(state, endingsData as unknown as Ending[]);
+      // ✅ 传入全局档案总数，支持 ED-22 等跨局结局判定
+      const globalTotalArchives = store.getTotalArchives ? store.getTotalArchives() : state.unlockedArchives.length;
+      const endingId = resolveEnding(state, endingsData as unknown as Ending[], maxTurns, undefined, globalTotalArchives);
       store.triggerEnding(endingId);
       return true; // 表示已触发结局，终止回合
     }
@@ -386,7 +439,10 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
     const { minStat } = SYSTEM_RULES.caps;
     
     if (hp <= minStat) {
-      store.triggerEnding('ENDING_DEATH_HP');
+      // ✅ 调用 resolveEnding 进行完整结局判定，支持条件匹配
+      const maxTurns = ENDING_RULES.constraints.maxTurns;
+      const endingId = resolveEnding(state, endingsData as unknown as Ending[], maxTurns, 'HP_DEPLETED');
+      store.triggerEnding(endingId);
       return true;
     }
     return false;

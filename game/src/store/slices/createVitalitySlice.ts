@@ -4,7 +4,8 @@ import {
   PlayerClass,
   LedgerCategory,
   RegionID,
-  FaithID
+  FaithID,
+  Ending
 } from '@/types/schema';
 import { CLASS_INITIAL_STATS } from './createPlayerSlice';
 import { calculateMedicalCost } from '@/logic/medical';
@@ -14,6 +15,9 @@ import { checkSurvival } from '@/logic/survivalCalculator';
 import { SurvivalBuff } from '@/types/schema';
 import buffConfig from '@/assets/data/rules/survival_buffs.json';
 import { StoreState } from '@/types/store';
+import { resolveEnding } from '@/logic/endings';
+import endingsData from '@/assets/data/endings.json';
+import ENDING_RULES from '@/assets/data/rules/ending_rules.json';
 
 import hospitalData from '@/assets/data/hospital_services.json';
 import INITIAL_STATE from '@/assets/data/config/initial_state.json';
@@ -686,15 +690,14 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
     // ===== 步骤4: 死亡判定 =====
     if (newHp <= 0) {
       if (state.triggerEnding) {
-        state.triggerEnding('DEATH', `在${decay.level}环境下生命耗尽`);
+        // ✅ 调用 resolveEnding 进行完整结局判定
+        const endingId = resolveEnding(state, endingsData as unknown as Ending[], ENDING_RULES.constraints.maxTurns, 'HP_DEPLETED');
+        state.triggerEnding(endingId);
       }
     }
-    // 觉醒判定：insight >= 100 触发 AWAKENING（觉醒结局）
-    if (newInsight >= 100) {
-      if (state.triggerEnding) {
-        state.triggerEnding('AWAKENING', `洞察一切，从梦境中觉醒`);
-      }
-    }
+    // ✅ 移除旧的硬编码 AWAKENING 判定
+    // ED-22 觉醒者结局通过正常的 52 周结局判定流程触发
+    // 条件：minInsight: 100, requiredPoints: {red: 50}, hasArchive: "ARCHIVE_COUNT_35"
     
     // ===== 步骤5: 通知玩家 =====
     if (state.addNotification) {

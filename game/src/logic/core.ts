@@ -61,6 +61,9 @@ export const triggerBill = (
     inventory?: string[];
     insurance?: any;
     activeLoans?: Array<{ productId: string; overdueTurns: number }>;
+    faithId?: string;  // ✅ 新增：信仰ID
+    hasCryptoAccount?: boolean;  // ✅ 新增：是否开通加密账户
+    cryptoPositions?: Array<{ type: string; leverage: number }>;  // ✅ 新增：加密持仓
   }
 ): Bill | null => {
   const actualProb = gold < 0 ? config.debtProb : config.baseProb;
@@ -137,6 +140,21 @@ export const triggerBill = (
         loan.productId === hasOverdueLoan && loan.overdueTurns >= overdueWeeks
       );
       if (!hasMatchingOverdueLoan) return false;
+    }
+    
+    // ✅ 检查信仰相关条件
+    const { hasFaith, noFaith } = bill.triggerCondition as any;
+    if (hasFaith && assets.faithId !== hasFaith) return false;
+    if (noFaith && assets.faithId && assets.faithId !== 'NONE') return false;
+    
+    // ✅ 检查加密货币相关条件
+    const { hasCrypto, hasCryptoPosition, minLeverage } = bill.triggerCondition as any;
+    if (hasCrypto === true && !assets.hasCryptoAccount) return false;
+    if (hasCrypto === false && assets.hasCryptoAccount) return false;
+    if (hasCryptoPosition && (!assets.cryptoPositions || assets.cryptoPositions.length === 0)) return false;
+    if (minLeverage && assets.cryptoPositions) {
+      const hasHighLeverage = assets.cryptoPositions.some(p => p.leverage >= minLeverage);
+      if (!hasHighLeverage) return false;
     }
 
     return true;

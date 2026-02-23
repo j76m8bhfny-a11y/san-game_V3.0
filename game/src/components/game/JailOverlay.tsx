@@ -7,7 +7,7 @@ import prisonRules from '@/assets/data/rules/prison_rules.json';
 
 const JailOverlay: React.FC = () => {
   const { t } = useI18n();
-  const { prison, vitality, serveTime, payCashBail, signBailBond } = useGameStore();
+  const { prison, vitality, serveTime, payCashBail, signBailBond, buyBlackMarketMedicine } = useGameStore();
   const [log, setLog] = useState<string>("");
 
   // 没坐牢就不渲染
@@ -72,6 +72,18 @@ const JailOverlay: React.FC = () => {
               <div className="text-xs text-zinc-500 uppercase">{t('jail.bail')}</div>
               <div className="text-2xl font-bold text-green-500">${prison.bailAmount}</div>
               <div className="text-xs text-zinc-600 mt-1">Cash or Bond accepted</div>
+              {/* 🔴 显示疾病警告 */}
+              {vitality.activeDiseases && vitality.activeDiseases.length > 0 && (
+                <div className="mt-2 text-xs text-red-500">
+                  ⚠️ {vitality.activeDiseases.length} 种疾病发作中（无法就医）
+                </div>
+              )}
+              {/* 🔴 显示重罪记录 */}
+              {vitality.flags.hasFelonyRecord && (
+                <div className="mt-1 text-xs text-orange-500">
+                  🔒 重罪记录（中产工作永久关闭）
+                </div>
+              )}
            </div>
         </div>
         
@@ -120,6 +132,22 @@ const JailOverlay: React.FC = () => {
               </span>
             </button>
           </div>
+
+          {/* 🔴 黑市医疗按钮 */}
+          {vitality.activeDiseases && vitality.activeDiseases.length > 0 && (
+            <button 
+              onClick={() => {
+                const res = buyBlackMarketMedicine();
+                setLog(res.msg);
+              }}
+              className="w-full py-3 bg-red-900/20 hover:bg-red-900/40 border border-red-800 text-red-400 font-bold transition-all flex justify-between px-6 items-center"
+            >
+              <span>💊 黑市止痛药</span>
+              <span className="text-xs text-red-500">
+                -$100 (+10 HP)
+              </span>
+            </button>
+          )}
         </div>
 
       </motion.div>

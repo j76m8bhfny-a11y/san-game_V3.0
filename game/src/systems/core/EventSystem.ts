@@ -5,25 +5,37 @@ import NARRATIVE_RULES from '@/assets/data/rules/narrative_rules.json';
 import { random } from '@/utils/random';
 import { 
   shouldTriggerGazeEvent, 
-  getAvailableGazeEvents,
   getCurrentGazeEffects 
 } from '@/logic/gazeEventSystem';
-import { loadAllEvents } from '@/assets/data/events';
+import { eventIndex } from '@/assets/data/events';
 
-// 缓存事件数据
-let eventsCache: GameEvent[] | null = null;
+// 缓存事件数据 - 导出以便外部预加载
+export let eventsCache: GameEvent[] | null = null;
 
-// 异步加载所有事件
-const loadEvents = async (): Promise<GameEvent[]> => {
-  if (eventsCache) return eventsCache;
+/**
+ * 预加载所有事件 - 应在游戏初始化时调用
+ */
+export const preloadAllEvents = async (): Promise<void> => {
+  if (eventsCache) return;
   
   try {
-    eventsCache = await loadAllEvents();
-    return eventsCache;
+    eventsCache = await eventIndex.loadAllEvents();
+    console.log(`[EventSystem] 已预加载 ${eventsCache.length} 个事件`);
   } catch (error) {
-    console.error('[EventSystem] 加载事件失败:', error);
+    console.error('[EventSystem] 预加载事件失败:', error);
+    eventsCache = [];
+  }
+};
+
+/**
+ * 获取缓存的事件（同步）
+ */
+const getCachedEvents = (): GameEvent[] => {
+  if (!eventsCache) {
+    console.warn('[EventSystem] 事件未预加载，返回空数组');
     return [];
   }
+  return eventsCache;
 };
 
 // 获取事件权重
@@ -40,15 +52,49 @@ const isV3Event = (event: any): boolean => {
   return event.$schema === 'game-event-v3' || event.metadata?.version?.startsWith('3.');
 };
 
-// 获取随机事件
-const getRandomEvent = async (state: GameState): Promise<GameEvent | null> => {
-  const allEvents = await loadEvents();
+// 负面事件标签列表
+const NEGATIVE_EVENT_TAGS = ['NEGATIVE', 'DISASTER', 'CRISIS', 'BILL', 'LEGAL', 'PENALTY'];
+
+// 检查事件是否为负面事件
+const isNegativeEvent = (event: GameEvent): boolean => {
+  const category = (event as any).category;
+  const tags = (event as any).tags || [];
+  
+  // 检查 category
+  if (NEGATIVE_EVENT_TAGS.includes(category)) return true;
+  
+  // 检查 tags
+  if (tags.some((tag: string) => NEGATIVE_EVENT_TAGS.includes(tag))) return true;
+  
+  // 检查事件效果（如果主要效果是负面的）
+  const options = (event as any).options;
+  if (options) {
+    const allOptions = [options.A, options.B, options.C, options.D].filter(Boolean);
+    const negativeCount = allOptions.filter((opt: any) => {
+      const effects = opt?.effects;
+      if (!effects) return false;
+      return (effects.hp && effects.hp < 0) || 
+             (effects.gold && effects.gold < 0) ||
+             (effects.insight && effects.insight < 0);
+    }).length;
+    // 如果大部分选项都是负面的，认为是负面事件
+    if (negativeCount >= allOptions.length * 0.5) return true;
+  }
+  
+  return false;
+};
+
+// 获取随机事件（同步版本）
+const getRandomEventSync = (state: GameState): GameEvent | null => {
+  const allEvents = getCachedEvents();
+  if (allEvents.length === 0) return null;
+  
   const currentClass = state.vitality.identity.currentClass;
   const triggeredEvents = state.vitality.flags?.triggeredEvents || [];
+  const currentTurn = state.vitality.time.currentTurn;
   
   // 获取当前gaze状态
   const { intensity } = getCurrentGazeEffects(state);
-  void intensity; // 可用于根据gaze强度调整事件池
 
   // 筛选候选池
   const candidates = allEvents.filter(event => {
@@ -57,27 +103,48 @@ const getRandomEvent = async (state: GameState): Promise<GameEvent | null> => {
       return false;
     }
     
+    // 检查回合限制
+    const eventConditions = event.conditions as any;
+    if (eventConditions?.minTurn && currentTurn < eventConditions.minTurn) {
+      return false;
+    }
+    if (eventConditions?.maxTurn && currentTurn > eventConditions.maxTurn) {
+      return false;
+    }
+    
     // v3事件：检查requiredClass
-    if (isV3Event(event) && event.conditions?.requiredClass) {
-      if (!event.conditions.requiredClass.includes(currentClass)) {
+    if (isV3Event(event) && eventConditions?.requiredClass) {
+      if (!eventConditions.requiredClass.includes(currentClass)) {
         return false;
       }
     }
     // 兼容旧格式
-    else if (event.conditions?.requiredClass) {
-      if (!event.conditions.requiredClass.includes(currentClass)) {
+    else if (eventConditions?.requiredClass) {
+      if (!eventConditions.requiredClass.includes(currentClass)) {
         return false;
       }
     }
 
-    // 检查条件
+    // 检查其他条件
     return checkCondition(state, event.conditions);
   });
 
   if (candidates.length === 0) return null;
 
+  // ✅ System Gaze 影响：高 Gaze (50+) 增加负面事件权重 20-50%
+  const gazeMultiplier = intensity >= 0.5 ? (1 + intensity * 0.5) : 1;
+
   // 加权随机抽取
-  const totalWeight = candidates.reduce((sum, event) => sum + getEventWeight(event), 0);
+  const totalWeight = candidates.reduce((sum, event) => {
+    let weight = getEventWeight(event);
+    
+    // 高 Gaze 增加负面事件权重
+    if (intensity >= 0.5 && isNegativeEvent(event)) {
+      weight *= gazeMultiplier;
+    }
+    
+    return sum + weight;
+  }, 0);
   
   if (!Number.isFinite(totalWeight) || totalWeight <= 0) {
     console.warn('[EventSystem] 总权重异常:', totalWeight);
@@ -87,7 +154,13 @@ const getRandomEvent = async (state: GameState): Promise<GameEvent | null> => {
   let randomValue = random() * totalWeight;
 
   for (const event of candidates) {
-    randomValue -= getEventWeight(event);
+    let weight = getEventWeight(event);
+    // 再次应用 Gaze 影响
+    if (intensity >= 0.5 && isNegativeEvent(event)) {
+      weight *= gazeMultiplier;
+    }
+    
+    randomValue -= weight;
     if (randomValue <= 0) {
       return event;
     }
@@ -96,21 +169,23 @@ const getRandomEvent = async (state: GameState): Promise<GameEvent | null> => {
   return candidates[candidates.length - 1];
 };
 
-// 获取System Gaze专属事件
-const getGazeEvent = async (state: GameState): Promise<GameEvent | null> => {
+// 获取System Gaze专属事件（同步版本）
+const getGazeEventSync = (state: GameState): GameEvent | null => {
   if (!shouldTriggerGazeEvent(state)) {
     return null;
   }
   
-  const gazeEvents = await getAvailableGazeEvents(state);
+  const allEvents = getCachedEvents();
+  const gazeEvents = allEvents.filter(e => e.id?.startsWith('GAZE_'));
+  
   if (gazeEvents.length === 0) return null;
   
   // 随机选择一个
   return gazeEvents[Math.floor(random() * gazeEvents.length)];
 };
 
-// 内部处理函数
-const processTurnInternal = async (state: GameState): Promise<SystemResult> => {
+// 结算事件系统（每回合开始时调用）
+export const processEventTurn = (state: GameState): SystemResult => {
   const result: SystemResult = {
     updates: {},
     newTransactions: [],
@@ -118,8 +193,14 @@ const processTurnInternal = async (state: GameState): Promise<SystemResult> => {
     notes: []
   };
 
+  // 确保事件已加载
+  if (!eventsCache) {
+    console.warn('[EventSystem] 事件未预加载，跳过事件触发');
+    return result;
+  }
+
   // 优先检查System Gaze专属事件
-  const gazeEvent = await getGazeEvent(state);
+  const gazeEvent = getGazeEventSync(state);
   
   if (gazeEvent) {
     const triggeredEvents = state.vitality.flags?.triggeredEvents || [];
@@ -141,7 +222,7 @@ const processTurnInternal = async (state: GameState): Promise<SystemResult> => {
   }
 
   // 普通事件
-  const event = await getRandomEvent(state);
+  const event = getRandomEventSync(state);
 
   if (event) {
     const triggeredEvents = state.vitality.flags?.triggeredEvents || [];
@@ -164,34 +245,15 @@ const processTurnInternal = async (state: GameState): Promise<SystemResult> => {
   return result;
 };
 
+// GameSystem 接口实现
 export const EventSystem: GameSystem = {
   id: 'EVENT_SYSTEM',
+  priority: 95, // 高优先级，在结算前触发
 
-  processTurn: ({ state: _state }) => {
-    // 注意：这里返回一个同步结果，实际异步加载在内部处理
-    // 由于GameSystem接口要求同步返回，我们需要确保事件已预加载
-    // 或者修改接口以支持Promise
-    
-    // 临时解决方案：返回空结果，异步加载后通过其他方式触发事件
-    // 更好的方案是在游戏初始化时预加载所有事件
-    
-    // 立即执行并返回结果（如果缓存已准备好）
-    if (eventsCache) {
-      // 由于无法直接await，我们需要同步处理
-      // 这是一个设计妥协
-    }
-    
-    return {
-      updates: {},
-      newTransactions: [],
-      logs: [],
-      notes: []
-    };
+  processTurn: ({ state }) => {
+    return processEventTurn(state);
   }
 };
-
-// 导出异步版本供实际使用
-export const processEventTurnAsync = processTurnInternal;
 
 // 导出辅助函数
 export { getCurrentGazeEffects };

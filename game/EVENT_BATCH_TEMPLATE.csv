@@ -1,0 +1,15 @@
+id,category,series,title,text,historicalNote,background,foreground,A_label,A_roast,A_flavorText,A_ideology,A_archiveCommentary,B_label,B_roast,B_flavorText,B_ideology,B_archiveCommentary,C_label,C_roast,C_flavorText,C_ideology,C_archiveCommentary,D_label,D_roast,D_flavorText,D_ideology,D_archiveCommentary,archiveId,sanLock,glitchEffect,author,references
+EVT_H01_BENCH_SLEEP,HOMELESS,基础生存,睡长椅的一夜,凌晨四点，你被冻醒。长椅的金属扶手结了层霜，你的手指已经失去知觉。对面写字楼的保安看了你一眼，没说什么——他已经习惯了你的存在。,基于美国城市'敌意建筑'（Hostile Architecture）设计。长椅被故意设计得让人无法躺下，以驱赶无家可归者。,bg_park_night,evt_bench_sleep,相信明天会更好，努力就能改变,明天会更糟，但你不知道。你已经被系统标记为'不合作者'。,你告诉自己要坚持，要相信努力就能改变命运。这种信念让你在寒风中多撑了一会儿。,新自由主义/奋斗逼,这种选择代表了系统最希望穷人持有的心态：自责、内卷、永不质疑结构。当你相信失败是个人原因时，你就不会质疑游戏规则本身。,换个角落躲风，别被人看见,你学会了隐形，这是流浪者的生存第一课。,你选择了最安全、最不需要思考的路径。麻木不是愚蠢，而是生存策略。,犬儒主义/摆烂,在一个无法胜利的系统中，不抱希望就不会失望。这种'低姿态生存'是高剥夺环境下的理性适应。,去便利店买杯热咖啡取暖,1.5美元换来半小时的温暖，然后回到原地。消费主义提供了完美的出口。,你决定花钱解决这个让你不安的问题。消费行为让你短暂地感觉自己像个'正常人'。,消费主义/岁静,消费主义提供了一个完美的出口：把系统性问题转化为个人问题，然后用钱解决。咖啡的温暖是真实的，但问题的根源被掩盖了。,⚠️ 意识到这张长椅是城市设计的一部分——它故意设计得让人无法舒适地躺下,hostility architecture（敌意建筑）。金属扶手、倾斜椅面、间隔凸起——每一个细节都是为了驱赶你。,你看到了表象之下的真相：这不是疏忽，而是设计。城市的每一个角落都在对你说'你不属于这里'。,激进左翼/觉醒,真相的代价总是高昂的，但沉默的代价更高。当你看到结构性暴力时，你就再也无法假装这只是个人失败。,No.01_HOSTILE_ARCHITECTURE,40,chromatic_aberration,作者名,https://en.wikipedia.org/wiki/Hostile_architecture
+EVT_H02_,HOMELESS,,,,,,,,,,,,,,,,,,,,,,,,,,,40,chromatic_aberration,,
+EVT_H03_,HOMELESS,,,,,,,,,,,,,,,,,,,,,,,,,,,40,chromatic_aberration,,
+EVT_H04_,HOMELESS,,,,,,,,,,,,,,,,,,,,,,,,,,,40,chromatic_aberration,,
+EVT_H05_,HOMELESS,,,,,,,,,,,,,,,,,,,,,,,,,,,40,chromatic_aberration,,
+EVT_W01_,WORKER,,,,,,,,,,,,,,,,,,,,,,,,,,,40,chromatic_aberration,,
+EVT_W02_,WORKER,,,,,,,,,,,,,,,,,,,,,,,,,,,40,chromatic_aberration,,
+EVT_W03_,WORKER,,,,,,,,,,,,,,,,,,,,,,,,,,,40,chromatic_aberration,,
+EVT_M01_,MIDDLE,,,,,,,,,,,,,,,,,,,,,,,,,,,40,chromatic_aberration,,
+EVT_M02_,MIDDLE,,,,,,,,,,,,,,,,,,,,,,,,,,,40,chromatic_aberration,,
+EVT_C01_,CAPITALIST,,,,,,,,,,,,,,,,,,,,,,,,,,,40,chromatic_aberration,,
+EVT_C02_,CAPITALIST,,,,,,,,,,,,,,,,,,,,,,,,,,,40,chromatic_aberration,,
+EVT_X01_,COMMON,,,,,,,,,,,,,,,,,,,,,,,,,,,40,chromatic_aberration,,
+EVT_X02_,COMMON,,,,,,,,,,,,,,,,,,,,,,,,,,,40,chromatic_aberration,,

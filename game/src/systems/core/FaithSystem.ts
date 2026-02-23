@@ -21,6 +21,30 @@ export const FaithSystem: GameSystem = {
     // 2. ✅ 修复：结算信仰 Debuff 剩余回合
     if (state.faith?.debuffs && state.faith.debuffs.length > 0) {
       const currentDebuffs = state.faith.debuffs;
+      
+      // 2.1 结算Debuff的周期性效果（hpDrain/insightDrain）
+      let totalHpDrain = 0;
+      let totalInsightDrain = 0;
+      
+      currentDebuffs.forEach((debuff: FaithDebuff) => {
+        if (debuff.effect.hpDrain) totalHpDrain += debuff.effect.hpDrain;
+        if (debuff.effect.insightDrain) totalInsightDrain += debuff.effect.insightDrain;
+      });
+      
+      if (totalHpDrain > 0 || totalInsightDrain > 0) {
+        updates.vitality = {
+          ...(updates.vitality || {}),
+          metrics: {
+            ...(updates.vitality?.metrics || {}),
+            hp: Math.max(0, state.vitality.metrics.hp - totalHpDrain),
+            insight: Math.max(0, state.vitality.metrics.insight + totalInsightDrain)
+          }
+        };
+        if (totalHpDrain > 0) logs.push(`信仰惩罚: HP -${totalHpDrain}`);
+        if (totalInsightDrain > 0) notes.push(`被迫清醒: Insight +${totalInsightDrain}`);
+      }
+      
+      // 2.2 减少剩余回合
       const updatedDebuffs = currentDebuffs
         .map((debuff: FaithDebuff) => ({
           ...debuff,

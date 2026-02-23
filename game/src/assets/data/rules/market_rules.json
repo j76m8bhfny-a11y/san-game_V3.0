@@ -1,15 +1,15 @@
 {
   "$schema": "market-rules-config",
-  "description": "加密货币交易系统配置，被MarketSystem使用",
-  "version": "1.0.0",
+  "description": "加密货币交易系统配置 - 中产阶级的绝望轮盘赌",
+  "version": "2.0.0",
   
   "crypto": {
     "description": "加密货币基础配置",
-    "initialPrice": 15000,
-    "accountFee": 500,
+    "initialPrice": 69000,
+    "accountFee": 0,
     "kyc": {
       "requiredLicense": true,
-      "acceptedLicenses": ["LICENSE_FAKE", "LICENSE_VALID", "LICENSE_ELITE"]
+      "acceptedLicenses": ["LICENSE_VALID", "LICENSE_ELITE"]
     }
   },
   
@@ -23,23 +23,43 @@
       "max": 100
     },
     "networkFee": 15,
+    "networkFeeBase": 50,
+    "networkFeeRate": 0.02,
     "maxTradesPerTurn": 1,
     "defaultAmount": 100,
-    "liquidationThreshold": -1.0,
-    "quickAmounts": [0.25, 0.5, 1.0]
+    "liquidationThreshold": -0.80,
+    "quickAmounts": [0.25, 0.5, 1.0],
+    "flashCrash": {
+      "enabled": true,
+      "leverageThreshold": 50,
+      "probability": 0.60,
+      "description": "50x及以上杠杆有60%概率遭遇量化资金插针爆仓"
+    }
   },
   
   "market": {
-    "description": "市场波动配置",
-    "baseVolatility": 0.15,
+    "description": "市场波动配置 - 温水煮青蛙模式",
+    "baseVolatility": 0.05,
     "price": {
       "min": 500
     },
     "events": {
-      "moonChance": 0.02,
-      "doomChance": 0.02,
+      "moonChance": 0.01,
+      "doomChance": 0.05,
       "moonMultiplierBase": 0.5,
-      "doomMultiplierBase": 0.4
+      "doomMultiplierBase": 0.60
+    }
+  },
+  
+  "insight": {
+    "description": "灵视联动配置",
+    "holdingPositionPerTurn": 5,
+    "liquidationSpike": 30,
+    "ptsdBuff": {
+      "id": "buff_crypto_ptsd",
+      "name": "加密创伤后遗症",
+      "duration": 3,
+      "description": "工作灵视消耗翻倍"
     }
   },
   
@@ -51,14 +71,15 @@
       "blinkInterval": 800
     },
     "marquee": {
-      "gasFeeBase": 15,
-      "gasFeeVariance": 5,
+      "gasFeeBase": 50,
+      "gasFeeVariance": 10,
       "text": "GAS FEE: ${fee} | BLOCK #{block} | MEMPOOL CONGESTED"
     },
     "leverage": {
       "dangerColor": "#dc2626",
       "dangerLabel": "SUICIDE MODE",
-      "dangerIcon": "💀"
+      "dangerIcon": "💀",
+      "flashCrashWarning": "⚠️ 50x及以上杠杆极易遭遇插针(Flash Crash)爆仓，本平台不对极端行情负责"
     },
     "buttons": {
       "long": {
@@ -83,6 +104,13 @@
     "ticker": {
       "defaultText": ">>> SYSTEM: WAITING FOR NETWORK CONNECTION... <<<",
       "speedSeconds": 20
+    },
+    "riskDisclaimer": {
+      "title": "⚠️ 极端风险警告",
+      "content": "您即将使用 {leverage}x 杠杆进行衍生品交易。加密市场存在'插针'(Flash Crash)现象，量化机器人可能在毫秒级制造极端价格波动，导致高杠杆仓位瞬间爆仓。历史数据显示：50x以上杠杆仓位遭遇插针爆仓概率高达 60%。本平台不对极端行情造成的强制平仓负责。",
+      "checkbox": "我已阅读并愿意承担倾家荡产的风险",
+      "confirmButton": "确认，我要暴富",
+      "cancelButton": "取消"
     }
   },
   

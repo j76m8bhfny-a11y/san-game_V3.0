@@ -59,9 +59,15 @@
     "description": "游戏状态标志位",
     "fields": {
       "isHomeless": { "value": true, "description": "是否处于无家可归状态", "system": "HousingSystem", "effect": "影响可用区域和工作" },
-      "debtTurns": { "value": 0, "description": "连续负债周数，影响信用和催收", "system": "BankSystem", "range": "0+" }
+      "debtTurns": { "value": 0, "description": "连续负债周数，影响信用和催收", "system": "BankSystem", "range": "0+" },
+      "hasFelonyRecord": { "value": false, "description": "是否有重罪记录（社会性死亡）", "system": "PrisonSystem/JobSystem", "effect": "永久剥夺中产工作资格" },
+      "felonyRecordTurn": { "value": null, "description": "获得重罪记录的回合", "system": "PrisonSystem", "range": "1-52 | null" },
+      "insuranceSuspended": { "value": false, "description": "保险是否被暂停", "system": "BankSystem/PrisonSystem", "effect": "出狱后面临全额医疗账单" }
     },
     "isHomeless": true,
-    "debtTurns": 0
+    "debtTurns": 0,
+    "hasFelonyRecord": false,
+    "felonyRecordTurn": null,
+    "insuranceSuspended": false
   }
 }

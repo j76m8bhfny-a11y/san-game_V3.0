@@ -1067,5 +1067,26 @@
     "regions": ["SUBURBS", "DOWNTOWN"],
     "tags": ["EDUCATION"],
     "flavorText": "印着几行你看不懂的拉丁文的昂贵羊皮纸。它不能保证你找到工作，但能保证借贷公司在未来三十年里合法地从你的工资里吸血，而且即使你流落街头宣告破产，这笔债务也绝对不会被豁免。"
+  },
+  {
+    "_comment": "========== 结局道具 - 用于触发特定结局 =========="
+  },
+  {
+    "id": "SURVIVAL_KIT",
+    "name": "末日生存包",
+    "type": "KEY",
+    "price": 500,
+    "regions": ["RUST_BELT", "SUBURBS"],
+    "tags": ["ENDING", "PREPPER", "KEY"],
+    "flavorText": "包含罐头、净水片和一本《如何在你的地下室度过核冬天》。你相信末日将至，而你会是幸存者。"
+  },
+  {
+    "id": "FAKE_PASSPORT",
+    "name": "哥斯达黎加假护照",
+    "type": "KEY",
+    "price": 10000,
+    "regions": ["DOWNTOWN"],
+    "tags": ["ENDING", "ILLEGAL", "KEY"],
+    "flavorText": "制作精良，但UV灯下会看到水印是米老鼠。这是离开美利坚的船票，但你真的确定外面的世界更好吗？"
   }
 ]

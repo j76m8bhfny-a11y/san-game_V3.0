@@ -10,7 +10,7 @@
 import { GameState, GameEvent } from '@/types/schema';
 import { calculateGazeIntensity, GAZE_EFFECTS } from './systemGaze';
 import { checkCondition } from './eventResolver';
-import { loadEventsByCategory } from '@/assets/data/events';
+import { loadEventsByCategory } from '@/assets/data/events/index';
 
 // 触发阈值
 const GAZE_TRIGGER_THRESHOLD = 0.3; // 30%强度开始触发

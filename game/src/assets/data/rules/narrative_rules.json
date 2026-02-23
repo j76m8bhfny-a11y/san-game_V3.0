@@ -84,5 +84,22 @@
       "CAPITALIST->HOMELESS": "真正的从零开始。"
     },
     "defaultTemplate": "阶级变化: {oldClass} -> {newClass}"
+  },
+  
+  "burningEffect": {
+    "description": "未选择选项的燃烧效果配置 - 制造错失感(FOMO)",
+    "enabled": true,
+    "animationDuration": 0.8,
+    "ashOpacity": 0.4,
+    "grayscaleIntensity": 100,
+    "scaleReduction": 0.95,
+    "whisperDuration": 2,
+    "whisperDelay": 0.3,
+    "ghostWhispers": {
+      "A": "你选择了安全",
+      "B": "你选择了麻木",
+      "C": "你选择了妥协",
+      "D": "你回避了真相"
+    }
   }
 }

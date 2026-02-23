@@ -149,7 +149,8 @@ const PixelSMSBubble: React.FC<{
     originalHp: number;
     actualHp: number;
   } | null;
-}> = ({ label, id, type, onClick, disabled, glitch, reductionInfo }) => {
+  isBurned?: boolean;
+}> = ({ label, id, type, onClick, disabled, glitch, reductionInfo, isBurned }) => {
   
   const getBubbleColor = (type: string): string => {
     const validTypes = ['safe', 'risk', 'special', 'awakening'] as const;
@@ -167,11 +168,16 @@ const PixelSMSBubble: React.FC<{
   const theme = getBubbleStyles(color);
   
   const isDOption = id === 'D';
-  const hasReduction = isDOption && reductionInfo && reductionInfo.reductionPercent > 0;
+  const hasReduction = isDOption && reductionInfo && reductionInfo.reductionPercent > 0 && !isBurned;
+  
+  // [NEW] 燃烧效果配置
+  const burningConfig = (NARRATIVE_RULES as any).burningEffect;
+  const burningEnabled = burningConfig?.enabled !== false;
+  const ghostWhisper = burningEnabled ? burningConfig?.ghostWhispers?.[id as keyof typeof burningConfig.ghostWhispers] : null;
 
   return (
     <div className={`flex justify-end items-end gap-2 group w-full pl-2 ${disabled ? 'opacity-50' : ''}`}>
-      {/* 档案减免标签 - D选项专用 */}
+      {/* 档案减免标签 - D选项专用（燃烧时不显示） */}
       {hasReduction && (
         <motion.div 
           initial={{ opacity: 0, scale: 0.8 }}
@@ -187,23 +193,61 @@ const PixelSMSBubble: React.FC<{
         </motion.div>
       )}
       
-      <div className="text-[10px] text-gray-400 font-pixel mb-1 opacity-60 group-hover:opacity-100 transition-opacity">
+      {/* [NEW] 幽灵低语 - 仅在燃烧状态显示 */}
+      <AnimatePresence>
+        {isBurned && ghostWhisper && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: [0, 0.7, 0], y: [10, 0, -15] }}
+            exit={{ opacity: 0 }}
+            transition={{ 
+              duration: burningConfig?.whisperDuration || 2,
+              delay: burningConfig?.whisperDelay || 0.3
+            }}
+            className="absolute -top-8 left-1/2 -translate-x-1/2 text-[10px] text-gray-500 whitespace-nowrap italic pointer-events-none z-30"
+          >
+            {ghostWhisper}
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
+      <div className={`text-[10px] font-pixel mb-1 opacity-60 transition-opacity ${isBurned ? 'text-gray-600' : 'text-gray-400 group-hover:opacity-100'}`}>
         [{id}]
       </div>
 
       <motion.button
-        whileHover={disabled ? {} : { scale: 1.02, x: -2 }}
-        whileTap={disabled ? {} : { scale: 0.98 }}
-        onClick={disabled ? undefined : onClick}
-        className={`relative w-full text-left text-sm font-bold font-pixel py-2 px-3 leading-tight ${theme.bg} ${theme.text} ${theme.shadow} ${glitch ? 'animate-pulse border border-red-500' : ''}`}
+        whileHover={disabled || isBurned ? {} : { scale: 1.02, x: -2 }}
+        whileTap={disabled || isBurned ? {} : { scale: 0.98 }}
+        onClick={disabled || isBurned ? undefined : onClick}
+        animate={isBurned ? {
+          opacity: 0.35,
+          filter: `grayscale(${burningConfig?.grayscaleIntensity || 100}%)`,
+          scale: burningConfig?.scaleReduction || 0.95
+        } : {}}
+        transition={{ duration: burningConfig?.animationDuration || 0.8 }}
+        className={`relative w-full text-left text-sm font-bold font-pixel py-2 px-3 leading-tight 
+          ${isBurned ? 'bg-gray-800 text-gray-600 shadow-none cursor-default' : `${theme.bg} ${theme.text} ${theme.shadow}`} 
+          ${glitch && !isBurned ? 'animate-pulse border border-red-500' : ''}`}
         style={{
           clipPath: `polygon(4px 0, calc(100% - 4px) 0, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 0 calc(100% - 4px), 0 4px)`
         }}
       >
-        {label}
+        {/* [NEW] 燃烧灰烬效果覆盖层 */}
+        {isBurned && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0, burningConfig?.ashOpacity || 0.4, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
+            className="absolute inset-0 bg-gradient-to-t from-gray-600/50 via-transparent to-gray-400/20 pointer-events-none rounded-sm"
+          />
+        )}
         
-        {/* 悬停时的详细提示 - D选项专用 */}
-        {isDOption && (
+        <span className={isBurned ? 'line-through decoration-gray-600' : ''}>
+          {label}
+        </span>
+        
+        {/* 悬停时的详细提示 - D选项专用（燃烧时不显示） */}
+        {!isBurned && isDOption && (
           <div className="hidden group-hover:block absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-48 p-3 bg-gray-900/95 border border-red-500/30 rounded-lg text-xs z-50 shadow-xl">
             <div className="text-gray-400 mb-2 text-center font-bold">⚠️ 真相的代价</div>
             
@@ -241,8 +285,8 @@ const PixelSMSBubble: React.FC<{
           </div>
         )}
         
-        <div className={`absolute bottom-0 -right-[6px] w-[6px] h-[6px] ${theme.bg}`} style={{ clipPath: 'polygon(0 0, 0 100%, 100% 100%)' }} />
-        <div className={`absolute bottom-[0px] right-[0px] w-[4px] h-[4px] ${theme.bg}`} />
+        <div className={`absolute bottom-0 -right-[6px] w-[6px] h-[6px] ${isBurned ? 'bg-gray-800' : theme.bg}`} style={{ clipPath: 'polygon(0 0, 0 100%, 100% 100%)' }} />
+        <div className={`absolute bottom-[0px] right-[0px] w-[4px] h-[4px] ${isBurned ? 'bg-gray-800' : theme.bg}`} />
       </motion.button>
 
       <div className="w-0 md:w-0"></div> 
@@ -274,6 +318,11 @@ const PixelPhone: React.FC<{
   dOptionLocked?: boolean;
 }> = ({ options, onChoose, selectedId, dOptionLocked }) => {
   const [showOptions, setShowOptions] = useState(false);
+  
+  // [NEW] 燃烧效果配置
+  const burningConfig = (NARRATIVE_RULES as any).burningEffect;
+  const burningEnabled = burningConfig?.enabled !== false;
+  const hasSelection = selectedId !== null;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -316,20 +365,30 @@ const PixelPhone: React.FC<{
             </motion.div>
 
             <AnimatePresence mode="popLayout"> 
-              {showOptions && options
-                .filter(opt => selectedId ? opt.id === selectedId : true) 
-                .map((opt) => (
-                  <motion.div key={opt.id} layout initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.8 }}>
+              {showOptions && options.map((opt) => {
+                // [NEW] 计算燃烧状态：已选择其他选项，且当前不是被选中的
+                const isBurned = burningEnabled && hasSelection && selectedId !== opt.id;
+                
+                return (
+                  <motion.div 
+                    key={opt.id} 
+                    layout 
+                    initial={{ opacity: 0, y: 20 }} 
+                    animate={{ opacity: 1, y: 0 }} 
+                    exit={{ opacity: 0, scale: 0.8 }}
+                  >
                     <PixelSMSBubble 
                       key={opt.id}
                       {...opt}
                       onClick={() => onChoose(opt.id)}
                       type={selectedId ? 'safe' : opt.type}
-                      disabled={opt.id === 'D' && dOptionLocked}
+                      disabled={(opt.id === 'D' && dOptionLocked) || isBurned}
                       glitch={opt.glitch}
+                      isBurned={isBurned}
                     />
                   </motion.div>
-              ))}
+                );
+              })}
             </AnimatePresence>
           </div>
         </div>

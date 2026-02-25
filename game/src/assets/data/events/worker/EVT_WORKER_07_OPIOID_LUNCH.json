@@ -4,10 +4,6 @@
   "title": "止痛药当饭吃",
   "category": "WORKER",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_construction_lunch.png",
-    "foreground": "/assets/events/evt_oxycontin_pills.png"
-  },
   "conditions": {
     "requiredClass": [
       "WORKER"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_oxycontin_pills.png"
 }

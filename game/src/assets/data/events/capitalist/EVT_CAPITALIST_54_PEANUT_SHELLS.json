@@ -4,10 +4,6 @@
   "title": "格外酥脆",
   "category": "CAPITALIST",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_food_factory_grinder.png",
-    "foreground": "/assets/events/evt_peanut_shells.png"
-  },
   "conditions": {
     "requiredClass": [
       "CAPITALIST"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_peanut_shells.png"
 }

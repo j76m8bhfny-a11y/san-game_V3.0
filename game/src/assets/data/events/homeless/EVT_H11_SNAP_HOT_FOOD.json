@@ -4,19 +4,17 @@
   "title": "只要冷的",
   "category": "HOMELESS",
   "series": "食物分配",
-  "layer": {
-    "background": "/assets/scenes/bg_supermarket_counter.png",
-    "foreground": "/assets/events/evt_cold_sandwich.png"
-  },
   "conditions": {
-    "requiredClass": ["HOMELESS"],
+    "requiredClass": [
+      "HOMELESS"
+    ],
     "minSan": 0,
     "maxSan": 100,
     "weight": 10,
     "minTurn": 1,
     "maxTurn": 52
   },
-  "text": "超市收银台，一个单亲妈妈想用食品券(SNAP)给孩子买只刚烤好的热鸡。收银员冷脸把鸡夺了回去："福利卡只能买冷的，热的不卖。"",
+  "text": "超市收银台，一个单亲妈妈想用食品券(SNAP)给孩子买只刚烤好的热鸡。收银员冷脸把鸡夺了回去：\"福利卡只能买冷的，热的不卖。\"",
   "historicalNote": "美国SNAP福利(食品券)禁止购买热食。这一规定导致贫困家庭无法获得新鲜热乎的食物。",
   "options": {
     "A": {
@@ -30,7 +28,9 @@
         "gold": 150,
         "hp": -12,
         "insightGain": 8,
-        "points": { "old": 3 }
+        "points": {
+          "old": 3
+        }
       }
     },
     "B": {
@@ -58,7 +58,9 @@
         "gold": -0.15,
         "hp": 8,
         "insight": -10,
-        "points": { "wolf": 3 }
+        "points": {
+          "wolf": 3
+        }
       }
     },
     "D": {
@@ -76,7 +78,9 @@
         "gold": -100,
         "hp": -18,
         "insight": -10,
-        "points": { "red": 15 }
+        "points": {
+          "red": 15
+        }
       }
     }
   },
@@ -89,6 +93,10 @@
     "references": [
       "https://www.fns.usda.gov/snap/eligible-food-items"
     ],
-    "relatedEvents": ["EVT_H03_MILK", "EVT_H21_FEEDING_BAN"]
-  }
+    "relatedEvents": [
+      "EVT_H03_MILK",
+      "EVT_H21_FEEDING_BAN"
+    ]
+  },
+  "image": "/assets/events/evt_cold_sandwich.png"
 }

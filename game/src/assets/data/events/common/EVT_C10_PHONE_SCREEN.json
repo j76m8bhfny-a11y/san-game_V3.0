@@ -4,12 +4,13 @@
   "title": "手机碎屏",
   "category": "COMMON",
   "series": "现代生活",
-  "layer": {
-    "background": "/assets/scenes/common/bg_sidewalk.png",
-    "foreground": "/assets/events/common/evt_broken_phone.png"
-  },
   "conditions": {
-    "requiredClass": ["HOMELESS", "WORKER", "MIDDLE", "CAPITALIST"],
+    "requiredClass": [
+      "HOMELESS",
+      "WORKER",
+      "MIDDLE",
+      "CAPITALIST"
+    ],
     "minSan": 0,
     "maxSan": 100,
     "weight": 15,
@@ -30,7 +31,9 @@
         "gold": 150,
         "hp": -12,
         "insightGain": 5,
-        "points": { "old": 3 }
+        "points": {
+          "old": 3
+        }
       }
     },
     "B": {
@@ -58,7 +61,9 @@
         "gold": -0.15,
         "hp": 8,
         "insight": -10,
-        "points": { "wolf": 3 }
+        "points": {
+          "wolf": 3
+        }
       }
     },
     "D": {
@@ -76,7 +81,9 @@
         "gold": -100,
         "hp": -18,
         "insight": -10,
-        "points": { "red": 15 }
+        "points": {
+          "red": 15
+        }
       }
     }
   },
@@ -86,6 +93,10 @@
     "createdAt": "2024-01-15",
     "updatedAt": "2024-01-15",
     "references": [],
-    "relatedEvents": ["EVT_C11_WIFI_OUTAGE", "EVT_C12_APP_TRACKING"]
-  }
+    "relatedEvents": [
+      "EVT_C11_WIFI_OUTAGE",
+      "EVT_C12_APP_TRACKING"
+    ]
+  },
+  "image": "/assets/events/common/evt_broken_phone.png"
 }

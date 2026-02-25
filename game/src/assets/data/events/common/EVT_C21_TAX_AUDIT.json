@@ -4,12 +4,13 @@
   "title": "税务审计",
   "category": "COMMON",
   "series": "国家机器",
-  "layer": {
-    "background": "/assets/scenes/common/bg_irs_office.png",
-    "foreground": "/assets/events/common/evt_tax_form.png"
-  },
   "conditions": {
-    "requiredClass": ["HOMELESS", "WORKER", "MIDDLE", "CAPITALIST"],
+    "requiredClass": [
+      "HOMELESS",
+      "WORKER",
+      "MIDDLE",
+      "CAPITALIST"
+    ],
     "minSan": 0,
     "maxSan": 100,
     "weight": 6,
@@ -30,7 +31,9 @@
         "gold": 150,
         "hp": -12,
         "insightGain": 5,
-        "points": { "old": 3 }
+        "points": {
+          "old": 3
+        }
       }
     },
     "B": {
@@ -58,7 +61,9 @@
         "gold": -0.15,
         "hp": 8,
         "insight": -10,
-        "points": { "wolf": 3 }
+        "points": {
+          "wolf": 3
+        }
       }
     },
     "D": {
@@ -76,7 +81,9 @@
         "gold": -100,
         "hp": -18,
         "insight": -10,
-        "points": { "red": 15 }
+        "points": {
+          "red": 15
+        }
       }
     }
   },
@@ -86,6 +93,10 @@
     "createdAt": "2024-01-15",
     "updatedAt": "2024-01-15",
     "references": [],
-    "relatedEvents": ["EVT_C22_JURY_DUTY", "EVT_C23_TRAFFIC_TICKET"]
-  }
+    "relatedEvents": [
+      "EVT_C22_JURY_DUTY",
+      "EVT_C23_TRAFFIC_TICKET"
+    ]
+  },
+  "image": "/assets/events/common/evt_tax_form.png"
 }

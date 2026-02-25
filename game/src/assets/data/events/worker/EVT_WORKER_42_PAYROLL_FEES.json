@@ -4,10 +4,6 @@
   "title": "工资卡里的吸血鬼",
   "category": "WORKER",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_atm_fees.png",
-    "foreground": "/assets/events/evt_debit_card.png"
-  },
   "conditions": {
     "requiredClass": [
       "WORKER"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_debit_card.png"
 }

@@ -4,12 +4,10 @@
   "title": "图书馆驱逐",
   "category": "HOMELESS",
   "series": "空间排斥",
-  "layer": {
-    "background": "/assets/scenes/bg_library.png",
-    "foreground": "/assets/events/evt_security_guard.png"
-  },
   "conditions": {
-    "requiredClass": ["HOMELESS"],
+    "requiredClass": [
+      "HOMELESS"
+    ],
     "minSan": 0,
     "maxSan": 100,
     "weight": 10,
@@ -30,7 +28,9 @@
         "gold": 150,
         "hp": -12,
         "insightGain": 8,
-        "points": { "old": 3 }
+        "points": {
+          "old": 3
+        }
       }
     },
     "B": {
@@ -58,7 +58,9 @@
         "gold": -0.15,
         "hp": 8,
         "insight": -10,
-        "points": { "wolf": 3 }
+        "points": {
+          "wolf": 3
+        }
       }
     },
     "D": {
@@ -76,7 +78,9 @@
         "gold": -100,
         "hp": -18,
         "insight": -10,
-        "points": { "red": 15 }
+        "points": {
+          "red": 15
+        }
       }
     }
   },
@@ -89,6 +93,10 @@
     "references": [
       "https://www.npr.org/sections/codeswitch/2014/12/10/369615275/libraries-become-shelter-for-the-homeless"
     ],
-    "relatedEvents": ["EVT_H09_NO_WATER", "EVT_H30_LAUNDRY_BAN"]
-  }
+    "relatedEvents": [
+      "EVT_H09_NO_WATER",
+      "EVT_H30_LAUNDRY_BAN"
+    ]
+  },
+  "image": "/assets/events/evt_security_guard.png"
 }

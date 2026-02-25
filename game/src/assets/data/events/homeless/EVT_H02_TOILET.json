@@ -4,12 +4,10 @@
   "title": "上锁的厕所",
   "category": "HOMELESS",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_cafe_street.png",
-    "foreground": "/assets/events/evt_keypad_lock.png"
-  },
   "conditions": {
-    "requiredClass": ["HOMELESS"],
+    "requiredClass": [
+      "HOMELESS"
+    ],
     "minSan": 0,
     "maxSan": 100,
     "weight": 10,
@@ -30,7 +28,9 @@
         "gold": 150,
         "hp": -12,
         "insightGain": 8,
-        "points": { "old": 3 }
+        "points": {
+          "old": 3
+        }
       }
     },
     "B": {
@@ -58,7 +58,9 @@
         "gold": -0.15,
         "hp": 8,
         "insight": -10,
-        "points": { "wolf": 3 }
+        "points": {
+          "wolf": 3
+        }
       }
     },
     "D": {
@@ -76,7 +78,9 @@
         "gold": -100,
         "hp": -18,
         "insight": -10,
-        "points": { "red": 15 }
+        "points": {
+          "red": 15
+        }
       }
     }
   },
@@ -89,6 +93,9 @@
     "references": [
       "https://www.nytimes.com/2018/04/19/business/starbucks-arrest-philadelphia.html"
     ],
-    "relatedEvents": ["EVT_H33_TOILET_CRIME"]
-  }
+    "relatedEvents": [
+      "EVT_H33_TOILET_CRIME"
+    ]
+  },
+  "image": "/assets/events/evt_keypad_lock.png"
 }

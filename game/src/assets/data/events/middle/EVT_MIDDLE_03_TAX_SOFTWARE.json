@@ -4,10 +4,6 @@
   "title": "报税软件",
   "category": "MIDDLE",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_home_office_tax.png",
-    "foreground": "/assets/events/evt_turbotax_screen.png"
-  },
   "conditions": {
     "requiredClass": [
       "MIDDLE"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_turbotax_screen.png"
 }

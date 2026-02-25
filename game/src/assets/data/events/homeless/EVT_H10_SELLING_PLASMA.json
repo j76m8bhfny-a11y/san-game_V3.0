@@ -4,24 +4,22 @@
   "title": "卖血换钱",
   "category": "HOMELESS",
   "series": "生存策略",
-  "layer": {
-    "background": "/assets/scenes/bg_plasma_center.png",
-    "foreground": "/assets/events/evt_blood_bag.png"
-  },
   "conditions": {
-    "requiredClass": ["HOMELESS"],
+    "requiredClass": [
+      "HOMELESS"
+    ],
     "minSan": 0,
     "maxSan": 100,
     "weight": 10,
     "minTurn": 1,
     "maxTurn": 52
   },
-  "text": "实在没钱了，你走进"血浆中心"。排队的人像牲口一样，抽一次血浆，给一张30美元预付卡。",
+  "text": "实在没钱了，你走进\"血浆中心\"。排队的人像牲口一样，抽一次血浆，给一张30美元预付卡。",
   "historicalNote": "美国是世界上少数几个允许有偿献血的国家。血浆产业年产值超过250亿美元，是全球最大的血浆供应国。",
   "options": {
     "A": {
       "label": "爱心奉献，双赢慈善",
-      "roast": "大善人啊！你卖命，药企数钱，确实是"双赢"。",
+      "roast": "大善人啊！你卖命，药企数钱，确实是\"双赢\"。",
       "flavorText": "你告诉自己这是在救人。那些需要血浆的病人会感谢你的。",
       "ideology": "新自由主义/奋斗逼",
       "archiveCommentary": "将剥削包装成慈善，让穷人相信出卖身体部件是'贡献'。",
@@ -30,7 +28,9 @@
         "gold": 150,
         "hp": -12,
         "insightGain": 8,
-        "points": { "old": 3 }
+        "points": {
+          "old": 3
+        }
       }
     },
     "B": {
@@ -58,7 +58,9 @@
         "gold": -0.15,
         "hp": 8,
         "insight": -10,
-        "points": { "wolf": 3 }
+        "points": {
+          "wolf": 3
+        }
       }
     },
     "D": {
@@ -76,7 +78,9 @@
         "gold": -100,
         "hp": -18,
         "insight": -10,
-        "points": { "red": 15 }
+        "points": {
+          "red": 15
+        }
       }
     }
   },
@@ -89,6 +93,9 @@
     "references": [
       "https://www.theguardian.com/lifeandstyle/2019/nov/05/blood-plasma-industry-america"
     ],
-    "relatedEvents": ["EVT_H38_BODY_BROKER"]
-  }
+    "relatedEvents": [
+      "EVT_H38_BODY_BROKER"
+    ]
+  },
+  "image": "/assets/events/evt_blood_bag.png"
 }

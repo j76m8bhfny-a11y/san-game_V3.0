@@ -4,10 +4,6 @@
   "title": "被拒保的救命药",
   "category": "MIDDLE",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_insurance_letter.png",
-    "foreground": "/assets/events/evt_denied_stamp.png"
-  },
   "conditions": {
     "requiredClass": [
       "MIDDLE"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_denied_stamp.png"
 }

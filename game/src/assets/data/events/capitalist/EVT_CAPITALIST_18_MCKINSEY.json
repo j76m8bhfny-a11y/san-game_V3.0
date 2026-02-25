@@ -4,10 +4,6 @@
   "title": "破产的咨询师",
   "category": "CAPITALIST",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_boardroom_ppt.png",
-    "foreground": "/assets/events/evt_consultant_shark.png"
-  },
   "conditions": {
     "requiredClass": [
       "CAPITALIST"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_consultant_shark.png"
 }

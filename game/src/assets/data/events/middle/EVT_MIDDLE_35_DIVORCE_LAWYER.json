@@ -4,10 +4,6 @@
   "title": "离婚律师",
   "category": "MIDDLE",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_divorce_court.png",
-    "foreground": "/assets/events/evt_lawyer_smiling.png"
-  },
   "conditions": {
     "requiredClass": [
       "MIDDLE"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_lawyer_smiling.png"
 }

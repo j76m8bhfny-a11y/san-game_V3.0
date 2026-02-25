@@ -251,8 +251,9 @@ export const EventOptionSchema = z.object({
 export const EventSchema = z.object({
   id: z.string(),
   title: z.string(),
-  bgImage: z.string().optional(),
-  eventImage: z.string().optional(),
+  image: z.string().optional(),  // 事件完整场景图（单张）
+  bgImage: z.string().optional(),  // @deprecated 旧格式背景图
+  eventImage: z.string().optional(),  // @deprecated 旧格式前景图
   text: z.string(), // 单一题干文本，不再区分高低灵视
   conditions: z.object({
     minInsight: z.number().optional(),  // 最小灵视值要求（觉醒度不足无法触发）

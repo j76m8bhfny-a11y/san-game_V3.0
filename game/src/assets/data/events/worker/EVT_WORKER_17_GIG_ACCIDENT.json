@@ -4,10 +4,6 @@
   "title": "你的车，你的锅",
   "category": "WORKER",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_crashed_scooter.png",
-    "foreground": "/assets/events/evt_broken_phone.png"
-  },
   "conditions": {
     "requiredClass": [
       "WORKER"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_broken_phone.png"
 }

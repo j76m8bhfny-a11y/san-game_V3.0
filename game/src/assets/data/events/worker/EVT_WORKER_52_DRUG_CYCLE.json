@@ -4,10 +4,6 @@
   "title": "手臂上的针孔",
   "category": "WORKER",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_construction_high.png",
-    "foreground": "/assets/events/evt_arm_needle.png"
-  },
   "conditions": {
     "requiredClass": [
       "WORKER"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_arm_needle.png"
 }

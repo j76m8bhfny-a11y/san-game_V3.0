@@ -4,12 +4,10 @@
   "title": "单程车票",
   "category": "HOMELESS",
   "series": "社会排斥",
-  "layer": {
-    "background": "/assets/scenes/bg_bus_station.png",
-    "foreground": "/assets/events/evt_one_way_ticket.png"
-  },
   "conditions": {
-    "requiredClass": ["HOMELESS"],
+    "requiredClass": [
+      "HOMELESS"
+    ],
     "minSan": 0,
     "maxSan": 100,
     "weight": 10,
@@ -30,7 +28,9 @@
         "gold": 150,
         "hp": -12,
         "insightGain": 8,
-        "points": { "old": 3 }
+        "points": {
+          "old": 3
+        }
       }
     },
     "B": {
@@ -58,7 +58,9 @@
         "gold": -0.15,
         "hp": 8,
         "insight": -10,
-        "points": { "wolf": 3 }
+        "points": {
+          "wolf": 3
+        }
       }
     },
     "D": {
@@ -76,7 +78,9 @@
         "gold": -100,
         "hp": -18,
         "insight": -10,
-        "points": { "red": 15 }
+        "points": {
+          "red": 15
+        }
       }
     }
   },
@@ -89,6 +93,9 @@
     "references": [
       "https://www.theguardian.com/us-news/2017/aug/25/greyhound-therapy-america-mental-health-homeless"
     ],
-    "relatedEvents": ["EVT_H35_STAY_AWAY"]
-  }
+    "relatedEvents": [
+      "EVT_H35_STAY_AWAY"
+    ]
+  },
+  "image": "/assets/events/evt_one_way_ticket.png"
 }

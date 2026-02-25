@@ -4,10 +4,6 @@
   "title": "被吞噬的房子",
   "category": "WORKER",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_trailer_park.png",
-    "foreground": "/assets/events/evt_rent_hike_notice.png"
-  },
   "conditions": {
     "requiredClass": [
       "WORKER"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_rent_hike_notice.png"
 }

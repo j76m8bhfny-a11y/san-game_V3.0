@@ -7,7 +7,7 @@ import {
   shouldTriggerGazeEvent, 
   getCurrentGazeEffects 
 } from '@/logic/gazeEventSystem';
-import { eventIndex } from '@/assets/data/events';
+import { eventIndex } from '@/assets/data/events/index';
 
 // 缓存事件数据 - 导出以便外部预加载
 export let eventsCache: GameEvent[] | null = null;

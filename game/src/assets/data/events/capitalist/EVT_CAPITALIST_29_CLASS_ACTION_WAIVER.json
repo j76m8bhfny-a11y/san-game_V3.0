@@ -4,10 +4,6 @@
   "title": "谁都不能告",
   "category": "CAPITALIST",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_terms_scroll.png",
-    "foreground": "/assets/events/evt_fine_print.png"
-  },
   "conditions": {
     "requiredClass": [
       "CAPITALIST"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_fine_print.png"
 }

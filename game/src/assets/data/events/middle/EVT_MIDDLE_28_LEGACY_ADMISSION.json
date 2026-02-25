@@ -4,10 +4,6 @@
   "title": "推荐信",
   "category": "MIDDLE",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_ivy_league_gate.png",
-    "foreground": "/assets/events/evt_rejection_letter.png"
-  },
   "conditions": {
     "requiredClass": [
       "MIDDLE"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_rejection_letter.png"
 }

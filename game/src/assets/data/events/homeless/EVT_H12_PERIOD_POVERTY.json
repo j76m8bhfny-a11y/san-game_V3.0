@@ -4,12 +4,10 @@
   "title": "经期贫困",
   "category": "HOMELESS",
   "series": "性别贫困",
-  "layer": {
-    "background": "/assets/scenes/bg_public_restroom.png",
-    "foreground": "/assets/events/evt_newspaper_pad.png"
-  },
   "conditions": {
-    "requiredClass": ["HOMELESS"],
+    "requiredClass": [
+      "HOMELESS"
+    ],
     "minSan": 0,
     "maxSan": 100,
     "weight": 8,
@@ -30,7 +28,9 @@
         "gold": 150,
         "hp": -12,
         "insightGain": 8,
-        "points": { "old": 3 }
+        "points": {
+          "old": 3
+        }
       }
     },
     "B": {
@@ -58,11 +58,13 @@
         "gold": -0.15,
         "hp": 8,
         "insight": -10,
-        "points": { "wolf": 3 }
+        "points": {
+          "wolf": 3
+        }
       }
     },
     "D": {
-      "label": "针对女性的"粉色税"",
+      "label": "针对女性的\"粉色税\"",
       "roast": "精准打击。作为一个穷女人，活着本身就是一种负债。",
       "flavorText": "你看到了那个交叉压迫：贫困+性别=双倍的艰难。",
       "ideology": "激进左翼/觉醒",
@@ -76,7 +78,9 @@
         "gold": -100,
         "hp": -18,
         "insight": -10,
-        "points": { "red": 15 }
+        "points": {
+          "red": 15
+        }
       }
     }
   },
@@ -90,5 +94,6 @@
       "https://www.aclu.org/news/womens-rights/the-tampon-tax-and-period-poverty"
     ],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_newspaper_pad.png"
 }

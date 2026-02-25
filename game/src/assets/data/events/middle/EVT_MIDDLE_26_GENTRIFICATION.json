@@ -4,10 +4,6 @@
   "title": "昂贵的咖啡",
   "category": "MIDDLE",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_hipster_cafe.png",
-    "foreground": "/assets/events/evt_latte_art.png"
-  },
   "conditions": {
     "requiredClass": [
       "MIDDLE"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_latte_art.png"
 }

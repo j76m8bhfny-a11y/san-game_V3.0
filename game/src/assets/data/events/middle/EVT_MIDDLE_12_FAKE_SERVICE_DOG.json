@@ -4,10 +4,6 @@
   "title": "假冒的“服务犬”",
   "category": "MIDDLE",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_fancy_restaurant.png",
-    "foreground": "/assets/events/evt_fake_service_dog.png"
-  },
   "conditions": {
     "requiredClass": [
       "MIDDLE"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_fake_service_dog.png"
 }

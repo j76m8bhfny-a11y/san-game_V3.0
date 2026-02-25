@@ -4,12 +4,10 @@
   "title": "公园长椅",
   "category": "HOMELESS",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_park_snow.png",
-    "foreground": "/assets/events/evt_bench_spikes.png"
-  },
   "conditions": {
-    "requiredClass": ["HOMELESS"],
+    "requiredClass": [
+      "HOMELESS"
+    ],
     "minSan": 0,
     "maxSan": 100,
     "weight": 10,
@@ -30,7 +28,9 @@
         "gold": 150,
         "hp": -12,
         "insightGain": 8,
-        "points": { "old": 3 }
+        "points": {
+          "old": 3
+        }
       }
     },
     "B": {
@@ -58,7 +58,9 @@
         "gold": -0.15,
         "hp": 8,
         "insight": -10,
-        "points": { "wolf": 3 }
+        "points": {
+          "wolf": 3
+        }
       }
     },
     "D": {
@@ -76,7 +78,9 @@
         "gold": -100,
         "hp": -18,
         "insight": -10,
-        "points": { "red": 15 }
+        "points": {
+          "red": 15
+        }
       }
     }
   },
@@ -90,6 +94,11 @@
       "https://en.wikipedia.org/wiki/Camden_bench",
       "https://www.theguardian.com/artanddesign/2014/jun/13/camden-bench-design-award-public-seating"
     ],
-    "relatedEvents": ["EVT_H04_SPIKES", "EVT_H24_LEAN_BARS", "EVT_H48_SPIKED_ROCKS"]
-  }
+    "relatedEvents": [
+      "EVT_H04_SPIKES",
+      "EVT_H24_LEAN_BARS",
+      "EVT_H48_SPIKED_ROCKS"
+    ]
+  },
+  "image": "/assets/events/evt_bench_spikes.png"
 }

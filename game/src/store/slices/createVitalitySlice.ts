@@ -18,6 +18,7 @@ import { StoreState } from '@/types/store';
 import { resolveEnding } from '@/logic/endings';
 import endingsData from '@/assets/data/endings.json';
 import ENDING_RULES from '@/assets/data/rules/ending_rules.json';
+import { useAudioStore } from '@/store/useAudioStore';
 
 import hospitalData from '@/assets/data/hospital_services.json';
 import INITIAL_STATE from '@/assets/data/config/initial_state.json';
@@ -26,8 +27,17 @@ import rules from '@/assets/data/rules/vitality_rules.json';
 import medicalRules from '@/assets/data/rules/medical_rules.json';
 import bankRules from '@/assets/data/rules/bank_rules.json';
 
+export interface ClassChangeInfo {
+  oldClass: PlayerClass;
+  newClass: PlayerClass;
+  netWorth: number;
+  reason: string;
+  timestamp: number;
+}
+
 export interface VitalitySlice {
   vitality: VitalityState;
+  pendingClassChanges: ClassChangeInfo[];  // 改为数组支持队列
   initGame: (selectedClass: PlayerClass) => void;
   addTransaction: (category: LedgerCategory, amount: number, description: string) => { success: boolean; actualAmount: number };
   modifyStats: (changes: Partial<VitalityState['metrics']>) => void;
@@ -45,6 +55,7 @@ export interface VitalitySlice {
     netWorth?: number; 
     reason?: string;
   };
+  clearPendingClassChange: () => void;
   
   // Buff管理方法
   addSurvivalBuff: (buff: SurvivalBuff) => void;
@@ -82,9 +93,12 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
     activeBuffs: [],
     pendingMedicalBills: [],
     deductibleTrackers: [],
-    medicalAppointments: []
+    medicalAppointments: [],
   },
-
+  
+  // 待处理的阶级变化
+  pendingClassChanges: [],
+  
   initGame: (selectedClass) => {
     const classConfig = CLASS_INITIAL_STATS[selectedClass];
     if (!classConfig) return;
@@ -218,6 +232,25 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
     if (hasClassChanged(state, newClass)) {
       const desc = getClassChangeDesc(oldClass, newClass);
       
+      // 判断升级/降级
+      const classOrder = ['HOMELESS', 'WORKER', 'MIDDLE', 'CAPITALIST'];
+      const oldIndex = classOrder.indexOf(oldClass);
+      const newIndex = classOrder.indexOf(newClass);
+      const isUpgrade = newIndex > oldIndex;
+      
+      // 播放音效（业务逻辑层）
+      const { playSfx } = useAudioStore.getState();
+      playSfx(isUpgrade ? 'sfx_class_upgrade' : 'sfx_class_downgrade');
+      
+      // 设置待处理的阶级变化（入队）
+      const classChangeInfo = {
+        oldClass,
+        newClass,
+        netWorth,
+        reason,
+        timestamp: Date.now()
+      };
+      
       set((prev: any) => ({
         vitality: {
           ...prev.vitality,
@@ -231,16 +264,12 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
               ? 0 
               : prev.vitality.flags.debtTurns
           }
-        }
+        },
+        pendingClassChanges: [...prev.pendingClassChanges, classChangeInfo]  // 入队
       }));
       
       const store = get() as any;
       if (store.addNotification) {
-        const isUpgrade = 
-          (oldClass === PlayerClass.Homeless && newClass !== PlayerClass.Homeless) ||
-          (oldClass === PlayerClass.Worker && (newClass === PlayerClass.Middle || newClass === PlayerClass.Capitalist)) ||
-          (oldClass === PlayerClass.Middle && newClass === PlayerClass.Capitalist);
-        
         store.addNotification(`${isUpgrade ? '⬆️' : '⬇️'} ${desc} (资产: $${netWorth.toLocaleString()})`, isUpgrade ? 'success' : 'warning');
       }
       
@@ -248,6 +277,13 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
     }
     
     return { changed: false, oldClass, newClass, netWorth, reason };
+  },
+  
+  // 清除待处理的阶级变化（出队）
+  clearPendingClassChange: () => {
+    set((state: any) => ({
+      pendingClassChanges: state.pendingClassChanges.slice(1)  // 移除队首
+    }));
   },
 
   modifyStats: (changes) => set((state: any) => {

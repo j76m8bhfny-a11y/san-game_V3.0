@@ -4,19 +4,17 @@
   "title": "宠物狗",
   "category": "HOMELESS",
   "series": "收容所制度",
-  "layer": {
-    "background": "/assets/scenes/bg_snow_shelter.png",
-    "foreground": "/assets/events/evt_hobo_dog.png"
-  },
   "conditions": {
-    "requiredClass": ["HOMELESS"],
+    "requiredClass": [
+      "HOMELESS"
+    ],
     "minSan": 0,
     "maxSan": 100,
     "weight": 10,
     "minTurn": 1,
     "maxTurn": 52
   },
-  "text": "暴风雪中，收容所管理员指着流浪汉怀里的狗说："狗不能进。"流浪汉看了看温暖的大门，抱紧了狗转身走回雪地。",
+  "text": "暴风雪中，收容所管理员指着流浪汉怀里的狗说：\"狗不能进。\"流浪汉看了看温暖的大门，抱紧了狗转身走回雪地。",
   "historicalNote": "美国许多收容所禁止宠物入内。研究表明，约10-25%的流浪者因此拒绝进入收容所。",
   "options": {
     "A": {
@@ -30,7 +28,9 @@
         "gold": 150,
         "hp": -12,
         "insightGain": 8,
-        "points": { "old": 3 }
+        "points": {
+          "old": 3
+        }
       }
     },
     "B": {
@@ -58,7 +58,9 @@
         "gold": -0.15,
         "hp": 8,
         "insight": -10,
-        "points": { "wolf": 3 }
+        "points": {
+          "wolf": 3
+        }
       }
     },
     "D": {
@@ -76,7 +78,9 @@
         "gold": -100,
         "hp": -18,
         "insight": -10,
-        "points": { "red": 15 }
+        "points": {
+          "red": 15
+        }
       }
     }
   },
@@ -89,6 +93,9 @@
     "references": [
       "https://www.homelesshub.ca/resource/pets-and-homelessness"
     ],
-    "relatedEvents": ["EVT_H36_TINY_HOME"]
-  }
+    "relatedEvents": [
+      "EVT_H36_TINY_HOME"
+    ]
+  },
+  "image": "/assets/events/evt_hobo_dog.png"
 }

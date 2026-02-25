@@ -4,10 +4,6 @@
   "title": "买不起的医保",
   "category": "WORKER",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_factory_firstaid.png",
-    "foreground": "/assets/events/evt_superglue_wound.png"
-  },
   "conditions": {
     "requiredClass": [
       "WORKER"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_superglue_wound.png"
 }

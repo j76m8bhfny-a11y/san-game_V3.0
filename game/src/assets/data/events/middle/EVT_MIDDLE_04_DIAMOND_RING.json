@@ -4,10 +4,6 @@
   "title": "钻石恒久远",
   "category": "MIDDLE",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_jewelry_store.png",
-    "foreground": "/assets/events/evt_diamond_ring.png"
-  },
   "conditions": {
     "requiredClass": [
       "MIDDLE"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_diamond_ring.png"
 }

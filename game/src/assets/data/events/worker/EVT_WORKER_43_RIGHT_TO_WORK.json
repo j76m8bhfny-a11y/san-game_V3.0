@@ -4,10 +4,6 @@
   "title": "听起来很好的法律",
   "category": "WORKER",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_union_protest.png",
-    "foreground": "/assets/events/evt_anti_union_flyer.png"
-  },
   "conditions": {
     "requiredClass": [
       "WORKER"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_anti_union_flyer.png"
 }

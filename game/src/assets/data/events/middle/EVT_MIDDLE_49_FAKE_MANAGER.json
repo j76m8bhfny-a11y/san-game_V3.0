@@ -4,10 +4,6 @@
   "title": "不给加班费的“经理”",
   "category": "MIDDLE",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_fastfood_kitchen.png",
-    "foreground": "/assets/events/evt_manager_badge.png"
-  },
   "conditions": {
     "requiredClass": [
       "MIDDLE"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_manager_badge.png"
 }

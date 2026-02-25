@@ -4,10 +4,6 @@
   "title": "最大的福利女王",
   "category": "CAPITALIST",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_walmart_breakroom.png",
-    "foreground": "/assets/events/evt_snap_guide.png"
-  },
   "conditions": {
     "requiredClass": [
       "CAPITALIST"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_snap_guide.png"
 }

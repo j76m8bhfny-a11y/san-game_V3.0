@@ -4,10 +4,6 @@
   "title": "昂贵的健身",
   "category": "MIDDLE",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_luxury_gym.png",
-    "foreground": "/assets/events/evt_yoga_pants.png"
-  },
   "conditions": {
     "requiredClass": [
       "MIDDLE"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_yoga_pants.png"
 }

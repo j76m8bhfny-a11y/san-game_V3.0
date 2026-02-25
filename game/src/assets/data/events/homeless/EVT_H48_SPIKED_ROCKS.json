@@ -4,10 +4,6 @@
   "title": "带刺的石头",
   "category": "HOMELESS",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_rock_garden.png",
-    "foreground": "/assets/events/evt_sharp_boulders.png"
-  },
   "conditions": {
     "requiredClass": [
       "HOMELESS"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_sharp_boulders.png"
 }

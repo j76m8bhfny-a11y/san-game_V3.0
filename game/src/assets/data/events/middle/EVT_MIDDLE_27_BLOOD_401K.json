@@ -4,10 +4,6 @@
   "title": "401(k) 里的血",
   "category": "MIDDLE",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_stock_chart.png",
-    "foreground": "/assets/events/evt_war_stocks.png"
-  },
   "conditions": {
     "requiredClass": [
       "MIDDLE"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_war_stocks.png"
 }

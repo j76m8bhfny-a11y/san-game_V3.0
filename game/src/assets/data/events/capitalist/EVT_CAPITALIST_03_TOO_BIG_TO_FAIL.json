@@ -4,10 +4,6 @@
   "title": "大而不倒",
   "category": "CAPITALIST",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_bank_hq.png",
-    "foreground": "/assets/events/evt_bailout_check.png"
-  },
   "conditions": {
     "requiredClass": [
       "CAPITALIST"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_bailout_check.png"
 }

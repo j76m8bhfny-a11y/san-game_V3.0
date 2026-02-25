@@ -4,10 +4,6 @@
   "title": "两个冷披萨",
   "category": "WORKER",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_break_room_pizza.png",
-    "foreground": "/assets/events/evt_cold_pizza.png"
-  },
   "conditions": {
     "requiredClass": [
       "WORKER"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_cold_pizza.png"
 }

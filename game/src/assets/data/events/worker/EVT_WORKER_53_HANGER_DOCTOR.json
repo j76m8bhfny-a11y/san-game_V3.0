@@ -4,10 +4,6 @@
   "title": "奇怪的购物清单",
   "category": "WORKER",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_rental_room.png",
-    "foreground": "/assets/events/evt_coat_hanger.png"
-  },
   "conditions": {
     "requiredClass": [
       "WORKER"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_coat_hanger.png"
 }

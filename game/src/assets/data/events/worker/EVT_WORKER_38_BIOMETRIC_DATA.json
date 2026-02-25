@@ -4,10 +4,6 @@
   "title": "按手印上厕所",
   "category": "WORKER",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_fingerprint_scanner.png",
-    "foreground": "/assets/events/evt_biometric_scan.png"
-  },
   "conditions": {
     "requiredClass": [
       "WORKER"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_biometric_scan.png"
 }

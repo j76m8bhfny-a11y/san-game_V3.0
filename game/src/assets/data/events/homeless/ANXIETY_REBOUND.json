@@ -4,10 +4,6 @@
   "title": "凌晨三点的惊醒",
   "category": "HOMELESS",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_bedroom_dark.png",
-    "foreground": "/assets/events/evt_sweat_bedsheet.png"
-  },
   "conditions": {
     "requiredClass": [
       "HOMELESS"
@@ -95,5 +91,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_sweat_bedsheet.png"
 }

@@ -4,10 +4,6 @@
   "title": "监狱里的竞争对手",
   "category": "WORKER",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_factory_closed.png",
-    "foreground": "/assets/events/evt_prison_factory.png"
-  },
   "conditions": {
     "requiredClass": [
       "WORKER"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_prison_factory.png"
 }

@@ -4,10 +4,6 @@
   "title": "我们是伐木累",
   "category": "WORKER",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_office_meeting.png",
-    "foreground": "/assets/events/evt_boss_speech.png"
-  },
   "conditions": {
     "requiredClass": [
       "WORKER"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_boss_speech.png"
 }

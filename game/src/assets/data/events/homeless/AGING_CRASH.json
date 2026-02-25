@@ -4,10 +4,6 @@
   "title": "青春失效",
   "category": "HOMELESS",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_mansion_bathroom.png",
-    "foreground": "/assets/events/evt_mirror_wrinkles.png"
-  },
   "conditions": {
     "requiredClass": [
       "HOMELESS"
@@ -95,5 +91,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_mirror_wrinkles.png"
 }

@@ -4,10 +4,6 @@
   "title": "只有急诊",
   "category": "WORKER",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_factory_accident.png",
-    "foreground": "/assets/events/evt_severed_finger.png"
-  },
   "conditions": {
     "requiredClass": [
       "WORKER"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_severed_finger.png"
 }

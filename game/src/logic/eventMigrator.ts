@@ -218,11 +218,8 @@ export function migrateEvent(oldEvent: any): GameEvent {
     category: category,
     series: oldEvent.series || '基础生存',
     
-    // 图层结构
-    layer: {
-      background: oldEvent.bgImage || '/assets/scenes/common/bg_street.png',
-      foreground: oldEvent.eventImage || '/assets/events/common/evt_placeholder.png'
-    },
+    // 事件图片（单张完整场景图）
+    image: oldEvent.eventImage || oldEvent.bgImage || '/assets/events/evt_placeholder.png',
     
     // 条件
     conditions: {

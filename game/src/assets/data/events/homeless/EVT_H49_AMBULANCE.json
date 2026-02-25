@@ -4,10 +4,6 @@
   "title": "昂贵的救护车",
   "category": "HOMELESS",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_ambulance_interior.png",
-    "foreground": "/assets/events/evt_ambulance_bill.png"
-  },
   "conditions": {
     "requiredClass": [
       "HOMELESS"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_ambulance_bill.png"
 }

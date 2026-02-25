@@ -4,10 +4,6 @@
   "title": "反工会间谍",
   "category": "WORKER",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_break_room.png",
-    "foreground": "/assets/events/evt_suited_spy.png"
-  },
   "conditions": {
     "requiredClass": [
       "WORKER"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_suited_spy.png"
 }

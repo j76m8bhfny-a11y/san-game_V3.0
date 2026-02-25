@@ -4,10 +4,6 @@
   "title": "推土机来了",
   "category": "HOMELESS",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_camp_sweep.png",
-    "foreground": "/assets/events/evt_excavator.png"
-  },
   "conditions": {
     "requiredClass": [
       "HOMELESS"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_excavator.png"
 }

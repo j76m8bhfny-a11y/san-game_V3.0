@@ -4,10 +4,6 @@
   "title": "睡在车里的员工",
   "category": "WORKER",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_fastfood_parking.png",
-    "foreground": "/assets/events/evt_sleeping_in_car.png"
-  },
   "conditions": {
     "requiredClass": [
       "WORKER"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_sleeping_in_car.png"
 }

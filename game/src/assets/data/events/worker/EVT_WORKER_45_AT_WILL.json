@@ -4,10 +4,6 @@
   "title": "没理由的开除",
   "category": "WORKER",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_office_box.png",
-    "foreground": "/assets/events/evt_cardboard_box.png"
-  },
   "conditions": {
     "requiredClass": [
       "WORKER"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_cardboard_box.png"
 }

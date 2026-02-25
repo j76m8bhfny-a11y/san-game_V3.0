@@ -4,10 +4,6 @@
   "title": "坏掉的防护服",
   "category": "WORKER",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_chemical_plant.png",
-    "foreground": "/assets/events/evt_duct_tape_mask.png"
-  },
   "conditions": {
     "requiredClass": [
       "WORKER"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_duct_tape_mask.png"
 }

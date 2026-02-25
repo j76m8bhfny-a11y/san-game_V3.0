@@ -4,10 +4,6 @@
   "title": "吸血鬼的午餐",
   "category": "CAPITALIST",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_private_clinic.png",
-    "foreground": "/assets/events/evt_blood_transfusion.png"
-  },
   "conditions": {
     "requiredClass": [
       "CAPITALIST"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_blood_transfusion.png"
 }

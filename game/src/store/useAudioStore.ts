@@ -39,6 +39,10 @@ const AUDIO_ASSETS = {
   sfx_ending_stance: '/assets/audio/sfx_ending_stance.mp3',      // STANCE结局音效
   sfx_ending_death: '/assets/audio/sfx_ending_death.mp3',        // 死亡结局音效（替代glitch）
 
+  // === ✅ 新增：阶级变化 SFX ===
+  sfx_class_upgrade: '/assets/audio/sfx_class_upgrade.mp3',      // 阶级晋升
+  sfx_class_downgrade: '/assets/audio/sfx_class_downgrade.mp3',  // 阶级降级
+
   // 铁锈区
   sfx_keys_jingle: '/assets/audio/sfx_keys_jingle.mp3',   // 钥匙晃动
   sfx_neon_hum: '/assets/audio/sfx_neon_hum.mp3',         // 霓虹灯电流声

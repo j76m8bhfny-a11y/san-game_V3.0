@@ -4,10 +4,6 @@
   "title": "计划性报废",
   "category": "CAPITALIST",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_lightbulb_factory.png",
-    "foreground": "/assets/events/evt_broken_bulb.png"
-  },
   "conditions": {
     "requiredClass": [
       "CAPITALIST"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_broken_bulb.png"
 }

@@ -4,10 +4,6 @@
   "title": "400美元的距离",
   "category": "MIDDLE",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_bmw_broken.png",
-    "foreground": "/assets/events/evt_credit_card_declined.png"
-  },
   "conditions": {
     "requiredClass": [
       "MIDDLE"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_credit_card_declined.png"
 }

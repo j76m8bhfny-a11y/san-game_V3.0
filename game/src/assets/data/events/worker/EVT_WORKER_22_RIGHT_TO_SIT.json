@@ -4,10 +4,6 @@
   "title": "禁止坐下",
   "category": "WORKER",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_supermarket_cashier.png",
-    "foreground": "/assets/events/evt_swollen_legs.png"
-  },
   "conditions": {
     "requiredClass": [
       "WORKER"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_swollen_legs.png"
 }

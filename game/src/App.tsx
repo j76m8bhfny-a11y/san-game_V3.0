@@ -45,9 +45,11 @@ import { calculateGazeIntensity } from './logic/systemGaze';
 
 // [NEW] 新手引导系统
 import { IntroExperience } from './components/game/IntroExperience';
+import { IntroComic } from './components/intro/IntroComic';
 import { GuardianHints } from './components/ui/GuardianHints';
 import { InsightMilestones } from './components/ui/InsightMilestones';
 import { ProgressiveUnlock } from './components/ui/ProgressiveUnlock';
+import { ClassChangeModal } from './components/ui/ClassChangeModal';
 import { DangerHints } from './components/ui/DangerHints';
 import { ModalQueueProvider } from './components/ui/ModalQueueManager';
 import { DeathEffectProvider } from './components/ui/DeathEffectPause';
@@ -69,6 +71,9 @@ const App: React.FC = () => {
   // [NEW] 开场引导状态
   const [showIntro, setShowIntro] = useState(true);
   const [introCompleted, setIntroCompleted] = useState(false);
+  
+  // [NEW] 开场漫画状态
+  const [comicCompleted, setComicCompleted] = useState(false);
   const { 
     currentEvent, 
     activeBill, 
@@ -103,7 +108,9 @@ const App: React.FC = () => {
     restartGame,
     showDeathSummary,  // [NEW] 死亡结算显示状态
     showDeathSummaryView, // [NEW] 手动显示死亡结算
-    activeHousing // [NEW] 用于DangerHints
+    activeHousing, // [NEW] 用于DangerHints
+    pendingClassChanges, // [NEW] 待处理的阶级变化队列
+    clearPendingClassChange // [NEW] 清除阶级变化
   } = useGameStore();
 
   const [viewState, setViewState] = useState<'TITLE' | 'SELECT_CLASS' | 'GAME'>('TITLE');
@@ -186,13 +193,25 @@ const App: React.FC = () => {
     setIntroCompleted(true);
     setShowIntro(false);
   };
+  
+  // [NEW] 开场漫画完成回调
+  const handleComicComplete = () => {
+    setComicCompleted(true);
+    // 漫画完成后显示教学引导
+    setShowIntro(true);
+  };
 
   return (
     <>
     <DeathEffectProvider>
     <ModalQueueProvider>
+    {/* [NEW] 开场美漫漫画 */}
+    {!comicCompleted && (
+      <IntroComic onComplete={handleComicComplete} />
+    )}
+    
     {/* [NEW] 开场引导体验 */}
-    {showIntro && !introCompleted && (
+    {showIntro && !introCompleted && comicCompleted && (
       <IntroExperience onComplete={handleIntroComplete} />
     )}
     
@@ -345,6 +364,14 @@ const App: React.FC = () => {
     {/* 死亡结算 - 在SystemGazeOverlay之外 */}
     {showDeathSummary && (
       <DeathSummary onRestart={handleRestart} />
+    )}
+    
+    {/* [NEW] 阶级变化提示 - 队列显示 */}
+    {pendingClassChanges.length > 0 && (
+      <ClassChangeModal
+        changes={pendingClassChanges}
+        onClose={clearPendingClassChange}
+      />
     )}
     
     {/* [NEW] System Alert弹窗 - 用于Gaze惩罚事件 */}

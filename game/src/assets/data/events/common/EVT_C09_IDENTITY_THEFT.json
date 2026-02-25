@@ -4,12 +4,13 @@
   "title": "身份被盗",
   "category": "COMMON",
   "series": "犯罪与安全",
-  "layer": {
-    "background": "/assets/scenes/common/bg_computer.png",
-    "foreground": "/assets/events/common/evt_credit_card.png"
-  },
   "conditions": {
-    "requiredClass": ["HOMELESS", "WORKER", "MIDDLE", "CAPITALIST"],
+    "requiredClass": [
+      "HOMELESS",
+      "WORKER",
+      "MIDDLE",
+      "CAPITALIST"
+    ],
     "minSan": 0,
     "maxSan": 100,
     "weight": 6,
@@ -30,7 +31,9 @@
         "gold": 150,
         "hp": -12,
         "insightGain": 5,
-        "points": { "old": 3 }
+        "points": {
+          "old": 3
+        }
       }
     },
     "B": {
@@ -58,7 +61,9 @@
         "gold": -0.15,
         "hp": 8,
         "insight": -10,
-        "points": { "wolf": 3 }
+        "points": {
+          "wolf": 3
+        }
       }
     },
     "D": {
@@ -76,7 +81,9 @@
         "gold": -100,
         "hp": -18,
         "insight": -10,
-        "points": { "red": 15 }
+        "points": {
+          "red": 15
+        }
       }
     }
   },
@@ -86,6 +93,10 @@
     "createdAt": "2024-01-15",
     "updatedAt": "2024-01-15",
     "references": [],
-    "relatedEvents": ["EVT_C07_MUGGING", "EVT_C08_CAR_BREAK_IN"]
-  }
+    "relatedEvents": [
+      "EVT_C07_MUGGING",
+      "EVT_C08_CAR_BREAK_IN"
+    ]
+  },
+  "image": "/assets/events/common/evt_credit_card.png"
 }

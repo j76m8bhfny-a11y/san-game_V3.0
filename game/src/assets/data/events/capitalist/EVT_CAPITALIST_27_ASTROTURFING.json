@@ -4,10 +4,6 @@
   "title": "草根组织的真相",
   "category": "CAPITALIST",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_protest_fake.png",
-    "foreground": "/assets/events/evt_fake_protest_sign.png"
-  },
   "conditions": {
     "requiredClass": [
       "CAPITALIST"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_fake_protest_sign.png"
 }

@@ -4,10 +4,6 @@
   "title": "妈妈的“果汁”",
   "category": "MIDDLE",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_playground_afternoon.png",
-    "foreground": "/assets/events/evt_wine_tumbler.png"
-  },
   "conditions": {
     "requiredClass": [
       "MIDDLE"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_wine_tumbler.png"
 }

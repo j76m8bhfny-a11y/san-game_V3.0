@@ -4,10 +4,6 @@
   "title": "医生的咒语",
   "category": "MIDDLE",
   "series": "基础生存",
-  "layer": {
-    "background": "/assets/scenes/bg_doctor_clipboard.png",
-    "foreground": "/assets/events/evt_confusing_contract.png"
-  },
   "conditions": {
     "requiredClass": [
       "MIDDLE"
@@ -96,5 +92,6 @@
     "updatedAt": "2024-01-15",
     "references": [],
     "relatedEvents": []
-  }
+  },
+  "image": "/assets/events/evt_confusing_contract.png"
 }

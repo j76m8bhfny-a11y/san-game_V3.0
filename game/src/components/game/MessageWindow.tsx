@@ -2,13 +2,38 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
+import { useBurningConfig } from '@/hooks/useBurningConfig';
 import { GameEvent } from '@/types/schema';
 import NARRATIVE_RULES from '@/assets/data/rules/narrative_rules.json';
 import { getCurrentGazeEffects, getGazeNarrative } from '@/logic/gazeEventSystem';
 import { calculateDOptionReduction } from '@/logic/archiveModifier';
 import { DOptionConfirm, isHighRiskOption } from '@/components/ui/DOptionConfirm';
+import type { PlayerSpritesConfig } from '@/types/narrative';
 
 const { pacing, ui } = NARRATIVE_RULES;
+
+// [NEW] 人物图配置（带类型）
+const SPRITE_CONFIG = (NARRATIVE_RULES as unknown as { playerSprites?: PlayerSpritesConfig }).playerSprites;
+
+/**
+ * 根据阶级和灵视获取人物图路径
+ */
+function getPlayerSprite(currentClass: string, insight: number, maxInsight: number): string {
+  if (!SPRITE_CONFIG?.enabled) return SPRITE_CONFIG?.default || '/assets/scenes/player_back.png';
+  
+  const classSprites = SPRITE_CONFIG.byClass?.[currentClass];
+  if (!classSprites) return SPRITE_CONFIG.default || '/assets/scenes/player_back.png';
+  
+  const insightPercent = (insight / maxInsight) * 100;
+  const threshold = SPRITE_CONFIG.highInsightThreshold || 70;
+  
+  // 高灵视时显示剪影（看透了本质）
+  if (insightPercent >= threshold && classSprites.highInsight) {
+    return classSprites.highInsight;
+  }
+  
+  return classSprites.normal || SPRITE_CONFIG.default || '/assets/scenes/player_back.png';
+}
 
 interface MessageWindowProps {
   event: GameEvent;
@@ -79,6 +104,60 @@ const GlitchOverlay: React.FC<{ intensity: number }> = ({ intensity }) => {
     </div>
   );
 };
+
+// [NEW] 人物图组件 - 支持阶级切换和渐变
+const PlayerSprite: React.FC<{
+  currentClass: string;
+  insight: number;
+  maxInsight: number;
+  isFocusMode: boolean;
+}> = React.memo(({ currentClass, insight, maxInsight, isFocusMode }) => {
+  // 同步计算当前应该显示的图片
+  const targetSprite = getPlayerSprite(currentClass, insight, maxInsight);
+  const [displaySprite, setDisplaySprite] = useState(targetSprite);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  
+  // 当目标图片变化时，执行淡出淡入过渡
+  useEffect(() => {
+    if (targetSprite !== displaySprite) {
+      // 开始淡出
+      setIsTransitioning(true);
+      const fadeOutTimer = setTimeout(() => {
+        // 切换图片
+        setDisplaySprite(targetSprite);
+        // 开始淡入
+        setIsTransitioning(false);
+      }, (SPRITE_CONFIG?.transitionDuration || 0.5) * 500);
+      return () => clearTimeout(fadeOutTimer);
+    }
+  }, [targetSprite, displaySprite]);
+  
+  const altText = SPRITE_CONFIG?.byClass?.[currentClass]?.altText || 'Player';
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -50 }}
+      animate={isFocusMode ? { opacity: 0, x: -200 } : { opacity: isTransitioning ? 0 : 1, x: 0 }}
+      transition={{ duration: SPRITE_CONFIG?.transitionDuration || 0.5 }}
+      className="absolute bottom-0 left-0 md:left-10 z-40 w-[40%] md:w-[25%] pointer-events-none"
+    >
+      <img 
+        src={displaySprite} 
+        alt={altText}
+        className="w-full object-contain drop-shadow-[0_0_20px_rgba(0,0,0,0.8)]"
+        onError={(e) => {
+          // 图片加载失败时回退到默认（防死循环）
+          const fallback = '/assets/scenes/player_back.png';
+          if (e.currentTarget.src !== fallback) {
+            e.currentTarget.src = fallback;
+          }
+        }}
+      />
+    </motion.div>
+  );
+});
+
+PlayerSprite.displayName = 'PlayerSprite';
 
 // 🌟 Gaze低语组件
 const GAZE_WHISPERS = {
@@ -170,10 +249,9 @@ const PixelSMSBubble: React.FC<{
   const isDOption = id === 'D';
   const hasReduction = isDOption && reductionInfo && reductionInfo.reductionPercent > 0 && !isBurned;
   
-  // [NEW] 燃烧效果配置
-  const burningConfig = (NARRATIVE_RULES as any).burningEffect;
-  const burningEnabled = burningConfig?.enabled !== false;
-  const ghostWhisper = burningEnabled ? burningConfig?.ghostWhispers?.[id as keyof typeof burningConfig.ghostWhispers] : null;
+  // [NEW] 使用 Hook 获取燃烧效果配置
+  const { config: burningConfig, enabled: burningEnabled, getWhispers } = useBurningConfig();
+  const ghostWhisper = burningEnabled ? getWhispers(id) : null;
 
   return (
     <div className={`flex justify-end items-end gap-2 group w-full pl-2 ${disabled ? 'opacity-50' : ''}`}>
@@ -319,9 +397,8 @@ const PixelPhone: React.FC<{
 }> = ({ options, onChoose, selectedId, dOptionLocked }) => {
   const [showOptions, setShowOptions] = useState(false);
   
-  // [NEW] 燃烧效果配置
-  const burningConfig = (NARRATIVE_RULES as any).burningEffect;
-  const burningEnabled = burningConfig?.enabled !== false;
+  // [NEW] 使用 Hook 获取燃烧效果配置
+  const { enabled: burningEnabled } = useBurningConfig();
   const hasSelection = selectedId !== null;
 
   useEffect(() => {
@@ -400,7 +477,7 @@ const PixelPhone: React.FC<{
 };
 
 // 主组件
-export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
+export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }) => {
   if (!event || !event.options) return null;
   
   const { resolveEventOption, vitality, unlockedArchives } = useGameStore();
@@ -543,11 +620,9 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
   ].filter(opt => opt.label);
 
   const descriptionText = event.text;
-  // v3事件使用layer字段
-  const bgImg = (event as any).layer?.background || event.bgImage || '/assets/scenes/default_bg.png';
-  const eventImg = (event as any).layer?.foreground || event.eventImage || '/assets/events/default_event.png';
+  // 使用单张事件图（完整场景）
+  const eventImg = (event as any).image || event.eventImage || event.bgImage || '/assets/events/default_event.png';
 
-  const isCenterPosition = isFocusMode || stage !== 'INTERACTIVE';
   const shouldHideTitle = isFocusMode || stage === 'INIT' || !!selectedOptId;
 
   return (
@@ -555,15 +630,15 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
       {/* Glitch覆盖层 */}
       {(dOptionGlitch || isGazeEvent) && <GlitchOverlay intensity={gazeEffects.intensity} />}
       
-      {/* 背景 */}
+      {/* 背景 - 使用事件图（完整场景）作为全屏背景 */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 2 }}
         className="absolute inset-0 z-0"
       >
-        <img src={bgImg} alt="Background" className="w-full h-full object-cover opacity-60 brightness-75" />
-        <div className="absolute inset-0 bg-radial-gradient from-transparent via-black/20 to-black/80" />
+        <img src={eventImg} alt="Event Scene" className="w-full h-full object-cover" />
+        <div className="absolute inset-0 bg-black/40" />
       </motion.div>
 
       {/* 开眼动画 */}
@@ -600,26 +675,7 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
         onCancel={() => setDOptionConfirm({ ...dOptionConfirm, isOpen: false })}
       />
 
-      {/* 事件插图 */}
-      <motion.div 
-        initial={{ opacity: 0, scale: 0.8, y: -50 }}
-        animate={{ 
-          opacity: 1, 
-          y: "-44%",   
-          x: "-50%",   
-          left: isCenterPosition ? "50%" : "40%" ,
-          scale: (stage === 'INIT' || isFocusMode) ? 1.05 : 1,
-        }}
-        transition={{ 
-          scale: { duration: 3.5, ease: "easeInOut" },
-          default: { type: "spring", stiffness: 60, damping: 20, duration: 0.8 }
-        }}
-        className="absolute top-1/2 w-[80%] md:w-[45%] aspect-[4/3] z-20 shadow-2xl overflow-hidden rounded-2xl border-4 border-white/10"
-      >
-        <img src={eventImg} alt="Event Subject" className="w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-        <div className="absolute inset-0 shadow-[inset_0_0_50px_rgba(0,0,0,0.5)]" />
-      </motion.div>
+      {/* 事件插图 - 已合并到背景，此处不再需要单独显示前景图 */}
 
       {/* 专注模式点击层 */}
       {stage === 'INTERACTIVE' && (
@@ -747,15 +803,14 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
       <AnimatePresence>
         {stage === 'INTERACTIVE' && (
           <>
-            {/* 左下角人物 */}
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              animate={isFocusMode ? { opacity: 0, x: -200 } : { opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              className="absolute bottom-0 left-0 md:left-10 z-40 w-[40%] md:w-[25%] pointer-events-none"
-            >
-              <img src="/assets/scenes/player_back.png" alt="Player" className="w-full object-contain drop-shadow-[0_0_20px_rgba(0,0,0,0.8)]" />
-            </motion.div>
+            {/* [UPDATED] 左下角人物 - 根据阶级和灵视切换 */}
+            <PlayerSprite 
+              key={vitality.identity.currentClass}
+              currentClass={vitality.identity.currentClass}
+              insight={vitality.metrics.insight}
+              maxInsight={vitality.metrics.maxInsight}
+              isFocusMode={isFocusMode}
+            />
 
             {/* 🌟 能看到D选项时的引导提示（只显示一次） */}
             {canSeeDOption && !selectedOptId && stage === 'INTERACTIVE' && !hasSeenDOptionGuide && (
@@ -871,6 +926,8 @@ export const MessageWindow: React.FC<MessageWindowProps> = ({ event }) => {
       </motion.div>
     </div>
   );
-};
+});
+
+MessageWindow.displayName = 'MessageWindow';
 
 export default MessageWindow;

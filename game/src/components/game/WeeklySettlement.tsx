@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useGameStore } from '@/store/useGameStore';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
@@ -9,6 +9,7 @@ import { useI18n } from '@/i18n';
 
 // ✅ 1. 引入统一配置加载器
 import { Config } from '@/config';
+import { TurnTransition } from '@/components/transition/TurnTransition';
 
 interface WeeklySettlementProps {
   isOpen: boolean;
@@ -24,10 +25,14 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
     closeWeeklyReport, 
     setHospitalOpen, 
     addNotification,
-    weeklyReport 
+    weeklyReport,
+    bank
   } = useGameStore();
 
   const { ledger, time, activeDiseases } = vitality;
+  
+  // [NEW] 回合过渡动画状态
+  const [showTransition, setShowTransition] = useState(false);
   
   // ✅ 2. 提取配置数值
   const { maxTurns } = Config.ending.constraints;
@@ -70,9 +75,16 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
 
   // 3. 处理"下一周"
   const handleNextWeek = () => {
+    // [NEW] 先关闭结算界面，然后启动过渡动画
     closeWeeklyReport();
-
-    // 🚨 急诊拦截逻辑（使用已提取的 activeDiseases，避免重复调用 getState）
+    setShowTransition(true);
+  };
+  
+  // [NEW] 过渡动画完成后的处理
+  const handleTransitionComplete = () => {
+    setShowTransition(false);
+    
+    // 🚨 急诊拦截逻辑
     const hasAcute = activeDiseases.some(id => {
        const d = gameDataCache?.diseases?.find((x: Disease) => x.id === id);
        return d?.type === 'ACUTE';
@@ -83,10 +95,36 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
       addNotification("警告：检测到致命病症，系统已强制启动急救程序。", "error");
     }
   };
+  
+  // [NEW] 构建玩家状态用于过渡动画
+  const playerStateForTransition = useMemo(() => {
+    const hasDebt = (bank?.activeLoans?.length || 0) > 0 || vitality.metrics.gold < 0;
+    return {
+      hp: vitality.metrics.hp,
+      maxHp: vitality.metrics.maxHp,
+      gold: vitality.metrics.gold,
+      insight: vitality.metrics.insight,
+      maxInsight: vitality.metrics.maxInsight,
+      hunger: vitality.metrics.hunger,
+      maxHunger: vitality.metrics.maxHunger,
+      currentClass: vitality.identity.currentClass,
+      diseases: activeDiseases,
+      hasDebt
+    };
+  }, [vitality, bank, activeDiseases]);
 
-  if (!isOpen) return null;
+  if (!isOpen && !showTransition) return null;
 
   return (
+    <>
+      {/* [NEW] 回合过渡动画 */}
+      <TurnTransition
+        isActive={showTransition}
+        currentTurn={time.currentTurn}
+        playerState={playerStateForTransition}
+        onComplete={handleTransitionComplete}
+      />
+      
     <AnimatePresence>
       <div 
         className="fixed inset-0 flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
@@ -204,5 +242,6 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
         </motion.div>
       </div>
     </AnimatePresence>
+    </>
   );
 };

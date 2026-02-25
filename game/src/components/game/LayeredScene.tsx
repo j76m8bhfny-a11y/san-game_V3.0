@@ -10,19 +10,27 @@ import CLASSES_DATA from '@/assets/data/classes.json';
 import { BankModal } from './BankModal';
 import { InsuranceModal } from './InsuranceModal';
 
+/**
+ * @deprecated 此组件当前未被使用，保留用于可能的未来场景（如地图探索）
+ * 如需使用，请传入单张完整场景图（image）
+ */
 interface LayeredSceneProps {
-  bgImage: string;
+  /** 完整场景图（单张） */
+  image: string;
+  /** @deprecated 旧格式前景图，已合并到 image */
   eventImage?: string;
   playerImage?: string;
   isGlitch?: boolean;
 }
 
 export const LayeredScene: React.FC<LayeredSceneProps> = ({
-  bgImage,
+  image,
   eventImage,
   playerImage,
   isGlitch = false,
 }) => {
+  // 兼容旧格式：如果传入了 eventImage 但没有传入 image，使用 eventImage
+  const sceneImage = image || eventImage || '';
   const { t } = useI18n();
   // 1. 获取阶级配置
   const currentClass = useGameStore(s => s.vitality.identity.currentClass);
@@ -85,13 +93,13 @@ export const LayeredScene: React.FC<LayeredSceneProps> = ({
         className="absolute inset-[-5%] w-[110%] h-[110%] bg-cover bg-center transition-transform duration-200 ease-out"
         style={{ 
           transform: `translate(${bgTransform.x}px, ${bgTransform.y}px)`,
-          background: bgLoaded ? `url(${bgImage})` : fallbackGradient,
+          background: bgLoaded ? `url(${sceneImage})` : fallbackGradient,
           filter: filterStyle,
           willChange: 'transform'
         }}
       >
         <img 
-          src={bgImage} 
+          src={sceneImage} 
           className="hidden" 
           onLoad={() => setBgLoaded(true)} 
           onError={() => setBgLoaded(false)} 
@@ -101,19 +109,7 @@ export const LayeredScene: React.FC<LayeredSceneProps> = ({
       {/* Layer 1: Vignette */}
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)] pointer-events-none" />
       
-      {/* Layer 1.5: Event Image */}
-      {eventImage && (
-         <div
-            key={eventImage} 
-            className="absolute inset-0 bg-contain bg-center bg-no-repeat pointer-events-none transition-transform duration-200 ease-out"
-            style={{ 
-              transform: `translate(${fgTransform.x}px, ${fgTransform.y}px)`, 
-              backgroundImage: `url(${eventImage})`, 
-              zIndex: 10,
-              willChange: 'transform'
-            }}
-          />
-      )}
+      {/* 前景层 - 已不再需要，因为使用单张完整场景图 */}
 
       {/* Layer 2: Glitch Overlay */}
       {isGlitch && (

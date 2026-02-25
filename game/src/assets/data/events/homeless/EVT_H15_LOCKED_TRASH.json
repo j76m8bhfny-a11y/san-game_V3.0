@@ -4,12 +4,10 @@
   "title": "锁上的垃圾桶",
   "category": "HOMELESS",
   "series": "食物分配",
-  "layer": {
-    "background": "/assets/scenes/bg_alley_night.png",
-    "foreground": "/assets/events/evt_locked_dumpster.png"
-  },
   "conditions": {
-    "requiredClass": ["HOMELESS"],
+    "requiredClass": [
+      "HOMELESS"
+    ],
     "minSan": 0,
     "maxSan": 100,
     "weight": 10,
@@ -30,7 +28,9 @@
         "gold": 150,
         "hp": -12,
         "insightGain": 8,
-        "points": { "old": 3 }
+        "points": {
+          "old": 3
+        }
       }
     },
     "B": {
@@ -58,7 +58,9 @@
         "gold": -0.15,
         "hp": 8,
         "insight": -10,
-        "points": { "wolf": 3 }
+        "points": {
+          "wolf": 3
+        }
       }
     },
     "D": {
@@ -76,7 +78,9 @@
         "gold": -100,
         "hp": -18,
         "insight": -10,
-        "points": { "red": 15 }
+        "points": {
+          "red": 15
+        }
       }
     }
   },
@@ -89,6 +93,10 @@
     "references": [
       "https://www.fda.gov/food/food-donations-and-food-recovery"
     ],
-    "relatedEvents": ["EVT_H03_MILK", "EVT_H21_FEEDING_BAN"]
-  }
+    "relatedEvents": [
+      "EVT_H03_MILK",
+      "EVT_H21_FEEDING_BAN"
+    ]
+  },
+  "image": "/assets/events/evt_locked_dumpster.png"
 }

@@ -157,7 +157,7 @@ export const CryptoSidebar: React.FC = () => {
         {!crypto.isAccountOpen ? (
           <div className="h-full flex flex-col items-center justify-center text-center space-y-4 opacity-80">
             <div className="text-4xl">🔒</div>
-            <p className="text-sm text-red-500 font-mono">ACCESS RESTRICTED</p>
+            <p className="text-sm text-red-500 font-mono">{t('crypto.accessRestricted')}</p>
             <p className="text-xs text-gray-500 px-4">
               {hasLicense 
                 ? "KYC验证通过。支付网络接入费以继续。" 

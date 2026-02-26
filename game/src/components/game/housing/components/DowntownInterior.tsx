@@ -30,16 +30,16 @@ export const DowntownInterior: React.FC<Props> = ({ housing: _housing, onSleep, 
       <div className="absolute top-8 left-8 z-10">
         <div className="bg-black/40 backdrop-blur-md border border-white/10 p-4 rounded-sm flex gap-6 text-gray-300">
           <div>
-            <div className="text-[10px] uppercase tracking-widest opacity-50">Temperature</div>
+            <div className="text-[10px] uppercase tracking-widest opacity-50">{t('housing.temperature')}</div>
             <div className="font-mono text-lg">72°F</div>
           </div>
           <div>
-            <div className="text-[10px] uppercase tracking-widest opacity-50">Air Quality</div>
-            <div className="font-mono text-lg text-green-400">PURE</div>
+            <div className="text-[10px] uppercase tracking-widest opacity-50">{t('housing.airQuality')}</div>
+            <div className="font-mono text-lg text-green-400">{t('housing.pure')}</div>
           </div>
           <div>
-            <div className="text-[10px] uppercase tracking-widest opacity-50">Security</div>
-            <div className="font-mono text-lg text-blue-400">ARMED</div>
+            <div className="text-[10px] uppercase tracking-widest opacity-50">{t('housing.security')}</div>
+            <div className="font-mono text-lg text-blue-400">{t('housing.armed')}</div>
           </div>
         </div>
       </div>

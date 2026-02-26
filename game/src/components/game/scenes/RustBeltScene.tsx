@@ -102,7 +102,7 @@ const NarrativeProp: React.FC<NarrativePropProps> = ({ text, style, baseImage, a
 export const RustBeltScene: React.FC = () => {
   const { t } = useI18n();
   const [vehicleShopOpen, setVehicleShopOpen] = useState(false);
-  const { setShopOpen, setJobBoardOpen, setHousingOpen, setHospitalOpen, setBankOpen, setInsuranceOpen } = useGameStore();
+  const { setShopOpen, setJobBoardOpen, setHousingOpen, setHospitalOpen, setBankOpen, setInsuranceOpen, setFaithOpen } = useGameStore();
 
   return (
     <>
@@ -145,7 +145,7 @@ export const RustBeltScene: React.FC = () => {
 
           {/* 2. 商店：加油站便利店 */}
           <InteractableObject 
-            label="GAS & MART"
+            label={t('scenes.rust_belt.gas_mart')}
             style={{ left: '20%', bottom: '18%', width: '22vw' }}
             baseImage="/assets/scenes/rust/obj_shop_gas.png"
             hoverImage="/assets/scenes/rust/obj_shop_gas_lit.png"
@@ -154,7 +154,7 @@ export const RustBeltScene: React.FC = () => {
 
           {/* 3. 医院：紧急护理中心 */}
           <InteractableObject 
-            label="URGENT CARE"
+            label={t('scenes.rust_belt.urgent_care')}
             style={{ left: '38%', bottom: '22%', width: '14vw' }}
             baseImage="/assets/scenes/rust/obj_hospital_care.png"
             hoverImage="/assets/scenes/rust/obj_hospital_care_lit.png"
@@ -180,7 +180,7 @@ export const RustBeltScene: React.FC = () => {
 
           {/* 5. 工作：工厂大门 */}
           <InteractableObject 
-            label="STEEL WORKS"
+            label={t('scenes.rust_belt.steel_works')}
             style={{ left: '58%', bottom: '25%', width: '15vw' }}
             baseImage="/assets/scenes/rust/obj_job_gate.png"
             hoverImage="/assets/scenes/rust/obj_job_gate_lit.png"
@@ -189,7 +189,7 @@ export const RustBeltScene: React.FC = () => {
 
           {/* 6. 银行：支票兑现 */}
           <InteractableObject 
-            label="CHECK CASHING"
+            label={t('scenes.rust_belt.check_cashing')}
             style={{ left: '72%', bottom: '20%', width: '14vw' }}
             baseImage="/assets/scenes/rust/obj_bank_check.png"
             hoverImage="/assets/scenes/rust/obj_bank_check_lit.png"
@@ -198,7 +198,7 @@ export const RustBeltScene: React.FC = () => {
 
           {/* 7. 住房：汽车旅馆 */}
           <InteractableObject 
-            label="MOTEL 6"
+            label={t('scenes.rust_belt.motel_6')}
             style={{ left: '85%', bottom: '15%', width: '18vw' }}
             baseImage="/assets/scenes/rust/obj_housing_motel.png"
             hoverImage="/assets/scenes/rust/obj_housing_motel_lit.png"
@@ -210,11 +210,12 @@ export const RustBeltScene: React.FC = () => {
              text={t('scenes.rust_belt.dog_text')}
              style={{ left: '92%', bottom: '10%', width: '6vw' }}
              baseImage="/assets/scenes/rust/prop_stray_dog.png"
+             activeImage="/assets/scenes/rust/prop_stray_dog_bark.png"
           />
           {/* [NEW] 保险入口：工会登记处 (折叠桌) */}
           {/* 放在工作(58%)和银行(72%)之间 */}
           <InteractableObject 
-            label="UNION REP"
+            label={t('scenes.rust_belt.union_rep')}
             style={{ left: '66%', bottom: '20%', width: '8vw' }}
             baseImage="/assets/scenes/rust/obj_insurance_table.png" // 素材：一张放满文件的折叠桌和一把椅子
             hoverImage="/assets/scenes/rust/obj_insurance_table_lit.png"
@@ -226,6 +227,15 @@ export const RustBeltScene: React.FC = () => {
              text={t('scenes.rust_belt.union_rep_text')}
              style={{ left: '68%', bottom: '26%', width: '3vw', zIndex: 21 }}
              baseImage="/assets/scenes/rust/prop_coffee_cup.png"
+          />
+          
+          {/* 9. 信仰：废弃教堂/工会礼拜堂 */}
+          <InteractableObject 
+            label={t('scenes.rust_belt.abandoned_chapel')}
+            style={{ left: '30%', bottom: '35%', width: '10vw' }}
+            baseImage="/assets/scenes/rust/obj_faith_church.png"
+            hoverImage="/assets/scenes/rust/obj_faith_church_lit.png"
+            onClick={() => setFaithOpen(true)}
           />
 
         </div>

@@ -71,7 +71,7 @@ export const DMVQueueSection: React.FC<DMVQueueSectionProps> = ({
         {/* 叫号显示 */}
         <div className="flex items-center justify-center gap-8 py-4 mb-4">
           <div className="text-center">
-            <p className="text-white/50 text-xs mb-1">Now Serving</p>
+            <p className="text-white/50 text-xs mb-1">{t('vehicleShop.rustbelt.dmvNowServing')}</p>
             <div className="text-3xl font-mono font-bold text-white">
               #{dmvQueue.currentNumber}
             </div>
@@ -80,7 +80,7 @@ export const DMVQueueSection: React.FC<DMVQueueSectionProps> = ({
             <Ticket size={24} />
           </div>
           <div className="text-center">
-            <p className="text-white/50 text-xs mb-1">Your Number</p>
+            <p className="text-white/50 text-xs mb-1">{t('vehicleShop.rustbelt.dmvYourNumber')}</p>
             <div className={`text-3xl font-mono font-bold ${
               isComplete ? 'text-green-400' : 'text-amber-400'
             }`}>

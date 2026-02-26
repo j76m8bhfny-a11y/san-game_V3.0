@@ -7,6 +7,7 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAudioStore } from '@/store/useAudioStore';
+import { useI18n } from '@/i18n';
 import NARRATIVE_RULES from '@/assets/data/rules/narrative_rules.json';
 import { PlayerClass } from '@/types/schema';
 import type { TurnTransitionConfig, DarkHumorLinesConfig } from '@/types/narrative';
@@ -302,7 +303,7 @@ export const TurnTransition: React.FC<TurnTransitionProps> = React.memo(({
                 }}
               >
                 <div className="text-center">
-                  <div className="text-gray-500 text-xs uppercase tracking-widest mb-2">Week</div>
+                  <div className="text-gray-500 text-xs uppercase tracking-widest mb-2">{t('weeklySettlement.week')}</div>
                   <div className="text-4xl font-black text-gray-400">{currentTurn}</div>
                 </div>
               </motion.div>
@@ -320,7 +321,7 @@ export const TurnTransition: React.FC<TurnTransitionProps> = React.memo(({
                 }}
               >
                 <div className="text-center">
-                  <div className="text-gray-400 text-xs uppercase tracking-widest mb-2">Week</div>
+                  <div className="text-gray-400 text-xs uppercase tracking-widest mb-2">{t('weeklySettlement.week')}</div>
                   <div className="text-5xl font-black text-black">{currentTurn + 1}</div>
                 </div>
               </motion.div>

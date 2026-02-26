@@ -140,11 +140,11 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
           {/* Header */}
           <div className="p-6 pb-2 bg-white dark:bg-[#161616]">
             <div className="flex justify-between items-center mb-1">
-              <div className="text-xs font-bold text-gray-400 uppercase tracking-widest">WEEKLY STATEMENT</div>
+              <div className="text-xs font-bold text-gray-400 uppercase tracking-widest">{t('weeklySettlement.statement')}</div>
               <div className="flex items-center gap-1 text-gray-500 font-mono text-xs">
                  <Calendar size={12}/>
                  {/* ✅ 使用配置的最大周数 */}
-                 <span>WEEK {summary.turn} / {maxTurns}</span>
+                 <span>{t('weeklySettlement.weekLabel', { turn: summary.turn, max: maxTurns })}</span>
               </div>
             </div>
             <h2 className="text-3xl font-black text-gray-900 dark:text-white tracking-tight">

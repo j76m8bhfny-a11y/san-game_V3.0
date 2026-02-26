@@ -44,7 +44,7 @@ const JailOverlay: React.FC = () => {
         {/* 头部信息 */}
         <div className="text-center mb-8">
           <h1 className="text-4xl font-black text-red-600 tracking-widest mb-2">{t('jail.title')}</h1>
-          <p className="text-zinc-500">INMATE: {currentClass.toUpperCase()}</p>
+          <p className="text-zinc-500">{t('jail.inmate')}: {currentClass.toUpperCase()}</p>
           <div className="mt-4 p-4 bg-black/50 border border-zinc-800 text-zinc-300">
              {t('jail.crime')}: {prison.crime}
           </div>
@@ -57,7 +57,7 @@ const JailOverlay: React.FC = () => {
               <div className="text-xs text-zinc-500 uppercase">{t('jail.sentence')}</div>
               <div className="text-2xl font-bold text-white">
                 {/* 字段已确认为 turnsServed / sentenceTurns */}
-                {prison.turnsServed} / {prison.sentenceTurns} <span className="text-sm font-normal text-zinc-500">Turns</span>
+                {prison.turnsServed} / {prison.sentenceTurns} <span className="text-sm font-normal text-zinc-500">{t('jail.turns')}</span>
               </div>
               <div className="w-full h-2 bg-zinc-900 mt-2 rounded-full overflow-hidden">
                 <div
@@ -71,17 +71,17 @@ const JailOverlay: React.FC = () => {
            <div className="bg-zinc-800/50 p-4 border border-zinc-700">
               <div className="text-xs text-zinc-500 uppercase">{t('jail.bail')}</div>
               <div className="text-2xl font-bold text-green-500">${prison.bailAmount}</div>
-              <div className="text-xs text-zinc-600 mt-1">Cash or Bond accepted</div>
+              <div className="text-xs text-zinc-600 mt-1">{t('jail.cashOrBond')}</div>
               {/* 🔴 显示疾病警告 */}
               {vitality.activeDiseases && vitality.activeDiseases.length > 0 && (
                 <div className="mt-2 text-xs text-red-500">
-                  ⚠️ {vitality.activeDiseases.length} 种疾病发作中（无法就医）
+                  ⚠️ {vitality.activeDiseases.length} {t('jail.diseaseWarning')}
                 </div>
               )}
               {/* 🔴 显示重罪记录 */}
               {vitality.flags.hasFelonyRecord && (
                 <div className="mt-1 text-xs text-orange-500">
-                  🔒 重罪记录（中产工作永久关闭）
+                  🔒 {t('jail.felonyWarning')}
                 </div>
               )}
            </div>
@@ -103,7 +103,7 @@ const JailOverlay: React.FC = () => {
              <span className="font-bold">{t('jail.serve')}</span>
              <span className="text-xs text-zinc-500 group-hover:text-zinc-300">
                {/* 动态显示的提示文案 */}
-               {isVipTreatment ? 'VIP Routine (No Penalty)' : 'High HP/Insight Cost'}
+               {isVipTreatment ? t('jail.vipRoutine') : t('jail.highCost')}
              </span>
           </button>
 
@@ -125,10 +125,10 @@ const JailOverlay: React.FC = () => {
               }}
               className="py-3 bg-purple-900/20 hover:bg-purple-900/40 border border-purple-800 text-purple-400 font-bold transition-all flex flex-col items-center justify-center leading-none"
             >
-              <span>{t('jail.bail').toUpperCase()} BOND</span>
+              <span>{t('jail.bailBond')}</span>
               {/* 这里显示的百分比也可以做成动态的，目前使用 rate * 100 即可 */}
               <span className="text-[10px] mt-1 opacity-70">
-                PAY ${bailDownPayment} ({(bondRate * 100).toFixed(0)}%) + DEBT
+                {t('jail.pay')} ${bailDownPayment} ({(bondRate * 100).toFixed(0)}%) + {t('jail.debt')}
               </span>
             </button>
           </div>
@@ -142,9 +142,9 @@ const JailOverlay: React.FC = () => {
               }}
               className="w-full py-3 bg-red-900/20 hover:bg-red-900/40 border border-red-800 text-red-400 font-bold transition-all flex justify-between px-6 items-center"
             >
-              <span>💊 黑市止痛药</span>
+              <span>{t('jail.blackMarketMeds')}</span>
               <span className="text-xs text-red-500">
-                -$100 (+10 HP)
+                {t('jail.blackMarketMedsDesc')}
               </span>
             </button>
           )}

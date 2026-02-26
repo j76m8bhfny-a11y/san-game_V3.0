@@ -46,12 +46,19 @@ class EventIndex {
    */
   getEventIdsByCategory(category: 'HOMELESS' | 'WORKER' | 'MIDDLE' | 'CAPITALIST' | 'COMMON'): string[] {
     return this.getAllEventIds().filter(id => {
-      const prefix = category === 'HOMELESS' ? 'EVT_H' :
-                     category === 'WORKER' ? 'EVT_W' :
-                     category === 'MIDDLE' ? 'EVT_M' :
-                     category === 'CAPITALIST' ? 'EVT_C' : 
-                     category === 'COMMON' ? 'EVT_C' : 'EVT_';
-      return id.startsWith(prefix);
+      if (category === 'HOMELESS') return id.startsWith('EVT_H');
+      if (category === 'WORKER') return id.startsWith('EVT_W');
+      if (category === 'MIDDLE') return id.startsWith('EVT_M');
+      if (category === 'CAPITALIST') return id.startsWith('EVT_CAPITALIST');
+      if (category === 'COMMON') {
+        // Common 事件: EVT_C + 数字 (如 EVT_C01), AGING_*, ANXIETY_*, WITHDRAWAL_*, EVT_FOODPOISONING_*
+        return id.startsWith('EVT_C') && /^EVT_C\d/.test(id) || 
+               id.startsWith('AGING_') || 
+               id.startsWith('ANXIETY_') || 
+               id.startsWith('WITHDRAWAL_') ||
+               id.startsWith('EVT_FOODPOISONING');
+      }
+      return false;
     });
   }
 
@@ -141,14 +148,18 @@ class EventIndex {
       return `./worker/${eventId}.json`;
     } else if (eventId.startsWith('EVT_M') || eventId.startsWith('MIDDLE')) {
       return `./middle/${eventId}.json`;
-    } else if (eventId.startsWith('EVT_C') || eventId.startsWith('CAPITALIST') || eventId.startsWith('GAZE_')) {
-      // GAZE_事件在common目录
-      if (eventId.startsWith('GAZE_')) {
-        return `./common/${eventId}.json`;
-      }
-      // 检查是COMMON还是CAPITALIST
-      // 这里简化处理，实际应该根据内容判断
+    } else if (eventId.startsWith('EVT_CAPITALIST') || eventId.startsWith('CAPITALIST')) {
+      // Capitalist 事件
       return `./capitalist/${eventId}.json`;
+    } else if (eventId.startsWith('GAZE_')) {
+      // GAZE_事件在common目录
+      return `./common/${eventId}.json`;
+    } else if (eventId.startsWith('EVT_C')) {
+      // EVT_C + 数字 是 Common 事件 (如 EVT_C01_HEAT_WAVE)
+      return `./common/${eventId}.json`;
+    } else if (eventId.startsWith('AGING_') || eventId.startsWith('ANXIETY_') || eventId.startsWith('WITHDRAWAL_')) {
+      // 这些特殊事件在 homeless 目录
+      return `./homeless/${eventId}.json`;
     } else if (eventId.startsWith('EVT_')) {
       return `./common/${eventId}.json`;
     } else {

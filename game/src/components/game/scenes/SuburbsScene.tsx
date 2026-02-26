@@ -98,7 +98,8 @@ export const SuburbsScene: React.FC = () => {
     setHousingOpen, 
     setHospitalOpen, 
     setBankOpen,
-    setInsuranceOpen
+    setInsuranceOpen,
+    setFaithOpen
   } = useGameStore();
 
   return (
@@ -126,7 +127,7 @@ export const SuburbsScene: React.FC = () => {
           
           {/* 1. 商店：有机食品超市 (左侧) */}
           <InteractableObject 
-            label="WHOLE FOODS MARKET"
+            label={t('scenes.suburbs.whole_foods')}
             style={{ left: '5%', bottom: '16%', width: '24vw' }}
             baseImage="/assets/scenes/suburbs/obj_shop_market.png"
             hoverImage="/assets/scenes/suburbs/obj_shop_market_lit.png"
@@ -135,7 +136,7 @@ export const SuburbsScene: React.FC = () => {
 
           {/* 2. 工作：办公园区 (左中) */}
           <InteractableObject 
-            label="CORPORATE PARK"
+            label={t('scenes.suburbs.corporate_park')}
             style={{ left: '26%', bottom: '20%', width: '16vw' }}
             baseImage="/assets/scenes/suburbs/obj_job_office.png"
             hoverImage="/assets/scenes/suburbs/obj_job_office_lit.png"
@@ -151,7 +152,7 @@ export const SuburbsScene: React.FC = () => {
 
           {/* 3. 住房：独栋别墅 (正中) */}
           <InteractableObject 
-            label="MY HOUSE"
+            label={t('scenes.suburbs.my_house')}
             style={{ left: '50%', bottom: '18%', width: '28vw' }}
             baseImage="/assets/scenes/suburbs/obj_housing_house.png"
             hoverImage="/assets/scenes/suburbs/obj_housing_house_open.png"
@@ -167,7 +168,7 @@ export const SuburbsScene: React.FC = () => {
 
           {/* 4. 银行：商业银行 (右中) */}
           <InteractableObject 
-            label="CHASE BANK"
+            label={t('scenes.suburbs.chase_bank')}
             style={{ left: '76%', bottom: '17%', width: '14vw' }}
             baseImage="/assets/scenes/suburbs/obj_bank_branch.png"
             hoverImage="/assets/scenes/suburbs/obj_bank_branch_lit.png"
@@ -185,7 +186,7 @@ export const SuburbsScene: React.FC = () => {
 
           {/* 5. 医院：连锁药房 (右侧) */}
            <InteractableObject 
-            label="CVS PHARMACY"
+            label={t('scenes.suburbs.cvs_pharmacy')}
             style={{ left: '88%', bottom: '15%', width: '18vw' }}
             baseImage="/assets/scenes/suburbs/obj_hospital_pharmacy.png"
             hoverImage="/assets/scenes/suburbs/obj_hospital_pharmacy_lit.png"
@@ -195,7 +196,7 @@ export const SuburbsScene: React.FC = () => {
           {/* [NEW] 保险入口：保险经纪人立牌 */}
           {/* 放在办公区(26%)和HOA牌子(44%)之间 */}
           <InteractableObject 
-            label="SAFEHANDS AGENT"
+            label={t('scenes.suburbs.safehands_agent')}
             style={{ left: '36%', bottom: '14%', width: '4vw' }}
             baseImage="/assets/scenes/suburbs/obj_insurance_sign.png" // 素材：类似房地产广告的小立牌
             hoverImage="/assets/scenes/suburbs/obj_insurance_sign_hover.png"
@@ -207,6 +208,15 @@ export const SuburbsScene: React.FC = () => {
             image="/assets/scenes/suburbs/prop_flyer_pile.png"
             style={{ left: '38%', bottom: '13%', width: '2vw' }}
             message={t('scenes.suburbs.flyer_message')}
+          />
+          
+          {/* 6. 信仰：福音派大教堂 */}
+          <InteractableObject 
+            label={t('scenes.suburbs.mega_church')}
+            style={{ left: '92%', bottom: '40%', width: '14vw' }}
+            baseImage="/assets/scenes/suburbs/obj_faith_cathedral.png"
+            hoverImage="/assets/scenes/suburbs/obj_faith_cathedral_lit.png"
+            onClick={() => setFaithOpen(true)}
           />
 
         </div>

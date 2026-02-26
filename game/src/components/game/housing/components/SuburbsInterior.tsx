@@ -38,7 +38,7 @@ export const SuburbsInterior: React.FC<Props> = ({ housing, onRest, onPayBills, 
           </div>
           <div className="flex justify-between">
             <span>Comfort:</span>
-            <span className="font-bold text-[#d4a373]">HIGH</span>
+            <span className="font-bold text-[#d4a373]">{t('housing.high')}</span>
           </div>
           <div className="flex justify-between">
             <span>Weekly Cost:</span>

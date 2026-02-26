@@ -64,19 +64,96 @@ const ChargingBullProp = () => {
   return (
     <div 
       onClick={handleClick}
-      className={`absolute left-[45%] bottom-[8%] w-[12vw] cursor-pointer transition-all duration-300 ${isActive ? 'scale-110 brightness-125' : 'hover:scale-105'}`}
+      className={`absolute left-[45%] bottom-[8%] w-[12vw] cursor-pointer transition-all duration-300 ${isActive ? 'scale-110' : 'hover:scale-105'}`}
       style={{ zIndex: 15 }}
     >
       <img 
-        src="/assets/scenes/downtown/prop_bull.png" 
-        className={`w-full drop-shadow-2xl transition-all duration-1000 ${isActive ? 'drop-shadow-[0_0_50px_rgba(0,255,100,0.8)]' : ''}`}
+        src={isActive ? "/assets/scenes/downtown/prop_bull_charging.png" : "/assets/scenes/downtown/prop_bull.png"}
+        className="w-full drop-shadow-2xl transition-all duration-300"
         alt="Charging Bull" 
       />
       {/* 喷气特效 (简单的 CSS 动画) */}
       {isActive && (
-        <div className="absolute top-1/2 left-0 w-full h-full flex justify-between px-2">
+        <div className="absolute top-1/2 left-0 w-full h-full flex justify-between px-2 pointer-events-none">
            <div className="w-4 h-16 bg-white/40 blur-md animate-ping" style={{ animationDuration: '0.5s' }} />
            <div className="w-4 h-16 bg-white/40 blur-md animate-ping" style={{ animationDuration: '0.6s' }} />
+        </div>
+      )}
+      {/* 点击提示文字 */}
+      {isActive && (
+        <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-black/80 text-green-400 px-3 py-1 rounded font-pixel text-xs whitespace-nowrap border border-green-400">
+          {t('scenes.downtown.bull_market')}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// --- 叙事道具：豪车 ---
+const LuxuryCarProp = () => {
+  const [isActive, setIsActive] = useState(false);
+
+  const handleClick = () => {
+    setIsActive(true);
+    setTimeout(() => setIsActive(false), 3000);
+  };
+
+  return (
+    <div 
+      onClick={handleClick}
+      className="absolute left-[75%] bottom-[5%] w-[10vw] cursor-pointer transition-all duration-300 hover:scale-105 z-10"
+    >
+      <img 
+        src={isActive ? "/assets/scenes/downtown/prop_luxury_car_lights.png" : "/assets/scenes/downtown/prop_luxury_car.png"}
+        className="w-full drop-shadow-2xl"
+        alt="Luxury Car" 
+      />
+      {/* 车灯光效 */}
+      {isActive && (
+        <div className="absolute top-1/2 left-0 w-full h-full pointer-events-none">
+           <div className="absolute top-0 left-1/4 w-8 h-4 bg-white/60 blur-xl" />
+           <div className="absolute top-0 right-1/4 w-8 h-4 bg-white/60 blur-xl" />
+        </div>
+      )}
+      {/* 点击提示文字 */}
+      {isActive && (
+        <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-black/80 text-[#d4af37] px-3 py-1 rounded font-pixel text-xs whitespace-nowrap border border-[#d4af37]">
+          {t('scenes.downtown.luxury_car')}
+        </div>
+      )}
+    </div>
+  );
+};
+
+// --- 叙事道具：全息股票板 ---
+const HologramStockBoardProp = () => {
+  const [isActive, setIsActive] = useState(false);
+
+  const handleClick = () => {
+    setIsActive(true);
+    setTimeout(() => setIsActive(false), 3000);
+  };
+
+  return (
+    <div 
+      onClick={handleClick}
+      className="absolute left-[15%] bottom-[35%] w-[8vw] cursor-pointer transition-all duration-300 hover:scale-105 z-10"
+    >
+      <img 
+        src={isActive ? "/assets/scenes/downtown/prop_hologram_stock_active.png" : "/assets/scenes/downtown/prop_hologram_stock.png"}
+        className="w-full drop-shadow-2xl"
+        alt="Hologram Stock Board" 
+      />
+      {/* 全息扫描线效果 */}
+      {isActive && (
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden">
+           <div className="absolute w-full h-1 bg-cyan-400/50 blur-sm animate-scan" style={{ animation: 'scan 2s linear infinite' }} />
+        </div>
+      )}
+      {/* 点击提示文字 */}
+      {isActive && (
+        <div className="absolute -top-12 left-1/2 -translate-x-1/2 bg-black/80 text-cyan-400 px-3 py-1 rounded font-pixel text-xs whitespace-nowrap border border-cyan-400">
+          {t('scenes.downtown.hologram_stock')}
         </div>
       )}
     </div>
@@ -92,7 +169,8 @@ export const DowntownScene: React.FC = () => {
     setHousingOpen, 
     setHospitalOpen, 
     setBankOpen,
-    setInsuranceOpen
+    setInsuranceOpen,
+    setFaithOpen
   } = useGameStore();
 
   return (
@@ -122,7 +200,7 @@ export const DowntownScene: React.FC = () => {
           
           {/* 1. 私人俱乐部 (商店) - 左侧 */}
           <InteractableObject 
-            label="THE CLUB"
+            label={t('scenes.downtown.the_club')}
             style={{ left: '10%', bottom: '15%', width: '18vw' }}
             baseImage="/assets/scenes/downtown/obj_shop_club.png"
             hoverImage="/assets/scenes/downtown/obj_shop_club_lit.png"
@@ -131,7 +209,7 @@ export const DowntownScene: React.FC = () => {
 
           {/* 2. 总部大厦 (工作) - 左中 */}
           <InteractableObject 
-            label="GLOBAL HQ"
+            label={t('scenes.downtown.global_hq')}
             style={{ left: '28%', bottom: '12%', width: '16vw' }}
             baseImage="/assets/scenes/downtown/obj_job_hq.png"
             hoverImage="/assets/scenes/downtown/obj_job_hq_lit.png"
@@ -140,10 +218,16 @@ export const DowntownScene: React.FC = () => {
 
           {/* 3. 叙事道具：华尔街铜牛 - 中间 */}
           <ChargingBullProp />
+          
+          {/* 4. 叙事道具：豪车 - 右侧路边 */}
+          <LuxuryCarProp />
+          
+          {/* 5. 叙事道具：全息股票板 - 左侧高楼旁 */}
+          <HologramStockBoardProp />
 
           {/* 4. 顶层公寓入口 (住房) - 右中 */}
           <InteractableObject 
-            label="THE PENTHOUSE"
+            label={t('scenes.downtown.the_penthouse')}
             style={{ left: '62%', bottom: '14%', width: '20vw' }}
             baseImage="/assets/scenes/downtown/obj_housing_penthouse.png"
             hoverImage="/assets/scenes/downtown/obj_housing_penthouse_lit.png"
@@ -152,7 +236,7 @@ export const DowntownScene: React.FC = () => {
 
           {/* 5. 私人银行 (银行) - 右侧 */}
           <InteractableObject 
-            label="PRIVATE VAULT"
+            label={t('scenes.downtown.private_vault')}
             style={{ left: '80%', bottom: '16%', width: '18vw' }}
             baseImage="/assets/scenes/downtown/obj_bank_vault.png"
             hoverImage="/assets/scenes/downtown/obj_bank_vault_open.png"
@@ -170,7 +254,7 @@ export const DowntownScene: React.FC = () => {
           
           {/* 6. 生命延续中心 (医院) - 最右 */}
            <InteractableObject 
-            label="BIO-HACKING LAB"
+            label={t('scenes.downtown.bio_lab')}
             style={{ left: '95%', bottom: '20%', width: '12vw' }}
             baseImage="/assets/scenes/downtown/obj_hospital_lab.png"
             hoverImage="/assets/scenes/downtown/obj_hospital_lab_lit.png"
@@ -204,6 +288,15 @@ export const DowntownScene: React.FC = () => {
                 {t('scenes.downtown.private_client_label')}
              </div>
           </div>
+          
+          {/* 7. 信仰：共济会/现代商业教会 */}
+          <InteractableObject 
+            label={t('scenes.downtown.masonic_lodge')}
+            style={{ left: '5%', bottom: '40%', width: '8vw' }}
+            baseImage="/assets/scenes/downtown/obj_faith_lodge.png"
+            hoverImage="/assets/scenes/downtown/obj_faith_lodge_lit.png"
+            onClick={() => setFaithOpen(true)}
+          />
 
         </div>
       </ParallaxLayer>
@@ -218,6 +311,14 @@ export const DowntownScene: React.FC = () => {
       
       {/* 细微的科幻/全息网格线 (极淡，体现高端感) */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:100px_100px] pointer-events-none opacity-20" />
+
+      {/* 内联动画样式 */}
+      <style>{`
+        @keyframes scan {
+          0% { transform: translateY(-100%); }
+          100% { transform: translateY(1000%); }
+        }
+      `}</style>
 
     </BaseScene>
 

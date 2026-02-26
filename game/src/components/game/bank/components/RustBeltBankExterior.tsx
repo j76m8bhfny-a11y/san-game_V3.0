@@ -54,7 +54,7 @@ export const RustBeltBankExterior: React.FC<Props> = ({ onEnter, onClose }) => {
           
           {/* 营业时间贴纸 */}
           <div className="bg-white/80 p-2 text-center transform rotate-2 shadow-sm">
-            <div className="text-xs font-bold text-black border-b border-black mb-1">OPEN</div>
+            <div className="text-xs font-bold text-black border-b border-black mb-1">{t('housing.open')}</div>
             <div className="text-[10px] font-mono">9:00 - 17:00</div>
           </div>
           

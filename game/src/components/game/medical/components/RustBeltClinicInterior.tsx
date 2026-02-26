@@ -78,11 +78,11 @@ export const RustBeltClinicInterior: React.FC<Props> = ({ services, gold, onBuy,
              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center w-full">
                {processingId ? (
                  <div className="animate-pulse">
-                   <div className="text-red-500 font-mono text-xl font-bold">PROCESSING</div>
-                   <div className="text-red-500/70 text-xs">PLEASE WAIT...</div>
+                   <div className="text-red-500 font-mono text-xl font-bold">{t('hospital.processing')}</div>
+                   <div className="text-red-500/70 text-xs">{t('common.loading')}</div>
                  </div>
                ) : (
-                 <div className="text-green-500/50 font-mono text-sm">NEXT PATIENT</div>
+                 <div className="text-green-500/50 font-mono text-sm">{t('hospital.nextPatient')}</div>
                )}
              </div>
           </div>
@@ -96,7 +96,7 @@ export const RustBeltClinicInterior: React.FC<Props> = ({ services, gold, onBuy,
             {/* 交易动画：卡片/现金 */}
             {processingId && (
               <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-20 bg-green-800/20 animate-slide-in-up flex items-center justify-center border border-green-500/50">
-                 <span className="text-green-400 text-xs font-bold">PAYMENT ACCEPTED</span>
+                 <span className="text-green-400 text-xs font-bold">{t('hospital.paymentAccepted')}</span>
               </div>
             )}
           </div>

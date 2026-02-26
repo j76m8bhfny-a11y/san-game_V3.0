@@ -43,7 +43,11 @@ export const useI18n = create<I18nState>()(
       setLocale: (locale) => set({ locale }),
       t: (key: string, params?: Record<string, string | number>) => {
         const { locale } = get();
-        const messages = locales[locale];
+        const messages = locales[locale] || locales['zh-CN'];
+        if (!messages) {
+          console.warn(`[i18n] No messages for locale: ${locale}`);
+          return key;
+        }
         const value = getNestedValue(messages, key);
         if (value === undefined) {
           console.warn(`[i18n] Missing translation: ${key}`);

@@ -166,7 +166,7 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
                 </h2>
                 <div className="flex items-center gap-2 mt-2">
                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                   <span className="text-stone-500 font-mono text-xs">SYSTEM ONLINE</span>
+                   <span className="text-stone-500 font-mono text-xs">{t('job.systemOnline')}</span>
                 </div>
               </div>
             )}

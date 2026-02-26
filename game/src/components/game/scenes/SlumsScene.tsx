@@ -152,7 +152,7 @@ export const SlumsScene: React.FC = () => {
 
           {/* 4. 宗教：街头祭坛 (左侧墙根) */}
           <InteractiveElement 
-            label="STREET SHRINE"
+            label={t('scenes.slums.street_shrine')}
             style={{ left: '12%', bottom: '18%', width: '8vw' }}
             baseImage="/assets/scenes/slums/obj_faith_shrine.png"
             hoverImage="/assets/scenes/slums/obj_faith_shrine_lit.png"
@@ -161,7 +161,7 @@ export const SlumsScene: React.FC = () => {
 
           {/* 5. 商店：黑市轿车 (左中) */}
           <InteractiveElement 
-            label="BLACK MARKET"
+            label={t('scenes.slums.black_market')}
             style={{ left: '20%', bottom: '10%', width: '20vw' }}
             baseImage="/assets/scenes/slums/obj_shop_car.png"
             hoverImage="/assets/scenes/slums/obj_shop_car_open.png"
@@ -190,7 +190,7 @@ export const SlumsScene: React.FC = () => {
 
           {/* 6. 工作：电线杆 (中间) */}
           <InteractiveElement 
-            label="JOBS"
+            label={t('scenes.slums.jobs')}
             style={{ left: '45%', bottom: '20%', width: '5vw' }}
             baseImage="/assets/scenes/slums/obj_job_pole.png"
             hoverImage="/assets/scenes/slums/obj_job_pole_hover.png"
@@ -199,7 +199,7 @@ export const SlumsScene: React.FC = () => {
 
           {/* 7. 银行：高利贷铺子 (右中) */}
           <InteractiveElement 
-            label="LOANS & PAWN"
+            label={t('scenes.slums.loans_pawn')}
             style={{ left: '55%', bottom: '18%', width: '12vw' }}
             baseImage="/assets/scenes/slums/obj_bank_loan.png"
             hoverImage="/assets/scenes/slums/obj_bank_loan_neon.png"
@@ -208,7 +208,7 @@ export const SlumsScene: React.FC = () => {
 
           {/* 8. 住房：帐篷 (右前) */}
           <InteractiveElement 
-            label="MY SHELTER"
+            label={t('scenes.slums.my_shelter')}
             style={{ left: '70%', bottom: '8%', width: '15vw' }}
             baseImage="/assets/scenes/slums/obj_home_tent.png"
             hoverImage="/assets/scenes/slums/obj_home_tent_open.png"
@@ -217,7 +217,7 @@ export const SlumsScene: React.FC = () => {
 
            {/* 9. 医院：地下诊所 (最右侧远端) */}
            <InteractiveElement 
-            label="CLINIC"
+            label={t('scenes.slums.clinic')}
             style={{ left: '92%', bottom: '22%', width: '8vw' }}
             baseImage="/assets/scenes/slums/obj_hospital_door.png"
             hoverImage="/assets/scenes/slums/obj_hospital_door_glow.png"

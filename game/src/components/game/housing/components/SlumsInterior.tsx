@@ -39,7 +39,7 @@ export const SlumsInterior: React.FC<Props> = ({ housing, onSleep, onMoveOut, on
             </div>
             <div className="flex items-center gap-2">
               <span>🛡️ SAFE:</span>
-              <span className="font-bold text-orange-700">LOW</span>
+              <span className="font-bold text-orange-700">{t('housing.low')}</span>
             </div>
           </div>
         </div>

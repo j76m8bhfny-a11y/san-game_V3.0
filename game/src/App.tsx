@@ -30,12 +30,12 @@ import { CryptoSidebar } from './components/game/Crypto/CryptoSidebar';
 import { NewsTicker } from './components/game/Crypto/NewsTicker';
 import { CryptoNewsPopup } from './components/game/Crypto/CryptoNewsPopup';
 import JailOverlay from './components/game/JailOverlay';
-import { InsuranceModal } from './components/game/InsuranceModal';
-import { SystemGazeOverlay } from './components/SystemGazeOverlay';
-import { ArchiveMilestoneModal } from './components/ArchiveMilestoneModal';
-import { DeathSummary } from './components/game/DeathSummary';
+import { InsuranceModal } from './components/game/InsuranceModal'; // [NEW] 引入组件
+import { SystemGazeOverlay } from './components/SystemGazeOverlay'; // [NEW] 系统凝视
+import { ArchiveMilestoneModal } from './components/ArchiveMilestoneModal'; // [NEW] 里程碑弹窗
+import { DeathSummary } from './components/game/DeathSummary'; // [NEW] 死亡结算
 
-// UI/交互增强组件
+// [NEW] UI/交互增强组件
 import { AtmosphereOverlay } from './components/ui/AtmosphereOverlay';
 import { ResourceHintBar, useResourceHint } from './components/ui/ResourceHint';
 import { GlitchUI } from './components/fx/GlitchUI';
@@ -43,45 +43,32 @@ import { SystemAlertModal } from './components/ui/SystemAlertModal';
 import { useHeartbeat } from './hooks/useHeartbeat';
 import { calculateGazeIntensity } from './logic/systemGaze';
 
-// 新手引导系统
+// [NEW] 新手引导系统
 import { IntroExperience } from './components/game/IntroExperience';
-import { IntroComic } from './components/intro/IntroComic';
 import { GuardianHints } from './components/ui/GuardianHints';
 import { InsightMilestones } from './components/ui/InsightMilestones';
 import { ProgressiveUnlock } from './components/ui/ProgressiveUnlock';
-import { ClassChangeModal } from './components/ui/ClassChangeModal';
 import { DangerHints } from './components/ui/DangerHints';
 import { ModalQueueProvider } from './components/ui/ModalQueueManager';
 import { DeathEffectProvider } from './components/ui/DeathEffectPause';
 
-// [NEW] Steam 集成
-import { 
-  SteamInitializer, 
-  AchievementNotification,
-  SteamStatusIndicator 
-} from './components/steam';
-import { useSteamStore } from './store/steam/useSteamStore';
-import { useRichPresence } from './hooks/steam';
 
 const App: React.FC = () => {
-  // 初始化心跳系统
+  // [NEW] 初始化心跳系统（危险时播放心跳声）
   useHeartbeat();
   
-  // 资源暗示系统
+  // [NEW] 资源暗示系统
   const { hoveredImpact } = useResourceHint();
   
-  // System Alert弹窗状态
+  // [NEW] System Alert弹窗状态
   const [systemAlert, setSystemAlert] = useState<{
     isOpen: boolean;
     type: 'irsAudit' | 'creditFreeze' | 'algorithmBan' | 'mediaSmear' | 'generic';
   }>({ isOpen: false, type: 'generic' });
   
-  // 开场引导状态
+  // [NEW] 开场引导状态
   const [showIntro, setShowIntro] = useState(true);
   const [introCompleted, setIntroCompleted] = useState(false);
-  
-  // 开场漫画状态
-  const [comicCompleted, setComicCompleted] = useState(false);
   const { 
     currentEvent, 
     activeBill, 
@@ -90,8 +77,8 @@ const App: React.FC = () => {
     currentCryptoNews,
     hideCryptoNews,
     _hasHydrated,
-    unlockedArchives,
-    vitality,
+    unlockedArchives, // [NEW] 用于计算Gaze强度
+    vitality, // [NEW] 用于ResourceHint
     isShopOpen,
     isJobBoardOpen,
     isHousingOpen,
@@ -103,8 +90,8 @@ const App: React.FC = () => {
     isMenuOpen,
     currentRoast,
     initializeData,
-    isInsuranceOpen,
-    setInsuranceOpen,
+    isInsuranceOpen,   // [NEW]
+    setInsuranceOpen,  // [NEW]
     
     viewMode,
     isCryptoOpen,
@@ -114,84 +101,40 @@ const App: React.FC = () => {
     setArchiveOpen,
     setMenuOpen,
     restartGame,
-    showDeathSummary,
-    showDeathSummaryView,
-    activeHousing,
-    pendingClassChanges,
-    clearPendingClassChange
+    showDeathSummary,  // [NEW] 死亡结算显示状态
+    showDeathSummaryView, // [NEW] 手动显示死亡结算
+    activeHousing // [NEW] 用于DangerHints
   } = useGameStore();
 
   const [viewState, setViewState] = useState<'TITLE' | 'SELECT_CLASS' | 'GAME'>('TITLE');
   const [loading, setLoading] = useState(false);
   const [initError, setInitError] = useState<string | null>(null);
   
-  // 计算当前Gaze强度
+  // [NEW] 计算当前Gaze强度
   const gazeIntensity = useMemo(() => 
     calculateGazeIntensity(unlockedArchives?.length || 0),
     [unlockedArchives]
   );
 
-  // [NEW] Steam Rich Presence 自动更新
-  const { updateGameState, setMainMenu, setGameOver } = useRichPresence({
-    enabled: true,
-  });
-
-  // [NEW] 游戏状态变化时更新 Rich Presence
-  useEffect(() => {
-    if (!ending) {
-      const isInEvent = !!currentEvent;
-      updateGameState(
-        vitality.time.currentTurn,
-        (vitality.identity.currentClass as string) || 'homeless',
-        isInEvent,
-        currentEvent?.title,
-        vitality.metrics.gold
-      );
-    } else {
-      setGameOver(vitality.time.currentTurn, (vitality.identity as any).socialClass || 'homeless');
-    }
-  }, [vitality.time.currentTurn, vitality.identity.currentClass, currentEvent, ending, vitality.metrics.gold]);
-
-  // [NEW] 检查并解锁成就
-  const checkAndUnlockAchievements = useSteamStore((state) => state.checkAndUnlockAchievements);
-  
-  useEffect(() => {
-    if (viewState === 'GAME' && !ending) {
-      checkAndUnlockAchievements({
-        gameDay: vitality.time.currentTurn,
-        socialClass: (vitality.identity.currentClass as string) || 'homeless',
-        hasDied: false, // TODO: 从游戏状态中获取
-        triggeredEvents: [], // TODO: 从游戏状态中获取
-        money: vitality.metrics.gold,
-        isInEvent: !!currentEvent,
-        eventId: currentEvent?.id,
-      });
-    }
-  }, [vitality.time.currentTurn, vitality.identity.currentClass, vitality.metrics.gold, currentEvent, ending]);
-
-  // 视图状态变化时更新 Rich Presence
-  useEffect(() => {
-    if (viewState === 'TITLE') {
-      setMainMenu();
-    }
-  }, [viewState]);
-
   useEffect(() => {
     const init = async () => {
       setLoading(true);
-      setInitError(null);
+      setInitError(null); // 重置错误
       try {
+        // ✅ 并行加载游戏数据和事件
         const [data, _] = await Promise.all([
           loadAllGameData(),
-          preloadAllEvents()
+          preloadAllEvents() // 预加载所有事件到缓存
         ]);
         
+        // 🛡️ 防御性检查：确保数据不是 undefined
         if (!data) throw new Error("LoadData returned empty result");
         
         initializeData(data);
         console.log("Game Data Loaded Successfully:", data);
       } catch (e: any) {
         console.error("Critical System Failure:", e);
+        // ✨ 捕获错误信息并显示在屏幕上
         setInitError(e.message || "Unknown Initialization Error");
       } finally {
         setLoading(false);
@@ -206,7 +149,8 @@ const App: React.FC = () => {
     setViewState('TITLE'); 
   };
 
-  // 错误处理层
+  // 🚨 1. 错误处理层 (优先级最高)
+  // 如果加载失败，显示红色报错屏幕，而不是白屏
   if (initError) {
     return (
       <div className="w-screen h-screen bg-black flex flex-col items-center justify-center p-8 z-50 select-text">
@@ -226,7 +170,7 @@ const App: React.FC = () => {
     );
   }
 
-  // 加载层
+  // ⏳ 2. 加载层
   if (loading || !_hasHydrated) {
     return (
       <div className="w-screen h-screen bg-black flex items-center justify-center">
@@ -237,219 +181,180 @@ const App: React.FC = () => {
     );
   }
 
-  // 完成开场引导后的回调
+  // [NEW] 完成开场引导后的回调
   const handleIntroComplete = () => {
     setIntroCompleted(true);
     setShowIntro(false);
   };
-  
-  // 开场漫画完成回调
-  const handleComicComplete = () => {
-    setComicCompleted(true);
-    setShowIntro(true);
-  };
 
   return (
-    <SteamInitializer
-      showLoadingScreen={true}
-      onInitialized={(result) => console.log('Steam 初始化成功:', result)}
-      onFailed={(error) => console.error('Steam 初始化失败:', error)}
-    >
-      <DeathEffectProvider>
-        <ModalQueueProvider>
-          {/* 开场美漫漫画 */}
-          {!comicCompleted && (
-            <IntroComic onComplete={handleComicComplete} />
-          )}
-          
-          {/* 开场引导体验 */}
-          {showIntro && !introCompleted && comicCompleted && (
-            <IntroExperience onComplete={handleIntroComplete} />
-          )}
-          
-          <GlitchUI intensity={gazeIntensity}>
-            <SystemGazeOverlay>
-              <AtmosphereOverlay>
-                <div className="relative w-screen h-screen overflow-hidden bg-black text-green-500 font-mono select-none">
-                  {/* [NEW] Steam 状态指示器 */}
-                  <SteamStatusIndicator
-                    currentGameState={{
-                      gameDay: vitality.time.currentTurn,
-                      socialClass: (vitality.identity.currentClass as string) || 'homeless',
-                      money: vitality.metrics.gold,
-                      health: vitality.metrics.hp,
-                      sanity: vitality.metrics.insight,
-                      triggeredEvents: [], // TODO: 从游戏状态中获取
-                    }}
-                    onLoadSave={(slot) => {
-                      // TODO: 实现从云存档加载游戏状态
-                      console.log('从云存档加载:', slot);
-                    }}
-                  />
-
-                  {/* 资源暗示条 */}
-                  <ResourceHintBar
-                    hoveredImpact={hoveredImpact}
-                    currentValues={{
-                      hp: vitality.metrics.hp,
-                      maxHp: vitality.metrics.maxHp,
-                      san: vitality.metrics.insight,
-                      maxSan: vitality.metrics.maxInsight,
-                      gold: vitality.metrics.gold,
-                    }}
-                  />
-                  
-                  {/* 危险状态文字提示 */}
-                  <DangerHints
-                    hpPercent={vitality.metrics.hp / vitality.metrics.maxHp}
-                    insightPercent={vitality.metrics.insight / vitality.metrics.maxInsight}
-                    hungerPercent={vitality.metrics.hunger / vitality.metrics.maxHunger}
-                    hasHousing={!!activeHousing}
-                    hasInsurance={vitality.activeInsurances.length > 0}
-                    activeDiseases={vitality.activeDiseases}
-                    isNewPlayer={vitality.time.currentTurn <= 3}
-                  />
-                  
-                  {/* 守护灵新手提示 */}
-                  <GuardianHints />
-                  
-                  {/* 灵视里程碑提示 */}
-                  <InsightMilestones />
-                  
-                  {/* 渐进式机制解锁 */}
-                  <ProgressiveUnlock />
-                  
-                  <GlobalAtmosphere />
-
-                  {ending ? (
-                    <GameEnding 
-                      endingId={ending} 
-                      onRestart={handleRestart} 
-                      onViewDeathSummary={showDeathSummaryView}
-                    />
-                  ) : viewState === 'TITLE' ? (
-                    <TitleScreen 
-                      onStart={(type: 'NEW' | 'CONTINUE') => {
-                        if (type === 'CONTINUE') {
-                          setViewState('GAME');
-                        } else {
-                          setViewState('SELECT_CLASS');
-                        }
-                      }} 
-                    />
-                  ) : viewState === 'SELECT_CLASS' ? (
-                    <ClassSelectorModal onConfirm={() => setViewState('GAME')} />
-                  ) : (
-                    <>
-                      {viewMode === 'MAP' && !currentEvent ? (
-                        <MapDashboard />
-                      ) : (
-                        <RegionView />
-                      )}
-
-                      <MiniHUD />
-                      {currentEvent && <MessageWindow event={currentEvent} />}
-                      {activeBill && <BillOverlay bill={activeBill} />}
-                      <JailOverlay />
-                      <WeeklySettlement isOpen={!!weeklyReport} />
-                    </>
-                  )}
-
-                  {/* Layer 2: UI & Overlays */}
-
-                  {viewState === 'GAME' && !ending && <NewsTicker />}
-
-                  {viewState === 'GAME' && !ending && (
-                    <>
-                      <button
-                        onClick={() => setCryptoOpen(true)}
-                        className={`
-                          fixed left-0 top-1/2 -translate-y-1/2 z-50
-                          w-10 h-14 
-                          bg-gray-900 border-y-2 border-r-2 border-gray-600 rounded-r-xl
-                          flex items-center justify-center
-                          hover:w-12 hover:bg-gray-800 hover:border-gray-400
-                          transition-all duration-200 shadow-[0_0_15px_rgba(0,0,0,0.5)]
-                          ${crypto.isAccountOpen ? 'text-amber-500 border-amber-800' : 'text-gray-400'}
-                        `}
-                      >
-                        <span className="text-xl font-bold">{crypto.isAccountOpen ? '₿' : '🔒'}</span>
-                      </button>
-
-                      <CryptoSidebar />
-                      
-                      {isCryptoOpen && (
-                        <div 
-                          className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity"
-                          onClick={() => setCryptoOpen(false)}
-                        />
-                      )}
-                    </>
-                  )}
-
-                  <InventorySidebar />
-                  
-                  {isShopOpen && <ShopModal isOpen={isShopOpen} onClose={() => setShopOpen(false)} />}
-                  {isJobBoardOpen && <JobBoardModal isOpen={isJobBoardOpen} onClose={() => setJobBoardOpen(false)} />}
-                  {isInsuranceOpen && (
-                    <InsuranceModal 
-                      isOpen={isInsuranceOpen} 
-                      onClose={() => setInsuranceOpen(false)} 
-                    />
-                  )}
-                  {isHousingOpen && <HousingModal isOpen={isHousingOpen} onClose={() => setHousingOpen(false)} />}
-                  {isHospitalOpen && <HospitalModal isOpen={isHospitalOpen} onClose={() => setHospitalOpen(false)} />}
-                  
-                  {isArchiveOpen && <BlackBox onClose={() => setArchiveOpen(false)} />}
-                  {isMenuOpen && <PauseMenu isOpen={isMenuOpen} onResume={() => setMenuOpen(false)} onRestart={handleRestart} />}
-
-                  {currentRoast && <RoastModal />}
-                  
-                  {currentCryptoNews && (
-                    <CryptoNewsPopup 
-                      news={currentCryptoNews} 
-                      onClose={hideCryptoNews} 
-                    />
-                  )}
-                  
-                  <RoutineToast />
-                  <FeedbackLayer />
-                  <TooltipLayer />
-                  
-                </div>
-              </AtmosphereOverlay>
-            </SystemGazeOverlay>
-          </GlitchUI>
-        </ModalQueueProvider>
-      </DeathEffectProvider>
+    <>
+    <DeathEffectProvider>
+    <ModalQueueProvider>
+    {/* [NEW] 开场引导体验 */}
+    {showIntro && !introCompleted && (
+      <IntroExperience onComplete={handleIntroComplete} />
+    )}
+    
+    <GlitchUI intensity={gazeIntensity}>
+    <SystemGazeOverlay>
+    <AtmosphereOverlay>
+    <div className="relative w-screen h-screen overflow-hidden bg-black text-green-500 font-mono select-none">
+      {/* [NEW] 资源暗示条 */}
+      <ResourceHintBar
+        hoveredImpact={hoveredImpact}
+        currentValues={{
+          hp: vitality.metrics.hp,
+          maxHp: vitality.metrics.maxHp,
+          san: vitality.metrics.insight,
+          maxSan: vitality.metrics.maxInsight,
+          gold: vitality.metrics.gold,
+        }}
+      />
       
-      {/* 里程碑弹窗 */}
-      <ArchiveMilestoneModal />
+      {/* [NEW] 危险状态文字提示 */}
+      <DangerHints
+        hpPercent={vitality.metrics.hp / vitality.metrics.maxHp}
+        insightPercent={vitality.metrics.insight / vitality.metrics.maxInsight}
+        hungerPercent={vitality.metrics.hunger / vitality.metrics.maxHunger}
+        hasHousing={!!activeHousing}
+        hasInsurance={vitality.activeInsurances.length > 0}
+        activeDiseases={vitality.activeDiseases}
+        isNewPlayer={vitality.time.currentTurn <= 3}
+      />
       
-      {/* 死亡结算 */}
-      {showDeathSummary && (
-        <DeathSummary onRestart={handleRestart} />
+      {/* [NEW] 守护灵新手提示 */}
+      <GuardianHints />
+      
+      {/* [NEW] 灵视里程碑提示 */}
+      <InsightMilestones />
+      
+      {/* [NEW] 渐进式机制解锁 */}
+      <ProgressiveUnlock />
+      
+      <GlobalAtmosphere />
+
+      {ending ? (
+        <GameEnding 
+          endingId={ending} 
+          onRestart={handleRestart} 
+          onViewDeathSummary={showDeathSummaryView}
+        />
+      ) : viewState === 'TITLE' ? (
+        <TitleScreen 
+          onStart={(type: 'NEW' | 'CONTINUE') => {
+            if (type === 'CONTINUE') {
+              // 继续游戏：直接进入游戏界面
+              setViewState('GAME');
+            } else {
+              // 新游戏：进入选人界面
+              setViewState('SELECT_CLASS');
+            }
+          }} 
+        />
+      ) : viewState === 'SELECT_CLASS' ? (
+        <ClassSelectorModal onConfirm={() => setViewState('GAME')} />
+      ) : (
+        <>
+           {viewMode === 'MAP' && !currentEvent ? (
+            <MapDashboard />
+          ) : (
+            <RegionView />
+          )}
+
+          <MiniHUD />
+          {currentEvent && <MessageWindow event={currentEvent} />}
+          {activeBill && <BillOverlay bill={activeBill} />}
+          <JailOverlay />
+          <WeeklySettlement isOpen={!!weeklyReport} />
+        </>
       )}
+
+      {/* --- Layer 2: UI & Overlays --- */}
+
+      {viewState === 'GAME' && !ending && <NewsTicker />}
+
+      {viewState === 'GAME' && !ending && (
+        <>
+          <button
+            onClick={() => setCryptoOpen(true)}
+            className={`
+              fixed left-0 top-1/2 -translate-y-1/2 z-50
+              w-10 h-14 
+              bg-gray-900 border-y-2 border-r-2 border-gray-600 rounded-r-xl
+              flex items-center justify-center
+              hover:w-12 hover:bg-gray-800 hover:border-gray-400
+              transition-all duration-200 shadow-[0_0_15px_rgba(0,0,0,0.5)]
+              ${crypto.isAccountOpen ? 'text-amber-500 border-amber-800' : 'text-gray-400'}
+            `}
+          >
+            <span className="text-xl font-bold">{crypto.isAccountOpen ? '₿' : '🔒'}</span>
+          </button>
+
+          <CryptoSidebar />
+          
+          {isCryptoOpen && (
+            <div 
+              className="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm transition-opacity"
+              onClick={() => setCryptoOpen(false)}
+            />
+          )}
+        </>
+      )}
+
+      <InventorySidebar />
       
-      {/* 阶级变化提示 */}
-      {pendingClassChanges.length > 0 && (
-        <ClassChangeModal
-          changes={pendingClassChanges}
-          onClose={clearPendingClassChange}
+      {isShopOpen && <ShopModal isOpen={isShopOpen} onClose={() => setShopOpen(false)} />}
+      {isJobBoardOpen && <JobBoardModal isOpen={isJobBoardOpen} onClose={() => setJobBoardOpen(false)} />}
+      {isInsuranceOpen && (
+        <InsuranceModal 
+          isOpen={isInsuranceOpen} 
+          onClose={() => setInsuranceOpen(false)} 
+        />
+      )}
+      {isHousingOpen && <HousingModal isOpen={isHousingOpen} onClose={() => setHousingOpen(false)} />}
+      {isHospitalOpen && <HospitalModal isOpen={isHospitalOpen} onClose={() => setHospitalOpen(false)} />}
+      
+      {isArchiveOpen && <BlackBox onClose={() => setArchiveOpen(false)} />}
+      {isMenuOpen && <PauseMenu isOpen={isMenuOpen} onResume={() => setMenuOpen(false)} onRestart={handleRestart} />}
+
+      {currentRoast && <RoastModal />}
+      
+      {/* 🔴 调整点3: 加密新闻弹窗 */}
+      {currentCryptoNews && (
+        <CryptoNewsPopup 
+          news={currentCryptoNews} 
+          onClose={hideCryptoNews} 
         />
       )}
       
-      {/* System Alert弹窗 */}
-      <SystemAlertModal
-        isOpen={systemAlert.isOpen}
-        type={systemAlert.type}
-        playerId={(vitality.identity as any).name || 'UNKNOWN'}
-        onConfirm={() => setSystemAlert({ ...systemAlert, isOpen: false })}
-      />
-
-      {/* [NEW] 成就解锁通知 */}
-      <AchievementNotification />
-    </SteamInitializer>
+      <RoutineToast />
+      <FeedbackLayer />
+      <TooltipLayer />
+      
+    </div>
+    </AtmosphereOverlay>
+    </SystemGazeOverlay>
+    </GlitchUI>
+    </ModalQueueProvider>
+    </DeathEffectProvider>
+    
+    {/* 里程碑弹窗 - 在SystemGazeOverlay之外 */}
+    <ArchiveMilestoneModal />
+    
+    {/* 死亡结算 - 在SystemGazeOverlay之外 */}
+    {showDeathSummary && (
+      <DeathSummary onRestart={handleRestart} />
+    )}
+    
+    {/* [NEW] System Alert弹窗 - 用于Gaze惩罚事件 */}
+    <SystemAlertModal
+      isOpen={systemAlert.isOpen}
+      type={systemAlert.type}
+      playerId={(vitality.identity as any).name || 'UNKNOWN'}
+      onConfirm={() => setSystemAlert({ ...systemAlert, isOpen: false })}
+    />
+    </>
   );
 };
 

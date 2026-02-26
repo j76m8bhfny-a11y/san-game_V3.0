@@ -81,7 +81,57 @@
     "interact": "互动",
     "enter": "进入",
     "exit": "离开",
-    "backToMap": "返回地图"
+    "backToMap": "返回地图",
+    "slums": {
+      "junkie_dialogue": "你需要什么吗？",
+      "fire_barrel_dialogue": "温暖...",
+      "gang_dialogue": "这里不欢迎你。",
+      "street_shrine": "街头祭坛",
+      "black_market": "黑市",
+      "jobs": "工作",
+      "loans_pawn": "高利贷",
+      "my_shelter": "我的帐篷",
+      "clinic": "诊所",
+      "insurance_label": "保险广告",
+      "insurance_dialogue": "保险推销..."
+    },
+    "suburbs": {
+      "hoa_message": "草坪高度不得超过3英寸",
+      "packages_message": "您有5个未取包裹",
+      "flyer_message": "又一张房贷广告",
+      "whole_foods": "有机食品超市",
+      "corporate_park": "办公园区",
+      "my_house": "我的房子",
+      "chase_bank": "商业银行",
+      "cvs_pharmacy": "连锁药房",
+      "safehands_agent": "保险经纪人",
+      "mega_church": "福音教堂"
+    },
+    "rust_belt": {
+      "truck_text": "这破车又抛锚了...",
+      "strike_text": "我们要涨薪！",
+      "dog_text": "汪汪！",
+      "union_rep_text": "喝杯咖啡休息一下",
+      "gas_mart": "加油站",
+      "urgent_care": "急救中心",
+      "steel_works": "钢铁厂",
+      "check_cashing": "支票兑现",
+      "motel_6": "汽车旅馆",
+      "union_rep": "工会代表",
+      "abandoned_chapel": "废弃教堂"
+    },
+    "downtown": {
+      "bull_market": "牛市来了！",
+      "luxury_car": "这就是地位的象征",
+      "hologram_stock": "数字上涨，人性下跌",
+      "the_club": "私人俱乐部",
+      "global_hq": "总部大厦",
+      "the_penthouse": "顶层公寓",
+      "private_vault": "私人银行",
+      "bio_lab": "生物实验室",
+      "private_client_label": "私人客户",
+      "masonic_lodge": "共济会"
+    }
   },
   "statsPanel": {
     "title": "角色状态", "netWorth": "净资产",
@@ -121,7 +171,10 @@
   },
   "weeklySettlement": {
     "title": "第 {turn} 周结算", "income": "收入", "expense": "支出", "net": "净变化", "balance": "当前余额",
-    "categories": { "income": "收入", "housing": "住房", "food": "食物", "medical": "医疗", "bill": "账单", "bank": "银行", "tax": "税务", "misc": "其他" }
+    "categories": { "income": "收入", "housing": "住房", "food": "食物", "medical": "医疗", "bill": "账单", "bank": "银行", "tax": "税务", "misc": "其他" },
+    "week": "周",
+    "statement": "每周结算单",
+    "weekLabel": "第 {turn} / {max} 周"
   },
   "messageWindow": { "continue": "点击继续..." },
   "classSelector": { "title": "选择你的阶级", "subtitle": "这决定了你的起点，但不决定你的终点", "select": "选择", "stats": { "initial": "初始资金", "hp": "生命值", "insight": "灵视值" } },
@@ -149,10 +202,10 @@
     },
     "stickyNote": "勿忘", "version": "版本", "build": "构建", "status": "状态", "online": "在线", "docId": "文档编号", "devMode": "开发者入口", "toggle": "切换"
   },
-  "bank": { "title": "银行", "balance": "账户余额", "deposit": "存款", "withdraw": "取款", "loan": { "title": "贷款", "apply": "申请贷款", "current": "当前贷款", "amount": "贷款金额", "interest": "利率", "term": "期限", "repay": "还款", "overdue": "已逾期 {turns} 周" }, "credit": "信用评分", "ledger": { "title": "账本", "empty": "暂无交易记录", "income": "收入", "expense": "支出" } },
-  "hospital": { "title": "医院", "services": "医疗服务", "treatment": "治疗", "drug": "药品", "surgery": "手术", "therapy": "心理治疗", "emergency": "急诊", "insurance": { "covered": "医保报销", "uncovered": "自费", "copay": "自付 {rate}%" }, "disease": { "current": "当前疾病", "none": "身体健康", "cure": "治愈" }, "effect": { "hpRestore": "生命恢复", "insightRestore": "灵视觉醒", "addiction": "成瘾风险" } },
+  "bank": { "title": "银行", "balance": "账户余额", "deposit": "存款", "withdraw": "取款", "loan": { "title": "贷款", "apply": "申请贷款", "current": "当前贷款", "amount": "贷款金额", "interest": "利率", "term": "期限", "repay": "还款", "overdue": "已逾期 {turns} 周" }, "credit": "信用评分", "ledger": { "title": "账本", "empty": "暂无交易记录", "income": "收入", "expense": "支出" }, "pawn": "典当", "loanTitle": "贷款", "weBuyGold": "收购黄金", "noIdNeeded": "无需证件" },
+  "hospital": { "title": "医院", "services": "医疗服务", "treatment": "治疗", "drug": "药品", "surgery": "手术", "therapy": "心理治疗", "emergency": "急诊", "insurance": { "covered": "医保报销", "uncovered": "自费", "copay": "自付 {rate}%" }, "disease": { "current": "当前疾病", "none": "身体健康", "cure": "治愈" }, "effect": { "hpRestore": "生命恢复", "insightRestore": "灵视觉醒", "addiction": "成瘾风险" }, "processing": "处理中", "nextPatient": "下一位患者", "paymentAccepted": "支付成功", "walkInsWelcome": "欢迎 walk-in", "open24h": "24小时营业" },
   "shop": { "title": "商店", "buy": "购买", "sell": "出售", "insufficient": "资金不足", "full": "背包已满", "categories": { "food": "食物", "medical": "医疗", "tool": "工具", "other": "其他" } },
-  "housing": { "title": "住房", "rent": "租房", "buy": "购房", "current": "当前住所", "none": "露宿街头", "weeklyCost": "周费用", "defense": "防御等级", "regen": "HP恢复", "moveIn": "入住", "moveOut": "搬出", "mortgage": "房贷" },
+  "housing": { "title": "住房", "rent": "租房", "buy": "购房", "current": "当前住所", "none": "露宿街头", "weeklyCost": "周费用", "defense": "防御等级", "regen": "HP恢复", "moveIn": "入住", "moveOut": "搬出", "mortgage": "房贷", "temperature": "温度", "airQuality": "空气质量", "pure": "纯净", "security": "安保", "armed": "武装", "high": "高", "low": "低", "vacancy": "空房", "open": "营业" },
   "insurance": { 
     "title": "保险", 
     "medical": { "title": "医疗保险" },
@@ -182,7 +235,7 @@
     "invitationOnly": "仅限受邀",
     "memberSignature": "会员签名"
   },
-  "job": { "title": "工作", "board": "招聘板", "apply": "申请", "quit": "辞职", "salary": "薪资", "requirement": "要求", "type": { "fulltime": "全职", "gig": "零工" }, "cost": { "hp": "消耗 HP", "insight": "消耗灵视" } },
+  "job": { "title": "工作", "board": "招聘板", "apply": "申请", "quit": "辞职", "salary": "薪资", "requirement": "要求", "type": { "fulltime": "全职", "gig": "零工" }, "cost": { "hp": "消耗 HP", "insight": "消耗灵视" }, "systemOnline": "系统在线" },
   "faith": { "title": "信仰", "join": "加入", "leave": "离开", "rite": "仪式", "offer": "献祭", "pray": "祈祷", "donate": "捐赠", "faiths": { "none": "无信仰", "church": "教会", "brotherhood": "兄弟会", "cult": "隐秘教派", "revolution": "革命" } },
   "crypto": {
     "title": "暗网交易终端",
@@ -192,6 +245,7 @@
     "lowFunds": "资金不足",
     "networkFee": "网络费",
     "gasFee": "Gas费",
+    "accessRestricted": "访问受限",
     "position": {
       "long": "做多",
       "short": "做空",
@@ -237,7 +291,26 @@
       "insufficientFunds": "资金不足（含网络费$15）"
     }
   },
-  "jail": { "title": "监禁中", "sentence": "刑期剩余 {turns} 周", "crime": "罪名", "bail": "保释金", "serve": "服刑", "appeal": "上诉" },
+  "jail": { 
+    "title": "监禁中", 
+    "sentence": "刑期剩余 {turns} 周", 
+    "crime": "罪名", 
+    "bail": "保释金", 
+    "serve": "服刑", 
+    "appeal": "上诉",
+    "turns": "周",
+    "inmate": "囚犯",
+    "cashOrBond": "接受现金或保释债券",
+    "vipRoutine": "VIP待遇 (无惩罚)",
+    "highCost": "高HP/灵视消耗",
+    "bailBond": "保释债券",
+    "pay": "支付",
+    "debt": "债务",
+    "blackMarketMeds": "黑市止痛药",
+    "blackMarketMedsDesc": "-$100 (+10 HP)",
+    "diseaseWarning": "种疾病发作中（无法就医）",
+    "felonyWarning": "重罪记录（中产工作永久关闭）"
+  },
   "bill": { "title": "账单", "surprise": "意外账单", "medical": "医疗账单", "legal": "法律费用", "pay": "支付", "due": "到期" },
   "archive": { "title": "档案", "unlocked": "已解锁档案", "locked": "未解锁", "read": "阅读" },
   "roast": { "title": "系统消息", "subtitle": "你今天被资本主义暴打了" },
@@ -322,9 +395,20 @@
     }
   },
   "vehicleShop": {
+    "rustbelt": {
+      "name": "Smiling Jack's Used Cars",
+      "buyTitle": "买车",
+      "buySubtitle": "首付10%起，APR高达25%",
+      "sellTitle": "卖车",
+      "licenseTitle": "驾照办理",
+      "dmvTitle": "DMV 车管所",
+      "dmvSubtitle": "现在叫号 #{current}，您的号码 #{ticket}",
+      "dmvWait": "等待 (消耗1回合)",
+      "dmvNoAppointment": "没有预约？明天再来。",
+      "dmvNowServing": "当前叫号",
+      "dmvYourNumber": "您的号码"
+    },
     "common": {
-      "buy": "购买",
-      "sell": "出售",
       "sellPrice": "售价",
       "cashBuy": "现金购买",
       "loanBuy": "贷款购买",

@@ -39,7 +39,7 @@ export const RustBeltExterior: React.FC<Props> = ({ house, gold, onRent, onClose
           </h1>
           <div className="flex items-center gap-2 mt-2">
             <div className="w-3 h-3 rounded-full bg-red-500 animate-ping" />
-            <span className="text-red-300 font-mono text-sm tracking-widest">VACANCY</span>
+            <span className="text-red-300 font-mono text-sm tracking-widest">{t('housing.vacancy')}</span>
           </div>
         </div>
       </div>

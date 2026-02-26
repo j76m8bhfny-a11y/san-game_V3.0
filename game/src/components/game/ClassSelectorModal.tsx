@@ -51,15 +51,21 @@ export const ClassSelectorModal: React.FC<ClassSelectorProps> = ({ onConfirm }) 
   };
 
   // ✅ 3. 动态生成列表 (合并 JSON 数值 + 本地 UI 配置)
-  const classList = Object.entries(rules.classes).map(([key, stats]) => {
+  // 过滤掉非 class 的 key (如 description) 和无效的 class
+  const validClasses = Object.entries(rules.classes).filter(([key]) => 
+    key in PlayerClass || key in CLASS_VISUALS
+  );
+  
+  const classList = validClasses.map(([key, stats]) => {
     // 强制类型转换，确保 key 被识别为 PlayerClass 枚举
     const classId = key as PlayerClass;
     const visual = CLASS_VISUALS[classId] || { color: 'text-white', border: 'border-white' };
+    const nameKey = CLASS_NAME_KEYS[classId];
 
     return {
       id: classId,
       // 从国际化取名称
-      name: t(CLASS_NAME_KEYS[classId]), 
+      name: nameKey ? t(nameKey) : key, 
       color: visual.color, 
       border: visual.border,
       // 从 JSON 规则取 (注意：TS 可能不知道 stats 的具体结构，这里视为 any 或需定义接口)

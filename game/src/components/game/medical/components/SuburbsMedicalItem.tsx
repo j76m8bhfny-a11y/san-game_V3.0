@@ -71,13 +71,13 @@ export const SuburbsMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy 
         <div className="space-y-1 w-full">
           {service.effects?.hpRestore && (
             <div className="flex justify-between text-xs font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded">
-              <span>Health</span>
+              <span>{t('hospital.effect.hpRestore')}</span>
               <span>+{service.effects.hpRestore}</span>
             </div>
           )}
           {service.effects?.insightRestore && (
             <div className="flex justify-between text-xs font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded">
-              <span>Insight</span>
+              <span>{t('hospital.effect.insightRestore')}</span>
               <span>+{service.effects.insightRestore}</span>
             </div>
           )}

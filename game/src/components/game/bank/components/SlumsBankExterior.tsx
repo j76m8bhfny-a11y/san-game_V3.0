@@ -28,13 +28,13 @@ export const SlumsBankExterior: React.FC<Props> = ({ onEnter, onClose }) => {
       <div className="absolute top-1/4 right-10 transform rotate-6">
         <div className="border-4 border-yellow-600 bg-black/80 p-4 shadow-[0_0_30px_rgba(234,179,8,0.4)]">
           <h1 className="text-5xl font-black text-yellow-500 tracking-tighter uppercase font-mono flex gap-2">
-            <span className={isHovered ? 'animate-pulse' : 'opacity-50'}>PAWN</span>
+            <span className={isHovered ? 'animate-pulse' : 'opacity-50'}>{t('bank.pawn')}</span>
             <span className="text-white">&</span>
-            <span className="animate-flicker text-red-500">LOAN</span>
+            <span className="animate-flicker text-red-500">{t('bank.loanTitle')}</span>
           </h1>
           <div className="mt-2 flex justify-between text-[10px] text-yellow-200 font-bold bg-red-900 px-2">
-            <span>WE BUY GOLD</span>
-            <span>NO ID NEEDED</span>
+            <span>{t('bank.weBuyGold')}</span>
+            <span>{t('bank.noIdNeeded')}</span>
           </div>
         </div>
       </div>

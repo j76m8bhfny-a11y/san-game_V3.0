@@ -1,0 +1,144 @@
+{
+  "achievements": [
+    {
+      "name": "ACH_FIRST_BLOOD",
+      "displayName": {
+        "english": "第一课",
+        "schinese": "第一课"
+      },
+      "description": {
+        "english": "Experience your first death in the game",
+        "schinese": "在游戏中经历第一次死亡"
+      },
+      "hidden": false,
+      "icon": "achievement_first_blood.png",
+      "icongray": "achievement_first_blood_gray.png"
+    },
+    {
+      "name": "ACH_SURVIVE_7D",
+      "displayName": {
+        "english": "一周战士",
+        "schinese": "一周战士"
+      },
+      "description": {
+        "english": "Survive 7 days on the streets",
+        "schinese": "在街头生存 7 天"
+      },
+      "hidden": false,
+      "icon": "achievement_survive_7d.png",
+      "icongray": "achievement_survive_7d_gray.png"
+    },
+    {
+      "name": "ACH_SURVIVE_30D",
+      "displayName": {
+        "english": "月度生存者",
+        "schinese": "月度生存者"
+      },
+      "description": {
+        "english": "Survive 30 days on the streets",
+        "schinese": "在街头生存 30 天"
+      },
+      "hidden": false,
+      "icon": "achievement_survive_30d.png",
+      "icongray": "achievement_survive_30d_gray.png"
+    },
+    {
+      "name": "ACH_HOMELESS_ESCAPE",
+      "displayName": {
+        "english": "破茧成蝶",
+        "schinese": "破茧成蝶"
+      },
+      "description": {
+        "english": "Successfully escape the homeless class",
+        "schinese": "成功脱离 homeless 阶层"
+      },
+      "hidden": false,
+      "icon": "achievement_escape.png",
+      "icongray": "achievement_escape_gray.png"
+    },
+    {
+      "name": "ACH_WORKER_REBEL",
+      "displayName": {
+        "english": "觉醒时刻",
+        "schinese": "觉醒时刻"
+      },
+      "description": {
+        "english": "Trigger a union event as a worker",
+        "schinese": "作为 worker 触发工会事件"
+      },
+      "hidden": false,
+      "icon": "achievement_rebel.png",
+      "icongray": "achievement_rebel_gray.png"
+    },
+    {
+      "name": "ACH_MIDDLE_MORTGAGE",
+      "displayName": {
+        "english": "房奴人生",
+        "schinese": "房奴人生"
+      },
+      "description": {
+        "english": "Take on a 30-year mortgage",
+        "schinese": "背负 30 年房贷"
+      },
+      "hidden": false,
+      "icon": "achievement_mortgage.png",
+      "icongray": "achievement_mortgage_gray.png"
+    },
+    {
+      "name": "ACH_CAPITALIST_FIRST_MILLION",
+      "displayName": {
+        "english": "第一桶金",
+        "schinese": "第一桶金"
+      },
+      "description": {
+        "english": "Accumulate assets exceeding 1 million",
+        "schinese": "累计资产突破 100 万"
+      },
+      "hidden": false,
+      "icon": "achievement_million.png",
+      "icongray": "achievement_million_gray.png"
+    },
+    {
+      "name": "ACH_IRONIC_ENDING",
+      "displayName": {
+        "english": "黑色幽默",
+        "schinese": "黑色幽默"
+      },
+      "description": {
+        "english": "Trigger an ironic ending",
+        "schinese": "触发讽刺性结局"
+      },
+      "hidden": false,
+      "icon": "achievement_ironic.png",
+      "icongray": "achievement_ironic_gray.png"
+    },
+    {
+      "name": "ACH_EVENT_COLLECTOR",
+      "displayName": {
+        "english": "百科全书",
+        "schinese": "百科全书"
+      },
+      "description": {
+        "english": "Experience all 100+ events",
+        "schinese": "体验过所有 100+ 事件"
+      },
+      "hidden": false,
+      "icon": "achievement_collector.png",
+      "icongray": "achievement_collector_gray.png"
+    },
+    {
+      "name": "ACH_ALL_CLASSES",
+      "displayName": {
+        "english": "人生百态",
+        "schinese": "人生百态"
+      },
+      "description": {
+        "english": "Experience all social classes",
+        "schinese": "体验过所有社会阶层"
+      },
+      "hidden": false,
+      "icon": "achievement_classes.png",
+      "icongray": "achievement_classes_gray.png"
+    }
+  ]
+}

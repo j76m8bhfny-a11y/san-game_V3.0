@@ -11,11 +11,12 @@ mod achievements;
 mod cloud;
 mod rich_presence;
 mod error;
+pub mod commands;
 
-pub use client::{SteamManager, SteamState};
+pub use client::{SteamManager, SteamState, SteamInitResult};
 pub use achievements::{AchievementManager, Achievement};
-pub use cloud::{CloudManager, SaveData};
-pub use rich_presence::{RichPresenceManager, GameState};
+pub use cloud::{CloudManager, SaveData, SaveFileInfo};
+pub use rich_presence::{RichPresenceManager, GameState, RichPresenceData};
 pub use error::{SteamError, SteamResult};
 
 use once_cell::sync::Lazy;

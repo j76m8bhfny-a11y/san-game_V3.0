@@ -1,0 +1,412 @@
+{
+  "_comment": "San: 人生模拟器 - 完整成就配置",
+  "_total": "20个成就，分为4个阶层线 + 4个通用成就",
+  "_iconStyle": "统一像素艺术风格，32x32或64x64，深色背景+霓虹高亮",
+  
+  "achievements": [
+    {
+      "_category": "Homeless - 生存挣扎线",
+      "_progression": "新手教程 → 生存考验 → 阶层突破 → 特殊事件"
+    },
+    {
+      "name": "ACH_FIRST_BLOOD",
+      "displayName": {
+        "english": "First Lesson",
+        "schinese": "第一课"
+      },
+      "description": {
+        "english": "Experience your first death on the streets",
+        "schinese": "在街头经历第一次死亡"
+      },
+      "hidden": false,
+      "iconPrompt": {
+        "style": "Pixel art icon, 64x64, dark cyberpunk aesthetic",
+        "elements": "A cracked tombstone with pixelated angel wings, neon red 'GAME OVER' text glowing, dark blue background with rain effect",
+        "color": "Dark navy (#0a1628) background, neon red (#ff0040) highlights, gray stone texture",
+        "mood": "Somber but stylized, retro gaming death screen",
+        "reference": "Hotline Miami death screen meets Undertale pixel art"
+      }
+    },
+    {
+      "name": "ACH_SURVIVE_7D",
+      "displayName": {
+        "english": "Week Warrior",
+        "schinese": "一周战士"
+      },
+      "description": {
+        "english": "Survive 7 days without dying",
+        "schinese": "连续生存7天"
+      },
+      "hidden": false,
+      "iconPrompt": {
+        "style": "Pixel art icon, 64x64, gritty urban survival",
+        "elements": "A pixelated calendar with 7 days marked in red, torn and weathered, held by a skeletal hand, backdrop of city skyline silhouette",
+        "color": "Sepia and rust tones (#8B4513), blood red marks (#DC143C), dark gray background",
+        "mood": "Gritty determination, barely making it",
+        "reference": "Darkest Dungeon campfire icon style"
+      }
+    },
+    {
+      "name": "ACH_HOMELESS_ESCAPE",
+      "displayName": {
+        "english": "Breaking the Cocoon",
+        "schinese": "破茧成蝶"
+      },
+      "description": {
+        "english": "Escape the homeless class and find stable work",
+        "schinese": "脱离 homeless 阶层，找到稳定工作"
+      },
+      "hidden": false,
+      "iconPrompt": {
+        "style": "Pixel art icon, 64x64, metamorphosis symbolism",
+        "elements": "A pixelated moth emerging from a broken cocoon made of cardboard and trash, one wing damaged but spread, ascending",
+        "color": "Dirty brown cocoon (#654321), iridescent teal wings (#00CED1), golden light rays",
+        "mood": "Hope amid decay, fragile transformation",
+        "reference": "Hollow Knight transformation aesthetic"
+      }
+    },
+    {
+      "name": "ACH_HOMELESS_BENCH",
+      "displayName": {
+        "english": "Bench Warmer",
+        "schinese": "长椅守护者"
+      },
+      "description": {
+        "english": "Sleep on a park bench for 3 consecutive nights (Event: EVT_H01_BENCH)",
+        "schinese": "连续3晚在公园长椅过夜（触发事件：长椅禁令）"
+      },
+      "hidden": true,
+      "iconPrompt": {
+        "style": "Pixel art icon, 64x64, lonely urban night",
+        "elements": "A pixelated park bench under a flickering street lamp, snow or rain falling, empty coffee cup on ground, 'NO SLEEPING' sign crossed out",
+        "color": "Cold blue night (#1a237e), warm orange lamp (#ff6f00), white snow accents",
+        "mood": "Desolate but defiant, finding warmth in cold",
+        "reference": "Kentucky Route Zero minimalism"
+      }
+    },
+
+    {
+      "_category": "Worker - 觉醒与剥削线",
+      "_progression": "被剥削 → 觉醒 → 反抗 → 晋升"
+    },
+    {
+      "name": "ACH_WORKER_REBEL",
+      "displayName": {
+        "english": "Awakening Moment",
+        "schinese": "觉醒时刻"
+      },
+      "description": {
+        "english": "Trigger a union event as a worker",
+        "schinese": "作为 worker 触发工会事件"
+      },
+      "hidden": false,
+      "iconPrompt": {
+        "style": "Pixel art icon, 64x64, revolutionary propaganda poster style",
+        "elements": "Raised pixelated fist holding a wrench, breaking chains, industrial factory background with smokestacks, workers silhouettes",
+        "color": "Soviet red (#CC0000), industrial steel gray (#4a5568), golden dawn light",
+        "mood": "Revolutionary, empowering, dangerous hope",
+        "reference": "Soviet constructivist poster meets Papers Please"
+      }
+    },
+    {
+      "name": "ACH_WORKER_OVERTIME",
+      "displayName": {
+        "english": "Corporate Slave",
+        "schinese": "九九六福报"
+      },
+      "description": {
+        "english": "Work 7 consecutive days without rest",
+        "schinese": "连续工作7天没有休息"
+      },
+      "hidden": false,
+      "iconPrompt": {
+        "style": "Pixel art icon, 64x64, corporate dystopia",
+        "elements": "An exhausted pixelated worker at conveyor belt, clock showing 9-9-6, coffee cups piled up, eyes with dark circles glowing red",
+        "color": "Fluorescent office white (#f5f5f5), bloodshot red (#ff0000), coffee brown",
+        "mood": "Exhaustion, grinding, dark humor",
+        "reference": "The Office meets Cyberpunk corporate aesthetic"
+      }
+    },
+    {
+      "name": "ACH_WORKER_WHISTLE",
+      "displayName": {
+        "english": "The Whistleblower",
+        "schinese": "吹哨人"
+      },
+      "description": {
+        "english": "Report a黑心 factory's illegal practices (Event: EVT_WORKER_18_WHISTLEBLOWER)",
+        "schinese": "举报黑心工厂的违法行为（触发事件：吹哨人）"
+      },
+      "hidden": true,
+      "iconPrompt": {
+        "style": "Pixel art icon, 64x64, noir thriller",
+        "elements": "A pixelated whistle with sound waves, secret documents flying, shadowy figure in background, 'TOP SECRET' stamp",
+        "color": "Noir black and white, spotlight yellow (#ffd700), redacted red",
+        "mood": "Dangerous truth, isolation, moral weight",
+        "reference": "Metal Gear Solid codec style meets All The President's Men"
+      }
+    },
+    {
+      "name": "ACH_WORKER_ESCAPE",
+      "displayName": {
+        "english": "Promotion to Middle Class",
+        "schinese": "晋升中产"
+      },
+      "description": {
+        "english": "Escape the working class through promotion or education",
+        "schinese": "通过晋升或教育脱离工人阶层"
+      },
+      "hidden": false,
+      "iconPrompt": {
+        "style": "Pixel art icon, 64x64, corporate ladder symbolism",
+        "elements": "A pixelated diploma/degree floating above a ladder, breaking through glass ceiling with cracks, suit and tie below",
+        "color": "Parchment beige (#f5deb3), navy suit (#000080), shattered glass cyan",
+        "mood": "Ambiguous success, new chains, fragile ascent",
+        "reference": "Bioshock utopia/dystopia duality"
+      }
+    },
+
+    {
+      "_category": "Middle - 房贷与焦虑线",
+      "_progression": "背上房贷 →  HOA困境 → 中年危机 → 阶层跃迁"
+    },
+    {
+      "name": "ACH_MIDDLE_MORTGAGE",
+      "displayName": {
+        "english": "Thirty-Year Burden",
+        "schinese": "三十年房奴"
+      },
+      "description": {
+        "english": "Take on a 30-year mortgage",
+        "schinese": "背负 30 年房贷"
+      },
+      "hidden": false,
+      "iconPrompt": {
+        "style": "Pixel art icon, 64x64, suburban gothic",
+        "elements": "A pixelated suburban house with golden handcuffs as door handles, '30 YEARS' sign, perfect lawn with dark shadows underneath",
+        "color": "Suburban beige (#d2b48c), prison gold (#ffd700), dark shadow purple",
+        "mood": "Gilded cage, suburban anxiety, beautiful prison",
+        "reference": "American Beauty meets Edward Hopper"
+      }
+    },
+    {
+      "name": "ACH_MIDDLE_HOA",
+      "displayName": {
+        "english": "Lawn Nazi",
+        "schinese": "草坪盖世太保"
+      },
+      "description": {
+        "english": "Get fined by HOA for lawn violations (Event: EVT_MIDDLE_01_HOA_LAWN)",
+        "schinese": "因草坪违规被HOA罚款（触发事件：HOA草坪法）"
+      },
+      "hidden": true,
+      "iconPrompt": {
+        "style": "Pixel art icon, 64x64, suburban surveillance",
+        "elements": "A pixelated ruler measuring grass height, magnifying glass over a single yellow leaf, 'VIOLATION' ticket, nosy neighbor peeking over fence",
+        "color": "HOA beige (#c2b280), warning yellow (#ffcc00), nosy pink (#ffb6c1)",
+        "mood": "Petty tyranny, surveillance comedy, suburban dread",
+        "reference": "The Truman Show meets Stepford Wives"
+      }
+    },
+    {
+      "name": "ACH_MIDDLE_CRISIS",
+      "displayName": {
+        "english": "Midlife Crisis",
+        "schinese": "中年危机"
+      },
+      "description": {
+        "english": "Trigger a midlife crisis event (buy sports car or have an affair)",
+        "schinese": "触发中年危机事件（购买跑车或出轨）"
+      },
+      "hidden": true,
+      "iconPrompt": {
+        "style": "Pixel art icon, 64x64, crisis symbolism",
+        "elements": "A pixelated red sports car with a question mark tailpipe, balding head with comb-over, wedding ring in rearview mirror, open road leading to cliff",
+        "color": "Crisis red (#dc143c), midlife gray (#808080), temptation gold",
+        "mood": "Desperate grasp at youth, pathetic grandeur",
+        "reference": "Fear and Loathing meets American Beauty"
+      }
+    },
+    {
+      "name": "ACH_MIDDLE_ESCAPE",
+      "displayName": {
+        "english": "Breaking into the 1%",
+        "schinese": "跻身1%"
+      },
+      "description": {
+        "english": "Escape the middle class and become a capitalist",
+        "schinese": "脱离中产阶层，成为资本家"
+      },
+      "hidden": false,
+      "iconPrompt": {
+        "style": "Pixel art icon, 64x64, class betrayal symbolism",
+        "elements": "A pixelated figure in suit climbing over a wall made of suburban houses, dropping mortgage papers, reaching for golden skyscraper above",
+        "color": "Middle class blue (#4682b4), capitalist gold (#ffd700), treason purple",
+        "mood": "Ambitious ascent, leaving behind, moral cost",
+        "reference": "The Great Gatsby green light meets Wolf of Wall Street"
+      }
+    },
+
+    {
+      "_category": "Capitalist - 财富与讽刺线",
+      "_progression": "第一桶金 → 垄断 → 道德底线 → 终极剥削"
+    },
+    {
+      "name": "ACH_CAPITALIST_FIRST_MILLION",
+      "displayName": {
+        "english": "First Blood Money",
+        "schinese": "第一桶金"
+      },
+      "description": {
+        "english": "Accumulate assets exceeding 1 million",
+        "schinese": "累计资产突破 100 万"
+      },
+      "hidden": false,
+      "iconPrompt": {
+        "style": "Pixel art icon, 64x64, wealth accumulation",
+        "elements": "A pixelated money bag with '$1M' in blood red, gold coins spilling out with skulls on them, stock chart going up in background",
+        "color": "Blood money crimson (#8b0000), gold (#ffd700), corruption black",
+        "mood": "Wealth built on bones, capitalist excess, sinister success",
+        "reference": "Monopoly man meets Dark Souls soul counter"
+      }
+    },
+    {
+      "name": "ACH_CAPITALIST_MONOPOLY",
+      "displayName": {
+        "english": "Too Big to Fail",
+        "schinese": "大到不能倒"
+      },
+      "description": {
+        "english": "Achieve monopoly in any market sector (Event: EVT_CAPITALIST_03_TOO_BIG_TO_FAIL)",
+        "schinese": "在任意市场领域达成垄断（触发事件：大到不能倒）"
+      },
+      "hidden": true,
+      "iconPrompt": {
+        "style": "Pixel art icon, 64x64, corporate monopoly",
+        "elements": "A pixelated board game monopoly piece (top hat) crushing small houses and shops, government building in pocket, 'BAILOUT' check",
+        "color": "Monopoly green (#00ff00), government gray, crushed red (#ff0000)",
+        "mood": "Corporate dominance, systemic corruption, untouchable",
+        "reference": "Mr. Robot E-Corp meets actual Monopoly board"
+      }
+    },
+    {
+      "name": "ACH_CAPITALIST_OFFSHORE",
+      "displayName": {
+        "english": "Tax Haven Tourist",
+        "schinese": "离岸避税天堂游客"
+      },
+      "description": {
+        "english": "Hide assets in offshore accounts (Event: EVT_CAPITALIST_07_OFFSHORE_HAVEN)",
+        "schinese": "在离岸账户隐藏资产（触发事件：离岸避税天堂）"
+      },
+      "hidden": true,
+      "iconPrompt": {
+        "style": "Pixel art icon, 64x64, financial secrecy",
+        "elements": "A pixelated palm tree on a tropical island made of documents, money flowing into a black hole, 'PRIVATE' stamp, IRS agent drowning in water",
+        "color": "Tax haven teal (#008080), money green, black hole black",
+        "mood": "Guilt-free greed, paradise built on exploitation",
+        "reference": "The Panama Papers meets The Beach"
+      }
+    },
+    {
+      "name": "ACH_CAPITALIST_HEART",
+      "displayName": {
+        "english": "The 1% Heart",
+        "schinese": "百分之一的心脏"
+      },
+      "description": {
+        "english": "Get a heart transplant from a poor donor (Event: EVT_CAPITALIST_42_BLOOD_BOY)",
+        "schinese": "接受来自贫困捐赠者的心脏移植（触发事件：血童）"
+      },
+      "hidden": true,
+      "iconPrompt": {
+        "style": "Pixel art icon, 64x64, body horror capitalism",
+        "elements": "A pixelated golden heart in a glass case, poor figure lying down connected by tubes, 'PREMIUM UPGRADE' label, life support machine with dollar signs",
+        "color": "Medical white, class gold (#ffd700), exploitation red (#8b0000)",
+        "mood": "Literal body exploitation, wealth extension, moral bankruptcy",
+        "reference": "Repo Man meets Get Out, Cronenberg body horror"
+      }
+    },
+
+    {
+      "_category": "通用 - 跨阶层挑战",
+      "_theme": "超越单个阶层的终极挑战"
+    },
+    {
+      "name": "ACH_ALL_CLASSES",
+      "displayName": {
+        "english": "Life in All Colors",
+        "schinese": "人生百态"
+      },
+      "description": {
+        "english": "Experience all four social classes in one playthrough",
+        "schinese": "在单局游戏中体验所有四个社会阶层"
+      },
+      "hidden": false,
+      "iconPrompt": {
+        "style": "Pixel art icon, 64x64, class spectrum",
+        "elements": "Four pixelated figures in vertical stack connected by arrows: homeless (cardboard), worker (helmet), middle (suit), capitalist (top hat), circular cycle arrows",
+        "color": "Homeless brown, worker blue, middle gray, capitalist gold, rainbow gradient background",
+        "mood": "Full spectrum of experience, systemic understanding",
+        "reference": "The Great Chain of Being meets modern class analysis"
+      }
+    },
+    {
+      "name": "ACH_EVENT_COLLECTOR",
+      "displayName": {
+        "english": "Encyclopedia of Suffering",
+        "schinese": "苦难百科全书"
+      },
+      "description": {
+        "english": "Experience 50 unique random events",
+        "schinese": "体验 50 个独特的随机事件"
+      },
+      "hidden": false,
+      "iconPrompt": {
+        "style": "Pixel art icon, 64x64, collection completion",
+        "elements": "A pixelated book with '50/100' progress bar, event icons floating around (bench, bill, hospital, jail), System Gaze eye watching",
+        "color": "Book leather brown (#8b4513), event icons multicolor, Gaze purple (#9400d3)",
+        "mood": "Compulsive documentation, voyeurism of misery, completionism",
+        "reference": "Binding of Isaac item collection meets Wikipedia"
+      }
+    },
+    {
+      "name": "ACH_IRONIC_ENDING",
+      "displayName": {
+        "english": "The System's Punchline",
+        "schinese": "系统的黑色幽默"
+      },
+      "description": {
+        "english": "Trigger any ironic ending (die from success, or win by failing)",
+        "schinese": "触发任意讽刺性结局（成功致死，或失败获胜）"
+      },
+      "hidden": false,
+      "iconPrompt": {
+        "style": "Pixel art icon, 64x64, dramatic irony",
+        "elements": "A pixelated theater mask (comedy and tragedy merged), capitalist at top of ladder falling, homeless at bottom catching his wallet, System Gaze laughing",
+        "color": "Theatrical gold (#ffd700), irony cyan (#00ffff), dark comedy purple",
+        "mood": "Dark humor, cosmic irony, system mockery",
+        "reference": "Black Mirror meets Waiting for Godot"
+      }
+    },
+    {
+      "name": "ACH_IMMORTAL",
+      "displayName": {
+        "english": "One Percent Immortal",
+        "schinese": "百分之一的永生者"
+      },
+      "description": {
+        "english": "Survive 365 days (1 year) in a single playthrough",
+        "schinese": "单局游戏存活 365 天（1年）"
+      },
+      "hidden": false,
+      "iconPrompt": {
+        "style": "Pixel art icon, 64x64, time survival",
+        "elements": "A pixelated hourglass with '365' in sand, seasons changing around it (spring flowers → summer sun → autumn leaves → winter snow), skeletal figure still standing",
+        "color": "Time gold (#ffd700), seasonal colors cycle, endurance silver",
+        "mood": "Endurance against time, survival as victory, temporal resilience",
+        "reference": "Dark Souls 'You Died' screen inverted, The Persistence of Memory"
+      }
+    }
+  ]
+}

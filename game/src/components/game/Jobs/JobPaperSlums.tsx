@@ -59,7 +59,7 @@ export const JobPaperSlums: React.FC<Props> = ({
           >
             ${job.baseSalary}{PAY_CYCLE_LABELS[job.payCycle || 'WEEKLY']}
           </span>
-          <span className="text-[10px] font-sans text-gray-600 transform -rotate-2 font-bold">
+          <span className="text-[10px] font-pixel text-gray-600 transform -rotate-2 font-bold">
             {t('job.slums.cashOnly')}
           </span>
         </div>

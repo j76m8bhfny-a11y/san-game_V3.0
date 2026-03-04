@@ -27,7 +27,7 @@ export const DowntownExterior: React.FC<Props> = ({ house, gold, onBuy, onClose 
   };
 
   return (
-    <div className="relative w-full h-full flex flex-col justify-between p-8 overflow-hidden select-none font-sans">
+    <div className="relative w-full h-full flex flex-col justify-between p-8 overflow-hidden select-none font-pixel">
       
       {/* 1. 场景：私人电梯大堂 */}
       <div 
@@ -41,7 +41,7 @@ export const DowntownExterior: React.FC<Props> = ({ house, gold, onBuy, onClose 
 
       {/* 2. 装饰：品牌Logo */}
       <div className="relative z-10 text-center mt-10 opacity-80">
-        <h1 className="text-4xl font-serif text-[#d4af37] tracking-[0.5em] uppercase">
+        <h1 className="text-4xl font-pixel text-[#d4af37] tracking-[0.5em] uppercase">
           The Pinnacle
         </h1>
         <div className="w-16 h-0.5 bg-[#d4af37] mx-auto mt-4" />

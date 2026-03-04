@@ -180,7 +180,7 @@ const ImmigrationForm: React.FC<{
     <div className="space-y-4">
       {/* 表头 */}
       <div className="border-b-2 border-black pb-2 mb-4">
-        <h2 className="font-serif text-lg font-bold text-black">
+        <h2 className="font-pixel text-lg font-bold text-black">
           {t('settings.form.title')}
         </h2>
         <p className="font-mono text-[10px] text-gray-600 mt-1">

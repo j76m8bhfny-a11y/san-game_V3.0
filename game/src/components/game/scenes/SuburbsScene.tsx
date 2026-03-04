@@ -46,7 +46,7 @@ const InteractableObject: React.FC<InteractableProps> = ({
 
       {/* 4. 标签 (中产阶级风格：干净、极简、白色无衬线) */}
       <div className="absolute -top-16 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 pointer-events-none z-20">
-        <div className="bg-white/90 text-gray-800 px-4 py-2 font-sans font-bold text-xs tracking-widest shadow-xl border border-gray-200 rounded-sm uppercase whitespace-nowrap">
+        <div className="bg-white/90 text-gray-800 px-4 py-2 font-pixel font-bold text-xs tracking-widest shadow-xl border border-gray-200 rounded-sm uppercase whitespace-nowrap">
           {label}
         </div>
         {/* 倒三角箭头 */}

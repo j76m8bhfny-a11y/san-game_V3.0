@@ -29,7 +29,7 @@ export const SlumsExterior: React.FC<Props> = ({ house, gold, onRent, onClose })
 
       {/* 2. 顶部：环境描述 */}
       <div className="relative z-10 bg-black/70 p-4 border-l-4 border-red-800 max-w-md transform -rotate-1">
-        <h2 className="text-2xl font-black text-gray-200 font-serif tracking-widest uppercase mb-1">
+        <h2 className="text-2xl font-black text-gray-200 font-pixel tracking-widest uppercase mb-1">
           EMPTY LOT
         </h2>
         <p className="text-sm text-gray-400 font-mono leading-relaxed">

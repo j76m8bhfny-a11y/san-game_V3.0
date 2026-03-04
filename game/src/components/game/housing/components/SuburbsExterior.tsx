@@ -25,7 +25,7 @@ export const SuburbsExterior: React.FC<Props> = ({ house, gold, onBuy, onClose }
   const canAfford = gold >= finalUpfrontCost;
 
   return (
-    <div className="relative w-full h-full flex flex-col justify-between p-8 overflow-hidden select-none font-sans">
+    <div className="relative w-full h-full flex flex-col justify-between p-8 overflow-hidden select-none font-pixel">
       
       {/* 1. 场景：完美的郊区房子 */}
       <div 
@@ -64,11 +64,11 @@ export const SuburbsExterior: React.FC<Props> = ({ house, gold, onBuy, onClose }
 
           {/* 挂着的牌子主体 */}
           <div className="absolute top-[25%] left-1/2 -translate-x-1/2 w-full bg-white border-4 border-[#1e3a8a] shadow-2xl p-4 text-center transform origin-top group-hover:rotate-1 transition-transform">
-            <div className="bg-[#1e3a8a] text-white font-serif font-bold py-1 uppercase tracking-widest mb-2">
+            <div className="bg-[#1e3a8a] text-white font-pixel font-bold py-1 uppercase tracking-widest mb-2">
               {isSale ? 'FOR SALE' : 'FOR LEASE'}
             </div>
             
-            <h3 className="text-[#1e3a8a] font-serif font-black text-2xl leading-none mb-1">
+            <h3 className="text-[#1e3a8a] font-pixel font-black text-2xl leading-none mb-1">
               Dream Home
             </h3>
             <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-3">

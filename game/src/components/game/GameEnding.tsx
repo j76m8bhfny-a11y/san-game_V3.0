@@ -120,7 +120,7 @@ export const GameEnding: React.FC<GameEndingProps> = ({ endingId, onRestart, onV
               ${isAwakened ? 'text-amber-100 font-pixel drop-shadow-[0_0_20px_rgba(251,191,36,0.8)]' :
                 isDeath ? 'text-red-600 font-creepster drop-shadow-[0_0_10px_rgba(255,0,0,0.5)]' : 
                 isGood ? 'text-cyan-400 font-pixel drop-shadow-[0_0_10px_rgba(0,255,255,0.5)]' : 
-                'text-white font-serif'}
+                'text-white font-pixel'}
             `}>
               {ending.title}
             </h1>

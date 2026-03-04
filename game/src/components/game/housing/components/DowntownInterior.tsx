@@ -49,7 +49,7 @@ export const DowntownInterior: React.FC<Props> = ({ housing: _housing, onSleep, 
         <div className="relative w-24 h-32 transition-transform duration-500 group-hover:scale-110">
           <img src="/assets/housing/ui_whiskey.png" className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]" />
           <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-            <span className="text-xs font-serif text-[#d4af37] italic">1940 Macallan</span>
+            <span className="text-xs font-pixel text-[#d4af37] italic">1940 Macallan</span>
           </div>
         </div>
       </div>
@@ -72,7 +72,7 @@ export const DowntownInterior: React.FC<Props> = ({ housing: _housing, onSleep, 
           className="group relative w-48 h-16 border border-white/20 hover:border-[#d4af37] hover:bg-white/5 transition-all flex items-center justify-center gap-3"
         >
           <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
-          <span className="text-gray-300 font-sans font-light tracking-[0.2em] group-hover:text-[#d4af37]">
+          <span className="text-gray-300 font-pixel font-light tracking-[0.2em] group-hover:text-[#d4af37]">
             {t('housing.regen')}
           </span>
         </button>

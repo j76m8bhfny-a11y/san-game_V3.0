@@ -191,7 +191,7 @@ const PauseMenuForm: React.FC<{
       {/* 表头 */}
       <div className="border-b-2 border-gray-800 pb-3 mb-4">
         <div className="flex items-center justify-between">
-          <h2 className="font-serif text-base font-bold text-gray-900 uppercase tracking-wide">
+          <h2 className="font-pixel text-base font-bold text-gray-900 uppercase tracking-wide">
             {t('pauseMenu.form.title')}
           </h2>
           {/* 机密印章小图标 */}

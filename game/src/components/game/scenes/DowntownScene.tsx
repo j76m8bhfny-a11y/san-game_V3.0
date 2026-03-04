@@ -38,7 +38,7 @@ const InteractableObject: React.FC<InteractableProps> = ({ label, style, baseIma
       
       {/* 标签提示 (高级衬线体，黑金配色) */}
       <div className="absolute -top-16 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0 pointer-events-none z-20">
-        <div className="bg-black/90 text-[#d4af37] px-4 py-2 font-serif text-sm border border-[#d4af37]/50 tracking-[0.2em] shadow-[0_4px_20px_rgba(0,0,0,0.5)] uppercase whitespace-nowrap">
+        <div className="bg-black/90 text-[#d4af37] px-4 py-2 font-pixel text-sm border border-[#d4af37]/50 tracking-[0.2em] shadow-[0_4px_20px_rgba(0,0,0,0.5)] uppercase whitespace-nowrap">
           {label}
         </div>
         {/* 装饰性菱形 */}

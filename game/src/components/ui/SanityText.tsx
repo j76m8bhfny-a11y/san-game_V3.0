@@ -49,8 +49,8 @@ export const SanityText: React.FC<{ text: string; insight: number }> = ({ text, 
       isAwakened 
         ? 'font-medium text-amber-100' 
         : isObscured 
-          ? 'font-sans text-gray-500 blur-[0.3px]' 
-          : 'font-sans text-gray-200'
+          ? 'font-pixel text-gray-500 blur-[0.3px]' 
+          : 'font-pixel text-gray-200'
     }`}>
       {content}
     </p>

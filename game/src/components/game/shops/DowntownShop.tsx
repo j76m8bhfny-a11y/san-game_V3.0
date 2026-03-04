@@ -38,11 +38,11 @@ export const DowntownShop: React.FC<Props> = ({ onClose }) => {
         {/* --- 左侧：尊贵的侧边栏 (Concierge) --- */}
         <div className="relative z-10 w-1/4 h-full bg-black/80 border-r border-white/10 flex flex-col p-10 backdrop-blur-md">
           <div className="mb-12">
-            <h1 className="text-5xl font-serif text-[#d4af37] mb-2 tracking-widest">
+            <h1 className="text-5xl font-pixel text-[#d4af37] mb-2 tracking-widest">
               {t('shop.title')}
             </h1>
             <div className="h-0.5 w-12 bg-[#d4af37] mb-4" />
-            <p className="text-gray-400 font-sans text-xs tracking-[0.3em] uppercase">
+            <p className="text-gray-400 font-pixel text-xs tracking-[0.3em] uppercase">
               {t('shop.membersOnly')}
             </p>
           </div>
@@ -50,7 +50,7 @@ export const DowntownShop: React.FC<Props> = ({ onClose }) => {
           {/* 会员卡片信息 */}
           <div className="mt-auto mb-12">
              <div className="text-[#888] text-[10px] uppercase tracking-widest mb-2">{t('common.price')}</div>
-             <div className="text-3xl font-serif text-white mb-1">
+             <div className="text-3xl font-pixel text-white mb-1">
                <span className="text-[#d4af37] text-lg mr-1">$</span>
                {gold.toLocaleString('en-US', { minimumFractionDigits: 2 })}
              </div>
@@ -59,7 +59,7 @@ export const DowntownShop: React.FC<Props> = ({ onClose }) => {
 
           <button 
             onClick={onClose}
-            className="text-left text-gray-500 hover:text-white transition-colors text-xs font-sans tracking-widest uppercase flex items-center gap-2 group"
+            className="text-left text-gray-500 hover:text-white transition-colors text-xs font-pixel tracking-widest uppercase flex items-center gap-2 group"
           >
             <span className="w-8 h-[1px] bg-gray-600 group-hover:bg-white transition-colors" />
             {t('common.close')}
@@ -72,7 +72,7 @@ export const DowntownShop: React.FC<Props> = ({ onClose }) => {
             
             {/* 顶部标语 */}
             <div className="text-center mb-16">
-              <h2 className="text-white font-serif text-2xl italic opacity-80">
+              <h2 className="text-white font-pixel text-2xl italic opacity-80">
                 "Power is the ultimate currency."
               </h2>
               <div className="text-[#d4af37] text-xs mt-2 uppercase tracking-[0.2em] font-light">
@@ -82,7 +82,7 @@ export const DowntownShop: React.FC<Props> = ({ onClose }) => {
 
             {items.length === 0 ? (
               <div className="text-center py-20 border border-white/10">
-                <p className="text-gray-500 font-serif italic">{t('shop.empty')}</p>
+                <p className="text-gray-500 font-pixel italic">{t('shop.empty')}</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -99,7 +99,7 @@ export const DowntownShop: React.FC<Props> = ({ onClose }) => {
             
             {/* 底部装饰：免责声明 */}
             <div className="mt-20 text-center">
-              <p className="text-[#333] text-[10px] font-sans tracking-wider uppercase">
+              <p className="text-[#333] text-[10px] font-pixel tracking-wider uppercase">
                 All transactions are final and confidential. <br/>
                 The Club is not responsible for any geopolitical consequences of your purchases.
               </p>

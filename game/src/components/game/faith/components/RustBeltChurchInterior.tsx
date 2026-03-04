@@ -33,7 +33,7 @@ export const RustBeltChurchInterior: React.FC<Props> = ({ onClose }) => {
   };
 
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center select-none bg-black overflow-hidden font-serif">
+    <div className="relative w-full h-full flex flex-col items-center justify-center select-none bg-black overflow-hidden font-pixel">
       
       {/* 背景 */}
       <div 

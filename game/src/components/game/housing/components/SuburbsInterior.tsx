@@ -28,10 +28,10 @@ export const SuburbsInterior: React.FC<Props> = ({ housing, onRest, onPayBills, 
 
       {/* 2. 左上角：房屋信息 (像是一个相框) */}
       <div className="absolute top-8 left-8 z-10 bg-white p-4 shadow-xl border-8 border-[#d4a373] transform -rotate-1 max-w-xs">
-        <h2 className="text-gray-800 font-serif font-bold text-lg border-b border-gray-200 pb-2 mb-2">
+        <h2 className="text-gray-800 font-pixel font-bold text-lg border-b border-gray-200 pb-2 mb-2">
           Home Sweet Home
         </h2>
-        <div className="space-y-1 text-xs font-sans text-gray-600">
+        <div className="space-y-1 text-xs font-pixel text-gray-600">
           <div className="flex justify-between">
             <span>Status:</span>
             <span className="font-bold text-green-600">{housing.type === 'OWN' ? 'MORTGAGED' : 'LEASED'}</span>

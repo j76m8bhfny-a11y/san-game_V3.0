@@ -17,7 +17,7 @@ export const RustBeltExterior: React.FC<Props> = ({ house, gold, onRent, onClose
   const canAfford = gold >= totalUpfront;
 
   return (
-    <div className="relative w-full h-full flex flex-col justify-between p-8 overflow-hidden select-none font-sans">
+    <div className="relative w-full h-full flex flex-col justify-between p-8 overflow-hidden select-none font-pixel">
       
       {/* 1. 场景：Motel 走廊夜景 */}
       <div 

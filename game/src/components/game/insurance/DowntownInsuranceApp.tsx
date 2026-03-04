@@ -82,7 +82,7 @@ export const DowntownInsuranceApp: React.FC<{ onClose: () => void }> = ({ onClos
   return (
     <div className="w-[375px] h-[667px] bg-white rounded-[3rem] border-8 border-gray-900 shadow-2xl overflow-hidden flex flex-col relative">
       {/* 状态栏模拟 */}
-      <div className="h-6 bg-white flex justify-between px-6 items-center text-[10px] font-sans font-bold text-gray-800 pt-2">
+      <div className="h-6 bg-white flex justify-between px-6 items-center text-[10px] font-pixel font-bold text-gray-800 pt-2">
         <span>9:41</span>
         <div className="flex gap-1">
           <span>5G</span>

@@ -34,10 +34,10 @@ export const SuburbsShop: React.FC<Props> = ({ onClose }) => {
         {/* --- 顶部：品牌与欢迎语 --- */}
         <div className="h-28 bg-white/90 backdrop-blur-sm z-20 flex justify-between items-center px-10 shadow-sm border-b border-green-100">
           <div className="flex flex-col">
-            <h1 className="text-4xl font-serif font-black text-green-800 tracking-tight flex items-center gap-3">
+            <h1 className="text-4xl font-pixel font-black text-green-800 tracking-tight flex items-center gap-3">
               <span className="text-5xl">🌿</span> WHOLE LIFE
             </h1>
-            <p className="text-sm text-green-600 font-sans tracking-widest uppercase mt-1">
+            <p className="text-sm text-green-600 font-pixel tracking-widest uppercase mt-1">
               ORGANIC • LOCAL • SUSTAINABLE
             </p>
           </div>
@@ -46,7 +46,7 @@ export const SuburbsShop: React.FC<Props> = ({ onClose }) => {
           <div className="bg-gradient-to-r from-green-700 to-green-600 text-white px-6 py-3 rounded-xl shadow-lg flex items-center gap-4 transform hover:scale-105 transition-transform">
              <div className="text-right">
                <div className="text-[10px] font-medium opacity-80 uppercase">{t('shop.title')}</div>
-               <div className="text-2xl font-bold font-sans">${gold.toFixed(2)}</div>
+               <div className="text-2xl font-bold font-pixel">${gold.toFixed(2)}</div>
              </div>
              <div className="h-8 w-8 bg-white/20 rounded-full flex items-center justify-center text-lg">💳</div>
           </div>
@@ -56,7 +56,7 @@ export const SuburbsShop: React.FC<Props> = ({ onClose }) => {
         <div className="flex-1 overflow-y-auto px-16 py-10 custom-scrollbar z-10">
           
           {items.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-gray-400 font-serif">
+            <div className="h-full flex flex-col items-center justify-center text-gray-400 font-pixel">
               <span className="text-4xl mb-4">🍃</span>
               <span>{t('shop.insufficient')}</span>
             </div>
@@ -88,7 +88,7 @@ export const SuburbsShop: React.FC<Props> = ({ onClose }) => {
            
            <button 
              onClick={onClose}
-             className="relative z-10 px-8 py-3 bg-white hover:bg-red-50 text-gray-700 hover:text-red-600 border border-gray-300 hover:border-red-300 rounded-lg font-sans font-bold transition-all shadow-sm"
+             className="relative z-10 px-8 py-3 bg-white hover:bg-red-50 text-gray-700 hover:text-red-600 border border-gray-300 hover:border-red-300 rounded-lg font-pixel font-bold transition-all shadow-sm"
            >
              {t('common.close').toUpperCase()}
            </button>

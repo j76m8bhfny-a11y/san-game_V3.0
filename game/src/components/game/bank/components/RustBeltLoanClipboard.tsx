@@ -26,7 +26,7 @@ export const RustBeltLoanClipboard: React.FC<Props> = ({ product, creditScore, o
       </div>
 
       {/* 纸张 */}
-      <div className="absolute top-2 left-2 right-2 bottom-2 bg-white shadow-inner p-3 font-serif text-gray-800 flex flex-col z-10">
+      <div className="absolute top-2 left-2 right-2 bottom-2 bg-white shadow-inner p-3 font-pixel text-gray-800 flex flex-col z-10">
         <div className="text-center border-b-2 border-black pb-1 mb-1">
           <h3 className="font-bold text-sm uppercase">{t('bank.loan.title')}</h3>
         </div>

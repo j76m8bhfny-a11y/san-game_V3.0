@@ -34,7 +34,7 @@ export const SlumsShop: React.FC<Props> = ({ onClose }) => {
         {/* 顶部标题栏：像是贴在车盖内侧的胶带 */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-24 bg-gradient-to-b from-black/90 to-transparent pointer-events-none z-10" />
         <div className="absolute top-6 left-1/2 -translate-x-1/2 rotate-1 bg-[#d4c5a9] px-6 py-2 shadow-lg transform origin-center z-20">
-          <h1 className="text-2xl font-black text-[#2a2a2a] font-serif tracking-widest uppercase">
+          <h1 className="text-2xl font-black text-[#2a2a2a] font-pixel tracking-widest uppercase">
             {t('shop.title')}
           </h1>
           <div className="text-xs text-center font-mono text-[#5c4d3c] font-bold">CASH ONLY • NO REFUNDS</div>

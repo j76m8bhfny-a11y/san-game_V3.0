@@ -62,7 +62,7 @@ export const InventorySidebar: React.FC = () => {
 
   const panelClass = `
     fixed top-0 right-0 bottom-0 z-50 w-full md:w-96 bg-[#0a0a0a] border-l border-white/10 
-    transform transition-transform duration-300 ease-out flex flex-col font-sans
+    transform transition-transform duration-300 ease-out flex flex-col font-pixel
     ${isInventoryOpen ? 'translate-x-0 shadow-[-20px_0_50px_rgba(0,0,0,0.8)]' : 'translate-x-full'}
   `;
 
@@ -155,7 +155,7 @@ export const InventorySidebar: React.FC = () => {
             </div>
 
             <div className="flex-1 overflow-y-auto mb-4 pr-2 custom-scrollbar">
-              <p className="text-sm text-gray-400 font-serif italic leading-relaxed">
+              <p className="text-sm text-gray-400 font-pixel italic leading-relaxed">
                 “{selectedItem.flavorText}”
               </p>
               

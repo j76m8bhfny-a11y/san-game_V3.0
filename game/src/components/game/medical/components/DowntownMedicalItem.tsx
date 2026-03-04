@@ -48,7 +48,7 @@ export const DowntownMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy
         transition-transform duration-300
         ${isHovered ? 'translate-y-0' : 'translate-y-full'}
       `}>
-        <div className="text-[10px] text-gray-400 font-sans tracking-wide mb-2">
+        <div className="text-[10px] text-gray-400 font-pixel tracking-wide mb-2">
           {service.flavorText}
         </div>
         

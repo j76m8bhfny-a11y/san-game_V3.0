@@ -23,7 +23,7 @@ export const useVisualFilter = () => {
       return {
         className: 'theme-mundane',
         style: { filter: 'none' },
-        fontClass: 'font-sans',
+        fontClass: 'font-pixel',
         description: 'mundane'
       };
     }
@@ -36,7 +36,7 @@ export const useVisualFilter = () => {
           filter: 'sepia(0.2) contrast(1.05)', // 轻微老旧感
           transition: 'filter 2s ease'
         },
-        fontClass: 'font-sans',
+        fontClass: 'font-pixel',
         description: 'awakening'
       };
     }

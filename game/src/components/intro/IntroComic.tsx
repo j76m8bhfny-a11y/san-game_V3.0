@@ -145,7 +145,7 @@ export const IntroComic: React.FC<IntroComicProps> = React.memo(({ onComplete })
     };
     
     const typeStyles: Record<string, string> = {
-      'narration': 'bg-yellow-100 text-black border-2 border-black font-serif italic',
+      'narration': 'bg-yellow-100 text-black border-2 border-black font-pixel italic',
       'dialogue': 'bg-white text-black border-2 border-black rounded-lg',
       'thought': 'bg-blue-100 text-black border-2 border-blue-400 rounded-full font-italic'
     };

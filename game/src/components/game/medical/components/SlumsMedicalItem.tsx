@@ -69,7 +69,7 @@ export const SlumsMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy })
         <div className="absolute top-0 right-0 w-6 h-6 bg-red-800/20 rounded-full blur-md" />
         
         <h3 className="font-black font-mono text-sm uppercase mb-1">{service.name}</h3>
-        <p className="text-[10px] font-serif leading-tight text-gray-600 mb-2">
+        <p className="text-[10px] font-pixel leading-tight text-gray-600 mb-2">
           "{service.flavorText}"
         </p>
         

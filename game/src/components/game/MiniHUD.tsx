@@ -140,7 +140,7 @@ export const MiniHUD: React.FC = () => {
           <div className="flex items-center gap-3">
             <div className="flex flex-col items-center justify-center w-10 h-10 bg-white/5 rounded-full border border-white/10 shadow-lg">
               <div className="text-[8px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-0.5">{t('hud.week', { turn: '' }).replace('{turn}', '')}</div>
-              <div className="text-base md:text-lg font-black font-serif text-white leading-none">
+              <div className="text-base md:text-lg font-black font-pixel text-white leading-none">
                 {vitality.time.currentTurn}
               </div>
             </div>
@@ -238,7 +238,7 @@ export const MiniHUD: React.FC = () => {
             ${goldChange === 'UP' ? 'text-green-400 scale-110' : goldChange === 'DOWN' ? 'text-red-400' : gold < 0 ? 'text-red-500' : 'text-yellow-400'}
           `}
         >
-           <span className="text-sm opacity-50 font-sans">$</span>
+           <span className="text-sm opacity-50 font-pixel">$</span>
            <span>{gold.toLocaleString()}</span>
         </button>
 

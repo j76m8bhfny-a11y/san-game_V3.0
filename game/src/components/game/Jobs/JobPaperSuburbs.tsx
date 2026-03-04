@@ -48,7 +48,7 @@ export const JobPaperSuburbs: React.FC<Props> = ({
         </span>
       </div>
 
-      <h3 className="font-sans font-bold text-slate-700 text-lg mb-1">{job.title}</h3>
+      <h3 className="font-pixel font-bold text-slate-700 text-lg mb-1">{job.title}</h3>
       <p className="text-slate-500 text-xs mb-4 line-clamp-2 h-8 leading-4">{job.description}</p>
 
       {!canApply && !isActive && (
@@ -61,7 +61,7 @@ export const JobPaperSuburbs: React.FC<Props> = ({
         <div>
           <p className="text-[10px] text-slate-400 uppercase font-bold">{t('job.salary')}</p>
           <p 
-            className="font-sans font-bold text-slate-700 cursor-help"
+            className="font-pixel font-bold text-slate-700 cursor-help"
             title={`${efficiency.description} | ${t('job.expectedEarnings')}: $${Math.floor(job.baseSalary * efficiency.modifier)}/${t('common.week')}`}
           >
             ${job.baseSalary.toLocaleString()}

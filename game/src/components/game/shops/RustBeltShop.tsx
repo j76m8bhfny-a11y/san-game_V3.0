@@ -82,7 +82,7 @@ export const RustBeltShop: React.FC<Props> = ({ onClose }) => {
            <div className="absolute top-0 right-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-50%]" />
 
            {/* 4. 贴纸：只收现金 */}
-           <div className="absolute bottom-10 right-10 rotate-[-5deg] border-2 border-white/30 bg-red-600/90 text-white px-4 py-2 font-black font-sans text-xl shadow-lg">
+           <div className="absolute bottom-10 right-10 rotate-[-5deg] border-2 border-white/30 bg-red-600/90 text-white px-4 py-2 font-black font-pixel text-xl shadow-lg">
              CASH ONLY
            </div>
            <div className="absolute bottom-24 right-12 rotate-[2deg] border border-white/20 bg-yellow-500/90 text-black px-3 py-1 font-bold font-mono text-xs shadow-md">

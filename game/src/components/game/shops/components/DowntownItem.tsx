@@ -59,11 +59,11 @@ export const DowntownItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
 
       {/* 2. 信息区 (Minimalist Typography) */}
       <div className="text-center">
-        <h3 className="text-white font-serif text-xl tracking-wide mb-2 group-hover:text-[#d4af37] transition-colors">
+        <h3 className="text-white font-pixel text-xl tracking-wide mb-2 group-hover:text-[#d4af37] transition-colors">
           {item.name}
         </h3>
         <div className="w-8 h-[1px] bg-white/20 mx-auto mb-4" />
-        <p className="text-gray-500 font-serif text-sm italic mb-6 min-h-[3em]">
+        <p className="text-gray-500 font-pixel text-sm italic mb-6 min-h-[3em]">
           "{item.flavorText}"
         </p>
       </div>
@@ -72,7 +72,7 @@ export const DowntownItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
       <div className="flex items-center justify-between mt-4 border-t border-white/10 pt-4">
         <div className="text-right">
           <div className="text-[10px] text-gray-500 uppercase tracking-widest">{t('shop.valuation')}</div>
-          <div className="text-white font-serif text-lg">${item.price.toLocaleString()}</div>
+          <div className="text-white font-pixel text-lg">${item.price.toLocaleString()}</div>
         </div>
 
         <button
@@ -88,9 +88,9 @@ export const DowntownItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
           {isSigning ? (
             <span className="font-handwriting text-xl animate-pulse">{t('shop.signing')}</span>
           ) : !canAfford ? (
-            <span className="text-xs uppercase font-sans tracking-widest">{t('shop.insufficientAsset')}</span>
+            <span className="text-xs uppercase font-pixel tracking-widest">{t('shop.insufficientAsset')}</span>
           ) : (
-            <span className="font-serif italic tracking-wide">{t('shop.acquire')}</span>
+            <span className="font-pixel italic tracking-wide">{t('shop.acquire')}</span>
           )}
         </button>
       </div>

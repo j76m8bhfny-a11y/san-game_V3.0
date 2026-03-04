@@ -1,6 +1,7 @@
 import { StateCreator } from 'zustand';
 import { Item, GameDataCache } from '@/types/schema';
 import { StoreState } from '@/types/store';
+import { eventsCache } from '@/systems/core/EventSystem';
 import {
   loadAllGameData,
   createItemMap,
@@ -39,9 +40,10 @@ export const createSystemSlice: StateCreator<StoreState, [], [], SystemSlice> = 
 
       const cache: GameDataCache = {
         ...data,
+        events: eventsCache || [],
         classMap,
         itemMap: createItemMap(data.items),
-        eventMap: createEventMap(data.events),
+        eventMap: createEventMap(eventsCache || []),
         billMap: createBillMap(data.bills),
         archiveMap: createArchiveMap(data.archives),
         endingMap: createEndingMap(data.endings),

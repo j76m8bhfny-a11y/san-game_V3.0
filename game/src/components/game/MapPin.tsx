@@ -58,7 +58,7 @@ export const MapPin: React.FC<MapPinProps> = ({
         style={{ transform: `translate(-50%, -50%) rotate(${config.rotation}deg)` }}
       >
         <h2 className={`
-          text-3xl font-black font-serif tracking-widest uppercase mb-2
+          text-3xl font-black font-pixel tracking-widest uppercase mb-2
           drop-shadow-sm
           ${isCurrent ? 'text-black scale-110' : 'text-gray-800/60 group-hover:text-black group-hover:scale-105'}
           transition-all duration-300

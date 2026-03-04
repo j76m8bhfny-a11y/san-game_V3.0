@@ -66,7 +66,7 @@ export const DowntownBankInterior: React.FC<Props> = ({
         
         {/* 左侧：资产负债表 (贷款) */}
         <div className="w-1/2 flex flex-col h-[80%] self-center">
-          <h2 className="text-[#d4af37] font-serif text-2xl italic mb-6 border-b border-[#d4af37]/30 pb-2">
+          <h2 className="text-[#d4af37] font-pixel text-2xl italic mb-6 border-b border-[#d4af37]/30 pb-2">
             {t('bank.ledger')}
           </h2>
           
@@ -109,7 +109,7 @@ export const DowntownBankInterior: React.FC<Props> = ({
                        {/* 头部：产品名称和状态 */}
                        <div className="flex justify-between items-start mb-2">
                          <div>
-                           <div className="text-white font-serif">{loan.productId}</div>
+                           <div className="text-white font-pixel">{loan.productId}</div>
                            <div className={`text-xs ${status.color} font-mono`}>{status.label}</div>
                          </div>
                          <div className="text-right">
@@ -187,7 +187,7 @@ export const DowntownBankInterior: React.FC<Props> = ({
       
       <button 
         onClick={onClose}
-        className="absolute top-8 right-8 text-gray-600 hover:text-[#d4af37] text-xs font-serif italic z-50"
+        className="absolute top-8 right-8 text-gray-600 hover:text-[#d4af37] text-xs font-pixel italic z-50"
       >
         {t('common.close')}
       </button>

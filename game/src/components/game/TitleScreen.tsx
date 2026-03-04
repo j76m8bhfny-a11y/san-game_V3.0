@@ -62,7 +62,7 @@ const MenuCard: React.FC<MenuCardProps> = ({
       </div>
 
       <div className={`relative z-10 text-center ${textColor} w-full`}>
-        <div className="text-lg md:text-xl font-black font-sans tracking-tighter leading-none break-words">{label}</div>
+        <div className="text-lg md:text-xl font-black font-pixel tracking-tighter leading-none break-words">{label}</div>
         <div className="text-[8px] md:text-[9px] font-bold opacity-60 mt-1 uppercase tracking-wider truncate w-full">{subLabel}</div>
       </div>
     </motion.button>
@@ -122,7 +122,7 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
   };
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-black font-sans select-none flex flex-col items-center justify-center md:justify-between py-12 md:py-20">
+    <div className="relative w-screen h-screen overflow-hidden bg-sky-200 font-pixel select-none flex flex-col items-center justify-center md:justify-between py-12 md:py-20">
       
       {/* Language Toggle Button - Top Right */}
       <button
@@ -132,10 +132,12 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
         {locale === 'zh-CN' ? '中文 / EN' : 'EN / 中文'}
       </button>
 
-      {/* L0: Background */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-[#0f0c29] via-[#302b63] to-[#24243e]">
-        <div className="absolute inset-0 bg-[url('/assets/textures/grid.svg')] opacity-20 [transform:perspective(500px)_rotateX(60deg)] origin-bottom" />
-        <div className="absolute inset-0 bg-black/40" />
+      {/* L0: Background - American Dream Sky Theme */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-b from-sky-300 via-sky-200 to-amber-100">
+        <div className="absolute inset-0 bg-[url('/assets/textures/grid.svg')] opacity-10 [transform:perspective(500px)_rotateX(60deg)] origin-bottom" />
+        {/* Pixel Clouds */}
+        <div className="absolute top-20 left-10 w-32 h-16 bg-white/60 rounded-sm" style={{ clipPath: 'polygon(20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%, 0% 50%)' }} />
+        <div className="absolute top-32 right-20 w-24 h-12 bg-white/40 rounded-sm" style={{ clipPath: 'polygon(20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%, 0% 50%)' }} />
       </div>
 
       <AnimatePresence>
@@ -154,7 +156,7 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
         >
-          <h1 className="text-5xl md:text-8xl font-serif font-black text-white tracking-tighter drop-shadow-[0_0_30px_rgba(255,255,255,0.4)]">
+          <h1 className="text-5xl md:text-8xl font-pixel font-black text-white tracking-tighter drop-shadow-[0_0_30px_rgba(255,255,255,0.4)]">
             AMERICAN<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500">INSIGHT</span>
           </h1>

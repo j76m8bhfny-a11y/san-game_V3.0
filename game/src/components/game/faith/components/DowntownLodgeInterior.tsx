@@ -60,7 +60,7 @@ export const DowntownLodgeInterior: React.FC<Props> = ({ onClose }) => {
       {/* 核心交互：名册 */}
       <div className={`
         relative z-10 w-[500px] min-h-[600px] bg-[#1a1510] shadow-[0_0_50px_rgba(0,0,0,0.8)]
-        border-t border-[#d4af37]/30 flex flex-col items-center p-12 text-[#d4af37] font-serif
+        border-t border-[#d4af37]/30 flex flex-col items-center p-12 text-[#d4af37] font-pixel
         transition-transform duration-500
         ${isSigning ? 'scale-[1.02]' : 'scale-100'}
       `}>

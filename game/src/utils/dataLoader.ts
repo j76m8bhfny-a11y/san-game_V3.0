@@ -42,7 +42,6 @@ const loadJsonData = async <T>(path: string): Promise<T> => {
 export const loadAllGameData = async () => {
   const [
     items,
-    events,
     bills,
     archives,
     endings,
@@ -57,7 +56,6 @@ export const loadAllGameData = async () => {
     diseases
   ] = await Promise.all([
     loadJsonData<Item[]>('/src/assets/data/items.json'),
-    loadJsonData<GameEvent[]>('/src/assets/data/events.json'),
     loadJsonData<Bill[]>('/src/assets/data/bills.json'),
     loadJsonData<Archive[]>('/src/assets/data/archives.json'),
     loadJsonData<Ending[]>('/src/assets/data/endings.json'),
@@ -72,8 +70,8 @@ export const loadAllGameData = async () => {
     loadJsonData<Disease[]>('/src/assets/data/diseases.json'),
   ]);
 
-  // 返回扩展后的数据包
-  return { items, events, bills, archives, endings, classes, global, jobs, housing, insurance, loans, news, diseases };
+  // 返回扩展后的数据包（events 已由 EventSystem 单独加载）
+  return { items, bills, archives, endings, classes, global, jobs, housing, insurance, loans, news, diseases };
 };
 
 // ------------------------------------------------------------------

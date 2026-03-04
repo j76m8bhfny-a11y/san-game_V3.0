@@ -37,7 +37,7 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
   };
 
   return (
-    <div className="relative w-full h-full flex flex-col items-center justify-center select-none bg-gray-100 overflow-hidden font-sans">
+    <div className="relative w-full h-full flex flex-col items-center justify-center select-none bg-gray-100 overflow-hidden font-pixel">
       
       {/* 背景 */}
       <div 

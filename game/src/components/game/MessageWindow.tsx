@@ -419,7 +419,7 @@ const PixelPhone: React.FC<{
       
       <div className="absolute inset-0 border-[12px] border-gray-800 bg-gray-900 rounded-[30px] z-10 shadow-xl" style={{ display: 'none' }} id="fallback-shell"></div>
 
-      <div className="relative z-10 w-[52%] h-[72%] bg-[#f2f2f7] rounded-[30px] overflow-hidden flex flex-col font-sans mb-[138px] mr-[100px]">
+      <div className="relative z-10 w-[52%] h-[72%] bg-[#f2f2f7] rounded-[30px] overflow-hidden flex flex-col font-pixel mb-[138px] mr-[100px]">
         <div className="absolute inset-0 pointer-events-none z-20 opacity-10 bg-[linear-gradient(#000_1px,transparent_1px)] [background-size:100%_4px]" />
 
         <div className="h-12 w-full flex justify-between items-end px-5 pb-1 text-[10px] font-bold text-black font-pixel z-20 select-none">

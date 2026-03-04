@@ -25,7 +25,7 @@ export const DowntownLedger: React.FC<Props> = ({ product, creditScore, onSign }
       
       <div className="relative z-10 p-4 flex justify-between items-center h-full">
         <div className="flex flex-col justify-center">
-          <h3 className="font-serif text-xl text-[#2a2a2a] font-bold italic group-hover:text-[#8b4513] transition-colors">
+          <h3 className="font-pixel text-xl text-[#2a2a2a] font-bold italic group-hover:text-[#8b4513] transition-colors">
             {product.name}
           </h3>
           <div className="text-xs text-gray-500 mt-1 font-mono uppercase tracking-wide">

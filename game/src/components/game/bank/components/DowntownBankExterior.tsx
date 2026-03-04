@@ -11,7 +11,7 @@ export const DowntownBankExterior: React.FC<Props> = ({ onEnter, onClose }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="relative w-full h-full flex flex-col justify-between p-8 overflow-hidden select-none font-serif">
+    <div className="relative w-full h-full flex flex-col justify-between p-8 overflow-hidden select-none font-pixel">
       
       {/* 1. 场景：金库大门 */}
       <div 

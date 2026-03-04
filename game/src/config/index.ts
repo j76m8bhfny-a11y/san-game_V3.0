@@ -27,7 +27,6 @@ import billsData from '@/assets/data/bills.json';
 import classesData from '@/assets/data/classes.json';
 import diseasesData from '@/assets/data/diseases.json';
 import endingsData from '@/assets/data/endings.json';
-import eventsData from '@/assets/data/events.json';
 import faithsData from '@/assets/data/faiths.json';
 import globalData from '@/assets/data/global.json';
 import hospitalServicesData from '@/assets/data/hospital_services.json';
@@ -68,7 +67,6 @@ export const Data = {
   classes: classesData,
   diseases: diseasesData,
   endings: endingsData,
-  events: eventsData,
   faiths: faithsData,
   global: globalData,
   hospitalServices: hospitalServicesData,

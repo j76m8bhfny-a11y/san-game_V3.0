@@ -71,7 +71,7 @@ export const SlumsItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
         <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-6 bg-white/40 rotate-2 backdrop-blur-[1px]" />
         
         <h3 className="font-bold text-sm uppercase border-b border-black/10 pb-1 mb-1">{item.name}</h3>
-        <p className="text-xs font-serif leading-tight text-gray-800 italic">"{item.flavorText}"</p>
+        <p className="text-xs font-pixel leading-tight text-gray-800 italic">"{item.flavorText}"</p>
         
         <div className="mt-2 flex gap-2 text-[10px] font-mono">
            {item.effects?.hp !== undefined && <span className={item.effects.hp > 0 ? 'text-green-700' : 'text-red-700'}>HP {item.effects.hp > 0 ? '+' : ''}{item.effects.hp}</span>}

@@ -135,7 +135,7 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
           initial={{ y: 50, opacity: 0, scale: animationScale }}
           animate={{ y: 0, opacity: 1, scale: 1 }}
           exit={{ y: 50, opacity: 0, scale: animationScale }}
-          className="w-full max-w-md bg-[#F5F5F7] dark:bg-[#111] rounded-3xl shadow-2xl overflow-hidden flex flex-col font-sans relative border border-gray-200 dark:border-gray-800"
+          className="w-full max-w-md bg-[#F5F5F7] dark:bg-[#111] rounded-3xl shadow-2xl overflow-hidden flex flex-col font-pixel relative border border-gray-200 dark:border-gray-800"
         >
           {/* Header */}
           <div className="p-6 pb-2 bg-white dark:bg-[#161616]">

@@ -11,7 +11,7 @@ export const DowntownClinicExterior: React.FC<Props> = ({ onEnter, onClose }) =>
   const { t } = useI18n();
 
   return (
-    <div className="relative w-full h-full flex flex-col justify-between p-8 overflow-hidden select-none font-sans">
+    <div className="relative w-full h-full flex flex-col justify-between p-8 overflow-hidden select-none font-pixel">
       
       {/* 1. 场景：极简主义建筑外观 */}
       <div 

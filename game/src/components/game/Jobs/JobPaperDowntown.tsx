@@ -38,30 +38,30 @@ export const JobPaperDowntown: React.FC<Props> = ({
     `}>
       <div className="flex justify-between items-start mb-4">
         <div className={`
-          w-10 h-10 rounded flex items-center justify-center text-white font-serif font-bold text-lg shadow-md border-2
+          w-10 h-10 rounded flex items-center justify-center text-white font-pixel font-bold text-lg shadow-md border-2
           ${isActive ? 'bg-gradient-to-br from-amber-600 to-amber-800 border-amber-400' : 'bg-gradient-to-br from-slate-700 to-slate-900 border-slate-600'}
         `}>
           {job.title?.[0] || '?'}
         </div>
-        <span className={`px-2 py-1 text-[10px] font-serif italic rounded border ${isActive ? 'bg-amber-100 text-amber-800 border-amber-300' : 'bg-slate-100 text-slate-600 border-slate-300'}`}>
+        <span className={`px-2 py-1 text-[10px] font-pixel italic rounded border ${isActive ? 'bg-amber-100 text-amber-800 border-amber-300' : 'bg-slate-100 text-slate-600 border-slate-300'}`}>
           {isActive ? 'Current Position' : 'Executive'}
         </span>
       </div>
 
-      <h3 className="font-serif font-bold text-slate-800 text-xl mb-1">{job.title}</h3>
+      <h3 className="font-pixel font-bold text-slate-800 text-xl mb-1">{job.title}</h3>
       <p className="text-slate-600 text-sm mb-4 line-clamp-2 h-10 leading-5 italic">{job.description}</p>
 
       {!canApply && !isActive && (
-        <div className="mb-2 px-3 py-1 bg-red-50/80 text-red-700 text-xs rounded border border-red-200 font-serif">
+        <div className="mb-2 px-3 py-1 bg-red-50/80 text-red-700 text-xs rounded border border-red-200 font-pixel">
           ✋ {t(lockReasonKey, lockReasonParams)}
         </div>
       )}
 
       <div className="mt-auto flex items-center justify-between pt-4 border-t border-amber-900/10">
         <div>
-          <p className="text-[10px] text-slate-500 uppercase font-serif tracking-wider">Compensation</p>
+          <p className="text-[10px] text-slate-500 uppercase font-pixel tracking-wider">Compensation</p>
           <p 
-            className="font-serif font-bold text-slate-800 text-lg cursor-help"
+            className="font-pixel font-bold text-slate-800 text-lg cursor-help"
             title={`${efficiency.description} | ${t('job.expectedEarnings')}: $${Math.floor(job.baseSalary * efficiency.modifier)}/${t('common.week')}`}
           >
             ${job.baseSalary.toLocaleString()}
@@ -77,7 +77,7 @@ export const JobPaperDowntown: React.FC<Props> = ({
           onClick={onAction}
           disabled={!isActive && !canApply}
           className={`
-            px-5 py-2 rounded text-xs font-bold transition-all font-serif tracking-wide border
+            px-5 py-2 rounded text-xs font-bold transition-all font-pixel tracking-wide border
             ${isActive 
               ? 'bg-red-50 text-red-700 border-red-300 hover:bg-red-100' 
               : canApply 

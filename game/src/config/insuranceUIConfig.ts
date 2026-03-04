@@ -71,8 +71,8 @@ export const INSURANCE_THEMES: Record<InsuranceTheme, ThemeConfig> = {
   },
   SUBURBS: {
     containerClass: "bg-gradient-to-br from-blue-50 to-white border-2 border-blue-200 rounded-lg shadow-lg",
-    titleClass: "font-sans text-2xl font-bold text-blue-900 tracking-wide",
-    buttonClass: "font-sans text-sm font-bold bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 transition-all px-6 py-2",
+    titleClass: "font-pixel text-2xl font-bold text-blue-900 tracking-wide",
+    buttonClass: "font-pixel text-sm font-bold bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 transition-all px-6 py-2",
     labels: {
       sign: "Enroll Now",
       cancel: "Cancel Policy",
@@ -85,8 +85,8 @@ export const INSURANCE_THEMES: Record<InsuranceTheme, ThemeConfig> = {
   },
   DOWNTOWN: {
     containerClass: "bg-white/95 backdrop-blur-xl border border-slate-200 rounded-2xl shadow-xl",
-    titleClass: "font-sans text-2xl font-bold text-slate-800 tracking-tight",
-    buttonClass: "font-sans text-sm font-bold bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all",
+    titleClass: "font-pixel text-2xl font-bold text-slate-800 tracking-tight",
+    buttonClass: "font-pixel text-sm font-bold bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-all",
     labels: {
       sign: "Subscribe Now",
       cancel: "Unsubscribe",
@@ -99,8 +99,8 @@ export const INSURANCE_THEMES: Record<InsuranceTheme, ThemeConfig> = {
   },
   GLOBAL: {
     containerClass: "bg-[#0a0a0a] border border-[#333] shadow-[0_0_50px_rgba(212,175,55,0.1)]",
-    titleClass: "font-serif text-3xl text-amber-500 font-light tracking-[0.2em]",
-    buttonClass: "font-serif italic text-amber-500 border-b border-amber-500/50 hover:text-amber-300 hover:border-amber-300 transition-colors",
+    titleClass: "font-pixel text-3xl text-amber-500 font-light tracking-[0.2em]",
+    buttonClass: "font-pixel italic text-amber-500 border-b border-amber-500/50 hover:text-amber-300 hover:border-amber-300 transition-colors",
     labels: {
       sign: "Signatory",
       cancel: "Revoke",

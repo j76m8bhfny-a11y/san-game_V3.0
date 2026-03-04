@@ -12,7 +12,7 @@ export const DowntownLodgeExterior: React.FC<Props> = ({ onEnter, onClose }) => 
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="relative w-full h-full flex flex-col justify-between p-8 overflow-hidden select-none font-serif">
+    <div className="relative w-full h-full flex flex-col justify-between p-8 overflow-hidden select-none font-pixel">
       
       {/* 1. 场景：神秘会所外观 */}
       <div 
@@ -56,7 +56,7 @@ export const DowntownLodgeExterior: React.FC<Props> = ({ onEnter, onClose }) => 
         
         {/* 拉丁语铭文 */}
         <div className={`
-          text-center mt-8 text-[#d4af37] font-serif text-sm tracking-[0.3em] transition-opacity duration-700
+          text-center mt-8 text-[#d4af37] font-pixel text-sm tracking-[0.3em] transition-opacity duration-700
           ${isHovered ? 'opacity-100' : 'opacity-0'}
         `}>
           NOVUS ORDO SECLORUM

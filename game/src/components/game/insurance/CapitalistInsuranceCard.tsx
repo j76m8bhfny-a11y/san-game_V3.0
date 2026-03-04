@@ -45,11 +45,11 @@ export const CapitalistInsuranceCard: React.FC<{ onClose: () => void }> = ({ onC
         {/* 头部 */}
         <div className="flex justify-between items-start">
           <div>
-            <h2 className="text-[#d4af37] font-serif text-3xl tracking-[0.2em] uppercase">Apex <span className="text-white/20">Biosciences</span></h2>
-            <p className="text-[#d4af37]/60 font-serif text-xs tracking-widest mt-1">PREMIUM INSURANCE SERVICES</p>
+            <h2 className="text-[#d4af37] font-pixel text-3xl tracking-[0.2em] uppercase">Apex <span className="text-white/20">Biosciences</span></h2>
+            <p className="text-[#d4af37]/60 font-pixel text-xs tracking-widest mt-1">PREMIUM INSURANCE SERVICES</p>
           </div>
           <div className="w-12 h-12 border border-[#d4af37] rounded-full flex items-center justify-center opacity-50">
-            <span className="text-[#d4af37] font-serif text-2xl">A</span>
+            <span className="text-[#d4af37] font-pixel text-2xl">A</span>
           </div>
         </div>
 
@@ -58,7 +58,7 @@ export const CapitalistInsuranceCard: React.FC<{ onClose: () => void }> = ({ onC
           <div className="bg-gradient-to-r from-[#1a1a1a] to-[#0a0a0a] border border-[#d4af37]/30 rounded-lg p-6">
             <div className="flex items-center gap-3 mb-4">
               <Heart className="text-red-500" size={24} />
-              <h3 className="text-[#d4af37] font-serif text-xl">{medicalPlan.name}</h3>
+              <h3 className="text-[#d4af37] font-pixel text-xl">{medicalPlan.name}</h3>
               <span className="text-xs text-gray-500 ml-auto">{t('insurance.type.medical')}</span>
             </div>
             <p className="text-gray-400 text-sm mb-4">{medicalPlan.flavorText}</p>
@@ -85,7 +85,7 @@ export const CapitalistInsuranceCard: React.FC<{ onClose: () => void }> = ({ onC
           <div className="bg-gradient-to-r from-[#1a1a1a] to-[#0a0a0a] border border-blue-500/30 rounded-lg p-6">
             <div className="flex items-center gap-3 mb-4">
               <Car className="text-blue-500" size={24} />
-              <h3 className="text-blue-400 font-serif text-xl">{autoPlan.name}</h3>
+              <h3 className="text-blue-400 font-pixel text-xl">{autoPlan.name}</h3>
               <span className="text-xs text-gray-500 ml-auto">{t('insurance.type.auto')}</span>
             </div>
             <p className="text-gray-400 text-sm mb-4">{autoPlan.flavorText}</p>
@@ -124,7 +124,7 @@ export const CapitalistInsuranceCard: React.FC<{ onClose: () => void }> = ({ onC
           </div>
 
           <div className="text-right">
-            <p className="text-[#d4af37] font-serif text-lg">
+            <p className="text-[#d4af37] font-pixel text-lg">
               {activeInsurances.length > 0 ? t('insurance.active') : t('insurance.invitationOnly')}
             </p>
             <button onClick={onClose} className="text-[#555] text-[10px] hover:text-white uppercase mt-2 tracking-widest">

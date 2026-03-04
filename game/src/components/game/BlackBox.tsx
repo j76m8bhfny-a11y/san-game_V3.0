@@ -139,7 +139,7 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
              <h2 className="text-3xl font-black uppercase tracking-tighter text-black">{currentDoc.title}</h2>
              <p className="font-mono text-[10px] text-gray-600 mt-1">CASE_ID: {currentDoc.id}</p>
            </div>
-           <div className="font-serif text-lg leading-snug text-gray-900 line-clamp-6">
+           <div className="font-pixel text-lg leading-snug text-gray-900 line-clamp-6">
              {currentDoc.flavorText.replace(/【.*?】/g, '')}
            </div>
            <div className="mt-8 text-center text-xs font-mono text-gray-500 animate-pulse">[ {t('archive.tapToRead')} ]</div>
@@ -282,12 +282,12 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
                        {category === 'ENDING' ? t('archive.final') : t('archive.topSecret')}
                      </span>
                   </div>
-                  <h1 className="text-4xl md:text-5xl font-black font-serif uppercase leading-[0.9] tracking-tighter">
+                  <h1 className="text-4xl md:text-5xl font-black font-pixel uppercase leading-[0.9] tracking-tighter">
                     {currentDoc.title}
                   </h1>
                 </div>
 
-                <div className="font-serif text-lg leading-relaxed text-justify text-gray-900">
+                <div className="font-pixel text-lg leading-relaxed text-justify text-gray-900">
                   {renderFormattedText(currentDoc.flavorText)}
                   
                   {category !== 'ENDING' && (

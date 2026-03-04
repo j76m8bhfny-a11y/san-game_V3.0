@@ -161,7 +161,7 @@ const HeaderContent: React.FC<{ isSlums: boolean; isFactory: boolean; isSuburbs:
             💼
           </div>
           <div>
-            <h2 className="font-sans text-2xl font-bold text-slate-700 tracking-tight">
+            <h2 className="font-pixel text-2xl font-bold text-slate-700 tracking-tight">
               {t('job.board')}
             </h2>
             <p className="text-slate-500 text-sm">{t('job.suburbs.tagline')}</p>
@@ -175,10 +175,10 @@ const HeaderContent: React.FC<{ isSlums: boolean; isFactory: boolean; isSuburbs:
             ✦
           </div>
           <div>
-            <h2 className="font-serif text-3xl font-bold text-amber-100 tracking-wide">
+            <h2 className="font-pixel text-3xl font-bold text-amber-100 tracking-wide">
               {t('job.downtown.title')}
             </h2>
-            <p className="text-amber-400/70 text-sm font-serif italic">{t('job.downtown.tagline')}</p>
+            <p className="text-amber-400/70 text-sm font-pixel italic">{t('job.downtown.tagline')}</p>
           </div>
         </div>
       )}
@@ -198,7 +198,7 @@ const CloseButton: React.FC<{
     ${isSlums ? "w-10 h-10 bg-red-700 text-white font-marker text-xl rounded-sm border-2 border-white/80 shadow-lg rotate-3 hover:rotate-12 hover:scale-110" : ""}
     ${isFactory ? "px-4 py-2 bg-red-900/40 text-red-400 font-mono border border-red-700 hover:bg-red-900 hover:text-white" : ""}
     ${isSuburbs ? "w-8 h-8 rounded-full bg-slate-200 text-slate-500 hover:bg-slate-300 flex items-center justify-center shadow" : ""}
-    ${isDowntown ? "w-10 h-10 rounded bg-black/50 text-amber-400 border border-amber-600/50 hover:bg-amber-900/30 hover:text-amber-200 font-serif" : ""}
+    ${isDowntown ? "w-10 h-10 rounded bg-black/50 text-amber-400 border border-amber-600/50 hover:bg-amber-900/30 hover:text-amber-200 font-pixel" : ""}
   `;
   
   const buttonText = isSlums ? "X" : isFactory ? t('common.close.bracket') : "✕";
@@ -220,8 +220,8 @@ const EmptyState: React.FC<{ isSlums: boolean; isFactory: boolean; isSuburbs: bo
     <div className="w-full h-full flex flex-col items-center justify-center py-20 opacity-50">
       {isSlums && <span className="font-marker text-4xl text-white/30 rotate-12">{t('hud.status.unemployed')}</span>}
       {isFactory && <span className="font-mono text-xl text-stone-500 animate-pulse">NO_TASKS_QUEUED</span>}
-      {isSuburbs && <span className="font-sans text-slate-500">{t('hud.status.unemployed')}</span>}
-      {isDowntown && <span className="font-serif text-amber-200/50 italic">{t('job.downtown.empty')}</span>}
+      {isSuburbs && <span className="font-pixel text-slate-500">{t('hud.status.unemployed')}</span>}
+      {isDowntown && <span className="font-pixel text-amber-200/50 italic">{t('job.downtown.empty')}</span>}
     </div>
   );
 };
@@ -250,7 +250,7 @@ const Footer: React.FC<{ isSlums: boolean; isFactory: boolean; isSuburbs: boolea
   
   if (isSuburbs) {
     return (
-      <div className="mt-4 text-center font-sans text-slate-400 text-xs">
+      <div className="mt-4 text-center font-pixel text-slate-400 text-xs">
         {t('job.suburbs.footer')}
       </div>
     );
@@ -258,7 +258,7 @@ const Footer: React.FC<{ isSlums: boolean; isFactory: boolean; isSuburbs: boolea
   
   if (isDowntown) {
     return (
-      <div className="mt-4 text-center font-serif text-amber-600/50 text-xs italic">
+      <div className="mt-4 text-center font-pixel text-amber-600/50 text-xs italic">
         {t('job.downtown.footer')}
       </div>
     );

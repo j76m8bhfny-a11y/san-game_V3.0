@@ -19,7 +19,7 @@ export const NoviceOptions: React.FC = () => {
   return (
     <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
       <div className="bg-black/80 backdrop-blur-md p-6 rounded-xl border border-white/10 shadow-2xl pointer-events-auto min-w-[320px]">
-        <h2 className="text-white font-serif text-xl mb-4 text-center tracking-widest border-b border-white/20 pb-2">
+        <h2 className="text-white font-pixel text-xl mb-4 text-center tracking-widest border-b border-white/20 pb-2">
           {t('faith.make_choice')}
         </h2>
         

@@ -86,7 +86,7 @@ export const BillOverlay: React.FC<{ bill: Bill }> = ({ bill }) => {
           )}
 
           {/* 2. 事件文字 (Flavor Text) */}
-          <p className="font-serif text-lg leading-relaxed text-gray-800 italic">
+          <p className="font-pixel text-lg leading-relaxed text-gray-800 italic">
             "{bill.flavorText}"
           </p>
 
@@ -112,7 +112,7 @@ export const BillOverlay: React.FC<{ bill: Bill }> = ({ bill }) => {
                  <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold shrink-0">
                    {t('bill.medical')}
                  </div>
-                 <p className="text-sm font-bold text-gray-900 font-sans">
+                 <p className="text-sm font-bold text-gray-900 font-pixel">
                    {bill.roast}
                  </p>
                </div>

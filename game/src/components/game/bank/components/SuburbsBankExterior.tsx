@@ -11,7 +11,7 @@ export const SuburbsBankExterior: React.FC<Props> = ({ onEnter, onClose }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
-    <div className="relative w-full h-full flex flex-col justify-between p-8 overflow-hidden select-none font-sans">
+    <div className="relative w-full h-full flex flex-col justify-between p-8 overflow-hidden select-none font-pixel">
       
       {/* 1. 场景：银行支行外观 */}
       <div 
@@ -55,7 +55,7 @@ export const SuburbsBankExterior: React.FC<Props> = ({ onEnter, onClose }) => {
 
       {/* 3. 银行 Logo */}
       <div className="absolute top-10 left-10 bg-white/90 p-3 rounded shadow-xl flex items-center gap-3">
-        <div className="w-8 h-8 bg-[#004080] flex items-center justify-center text-white font-serif font-bold">
+        <div className="w-8 h-8 bg-[#004080] flex items-center justify-center text-white font-pixel font-bold">
           $
         </div>
         <div>

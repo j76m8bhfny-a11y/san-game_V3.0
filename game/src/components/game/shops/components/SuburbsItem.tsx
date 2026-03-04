@@ -74,7 +74,7 @@ export const SuburbsItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
         text-center pointer-events-none z-50 transition-all duration-200
         ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
       `}>
-         <h3 className="font-serif font-bold text-green-900 text-sm mb-1">{item.name}</h3>
+         <h3 className="font-pixel font-bold text-green-900 text-sm mb-1">{item.name}</h3>
          <div className="w-8 h-0.5 bg-green-200 mx-auto mb-2" />
          <p className="text-xs text-gray-500 italic mb-2">"{item.flavorText}"</p>
          

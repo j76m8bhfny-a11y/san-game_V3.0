@@ -48,12 +48,12 @@
     "name": "血浆有偿捐献",
     "region": "SLUMS",
     "type": "SPECIAL",
-    "baseCost": -40,
+    "baseCost": -30,
     "effects": { 
       "hpRestore": -15, 
       "maxHpMod": -2
     },
-    "cooldown": { "turns": 1, "maxPerWeek": 1 },
+    "cooldown": { "turns": 3, "maxPerWeek": 2 },
     "requirements": { "minHp": 30 },
     "insurance": { "isCovered": false, "baseCopayRate": 0 },
     "flavorText": "合法的'卖血'。用你身体里的一点生命流失，换取今晚能吃上一顿热饭的现金。"
@@ -248,5 +248,143 @@
     },
     "insurance": { "isCovered": false, "baseCopayRate": 1.0 },
     "flavorText": "当你拥有足够的净资产时，全美的器官捐献数据库会自动把你排到列表的第一位。无需等待，即时手术。"
+  },
+  {
+    "id": "RUST_METABOLIC_GENERIC",
+    "name": "印度仿制降压药",
+    "region": "RUST_BELT",
+    "type": "DRUG",
+    "baseCost": 60,
+    "ongoingCost": {
+      "weekly": 40
+    },
+    "effects": {
+      "suppressDisease": ["METABOLIC_SYNDROME"],
+      "hpRestore": 3,
+      "insightGain": 2
+    },
+    "insurance": {
+      "isCovered": true,
+      "baseCopayRate": 0.3
+    },
+    "flavorText": "药房告诉你原研药需要$800，于是你选择了这种包装简陋的替代品。它刚好能保证你在流水线上不会突然晕倒。"
+  },
+  {
+    "id": "SUBURBS_METABOLIC_LUXURY",
+    "name": "综合代谢管理中心",
+    "region": "SUBURBS",
+    "type": "THERAPY",
+    "baseCost": 500,
+    "ongoingCost": {
+      "weekly": 150
+    },
+    "effects": {
+      "suppressDisease": ["METABOLIC_SYNDROME"],
+      "hpRestore": 8,
+      "insightClear": 5,
+      "maxHpMod": 5
+    },
+    "insurance": {
+      "isCovered": true,
+      "baseCopayRate": 0.1
+    },
+    "flavorText": "营养师、私人教练和医生组成的团队为你制定方案。当然，这一切的前提是你付得起。"
+  },
+  {
+    "id": "SLUM_SCURVY_CHEAP",
+    "name": "过期维生素C片",
+    "region": "SLUMS",
+    "type": "DRUG",
+    "baseCost": 15,
+    "effects": {
+      "cureDisease": ["SCURVY"],
+      "hpRestore": 10,
+      "insightGain": 5
+    },
+    "insurance": {
+      "isCovered": false
+    },
+    "flavorText": "药店里最底层的货架，积满灰尘的瓶子。过期半年了，但维生素C不会变质——大概吧。"
+  },
+  {
+    "id": "SUBURBS_SCURVY_PROFESSIONAL",
+    "name": "专业营养科治疗",
+    "region": "SUBURBS",
+    "type": "THERAPY",
+    "baseCost": 300,
+    "effects": {
+      "cureDisease": ["SCURVY"],
+      "hpRestore": 25,
+      "maxHpMod": 5,
+      "insightClear": 3
+    },
+    "insurance": {
+      "isCovered": true,
+      "baseCopayRate": 0.2
+    },
+    "flavorText": "医生惊讶地看着你：'你生活在现代城市，怎么会得坏血病？'你笑了笑，没有回答。"
+  },
+  {
+    "id": "SUBURBS_GOUT_TREATMENT",
+    "name": "痛风专科门诊",
+    "region": "SUBURBS",
+    "type": "DRUG",
+    "baseCost": 200,
+    "ongoingCost": {
+      "weekly": 60
+    },
+    "effects": {
+      "suppressDisease": ["GOUT"],
+      "hpRestore": 8
+    },
+    "insurance": {
+      "isCovered": true,
+      "baseCopayRate": 0.25
+    },
+    "flavorText": "医生建议你别再吃红肉，改吃豆类和全谷物。你算了算Whole Foods的账单，决定继续吃止痛药。"
+  },
+  {
+    "id": "RUST_FATTY_LIVER_PROGRAM",
+    "name": "厂区健康计划",
+    "region": "RUST_BELT",
+    "type": "THERAPY",
+    "baseCost": 120,
+    "ongoingCost": {
+      "weekly": 30
+    },
+    "effects": {
+      "suppressDisease": ["FATTY_LIVER"],
+      "hpRestore": 3,
+      "insightGain": 1
+    },
+    "requirements": {
+      "waitTurns": [2, 4]
+    },
+    "insurance": {
+      "isCovered": true,
+      "baseCopayRate": 0.3
+    },
+    "flavorText": "公司提供的'健康福利'。理疗师一直暗示这是你酗酒的结果，绝口不提你每天工作12小时只能吃快餐。"
+  },
+  {
+    "id": "DOWNTOWN_FATTY_LIVER_LUXURY",
+    "name": "肝脏再生中心",
+    "region": "DOWNTOWN",
+    "type": "THERAPY",
+    "baseCost": 5000,
+    "ongoingCost": {
+      "weekly": 500
+    },
+    "effects": {
+      "cureDisease": ["FATTY_LIVER"],
+      "hpRestore": 15,
+      "maxHpMod": 10,
+      "insightClear": 10
+    },
+    "insurance": {
+      "isCovered": true,
+      "baseCopayRate": 0
+    },
+    "flavorText": "干细胞疗法、定制营养素、24小时医疗监护。既然你能花钱买新肝脏，为什么还要关心那些戒酒互助小组？"
   }
 ]

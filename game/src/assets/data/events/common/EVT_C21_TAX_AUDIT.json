@@ -93,10 +93,7 @@
     "createdAt": "2024-01-15",
     "updatedAt": "2024-01-15",
     "references": [],
-    "relatedEvents": [
-      "EVT_C22_JURY_DUTY",
-      "EVT_C23_TRAFFIC_TICKET"
-    ]
+    "relatedEvents": []
   },
   "image": "/assets/events/common/evt_tax_form.png"
 }

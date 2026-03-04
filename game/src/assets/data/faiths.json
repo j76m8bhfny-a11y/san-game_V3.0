@@ -24,9 +24,10 @@
     "joinCost": { "cleanInventory": true },
     "rite": {
       "name": "参加聚礼",
-      "description": "免费。恢复HP，降低灵视——抱团取暖让你暂时忘记苦难",
+      "description": "需要带食物分享。恢复HP，降低灵视——抱团取暖让你暂时忘记苦难",
       "baseInsightReward": -5,
-      "baseHpReward": 10
+      "baseHpReward": 10,
+      "minGoldCost": 5
     }
   },
   {

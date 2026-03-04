@@ -1770,5 +1770,122 @@
       "insightGain": 40,
       "hp": -20
     }
+  },
+  {
+    "id": "B_WORKER_CAR_BREAKDOWN",
+    "name": "变速箱报废",
+    "amount": -800,
+    "weight": 12,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/broken_engine.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"],
+      "minGold": -1000
+    },
+    "effects": {
+      "hp": -10
+    },
+    "flavorText": "你那辆开了15年的老车终于罢工了。没车就没法上班，你必须立刻借钱修车。",
+    "news": {
+      "source": "The Atlantic",
+      "content": "The High Cost of Being Poor: How a single car breakdown can lead to unemployment."
+    },
+    "roast": "欢迎进入'贫穷引力场'，越挣扎陷得越深。"
+  },
+  {
+    "id": "B_WORKER_EMERGENCY_ROOM",
+    "name": "急诊室账单",
+    "amount": -1200,
+    "weight": 8,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/ambulance_bill.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "effects": {
+      "insightGain": 5
+    },
+    "flavorText": "你在工作中晕倒被送进急诊。尽管有保险，但免赔额还没满，这$1200必须自付。",
+    "news": {
+      "source": "KFF Health News",
+      "content": "High Deductible Health Plans leave workers vulnerable to surprise medical bills."
+    },
+    "roast": "这就是你每月交$120保险费买来的'保障'。"
+  },
+  {
+    "id": "B_WORKER_WAGE_THEFT",
+    "name": "工资盗窃",
+    "amount": -200,
+    "weight": 10,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/time_card.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "effects": {
+      "insightGain": 8
+    },
+    "flavorText": "经理手动改了你的打卡记录，删除了2.5小时加班。去劳动局投诉需要几个月，而你下周就要交房租。",
+    "news": {
+      "source": "EPI",
+      "content": "Wage theft vs. Robbery: Employers steal more from workers than all burglaries combined."
+    },
+    "roast": "如果是你偷了收银机$200，你会坐牢；如果是老板偷了你$200，那叫'行政调整'。"
+  },
+  {
+    "id": "B_WORKER_HOA_FINE",
+    "name": "夺命草坪",
+    "amount": -800,
+    "weight": 8,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/hoa_letter.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"],
+      "minTurn": 15
+    },
+    "effects": {
+      "hp": -5,
+      "insightGain": 10
+    },
+    "flavorText": "HOA发来信件：你的草坪高度为3.5英寸，超过规定的3英寸。罚款$500，外加$300'行政处理费'。",
+    "news": {
+      "source": "The Kansas City Star",
+      "content": "HOA forecloses on home over lawn height: Homeowner faces $800 in fines for grass 0.5 inches too tall."
+    },
+    "roast": "你以为买了房子？不，你只是买了被邻居大妈监视的资格。"
+  },
+  {
+    "id": "B_WORKER_UTILITY_SHOCK",
+    "name": "天价电费",
+    "amount": -350,
+    "weight": 8,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/electric_bill.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "flavorText": "极端天气导致空调/暖气疯狂运转。收到账单时你以为是印刷错误——但这确实是你的用电量。",
+    "news": {
+      "source": "NPR",
+      "content": "Energy costs soar: Low-income families face impossible choices between heat and food."
+    },
+    "roast": "在这个国家，保持室温72度是一种奢侈。"
+  },
+  {
+    "id": "B_WORKER_OVERDRAFT_FEE",
+    "name": "透支罚款",
+    "amount": -35,
+    "weight": 15,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/overdraft_notice.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "flavorText": "你的账户余额不足，但自动扣款还是进行了。银行'贴心'地帮你垫付了，并收取$35'服务费'。",
+    "news": {
+      "source": "Consumer Financial Protection Bureau",
+      "content": "Overdraft fees disproportionately impact low-income consumers."
+    },
+    "roast": "这就是银行为你提供的'服务'——让你在更穷的时候变得更穷。"
   }
 ]

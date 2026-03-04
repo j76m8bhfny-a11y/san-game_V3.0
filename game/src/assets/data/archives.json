@@ -1300,5 +1300,159 @@
     "title": "福特平托式计算 (Ford Pinto Memo)",
     "image": "/assets/archives/pinto_memo.png",
     "flavorText": "【来源：Legal Case Studies】这是一种经典的资本计算：如果召回或改进产品的成本 > 赔偿死人的成本，那么就让它死人。食品掺假是这种逻辑在食品工业的体现。"
+  },
+  {
+    "id": "No.TRASH_DIVER_REGRET",
+    "title": "拾荒者遗憾",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】拾荒者遗憾的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C01_CLIMATE_APARTHEID",
+    "title": "气候种族隔离",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】气候种族隔离的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C02_INFRASTRUCTURE_FAILURE",
+    "title": "基础设施崩溃",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】基础设施崩溃的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C03_PYROCAPITALISM",
+    "title": "火焰资本主义",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】火焰资本主义的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C04_FOOD_SYSTEM",
+    "title": "食品系统",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】食品系统的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C05_HEALTHCARE_FOR_PROFIT",
+    "title": "营利性医疗",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】营利性医疗的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C06_PUBLIC_HEALTH_CUTS",
+    "title": "公共卫生削减",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】公共卫生削减的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C07_CRIME_AND_POVERTY",
+    "title": "犯罪与贫困",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】犯罪与贫困的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C08_JUSTICE_GAP",
+    "title": "正义鸿沟",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】正义鸿沟的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C09_DATA_SURVEILLANCE",
+    "title": "数据监控",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】数据监控的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C10_PLANNED_OBSOLESCENCE",
+    "title": "计划性淘汰",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】计划性淘汰的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C11_DIGITAL_DIVIDE",
+    "title": "数字鸿沟",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】数字鸿沟的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C12_SURVEILLANCE_CAPITALISM",
+    "title": "监控资本主义",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】监控资本主义的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C13_CREDIT_APARTHEID",
+    "title": "信用种族隔离",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】信用种族隔离的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C14_POVERTY_TAX",
+    "title": "贫困税",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】贫困税的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C15_DEBT_PEONAGE",
+    "title": "债务奴役",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】债务奴役的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C16_DEATH_INDUSTRIAL_COMPLEX",
+    "title": "死亡工业复合体",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】死亡工业复合体的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C17_INTERGENERATIONAL_WEALTH",
+    "title": "代际财富",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】代际财富的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C18_MARRIAGE_AS_CONTRACT",
+    "title": "婚姻作为契约",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】婚姻作为契约的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C19_LOTTERY_AS_TAX",
+    "title": "彩票作为税收",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】彩票作为税收的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C20_GAMBLING_INDUSTRIAL_COMPLEX",
+    "title": "赌博工业复合体",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】赌博工业复合体的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C21_TAX_COMPLEXITY_WEAPON",
+    "title": "税收复杂性武器",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】税收复杂性武器的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
   }
 ]

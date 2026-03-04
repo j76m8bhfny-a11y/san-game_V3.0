@@ -1,6 +1,7 @@
 {
   "common": {
     "close": "关闭",
+    "close.bracket": "[ 关闭 ]",
     "submit": "提交",
     "confirm": "确认",
     "cancel": "取消",
@@ -129,7 +130,7 @@
       "the_penthouse": "顶层公寓",
       "private_vault": "私人银行",
       "bio_lab": "生物实验室",
-      "private_client_label": "私人客户",
+      "actuarial_institute": "风险精算所",
       "masonic_lodge": "共济会"
     }
   },
@@ -235,7 +236,56 @@
     "invitationOnly": "仅限受邀",
     "memberSignature": "会员签名"
   },
-  "job": { "title": "工作", "board": "招聘板", "apply": "申请", "quit": "辞职", "salary": "薪资", "requirement": "要求", "type": { "fulltime": "全职", "gig": "零工" }, "cost": { "hp": "消耗 HP", "insight": "消耗灵视" }, "systemOnline": "系统在线" },
+  "job": {
+    "title": "工作",
+    "board": "招聘板",
+    "apply": "申请",
+    "applySuccess": "已申请: {title}",
+    "quit": "辞职",
+    "quitSuccess": "已辞职",
+    "salary": "薪资",
+    "requirement": "要求",
+    "type": { "fulltime": "全职", "gig": "零工" },
+    "cost": { "hp": "消耗 HP", "insight": "消耗灵视" },
+    "systemOnline": "系统在线",
+    "current": "当前工作",
+    "fullTime": "全职",
+    "housingRequired": "需要住房",
+    "expectedEarnings": "预期收入",
+    "efficiency": "效率",
+    "alreadyEmployed": "已就职",
+    "slums": {
+      "tagline": "日结现金 无需证件",
+      "cashOnly": "日结现金",
+      "footer": "没兴趣别乱撕，影响市容！"
+    },
+    "factory": {
+      "systemVersion": "FACTORY_OS v9.2",
+      "footer": "[ SYSTEM_MSG: 按时完成配额可获得绩效奖金 ]"
+    },
+    "suburbs": {
+      "tagline": "发现你的职业价值",
+      "footer": "我们提供平等的就业机会和完善的福利保障"
+    },
+    "downtown": {
+      "title": "Executive Placement",
+      "tagline": "Elite Opportunities for Elite Individuals",
+      "empty": "No exclusive positions available.",
+      "footer": "Discretion is the better part of valor."
+    },
+    "error": {
+      "notFound": "工作不存在"
+    },
+    "requirement": {
+      "class": "需要阶级: {class}",
+      "slots": "精力不足 ({current}/{max})",
+      "blacklist": "职场黑名单 ({turns}回合)",
+      "housing": "需要{region}的固定住址",
+      "felony": "背景调查未通过",
+      "item": "需要: {item}",
+      "default": "不符合要求"
+    }
+  },
   "faith": { "title": "信仰", "join": "加入", "leave": "离开", "rite": "仪式", "offer": "献祭", "pray": "祈祷", "donate": "捐赠", "faiths": { "none": "无信仰", "church": "教会", "brotherhood": "兄弟会", "cult": "隐秘教派", "revolution": "革命" } },
   "crypto": {
     "title": "暗网交易终端",

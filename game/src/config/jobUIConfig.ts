@@ -3,7 +3,7 @@
  * 统一管理工作按钮文案、提示信息等
  */
 
-export type JobTheme = 'SLUMS' | 'RUST_BELT' | 'DOWNTOWN' | 'GLOBAL';
+export type JobTheme = 'SLUMS' | 'RUST_BELT' | 'SUBURBS' | 'DOWNTOWN';
 
 export interface JobButtonLabels {
   active: string;      // 已入职状态
@@ -14,24 +14,24 @@ export interface JobButtonLabels {
 // 各主题按钮文案配置
 export const JOB_BUTTON_LABELS: Record<JobTheme, JobButtonLabels> = {
   SLUMS: {
-    active: 'QUIT!',
-    canApply: 'CALL ME',
-    locked: 'NO WAY',
+    active: '不干了',
+    canApply: '来干活',
+    locked: '搞不定',
   },
   RUST_BELT: {
-    active: '[ PUNCH OUT ]',
-    canApply: '[ PUNCH IN ]',
-    locked: '[ ACCESS DENIED ]',
+    active: '[ 下班打卡 ]',
+    canApply: '[ 上班打卡 ]',
+    locked: '[ 不够格 ]',
+  },
+  SUBURBS: {
+    active: '辞职',
+    canApply: '申请职位',
+    locked: '不符合',
   },
   DOWNTOWN: {
-    active: 'Resign',
-    canApply: 'Apply Now',
-    locked: 'Locked',
-  },
-  GLOBAL: {
-    active: 'Leave',
-    canApply: 'Join',
-    locked: 'Unavailable',
+    active: '退出',
+    canApply: '签署合同',
+    locked: '无资格',
   },
 };
 

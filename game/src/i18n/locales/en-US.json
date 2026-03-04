@@ -1,6 +1,7 @@
 {
   "common": {
-    "close": "Close", "submit": "SUBMIT", "confirm": "Confirm", "cancel": "Cancel", "back": "Back",
+    "close": "Close",
+    "close.bracket": "[ CLOSE ]", "submit": "SUBMIT", "confirm": "Confirm", "cancel": "Cancel", "back": "Back",
     "loading": "OPENING ARCHIVE...", "empty": "None", "yes": "Yes", "no": "No",
     "save": "Save", "delete": "Delete", "use": "Use", "buy": "Buy", "sell": "Sell",
     "deposit": "Deposit", "withdraw": "Withdraw", "borrow": "Borrow", "repay": "Repay",
@@ -79,7 +80,7 @@
       "the_penthouse": "The Penthouse",
       "private_vault": "Private Vault",
       "bio_lab": "Bio-Hacking Lab",
-      "private_client_label": "Private Client",
+      "actuarial_institute": "Actuarial Institute",
       "masonic_lodge": "Masonic Lodge"
     }
   },
@@ -174,7 +175,56 @@
     "invitationOnly": "Invitation Only",
     "memberSignature": "Member Signature"
   },
-  "job": { "title": "Job", "board": "Job Board", "apply": "Apply", "quit": "Quit", "salary": "Salary", "requirement": "Requirement", "type": { "fulltime": "Full-time", "gig": "Gig" }, "cost": { "hp": "HP Cost", "insight": "INS Cost" }, "systemOnline": "SYSTEM ONLINE" },
+  "job": {
+    "title": "Job",
+    "board": "Job Board",
+    "apply": "Apply",
+    "applySuccess": "Applied: {title}",
+    "quit": "Quit",
+    "quitSuccess": "Job quit",
+    "salary": "Salary",
+    "requirement": "Requirement",
+    "type": { "fulltime": "Full-time", "gig": "Gig" },
+    "cost": { "hp": "HP Cost", "insight": "INS Cost" },
+    "systemOnline": "SYSTEM ONLINE",
+    "current": "Current",
+    "fullTime": "Full-time",
+    "housingRequired": "Housing Required",
+    "expectedEarnings": "Expected Earnings",
+    "efficiency": "Efficiency",
+    "alreadyEmployed": "Already Employed",
+    "slums": {
+      "tagline": "CASH DAILY. NO ID.",
+      "cashOnly": "CASH ONLY",
+      "footer": "Do not tear off if not interested."
+    },
+    "factory": {
+      "systemVersion": "FACTORY_OS v9.2",
+      "footer": "[ SYSTEM_MSG: Meet quota for performance bonus ]"
+    },
+    "suburbs": {
+      "tagline": "Find your purpose in the corporate machine.",
+      "footer": "We offer equal opportunities and comprehensive benefits."
+    },
+    "downtown": {
+      "title": "Executive Placement",
+      "tagline": "Elite Opportunities for Elite Individuals",
+      "empty": "No exclusive positions available.",
+      "footer": "Discretion is the better part of valor."
+    },
+    "error": {
+      "notFound": "Job not found"
+    },
+    "requirement": {
+      "class": "Requires Class: {class}",
+      "slots": "Insufficient slots ({current}/{max})",
+      "blacklist": "Blacklisted ({turns} turns)",
+      "housing": "Housing in {region} required",
+      "felony": "Background check failed",
+      "item": "Requires: {item}",
+      "default": "Requirements not met"
+    }
+  },
   "faith": { "title": "Faith", "join": "Join", "leave": "Leave", "rite": "Rite", "offer": "Offer", "pray": "Pray", "donate": "Donate", "faiths": { "none": "None", "church": "Church", "brotherhood": "Brotherhood", "cult": "Cult", "revolution": "Revolution" } },
   "crypto": {
     "title": "Darknet Trading Terminal",

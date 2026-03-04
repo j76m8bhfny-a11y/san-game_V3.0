@@ -26,7 +26,7 @@
     "rentConfig": {
       "deposit": 300,
       "weeklyCosts": [
-        { "key": "RENT", "label": "周租金", "baseAmount": 300 }
+        { "key": "RENT", "label": "周租金", "baseAmount": 200 }
       ]
     },
     "description": "典型的穷人税。因为付不出正式公寓的'押一付三'和信用检查，你只能按周付高昂的旅馆费，永远攒不下首付。地毯吸满了前任房客的绝望。"

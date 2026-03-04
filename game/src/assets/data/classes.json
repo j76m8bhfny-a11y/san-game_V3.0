@@ -8,7 +8,7 @@
     "monthlyCost": 0,
     "leverage": 0.1,
     "initialStats": {
-      "gold": 50,
+      "gold": 150,
       "hp": 60,
       "insight": 40
     },
@@ -27,7 +27,7 @@
     "monthlyCost": 2400,
     "leverage": 1.0,
     "initialStats": {
-      "gold": 200,
+      "gold": 600,
       "hp": 100,
       "insight": 60
     },
@@ -46,7 +46,7 @@
     "monthlyCost": 7500,
     "leverage": 5.0,
     "initialStats": {
-      "gold": 2000,
+      "gold": 30000,
       "hp": 90,
       "insight": 70
     },

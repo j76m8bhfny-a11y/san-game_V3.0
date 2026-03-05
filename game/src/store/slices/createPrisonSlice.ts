@@ -11,6 +11,11 @@ import endingsData from '@/assets/data/endings.json';
 import prisonRules from '@/assets/data/rules/prison_rules.json';
 import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 
+// ✅ 引入全局定时器管理器
+import { globalTimerManager } from '@/hooks/useGameTimer';
+// ✅ 引入事务管理器
+import { executeTransactionSync, createStep } from '@/utils/transaction';
+
 // ==================== 辅助函数 ====================
 
 // ==================== 辅助函数 ====================
@@ -308,7 +313,7 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
         // ✅ 修复：保存死亡状态
         set(nextState);
         // ✅ 修复：触发死亡结局 - 使用 resolveEnding 进行完整判定
-        setTimeout(() => {
+        globalTimerManager.setTimeout(() => {
           const store = get();
           if (store.triggerEnding) {
             const state = get() as GameState;
@@ -428,7 +433,7 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
     }
   },
 
-  // 🔴 逻辑说明: 关联保释贷款 (已重构数值)
+  // 🔴 逻辑说明: 关联保释贷款 (使用统一事务管理器)
   signBailBond: () => {
     try {
       const state = get();
@@ -453,35 +458,55 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
         return { success: false, msg: getMessage('downPaymentFailed', { rate: (rate * 100).toFixed(0), amount: downPayment }) };
       }
 
-      // ✅ 方案A：先扣首付，再发贷款（保证原子性）
-      // 1. 扣除首付
-      const txResult = state.addTransaction('MISC' as LedgerCategory, -downPayment, '保释金首付');
-      if (!txResult.success) {
-        return { success: false, msg: getMessage('downPaymentTransactionFailed') };
-      }
-
-      // 2. 发放贷款
-      const loanResult = state.takeLoan(loanProductId, loanAmount);
-      if (!loanResult.success) {
-        // 贷款失败时回滚首付（通过反向交易）
-        state.addTransaction('MISC' as LedgerCategory, downPayment, '保释金首付退款');
-        return { success: false, msg: getMessage('loanRejected', { message: loanResult.message }) };
-      }
-
-      // 3. 释放
-      // 检查是否有重罪记录（用于消息提示）
+      // ✅ 使用统一事务管理器
       const hasFelony = state.vitality.flags.hasFelonyRecord;
-      
-      set(() => ({
-        prison: INITIAL_PRISON
-      }));
 
-      return { 
-        success: true, 
-        msg: hasFelony
-          ? (getMessage('releasedWithFelony') || '【重罪记录】你带着犯罪记录出狱。中产阶级的门永远对你关闭了。')
-          : getMessage('bondSuccess')
-      };
+      const result = executeTransactionSync([
+        createStep(
+          '扣除保释金首付',
+          () => {
+            const txResult = state.addTransaction('MISC' as LedgerCategory, -downPayment, '保释金首付');
+            return txResult.success;
+          },
+          () => {
+            // 回滚：退还首付
+            state.addTransaction('MISC' as LedgerCategory, downPayment, '保释金首付退款');
+          }
+        ),
+        createStep(
+          '发放保释贷款',
+          () => {
+            const loanResult = state.takeLoan(loanProductId, loanAmount);
+            return loanResult.success;
+          },
+          () => {
+            // 回滚：takeLoan 内部有自己的回滚逻辑，这里不需要额外操作
+            // 但如果需要，可以在这里调用清除贷款的方法
+          }
+        ),
+        createStep(
+          '释放玩家',
+          () => {
+            set(() => ({ prison: INITIAL_PRISON }));
+            return true;
+          },
+          () => {
+            // 回滚：理论上不应该回滚释放，因为钱已经花了
+            // 但如果需要，可以重新设置监狱状态
+          }
+        )
+      ], 'signBailBond');
+
+      if (result.success) {
+        return { 
+          success: true, 
+          msg: hasFelony
+            ? (getMessage('releasedWithFelony') || '【重罪记录】你带着犯罪记录出狱。中产阶级的门永远对你关闭了。')
+            : getMessage('bondSuccess')
+        };
+      } else {
+        return { success: false, msg: getMessage('loanRejected', { message: result.error || '未知错误' }) };
+      }
     } catch (error) {
       const errorMsg = handlePrisonError(error, 'signBailBond');
       return { success: false, msg: errorMsg };

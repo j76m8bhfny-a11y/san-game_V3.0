@@ -1,5 +1,6 @@
 import { create, StateCreator, StoreMutatorIdentifier } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+import { globalTimerManager } from '@/hooks/useGameTimer';
 
 // 1. 导入切片
 import { createVitalitySlice } from './slices/createVitalitySlice';
@@ -141,13 +142,34 @@ export const useGameStore = create<StoreState>()(
         
         // --- Hydration 完成回调 ---
         onRehydrateStorage: () => (state) => {
-          setTimeout(() => {
-            // ⚠️ 请确保你的 createGameSlice.ts 或 createUISlice.ts 里真的有 setHasHydrated 方法
-            if (state && state.setHasHydrated) {
-              console.log("💧 Storage Hydrated! System Ready.");
-              state.setHasHydrated(true);
-            } else {
-              console.error("❌ 严重错误: Store 中找不到 setHasHydrated 方法，游戏将一直卡在 Loading 界面！请检查 Slice 定义。");
+          globalTimerManager.setTimeout(() => {
+            try {
+              // 验证存档完整性
+              const isValidSave = state && 
+                typeof state.vitality?.metrics?.gold === 'number' &&
+                typeof state.vitality?.time?.currentTurn === 'number';
+              
+              if (!isValidSave) {
+                console.warn("⚠️ 存档数据损坏或版本不兼容，将重置游戏");
+                localStorage.removeItem('pixel-life-storage');
+                window.location.reload();
+                return;
+              }
+              
+              // ⚠️ 请确保你的 createGameSlice.ts 或 createUISlice.ts 里真的有 setHasHydrated 方法
+              if (state && state.setHasHydrated) {
+                console.log("💧 Storage Hydrated! System Ready.");
+                state.setHasHydrated(true);
+              } else {
+                console.error("❌ 严重错误: Store 中找不到 setHasHydrated 方法，游戏将一直卡在 Loading 界面！请检查 Slice 定义。");
+                // 自动重置避免卡死
+                localStorage.removeItem('pixel-life-storage');
+                window.location.reload();
+              }
+            } catch (error) {
+              console.error("❌ 存档恢复失败:", error);
+              localStorage.removeItem('pixel-life-storage');
+              window.location.reload();
             }
           }, 0);
         },

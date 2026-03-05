@@ -136,6 +136,7 @@ export const TurnTransition: React.FC<TurnTransitionProps> = React.memo(({
   const [displayText, setDisplayText] = useState('');
   const [showCalendar, setShowCalendar] = useState(false);
   const { playSfx } = useAudioStore();
+  const { t } = useI18n();
   
   const timings = CONFIG?.timings || {
     eyeCloseDuration: 0.6,

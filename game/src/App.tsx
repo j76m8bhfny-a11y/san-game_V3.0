@@ -52,6 +52,9 @@ import { DangerHints } from './components/ui/DangerHints';
 import { ModalQueueProvider } from './components/ui/ModalQueueManager';
 import { DeathEffectProvider } from './components/ui/DeathEffectPause';
 
+// ✅ 错误边界
+import { ErrorBoundary } from './components/ErrorBoundary';
+
 
 const App: React.FC = () => {
   // [NEW] 初始化心跳系统（危险时播放心跳声）
@@ -188,7 +191,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <>
+    <ErrorBoundary>
     <DeathEffectProvider>
     <ModalQueueProvider>
     {/* [NEW] 开场引导体验 */}
@@ -354,7 +357,7 @@ const App: React.FC = () => {
       playerId={(vitality.identity as any).name || 'UNKNOWN'}
       onConfirm={() => setSystemAlert({ ...systemAlert, isOpen: false })}
     />
-    </>
+    </ErrorBoundary>
   );
 };
 

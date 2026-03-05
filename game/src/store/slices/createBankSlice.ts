@@ -5,6 +5,8 @@ import bankRules from '@/assets/data/rules/bank_rules.json';
 
 // ✅ 引入类型安全工具
 import { StoreState } from '@/types/store';
+// ✅ 引入事务管理器
+import { executeTransactionSync, createStep } from '@/utils/transaction';
 
 const generateId = () => `${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 5)}`;
 
@@ -56,16 +58,8 @@ export const createBankSlice: StateCreator<StoreState, [], [], BankSlice> = (set
       return { success: false, message: `超过该产品最大额度 $${rawProduct.maxAmount}` };
     }
 
-    // 发放贷款资金（先尝试扣款/放款）
-    const txResult = state.addTransaction('BANK', amount, `贷款发放: ${rawProduct.name}`);
-    if (!txResult.success) {
-      return { success: false, message: "资金操作异常，贷款未能发放" };
-    }
-
-    // ✅ 资金成功后，扣信用分 + 创建贷款（原子操作）
-    const penalty = bankRules.creditScore.actions.hardInquiry; 
-    state.modifyStats({ creditScore: penalty });
-
+    // ✅ 使用事务管理器保证原子性
+    const penalty = bankRules.creditScore.actions.hardInquiry;
     const newLoan: ActiveLoan = {
       id: generateId(), 
       productId: rawProduct.id,
@@ -77,26 +71,68 @@ export const createBankSlice: StateCreator<StoreState, [], [], BankSlice> = (set
       isMortgage: false
     };
 
-    set((s: StoreState) => ({
-      bank: {
-        ...s.bank,
-        activeLoans: [...s.bank.activeLoans, newLoan]
-      }
-    }));
+    // 保存初始状态用于回滚
+    const initialLoans = [...state.bank.activeLoans];
 
-    return { success: true, message: `贷款 $${amount} 已发放。` };
+    const result = executeTransactionSync([
+      createStep(
+        '发放贷款资金',
+        () => {
+          const txResult = state.addTransaction('BANK', amount, `贷款发放: ${rawProduct.name}`);
+          return txResult.success;
+        },
+        () => {
+          // 回滚：扣除已发放的贷款
+          state.addTransaction('BANK', -amount, `贷款发放回滚`);
+        }
+      ),
+      createStep(
+        '扣除信用分',
+        () => {
+          state.modifyStats({ creditScore: penalty });
+          return true;
+        },
+        () => {
+          // 回滚：恢复信用分
+          state.modifyStats({ creditScore: -penalty });
+        }
+      ),
+      createStep(
+        '创建贷款记录',
+        () => {
+          set((s: StoreState) => ({
+            bank: {
+              ...s.bank,
+              activeLoans: [...s.bank.activeLoans, newLoan]
+            }
+          }));
+          return true;
+        },
+        () => {
+          // 回滚：移除贷款记录
+          set((s: StoreState) => ({
+            bank: {
+              ...s.bank,
+              activeLoans: initialLoans
+            }
+          }));
+        }
+      )
+    ], 'takeLoan');
+
+    if (result.success) {
+      return { success: true, message: `贷款 $${amount} 已发放。` };
+    } else {
+      return { success: false, message: `贷款申请失败: ${result.error}` };
+    }
   },
 
   takeMortgage: (amount, termTurns, rate) => {
     const state = get() as StoreState;
     const { vitality } = state;
 
-    // ✅ 【问题4-A】先扣信用分，再存贷款（原子性优化）
+    // ✅ 使用事务管理器保证原子性
     const penalty = bankRules.creditScore.actions.hardInquiry;
-    state.modifyStats({ 
-        creditScore: penalty
-    });
-
     const newLoan: ActiveLoan = {
       id: generateId(),
       productId: 'MORTGAGE',
@@ -108,15 +144,49 @@ export const createBankSlice: StateCreator<StoreState, [], [], BankSlice> = (set
       isMortgage: true
     };
 
-    // 存入贷款
-    set((s: StoreState) => ({
-      bank: {
-        ...s.bank,
-        activeLoans: [...s.bank.activeLoans, newLoan]
-      }
-    }));
+    // 保存初始状态用于回滚
+    const initialLoans = [...state.bank.activeLoans];
 
-    return { success: true, message: "按揭贷款已批复。", loanId: newLoan.id };
+    const result = executeTransactionSync([
+      createStep(
+        '扣除信用分',
+        () => {
+          state.modifyStats({ creditScore: penalty });
+          return true;
+        },
+        () => {
+          // 回滚：恢复信用分
+          state.modifyStats({ creditScore: -penalty });
+        }
+      ),
+      createStep(
+        '创建按揭贷款记录',
+        () => {
+          set((s: StoreState) => ({
+            bank: {
+              ...s.bank,
+              activeLoans: [...s.bank.activeLoans, newLoan]
+            }
+          }));
+          return true;
+        },
+        () => {
+          // 回滚：移除贷款记录
+          set((s: StoreState) => ({
+            bank: {
+              ...s.bank,
+              activeLoans: initialLoans
+            }
+          }));
+        }
+      )
+    ], 'takeMortgage');
+
+    if (result.success) {
+      return { success: true, message: "按揭贷款已批复。", loanId: newLoan.id };
+    } else {
+      return { success: false, message: `按揭申请失败: ${result.error}` };
+    }
   },
 
   makeInstallment: (loanId, amount) => {

@@ -1,5 +1,9 @@
 import { StateCreator } from 'zustand';
 import { GameState, GameEvent, EventOption, WeeklyReport, Ending, FaithID, PlayerClass, RegionID, Bill, NewsItem } from '@/types/schema';
+
+// 事件连锁深度限制（防止无限循环）
+const MAX_EVENT_CHAIN = 3;
+let eventChainDepth = 0;
 import { resolveOption } from '@/logic/eventResolver';
 import { getCurrentGazeEffects } from '@/logic/gazeEventSystem';
 import { runTurnSettlement } from '@/systems/SystemRegistry';
@@ -18,6 +22,9 @@ import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 
 // ✅ 引入类型安全工具
 import { StoreState } from '@/types/store';
+
+// ✅ 引入全局定时器管理器
+import { globalTimerManager } from '@/hooks/useGameTimer';
 
 export interface GameSlice {
   // --- State ---
@@ -69,6 +76,12 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
   isPaused: false,  // 🔴 新增：初始未暂停
 
   triggerEvent: (event) => {
+    // 检查事件连锁深度，防止无限循环
+    if (eventChainDepth >= MAX_EVENT_CHAIN) {
+      console.warn(`[GameSlice] 事件连锁深度超过限制 (${MAX_EVENT_CHAIN})，停止触发新事件`);
+      return;
+    }
+    eventChainDepth++;
     set({ isEventOpen: true, currentEvent: event, isPaused: true }); // 触发事件时暂停
   },
   
@@ -257,6 +270,9 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
   closeEvent: () => {
     set({ isEventOpen: false, currentEvent: null, isPaused: false }); // 🔴 关闭事件时恢复游戏
     
+    // 重置事件连锁深度
+    eventChainDepth = 0;
+    
     // 🔴 事件关闭后，随机延迟触发加密新闻（如果已开户）
     get().scheduleCryptoNewsAfterEvent();
   },
@@ -271,7 +287,7 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
     // ✅ 每回合必定触发，只是延迟随机（0.5-3秒）
     const delay = 500 + Math.random() * 2500;
     
-    setTimeout(() => {
+    globalTimerManager.setTimeout(() => {
       const store = get();
       // 再次检查：确保玩家还开着账户，且当前没有正在显示的新闻
       if (store.crypto.isAccountOpen && !store.currentCryptoNews) {
@@ -319,7 +335,7 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
   nextTurn: () => {
     if (get().isMenuOpen) return;
     if (get().isPaused) return; // 🔴 暂停状态下不执行回合
-    if (get().prison?.inJail) return; // 监狱状态下不执行普通回合结算
+    if (get().prison?.inJail) return; // 监狱状态下不执行普通回合结算（由 serveTime 处理）
 
     const state = get() as GameState;
     const store = get() as StoreState;
@@ -630,7 +646,7 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
     });
     
     // 🏪 重新初始化商店库存
-    setTimeout(() => {
+    globalTimerManager.setTimeout(() => {
       const store = get() as any;
       if (store.refreshShopInventory) {
         store.refreshShopInventory();

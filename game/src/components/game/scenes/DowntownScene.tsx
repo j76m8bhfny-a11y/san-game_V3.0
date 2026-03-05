@@ -51,6 +51,7 @@ const InteractableObject: React.FC<InteractableProps> = ({ label, style, baseIma
 // --- 叙事道具：铜牛 ---
 const ChargingBullProp = () => {
   const [isActive, setIsActive] = useState(false);
+  const { t } = useI18n();
 
   const handleClick = () => {
     setIsActive(true);
@@ -92,6 +93,7 @@ const ChargingBullProp = () => {
 // --- 叙事道具：豪车 ---
 const LuxuryCarProp = () => {
   const [isActive, setIsActive] = useState(false);
+  const { t } = useI18n();
 
   const handleClick = () => {
     setIsActive(true);
@@ -128,6 +130,7 @@ const LuxuryCarProp = () => {
 // --- 叙事道具：全息股票板 ---
 const HologramStockBoardProp = () => {
   const [isActive, setIsActive] = useState(false);
+  const { t } = useI18n();
 
   const handleClick = () => {
     setIsActive(true);

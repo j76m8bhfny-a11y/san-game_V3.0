@@ -65,7 +65,23 @@ export interface UISlice {
   setHasHydrated: (state: boolean) => void;
 }
 
-export const createUISlice: StateCreator<StoreState, [], [], UISlice> = (set, get) => ({
+export const createUISlice: StateCreator<StoreState, [], [], UISlice> = (set, get) => {
+  // ✅ 辅助函数：关闭所有模态框（除了指定的）
+  const closeAllModals = (keepOpen?: keyof UISlice) => {
+    const updates: Partial<UISlice> = {
+      isShopOpen: keepOpen === 'setShopOpen' ? get().isShopOpen : false,
+      isJobBoardOpen: keepOpen === 'setJobBoardOpen' ? get().isJobBoardOpen : false,
+      isHousingOpen: keepOpen === 'setHousingOpen' ? get().isHousingOpen : false,
+      isHospitalOpen: keepOpen === 'setHospitalOpen' ? get().isHospitalOpen : false,
+      isCryptoOpen: keepOpen === 'setCryptoOpen' ? get().isCryptoOpen : false,
+      isFaithOpen: keepOpen === 'setFaithOpen' ? get().isFaithOpen : false,
+      isBankOpen: keepOpen === 'setBankOpen' ? get().isBankOpen : false,
+      isInsuranceOpen: keepOpen === 'setInsuranceOpen' ? get().isInsuranceOpen : false,
+    };
+    set(updates);
+  };
+
+  return {
   // --- Initial State ---
   isShopOpen: false,
   isInventoryOpen: false,
@@ -89,11 +105,16 @@ export const createUISlice: StateCreator<StoreState, [], [], UISlice> = (set, ge
   _hasHydrated: false,
 
   // --- Actions Implementation ---
-  setShopOpen: (isOpen) => set({ isShopOpen: isOpen }),
+  setShopOpen: (isOpen) => {
+    if (isOpen) closeAllModals('setShopOpen');
+    set({ isShopOpen: isOpen });
+  },
   setInventoryOpen: (isOpen) => set({ isInventoryOpen: isOpen }),
   
-  // ✅ [修改点 4]：实现 Set 方法
-  setInsuranceOpen: (isOpen) => set({ isInsuranceOpen: isOpen }), 
+  setInsuranceOpen: (isOpen) => {
+    if (isOpen) closeAllModals('setInsuranceOpen');
+    set({ isInsuranceOpen: isOpen });
+  }, 
   
   setArchiveOpen: (isOpen) => set({ 
     isArchiveOpen: isOpen,
@@ -101,12 +122,30 @@ export const createUISlice: StateCreator<StoreState, [], [], UISlice> = (set, ge
   }),
   
   setMenuOpen: (isOpen) => set({ isMenuOpen: isOpen }),
-  setJobBoardOpen: (isOpen) => set({ isJobBoardOpen: isOpen }),
-  setHousingOpen: (isOpen) => set({ isHousingOpen: isOpen }),
-  setHospitalOpen: (isOpen) => set({ isHospitalOpen: isOpen }),
-  setCryptoOpen: (isOpen) => set({ isCryptoOpen: isOpen }),
-  setBankOpen: (isOpen) => set({ isBankOpen: isOpen }),
-  setFaithOpen: (isOpen) => set({ isFaithOpen: isOpen }),
+  setJobBoardOpen: (isOpen) => {
+    if (isOpen) closeAllModals('setJobBoardOpen');
+    set({ isJobBoardOpen: isOpen });
+  },
+  setHousingOpen: (isOpen) => {
+    if (isOpen) closeAllModals('setHousingOpen');
+    set({ isHousingOpen: isOpen });
+  },
+  setHospitalOpen: (isOpen) => {
+    if (isOpen) closeAllModals('setHospitalOpen');
+    set({ isHospitalOpen: isOpen });
+  },
+  setCryptoOpen: (isOpen) => {
+    if (isOpen) closeAllModals('setCryptoOpen');
+    set({ isCryptoOpen: isOpen });
+  },
+  setBankOpen: (isOpen) => {
+    if (isOpen) closeAllModals('setBankOpen');
+    set({ isBankOpen: isOpen });
+  },
+  setFaithOpen: (isOpen) => {
+    if (isOpen) closeAllModals('setFaithOpen');
+    set({ isFaithOpen: isOpen });
+  },
   
   setRoast: (content) => set({ currentRoast: content }),
   setViewingArchive: (archiveId) => set({ viewingArchive: archiveId }),
@@ -163,4 +202,5 @@ export const createUISlice: StateCreator<StoreState, [], [], UISlice> = (set, ge
       notifications: state.notifications.filter((n: GameNotification) => n.id !== id)
     }));
   },
-});
+};
+};

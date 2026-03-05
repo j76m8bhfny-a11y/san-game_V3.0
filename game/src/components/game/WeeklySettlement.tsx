@@ -26,7 +26,8 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
     setHospitalOpen, 
     addNotification,
     weeklyReport,
-    bank
+    bank,
+    prison
   } = useGameStore();
 
   const { ledger, time, activeDiseases } = vitality;
@@ -231,12 +232,32 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
                 </span>
              </div>
 
-             <button
-               onClick={handleNextWeek}
-               className="w-full py-4 bg-black dark:bg-white text-white dark:text-black rounded-xl font-bold text-lg hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 shadow-xl"
-             >
-               {t('weeklySettlement.nextWeek', { week: time.currentTurn + 1 })} <ArrowRight size={20} />
-             </button>
+             {/* 🔴 监狱状态：显示服刑按钮，禁用正常下一周 */}
+             {prison?.inJail ? (
+               <div className="space-y-3">
+                 <div className="p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+                   <p className="text-sm text-orange-700 dark:text-orange-300 text-center">
+                     ⚠️ 你正在服刑中，无法执行正常回合结算
+                   </p>
+                 </div>
+                 <button
+                   onClick={() => {
+                     // 关闭结算界面，让玩家通过 JailOverlay 服刑
+                     closeWeeklyReport();
+                   }}
+                   className="w-full py-4 bg-orange-600 hover:bg-orange-500 text-white rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2 shadow-xl"
+                 >
+                   返回监狱 <ArrowRight size={20} />
+                 </button>
+               </div>
+             ) : (
+               <button
+                 onClick={handleNextWeek}
+                 className="w-full py-4 bg-black dark:bg-white text-white dark:text-black rounded-xl font-bold text-lg hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 shadow-xl"
+               >
+                 {t('weeklySettlement.nextWeek', { week: time.currentTurn + 1 })} <ArrowRight size={20} />
+               </button>
+             )}
           </div>
 
         </motion.div>

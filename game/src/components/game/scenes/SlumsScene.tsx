@@ -3,6 +3,7 @@ import { useGameStore } from '@/store/useGameStore';
 import { useI18n } from '@/i18n';
 import { RegionID } from '@/types/schema';
 import { BaseScene, ParallaxLayer } from './BaseScene';
+import { useGameTimer } from '@/hooks/useGameTimer';
 
 // --- 类型定义 ---
 interface PropProps {
@@ -21,14 +22,15 @@ const InteractiveElement: React.FC<PropProps> = ({
 }) => {
   const [isActive, setIsActive] = useState(false); // 用于叙事道具的点击状态
   const [showBubble, setShowBubble] = useState(false);
+  const { setGameTimeout } = useGameTimer(); // ✅ 使用安全的定时器
 
   const handleClick = () => {
     // 1. 如果有台词，显示气泡
     if (dialogue) {
       setShowBubble(true);
       setIsActive(true);
-      // 3秒后气泡消失，状态重置
-      setTimeout(() => {
+      // 3秒后气泡消失，状态重置（使用安全定时器）
+      setGameTimeout(() => {
         setShowBubble(false);
         setIsActive(false);
       }, 3000);

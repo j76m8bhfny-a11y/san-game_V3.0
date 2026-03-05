@@ -9,6 +9,8 @@ import { useI18n } from '@/i18n';
 // ✅ 引入系统规则配置
 import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 import { random } from '@/utils/random';
+// ✅ 引入游戏定时器 Hook
+import { useGameTimer } from '@/hooks/useGameTimer';
 
 // --- 子组件：实体菜单卡片 ---
 interface MenuCardProps {
@@ -88,6 +90,9 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
   
   const [hoverItem, setHoverItem] = useState<string | null>(null);
   const [glitchTrigger, setGlitchTrigger] = useState(false);
+  
+  // ✅ 使用游戏定时器 Hook
+  const { setGameInterval, setGameTimeout } = useGameTimer();
 
   // ✅ Refactor: 获取 UI 配置
   const uiConfig = SYSTEM_RULES.ui.titleScreen;
@@ -95,18 +100,18 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
   useEffect(() => {
     playBgm('bgm_title');
     
-    // ✅ Refactor: 使用配置中的时间间隔
-    const interval = setInterval(() => {
+    // ✅ Refactor: 使用游戏定时器 Hook
+    const cancelInterval = setGameInterval(() => {
       // ✅ Refactor: 使用配置中的概率 (假设 glitchChance 为 0.2)
       if (random() < uiConfig.glitchChance) {
         setGlitchTrigger(true);
         // ✅ Refactor: 使用配置中的持续时间
-        setTimeout(() => setGlitchTrigger(false), uiConfig.glitchDuration);
+        setGameTimeout(() => setGlitchTrigger(false), uiConfig.glitchDuration);
       }
     }, uiConfig.glitchInterval);
     
-    return () => clearInterval(interval);
-  }, [playBgm, uiConfig]);
+    return () => cancelInterval();
+  }, [playBgm, uiConfig, setGameInterval, setGameTimeout]);
 
   const handleStart = (type: 'NEW' | 'CONTINUE') => {
     if (type === 'NEW') {

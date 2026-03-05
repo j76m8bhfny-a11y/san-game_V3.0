@@ -26,6 +26,8 @@ import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 import rules from '@/assets/data/rules/vitality_rules.json';
 import medicalRules from '@/assets/data/rules/medical_rules.json';
 import bankRules from '@/assets/data/rules/bank_rules.json';
+import { executeTransactionSync, createStep } from '@/utils/transaction';
+import { globalTimerManager } from '@/hooks/useGameTimer';
 
 export interface ClassChangeInfo {
   oldClass: PlayerClass;
@@ -177,8 +179,8 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
       } // 🏪 将在游戏初始化后由 refreshShopInventory 填充
     }));
     
-    // 🏪 初始化商店库存
-    setTimeout(() => {
+    // 🏪 初始化商店库存（使用全局定时器管理器）
+    globalTimerManager.setTimeout(() => {
       const store = get() as any;
       if (store.refreshShopInventory) {
         store.refreshShopInventory();
@@ -187,18 +189,30 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
   },
 
   addTransaction: (category, amount, description) => {
+     // 同步获取当前状态，避免竞态条件
+     const currentState = get();
+     const currentGold = currentState.vitality.metrics.gold;
+     const newGold = currentGold + amount;
+     
+     // 预先检查，避免负数金钱
+     if (newGold < 0) {
+       if (currentState.addNotification) {
+         currentState.addNotification(`资金不足！需要 $${Math.abs(amount)}，当前 $${currentGold}`, 'error');
+       }
+       return { success: false, actualAmount: 0 };
+     }
+     
      let success = true;
      let actualAmount = amount;
      
      set((state: any) => {
-        const currentGold = state.vitality.metrics.gold;
-        const newGold = currentGold + amount;
-        
-        if (newGold < 0) {
+        // 双重检查，确保状态一致性
+        const checkGold = state.vitality.metrics.gold;
+        if (checkGold + amount < 0) {
           success = false;
           actualAmount = 0;
           if (state.addNotification) {
-            state.addNotification(`资金不足！需要 $${Math.abs(amount)}，当前 $${currentGold}`, 'error');
+            state.addNotification(`资金不足！需要 $${Math.abs(amount)}，当前 $${checkGold}`, 'error');
           }
           return {}; 
         }
@@ -625,38 +639,61 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
       }
     }
 
-    // ✅ 标准支付流程（无延迟）
+    // ✅ 标准支付流程（无延迟）- 使用事务管理器
     if (vitality.metrics.gold < finalCost) {
         return { success: false, msg: "资金不足" };
     }
 
-    const txResult = state.addTransaction('MEDICAL', -finalCost, `治疗: ${service.name}`);
-    if (!txResult.success) {
-        return { success: false, msg: "资金不足以支付治疗费用" };
-    }
+    // 保存初始状态用于回滚
+    const initialHp = metrics.hp;
+    const initialInsight = metrics.insight;
+    const initialAddiction = metrics.addiction;
 
-    if (isSuccess) {
-        const addictionGain = effects.addiction || 0;
-        const newHp = Math.min(metrics.maxHp, Math.max(minStat, metrics.hp + (effects.hpRestore || 0)));
-        const newInsight = Math.min(metrics.maxInsight, Math.max(minStat, metrics.insight + (effects.insightRestore || 0)));
-        const newAddiction = Math.min(maxStat, Math.max(minStat, metrics.addiction + addictionGain));
+    const result = executeTransactionSync([
+      createStep(
+        '扣除医疗费用',
+        () => {
+          const txResult = state.addTransaction('MEDICAL', -finalCost, `治疗: ${service.name}`);
+          return txResult.success;
+        },
+        () => {
+          // 回滚：退还费用
+          state.addTransaction('MEDICAL', finalCost, `治疗回滚: ${service.name}`);
+        }
+      ),
+      createStep(
+        '应用治疗效果',
+        () => {
+          if (isSuccess) {
+            const addictionGain = effects.addiction || 0;
+            const newHp = Math.min(metrics.maxHp, Math.max(minStat, metrics.hp + (effects.hpRestore || 0)));
+            const newInsight = Math.min(metrics.maxInsight, Math.max(minStat, metrics.insight + (effects.insightRestore || 0)));
+            const newAddiction = Math.min(maxStat, Math.max(minStat, metrics.addiction + addictionGain));
+            state.modifyStats({ hp: newHp, insight: newInsight, addiction: newAddiction });
+          } else {
+            const failure = rules.medical?.failurePenalty || { hp: -10, insight: -5 };
+            const newHp = Math.max(minStat, metrics.hp + (failure.hp || -10));
+            const newInsight = Math.max(minStat, metrics.insight + (failure.insight || -5));
+            state.modifyStats({ hp: newHp, insight: newInsight });
+          }
+          return true;
+        },
+        () => {
+          // 回滚：恢复状态
+          state.modifyStats({ hp: initialHp, insight: initialInsight, addiction: initialAddiction });
+        }
+      )
+    ], 'performTreatment');
 
-        state.modifyStats({
-            hp: newHp,
-            insight: newInsight,
-            addiction: newAddiction
-        });
-        return { success: true, msg: `治疗成功。${service.flavorText || ''}` };
+    if (result.success) {
+      return { 
+        success: true, 
+        msg: isSuccess 
+          ? `治疗成功。${service.flavorText || ''}` 
+          : "治疗失败！产生了严重的排异反应，病情未见好转。"
+      };
     } else {
-        const failure = rules.medical?.failurePenalty || { hp: -10, insight: -5 };
-        const newHp = Math.max(minStat, metrics.hp + (failure.hp || -10));
-        const newInsight = Math.max(minStat, metrics.insight + (failure.insight || -5));
-
-        state.modifyStats({
-            hp: newHp, 
-            insight: newInsight,
-        });
-        return { success: false, msg: "治疗失败！产生了严重的排异反应，病情未见好转。" };
+      return { success: false, msg: `治疗失败: ${result.error}` };
     }
   },
 
@@ -745,8 +782,8 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
     }
     
     // ===== 步骤6: 刷新商店库存 =====
-    // 异步执行，确保在状态更新后刷新
-    setTimeout(() => {
+    // 异步执行，确保在状态更新后刷新（使用全局定时器管理器）
+    globalTimerManager.setTimeout(() => {
       const store = get() as any;
       if (store.refreshShopInventory) {
         store.refreshShopInventory();
@@ -923,13 +960,27 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
         if (!hasDeferredPayment) {
           const remainingCost = apptService.baseCost - appt.depositPaid;
           if (remainingCost > 0) {
-            if (state.addTransaction) {
-              state.addTransaction('MEDICAL', -remainingCost, `手术尾款: ${appt.serviceName}`);
+            // 检查资金是否充足
+            const currentGold = updates.metrics?.gold ?? state.vitality.metrics.gold;
+            if (currentGold < remainingCost) {
+              // 资金不足，手术失败
+              if (state.addNotification) {
+                state.addNotification(
+                  `❌ 手术失败：${appt.serviceName}。你无法支付尾款 $${remainingCost}，医院拒绝进行手术。`,
+                  'error'
+                );
+              }
+              // 扣除违约金（定金不退）
+              continue;
             }
-            updates.metrics = {
-              ...updates.metrics,
-              gold: updates.metrics.gold - remainingCost
-            };
+            
+            const txResult = state.addTransaction?.('MEDICAL', -remainingCost, `手术尾款: ${appt.serviceName}`);
+            if (txResult?.success !== false) {
+              updates.metrics = {
+                ...updates.metrics,
+                gold: Math.max(0, (updates.metrics?.gold ?? state.vitality.metrics.gold) - remainingCost)
+              };
+            }
           }
         }
         

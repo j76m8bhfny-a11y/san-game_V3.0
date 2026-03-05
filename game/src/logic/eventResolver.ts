@@ -6,6 +6,12 @@ import { useGameStore } from '@/store/useGameStore';
 // 检查事件触发条件
 export const checkCondition = (state: GameState, condition: GameEvent['conditions']): boolean => {
   if (!condition) return true;
+  
+  // 防御性检查：确保状态完整性
+  if (!state?.vitality?.metrics) {
+    console.warn('[checkCondition] 状态不完整，跳过事件检查');
+    return false;
+  }
 
   // 1. 灵视值检查 (Insight Check)
   // minInsight: 觉醒度不足则无法看到此事件（需要更高灵视）
@@ -178,10 +184,11 @@ export const resolveOption = (
           milestoneTriggered: isMilestone
         };
         
-        // 触发全局状态更新
-        setTimeout(() => {
-          useGameStore.getState().unlockArchive(option.archiveId!);
-        }, 0);
+        // 触发全局状态更新（同步执行，避免竞态条件）
+        const store = useGameStore.getState();
+        if (store.unlockArchive && option.archiveId && !store.unlockedArchives.includes(option.archiveId)) {
+          store.unlockArchive(option.archiveId);
+        }
       } else {
         archiveUnlocked = {
           archiveId: option.archiveId,

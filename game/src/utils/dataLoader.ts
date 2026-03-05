@@ -70,8 +70,8 @@ export const loadAllGameData = async () => {
     loadJsonData<Disease[]>('/src/assets/data/diseases.json'),
   ]);
 
-  // 返回扩展后的数据包（events 已由 EventSystem 单独加载）
-  return { items, bills, archives, endings, classes, global, jobs, housing, insurance, loans, news, diseases };
+  // 返回扩展后的数据包（events 已由 EventSystem 单独加载，这里返回空数组占位）
+  return { items, bills, archives, endings, classes, global, jobs, housing, insurance, loans, news, diseases, events: [] };
 };
 
 // ------------------------------------------------------------------

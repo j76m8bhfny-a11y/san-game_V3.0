@@ -1,7 +1,10 @@
 // Steam 模块
 mod steam;
+// 文件存档模块
+mod save_file;
 
 use steam::commands::*;
+use save_file::*;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -33,6 +36,14 @@ pub fn run() {
             steam_rich_presence_clear,
             steam_rich_presence_set_game,
             steam_rich_presence_set_event,
+            // 文件存档命令
+            save_to_file,
+            load_from_file,
+            delete_save_file,
+            list_save_files,
+            check_save_exists,
+            get_save_directory,
+            backup_save,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

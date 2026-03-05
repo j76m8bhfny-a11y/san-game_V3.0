@@ -25,6 +25,9 @@ anyhow = "1.0"
 thiserror = "1.0"
 log = "0.4"
 
+# 系统信息（用于磁盘空间检测）
+sysinfo = "0.30"
+
 [profile.release]
 strip = true
 opt-level = 3

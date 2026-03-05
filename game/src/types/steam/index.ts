@@ -79,32 +79,35 @@ export interface SaveFileInfo {
   exists_in_cloud: boolean;
 }
 
-/** 游戏存档数据结构 */
+/** 
+ * 游戏存档数据结构
+ * 字段命名统一：与本地存档保持一致，使用 camelCase
+ */
 export interface SaveData {
   /** 存档版本（用于兼容性检查） */
   version: string;
   /** 存档槽位 (1-3 手动, 0 自动) */
   slot: number;
-  /** 游戏天数 */
-  game_day: number;
-  /** 玩家社会阶层 */
-  social_class: string;
-  /** 玩家资产 */
-  money: number;
-  /** 玩家健康值 */
-  health: number;
-  /** 玩家理智值 */
-  sanity: number;
-  /** 已触发事件列表 */
-  triggered_events: string[];
-  /** 已解锁成就进度（本地缓存） */
-  achievement_progress: AchievementProgress[];
-  /** 存档创建时间 */
-  created_at: number;
+  /** 游戏天数 (对应 vitality.time.currentTurn) */
+  gameDay: number;
+  /** 玩家社会阶层 (对应 vitality.identity.currentClass) */
+  currentClass: string;
+  /** 玩家资产/金钱 (对应 vitality.metrics.gold) */
+  gold: number;
+  /** 玩家健康值/HP (对应 vitality.metrics.hp) */
+  hp: number;
+  /** 玩家理智值/灵视 (对应 vitality.metrics.insight) */
+  insight: number;
+  /** 已触发事件列表 (对应 vitality.flags.triggeredEvents) */
+  triggeredEvents: string[];
+  /** 存档创建时间 (对应 saveTime) */
+  saveTime: number;
   /** 存档修改时间 */
-  modified_at: number;
+  modifiedAt: number;
+  /** 已解锁成就进度（本地缓存） */
+  achievementProgress: AchievementProgress[];
   /** 额外游戏数据（灵活扩展） */
-  extra_data?: Record<string, unknown>;
+  extraData?: Record<string, unknown>;
 }
 
 /** 云存档同步结果 */

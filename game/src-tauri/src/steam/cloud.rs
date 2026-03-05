@@ -17,31 +17,42 @@ pub struct SaveFileInfo {
 }
 
 /// 游戏存档数据结构
+/// 字段命名与前端本地存档保持一致
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SaveData {
     /// 存档版本（用于兼容性检查）
     pub version: String,
     /// 存档槽位 (1-3 手动, 0 自动)
     pub slot: u32,
-    /// 游戏天数
+    /// 游戏天数 (对应前端 vitality.time.currentTurn)
+    #[serde(rename = "gameDay")]
     pub game_day: u32,
-    /// 玩家社会阶层
+    /// 玩家社会阶层 (对应前端 vitality.identity.currentClass)
+    #[serde(rename = "currentClass")]
     pub social_class: String,
-    /// 玩家资产
+    /// 玩家资产/金钱 (对应前端 vitality.metrics.gold)
+    #[serde(rename = "gold")]
     pub money: i64,
-    /// 玩家健康值
+    /// 玩家健康值/HP (对应前端 vitality.metrics.hp)
+    #[serde(rename = "hp")]
     pub health: i32,
-    /// 玩家理智值
+    /// 玩家理智值/灵视 (对应前端 vitality.metrics.insight)
+    #[serde(rename = "insight")]
     pub sanity: i32,
-    /// 已触发事件列表
+    /// 已触发事件列表 (对应前端 vitality.flags.triggeredEvents)
+    #[serde(rename = "triggeredEvents")]
     pub triggered_events: Vec<String>,
-    /// 已解锁成就进度（本地缓存）
-    pub achievement_progress: Vec<AchievementProgress>,
-    /// 存档创建时间
+    /// 存档创建时间 (对应前端 saveTime)
+    #[serde(rename = "saveTime")]
     pub created_at: u64,
     /// 存档修改时间
+    #[serde(rename = "modifiedAt")]
     pub modified_at: u64,
+    /// 已解锁成就进度（本地缓存）
+    #[serde(rename = "achievementProgress")]
+    pub achievement_progress: Vec<AchievementProgress>,
     /// 额外游戏数据（JSON 字符串，灵活扩展）
+    #[serde(rename = "extraData")]
     pub extra_data: Option<serde_json::Value>,
 }
 

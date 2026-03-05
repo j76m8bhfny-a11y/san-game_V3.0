@@ -1,0 +1,100 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_M01_FLOW",
+  "title": "体面的月光",
+  "category": "MIDDLE",
+  "series": "斩杀线",
+  "layer": {
+    "background": "/assets/scenes/bg_office_night.png",
+    "foreground": "/assets/events/evt_starbucks.png"
+  },
+  "conditions": {
+    "requiredClass": [
+      "MIDDLE"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "minTurn": 1,
+    "maxTurn": 52,
+    "weight": 10
+  },
+  "text": "账户余额五位数，但房租、医保和助学贷已排队等候。你没有储蓄，只有现金流。今天公司传闻裁员，你手里的拿铁瞬间有了破产的味道。",
+  "historicalNote": "美国中产本质是现金流奴隶，固定支出占大头，一旦断供即坠入底层。",
+  "image": "/assets/events/evt_starbucks.png",
+  "options": {
+    "A": {
+      "label": "再投两份简历，只要更努力就不会被裁",
+      "roast": "只要你够卷，系统就能更高效地压榨你。",
+      "flavorText": "你决定今晚再多接两个咨询单。只要账户余额还在跳动，你就能维持住这份昂贵的体面。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "这种心态是系统的润滑剂：通过自我压榨来填补结构性空缺。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "points": {
+          "old": 3
+        },
+        "insightGain": 8
+      }
+    },
+    "B": {
+      "label": "减少非必要开支，开始吃临期食品",
+      "roast": "生存第一课：学会提前认输。",
+      "flavorText": "你退掉了健身卡。如果注定要坠落，早点适应底层的重力也不是坏事。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "放弃希望是低限度的心理安全。在无法胜利的系统中，这叫止损。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "points": {},
+        "insightGain": 1
+      }
+    },
+    "C": {
+      "label": "分期买入最新的顶级手机补偿自己",
+      "roast": "用消费的快感暂时麻痹对未来的恐惧。",
+      "flavorText": "你刷开了信用卡。看着精致的工业产品，你觉得自己依然握着生活的主动权。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "消费主义提供了虚假的控制感，用即时满足掩盖深层矛盾。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "points": {
+          "wolf": 3
+        },
+        "insight": -10
+      }
+    },
+    "D": {
+      "label": "⚠️ 意识到你只是在为银行打工的“信用电池”",
+      "roast": "你的生活是一场精心设计的数字游戏，而你只是个零件。",
+      "flavorText": "你看穿了账单背后的剥削逻辑。你不是在生活，你只是在维持一个不断失血的信用点数。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "看清真相是痛苦的开始。中产是随时可以被出清的暂存内存。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "points": {
+          "red": 15
+        },
+        "insight": -10
+      },
+      "sanLock": 30,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.01_FLOW_DEBT"
+    }
+  },
+  "metadata": {
+    "author": "Anonymous",
+    "version": "3.0",
+    "createdAt": "2026-03-04",
+    "updatedAt": "2026-03-04",
+    "references": [],
+    "relatedEvents": []
+  }
+}

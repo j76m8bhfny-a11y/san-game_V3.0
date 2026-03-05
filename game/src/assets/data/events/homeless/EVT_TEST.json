@@ -1,0 +1,100 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_TEST",
+  "title": "测试",
+  "category": "HOMELESS",
+  "series": "测试",
+  "layer": {
+    "background": "/assets/scenes/bg_test.png",
+    "foreground": "/assets/events/evt_test.png"
+  },
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "minTurn": 1,
+    "maxTurn": 52,
+    "weight": 10
+  },
+  "text": "测试",
+  "historicalNote": "测试",
+  "image": "/assets/events/evt_test.png",
+  "options": {
+    "A": {
+      "label": "A",
+      "roast": "A",
+      "flavorText": "A",
+      "ideology": "A",
+      "archiveCommentary": "A",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "points": {
+          "old": 3
+        },
+        "insightGain": 8
+      }
+    },
+    "B": {
+      "label": "B",
+      "roast": "B",
+      "flavorText": "B",
+      "ideology": "B",
+      "archiveCommentary": "B",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "points": {},
+        "insightGain": 1
+      }
+    },
+    "C": {
+      "label": "C",
+      "roast": "C",
+      "flavorText": "C",
+      "ideology": "C",
+      "archiveCommentary": "C",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "points": {
+          "wolf": 3
+        },
+        "insight": -10
+      }
+    },
+    "D": {
+      "label": "D",
+      "roast": "D",
+      "flavorText": "D",
+      "ideology": "D",
+      "archiveCommentary": "D",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "points": {
+          "red": 15
+        },
+        "insight": -10
+      },
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.99_TEST"
+    }
+  },
+  "metadata": {
+    "author": "Anonymous",
+    "version": "3.0",
+    "createdAt": "2026-03-04",
+    "updatedAt": "2026-03-04",
+    "references": [],
+    "relatedEvents": []
+  }
+}

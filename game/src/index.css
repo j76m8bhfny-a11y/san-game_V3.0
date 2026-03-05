@@ -4,11 +4,30 @@
 @tailwind components;
 @tailwind utilities;
 
-/* --- 1. 核心修复：引入 Zpix 像素字体 (通过 CDN) --- */
+/* --- 1. 核心修复：引入 Zpix 像素字体 (多CDN备选) --- */
+
+/* 主字体: Zpix (中文像素字体) */
 @font-face {
   font-family: 'PixelFont';
-  /* 优先使用 CDN (国内速度快) */
   src: url('https://cdn.jsdelivr.net/gh/SolidZORO/zpix-pixel-font@v3.1.10/dist/zpix.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 备选1: 文泉驿点阵宋体 (中文字体备选) */
+@font-face {
+  font-family: 'WenQuanYi';
+  src: local('WenQuanYi Bitmap Song'), local('文泉驿点阵宋体');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 备选2: Unifont (等宽像素字体) */
+@font-face {
+  font-family: 'Unifont';
+  src: local('Unifont'), url('https://unifoundry.com/pub/unifont/unifont-15.0.01/font-builds/unifont-15.0.01.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -46,11 +65,23 @@
 
 /* --- 2. 全局强制应用 --- */
 :root {
-  /* 定义字体栈：优先 Zpix，其次是常见像素字体，最后兜底 */
-  --font-pixel: 'PixelFont', 'Zpix', 'Press Start 2P', 'Microsoft YaHei', sans-serif;
+  /* 定义字体栈：优先 Zpix，其次是其他像素字体，最后是等宽系统字体兜底 */
+  --font-pixel: 
+    'PixelFont',           /* Zpix - 主像素字体 */
+    'WenQuanYi',           /* 文泉驿 - 中文备选 */
+    'Unifont',             /* Unifont - 等宽备选 */
+    'Press Start 2P',      /* Google Fonts 备选 */
+    'Courier New',         /* 系统等宽字体 */
+    'SimSun',              /* 宋体 - Windows */
+    'Songti SC',           /* 宋体 - macOS */
+    monospace;             /* 最终兜底 */
 }
 
-/* 暴力接管所有元素 */
+/* 暴力接管所有元素 - 超高特异性选择器 */
+html body,
+html body *,
+html body *::before,
+html body *::after,
 html, body, #root, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -63,7 +94,9 @@ table, caption, tbody, tfoot, thead, tr, th, td,
 article, aside, canvas, details, embed, 
 figure, figcaption, footer, header, hgroup, 
 menu, nav, output, ruby, section, summary,
-time, mark, audio, video, button, input, textarea {
+time, mark, audio, video, button, input, textarea,
+[class*="font-"],
+[class^="text-"] {
   font-family: var(--font-pixel) !important;
   
   /* 关键：关闭抗锯齿，保证边缘像刀切一样锐利 */
@@ -156,4 +189,27 @@ body {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #00ff9d;
+}
+
+/* --- 字体加载调试与强制应用 --- */
+
+/* 确保字体加载前显示系统字体，加载后切换 */
+.fonts-loading body {
+  font-family: 'Courier New', monospace;
+}
+
+.fonts-loaded body {
+  font-family: var(--font-pixel) !important;
+}
+
+/* 强制所有文本元素使用像素字体 */
+*,
+*::before,
+*::after {
+  font-family: var(--font-pixel) !important;
+}
+
+/* 针对特定框架可能覆盖的情况 */
+[data-font-loaded="true"] * {
+  font-family: var(--font-pixel) !important;
 }

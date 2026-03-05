@@ -6,8 +6,12 @@
  * 示例: node convertEvents.js ../EVENT_BATCH_TEMPLATE.csv
  */
 
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // 解析 CSV（处理引号内的逗号）
 function parseCSV(content) {
@@ -43,7 +47,7 @@ function parseCSVLine(line) {
   return result;
 }
 
-// 数值常量（根据阶级调整insightGain）
+// 数值常量（所有阶级统一 insightGain）
 const getEffects = (category, option) => {
   const base = {
     A: {
@@ -51,7 +55,7 @@ const getEffects = (category, option) => {
       gold: 150,
       hp: -12,
       points: { old: 3 },
-      insightGain: category === 'HOMELESS' ? 8 : 5
+      insightGain: 8  // 统一为8，不分阶级
     },
     B: {
       scaling: 'FIXED',
@@ -93,15 +97,18 @@ function convertRowToEvent(row) {
       foreground: `/assets/events/${row.foreground}.png`
     },
     conditions: {
-      requiredClass: category === 'COMMON' ? [] : [category],
-      minInsight: 0,
-      maxInsight: 100,
+      requiredClass: category === 'COMMON' 
+        ? ['HOMELESS', 'WORKER', 'MIDDLE', 'CAPITALIST'] 
+        : [category],
+      minSan: 0,
+      maxSan: 100,
       minTurn: 1,
       maxTurn: 52,
       weight: 10
     },
     text: row.text,
-    historicalNote: row.historicalNote,
+    historicalNote: row.historicalNote || undefined,
+    image: row.foreground ? `/assets/events/${row.foreground}.png` : `/assets/events/${row.id.toLowerCase()}.png`,
     options: {
       A: {
         label: row.A_label,
@@ -150,10 +157,8 @@ function convertRowToEvent(row) {
     }
   };
   
-  // 如果是 COMMON，移除 requiredClass
-  if (category === 'COMMON') {
-    delete event.conditions.requiredClass;
-  }
+  // 清理空值字段
+  if (!event.historicalNote) delete event.historicalNote;
   
   return event;
 }

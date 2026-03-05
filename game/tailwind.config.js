@@ -9,8 +9,8 @@ export default {
       fontFamily: {
         // L1/L2 UI: 现代、清晰、虚伪
         sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
-        // L0 背景/底层真相: 复古、粗糙
-        pixel: ['"Press Start 2P"', 'monospace'], 
+        // L0 背景/底层真相: 复古像素字体栈（匹配CSS变量）
+        pixel: ['PixelFont', 'WenQuanYi', 'Unifont', '"Press Start 2P"', '"Courier New"', 'Monaco', '"Microsoft YaHei"', 'monospace'], 
         // L2 档案/机密: 冷漠、机械
         mono: ['"Space Mono"', 'monospace'],
         // L2 古神/觉醒: 疯狂、扭曲

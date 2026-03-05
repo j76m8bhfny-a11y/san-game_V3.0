@@ -49,7 +49,7 @@ const MenuCard: React.FC<MenuCardProps> = ({
       }}
       onMouseLeave={() => onHover(null)}
       className={`
-        relative w-28 h-44 md:w-40 md:h-60 rounded-xl shadow-2xl
+        relative w-28 h-44 md:w-40 md:h-60 rounded-sm shadow-2xl
         flex flex-col items-center justify-end pb-4 px-2
         transition-shadow duration-300 group
         ${color} 
@@ -57,7 +57,7 @@ const MenuCard: React.FC<MenuCardProps> = ({
         border border-white/10 backdrop-blur-sm
       `}
     >
-      <div className="absolute inset-0 p-4 flex flex-col items-center justify-center overflow-hidden rounded-xl">
+      <div className="absolute inset-0 p-4 flex flex-col items-center justify-center overflow-hidden rounded-sm">
         {children}
       </div>
 

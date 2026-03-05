@@ -375,7 +375,7 @@ No.{序号}_{英文主题}
     "gold": 150,
     "hp": -12,
     "points": { "old": 3 },
-    "insightGain": 8  // HOMELESS用8，其他用5
+    "insightGain": 8  // 所有阶级统一用8
   }
 }
 

@@ -26,8 +26,8 @@
 | `title` | 标题 | 睡长椅的一夜 |
 | `text` | 事件描述 | 凌晨四点，你被冻醒... |
 | `historicalNote` | 现实背景 | 基于敌意建筑设计... |
-| `background` | 背景图 | bg_park_night |
-| `foreground` | 前景图 | evt_bench_sleep |
+| `background` | 背景图（场景） | bg_park_night |
+| `foreground` | 前景图/事件图（也会被用作 `image` 字段） | evt_bench_sleep |
 
 ### A选项列（信念/鸡汤）
 

@@ -1,9 +1,9 @@
 /**
- * 事件动态加载系统
+ * 事件动态加载系统（按需加载版）
  * 
  * 功能：
- * - 按阶级分目录加载240个事件
- * - 支持热重载（开发模式）
+ * - 按阶级分目录异步加载事件
+ * - 支持按需加载，减少启动时间和内存占用
  * - 事件池管理与权重抽样
  */
 
@@ -11,15 +11,40 @@ import { GameEvent, PlayerClass } from '@/types/schema';
 import type { StoreState } from '@/types/store';
 
 // ==========================================
-// 1. 事件模块导入（Vite glob导入）
+// 1. 事件模块导入（Vite glob导入 - 懒加载）
 // ==========================================
 
-// 使用Vite的import.meta.glob动态导入所有事件JSON
+// 使用Vite的import.meta.glob动态导入所有事件JSON（懒加载模式）
 // @ts-ignore Vite specific API with type arguments
-const eventModules: Record<string, { default: GameEvent }> = (import.meta as any).glob(
+const eventModules: Record<string, () => Promise<{ default: GameEvent }>> = (import.meta as any).glob(
   '@/assets/data/events/**/*.json',
-  { eager: true }
+  { eager: false }  // ✅ 改为懒加载
 );
+
+// 事件ID到路径的映射
+const eventIdToPath: Map<string, string> = new Map();
+
+/**
+ * 扫描所有可用的事件ID（不加载内容）
+ */
+function scanEventIds(): void {
+  if (eventIdToPath.size > 0) return;  // 已扫描过
+  
+  Object.keys(eventModules).forEach(path => {
+    const eventId = pathToId(path);
+    eventIdToPath.set(eventId, path);
+  });
+  
+  console.log(`[EventLoader] 扫描到 ${eventIdToPath.size} 个事件ID`);
+}
+
+/**
+ * 从路径提取事件ID
+ */
+function pathToId(path: string): string {
+  const match = path.match(/\/([^/]+)\.json$/);
+  return match ? match[1] : path;
+}
 
 // ==========================================
 // 2. 事件缓存与索引
@@ -32,15 +57,19 @@ interface EventIndex {
   byId: Map<string, GameEvent>;
   byClass: Map<EventClassType, GameEvent[]>;
   byCategory: Map<string, GameEvent[]>;
+  loaded: Set<string>;  // 已加载的事件ID
 }
 
 let eventIndex: EventIndex | null = null;
 
 /**
- * 构建事件索引
+ * 构建事件索引（仅扫描ID，不加载内容）
  * 应用启动时调用一次
  */
 export function buildEventIndex(): EventIndex {
+  // 扫描所有事件ID
+  scanEventIds();
+  
   const index: EventIndex = {
     byId: new Map(),
     byClass: new Map<EventClassType, GameEvent[]>([
@@ -50,34 +79,17 @@ export function buildEventIndex(): EventIndex {
       [PlayerClass.Capitalist, []],
       ['COMMON', []]
     ]),
-    byCategory: new Map()
+    byCategory: new Map(),
+    loaded: new Set()
   };
-
-  // 遍历所有导入的模块
-  Object.entries(eventModules).forEach(([path, mod]) => {
-    const event = mod.default;
-    
-    // 验证事件数据
-    if (!validateEvent(event)) {
-      console.warn(`Invalid event data in ${path}:`, event);
-      return;
-    }
-
-    // 加入ID索引
-    index.byId.set(event.id, event);
-
-    // 解析阶级分类
-    const eventClass = parseEventClass(event.id, (event as any).category);
+  
+  // 根据ID分类（不加载内容）
+  eventIdToPath.forEach((path, eventId) => {
+    const eventClass = parseEventClassFromId(eventId);
     const classList = index.byClass.get(eventClass as EventClassType);
     if (classList) {
-      classList.push(event);
-    }
-
-    // 加入分类索引
-    if (event.series) {
-      const seriesList = index.byCategory.get(event.series) || [];
-      seriesList.push(event);
-      index.byCategory.set(event.series, seriesList);
+      // 暂时存储ID，需要时加载
+      (classList as any).push({ id: eventId, _path: path });
     }
   });
 
@@ -85,16 +97,87 @@ export function buildEventIndex(): EventIndex {
   
   // 打印统计
   console.log('╔══════════════════════════════════════════════════════════╗');
-  console.log('║              事件系统加载完成                            ║');
+  console.log('║              事件索引构建完成                            ║');
   console.log('╚══════════════════════════════════════════════════════════╝');
-  console.log(`总计: ${index.byId.size} 个事件`);
-  console.log(`  HOMELESS: ${index.byClass.get(PlayerClass.Homeless)?.length || 0}`);
-  console.log(`  WORKER: ${index.byClass.get(PlayerClass.Worker)?.length || 0}`);
-  console.log(`  MIDDLE: ${index.byClass.get(PlayerClass.Middle)?.length || 0}`);
-  console.log(`  CAPITALIST: ${index.byClass.get(PlayerClass.Capitalist)?.length || 0}`);
-  console.log(`  COMMON: ${index.byClass.get('COMMON')?.length || 0}`);
+  console.log(`总计: ${eventIdToPath.size} 个事件（按需加载）`);
 
   return index;
+}
+
+/**
+ * 异步加载单个事件
+ */
+export async function loadEventById(eventId: string): Promise<GameEvent | null> {
+  if (!eventIndex) buildEventIndex();
+  
+  // 已缓存
+  if (eventIndex!.byId.has(eventId)) {
+    return eventIndex!.byId.get(eventId)!;
+  }
+  
+  const path = eventIdToPath.get(eventId);
+  if (!path) {
+    console.warn(`[EventLoader] 未找到事件: ${eventId}`);
+    return null;
+  }
+  
+  try {
+    const loader = eventModules[path];
+    if (!loader) {
+      console.warn(`[EventLoader] 无法加载: ${path}`);
+      return null;
+    }
+    
+    const mod = await loader();
+    const event = mod.default;
+    
+    if (!validateEvent(event)) {
+      console.warn(`[EventLoader] 无效事件数据: ${eventId}`);
+      return null;
+    }
+    
+    // 加入索引
+    eventIndex!.byId.set(eventId, event);
+    eventIndex!.loaded.add(eventId);
+    
+    // 加入分类索引
+    const eventClass = parseEventClass(event.id, (event as any).category);
+    const classList = eventIndex!.byClass.get(eventClass as EventClassType);
+    if (classList) {
+      // 替换占位符为真实事件
+      const idx = classList.findIndex((e: any) => e.id === eventId);
+      if (idx >= 0) {
+        classList[idx] = event;
+      } else {
+        classList.push(event);
+      }
+    }
+    
+    // 加入系列索引
+    if (event.series) {
+      const seriesList = eventIndex!.byCategory.get(event.series) || [];
+      if (!seriesList.find(e => e.id === event.id)) {
+        seriesList.push(event);
+        eventIndex!.byCategory.set(event.series, seriesList);
+      }
+    }
+    
+    return event;
+  } catch (error) {
+    console.error(`[EventLoader] 加载事件失败 ${eventId}:`, error);
+    return null;
+  }
+}
+
+/**
+ * 从ID解析阶级（仅基于ID，不加载内容）
+ */
+function parseEventClassFromId(eventId: string): EventClassType {
+  if (eventId.startsWith('EVT_H')) return PlayerClass.Homeless;
+  if (eventId.startsWith('EVT_W')) return PlayerClass.Worker;
+  if (eventId.startsWith('EVT_M')) return PlayerClass.Middle;
+  if (eventId.startsWith('EVT_CAPITALIST')) return PlayerClass.Capitalist;
+  return 'COMMON';
 }
 
 // ==========================================

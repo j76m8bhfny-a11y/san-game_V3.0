@@ -54,7 +54,7 @@ export function useCloudSave(options: UseCloudSaveOptions = {}): UseCloudSaveRet
   const storeSyncCloud = useSteamStore((state) => state.syncCloud);
   const storeLoadCloudSaves = useSteamStore((state) => state.loadCloudSaves);
 
-  const autoSaveRef = useRef<NodeJS.Timeout | null>(null);
+  const autoSaveRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const pendingSaveRef = useRef<SaveData | null>(null);
 
   // 加载云存档信息
@@ -77,11 +77,11 @@ export function useCloudSave(options: UseCloudSaveOptions = {}): UseCloudSaveRet
 
     try {
       const saveData: SaveData = {
-        ...gameState,
+        ...gameState as any,
         slot,
         version: '1.0.0',
-        created_at: Date.now() / 1000,
-        modified_at: Date.now() / 1000,
+        saveTime: Date.now(),
+        modifiedAt: Date.now(),
       };
 
       await storeSaveToCloud(saveData);

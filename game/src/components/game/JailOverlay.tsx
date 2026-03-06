@@ -25,8 +25,8 @@ const JailOverlay: React.FC = () => {
   const classConfig = (prisonRules?.dailyRoutine?.classOverrides as any)?.[currentClass];
   const isVipTreatment = classConfig && classConfig.hpChange > 0;
 
-  const handleServe = () => {
-    const res = serveTime();
+  const handleServe = async () => {
+    const res = await serveTime();
     setLog(res.msg);
   };
 

@@ -7,35 +7,74 @@ import {
   shouldTriggerGazeEvent, 
   getCurrentGazeEffects 
 } from '@/logic/gazeEventSystem';
-import { eventIndex } from '@/assets/data/events/index';
+import { 
+  buildEventIndex,
+  EventClassType 
+} from '@/logic/eventLoader';
 
-// 缓存事件数据 - 导出以便外部预加载
-export let eventsCache: GameEvent[] | null = null;
+// 已触发事件列表长度限制
+const MAX_TRIGGERED_EVENTS = 200;
 
 /**
- * 预加载所有事件 - 应在游戏初始化时调用
+ * 限制数组长度，保留最新的N条
  */
-export const preloadAllEvents = async (): Promise<void> => {
-  if (eventsCache) return;
+function limitArrayLength<T>(arr: T[], maxLength: number): T[] {
+  if (arr.length <= maxLength) return arr;
+  return arr.slice(arr.length - maxLength);
+}
+
+// 已加载的事件缓存（按阶级）
+const loadedEventsByClass: Map<EventClassType, GameEvent[]> = new Map();
+
+/**
+ * 按需预加载指定阶级的事件
+ */
+export const preloadEventsByClass = async (playerClass: EventClassType): Promise<void> => {
+  // 已加载过，直接返回
+  if (loadedEventsByClass.has(playerClass) && loadedEventsByClass.get(playerClass)!.length > 0) {
+    return;
+  }
   
   try {
-    eventsCache = await eventIndex.loadAllEvents();
-    console.log(`[EventSystem] 已预加载 ${eventsCache.length} 个事件`);
+    buildEventIndex();
+    const { eventIndex } = await import('@/assets/data/events/index');
+    const events = await eventIndex.loadEventsByCategory(playerClass);
+    loadedEventsByClass.set(playerClass, events);
+    console.log(`[EventSystem] 已加载 ${playerClass} 阶级事件: ${events.length} 个`);
   } catch (error) {
-    console.error('[EventSystem] 预加载事件失败:', error);
-    eventsCache = [];
+    console.error(`[EventSystem] 加载 ${playerClass} 事件失败:`, error);
+    loadedEventsByClass.set(playerClass, []);
   }
 };
 
 /**
- * 获取缓存的事件（同步）
+ * 获取当前阶级的事件
  */
-const getCachedEvents = (): GameEvent[] => {
-  if (!eventsCache) {
-    console.warn('[EventSystem] 事件未预加载，返回空数组');
-    return [];
+const getEventsForClass = (state: GameState): GameEvent[] => {
+  const playerClass = state.vitality.identity.currentClass as EventClassType;
+  
+  // 尝试获取已加载的事件
+  const classEvents = loadedEventsByClass.get(playerClass) || [];
+  const commonEvents = loadedEventsByClass.get('COMMON') || [];
+  
+  return [...classEvents, ...commonEvents];
+};
+
+/**
+ * 异步获取可用事件（按需加载）
+ */
+const loadAvailableEvents = async (state: GameState): Promise<GameEvent[]> => {
+  const playerClass = state.vitality.identity.currentClass as EventClassType;
+  
+  // 确保已加载
+  if (!loadedEventsByClass.has(playerClass) || loadedEventsByClass.get(playerClass)!.length === 0) {
+    await preloadEventsByClass(playerClass);
   }
-  return eventsCache;
+  if (!loadedEventsByClass.has('COMMON') || loadedEventsByClass.get('COMMON')!.length === 0) {
+    await preloadEventsByClass('COMMON');
+  }
+  
+  return getEventsForClass(state);
 };
 
 // 获取事件权重
@@ -84,9 +123,9 @@ const isNegativeEvent = (event: GameEvent): boolean => {
   return false;
 };
 
-// 获取随机事件（同步版本）
-const getRandomEventSync = (state: GameState): GameEvent | null => {
-  const allEvents = getCachedEvents();
+// 获取随机事件（异步版本）
+const getRandomEventAsync = async (state: GameState): Promise<GameEvent | null> => {
+  const allEvents = await loadAvailableEvents(state);
   if (allEvents.length === 0) return null;
   
   const currentClass = state.vitality.identity.currentClass;
@@ -169,13 +208,13 @@ const getRandomEventSync = (state: GameState): GameEvent | null => {
   return candidates[candidates.length - 1];
 };
 
-// 获取System Gaze专属事件（同步版本）
-const getGazeEventSync = (state: GameState): GameEvent | null => {
+// 获取System Gaze专属事件（异步版本）
+const getGazeEventAsync = async (state: GameState): Promise<GameEvent | null> => {
   if (!shouldTriggerGazeEvent(state)) {
     return null;
   }
   
-  const allEvents = getCachedEvents();
+  const allEvents = await loadAvailableEvents(state);
   const gazeEvents = allEvents.filter(e => e.id?.startsWith('GAZE_'));
   
   if (gazeEvents.length === 0) return null;
@@ -184,8 +223,8 @@ const getGazeEventSync = (state: GameState): GameEvent | null => {
   return gazeEvents[Math.floor(random() * gazeEvents.length)];
 };
 
-// 结算事件系统（每回合开始时调用）
-export const processEventTurn = (state: GameState): SystemResult => {
+// 结算事件系统（每回合开始时调用 - 异步版本）
+export const processEventTurnAsync = async (state: GameState): Promise<SystemResult> => {
   const result: SystemResult = {
     updates: {},
     newTransactions: [],
@@ -193,14 +232,8 @@ export const processEventTurn = (state: GameState): SystemResult => {
     notes: []
   };
 
-  // 确保事件已加载
-  if (!eventsCache) {
-    console.warn('[EventSystem] 事件未预加载，跳过事件触发');
-    return result;
-  }
-
   // 优先检查System Gaze专属事件
-  const gazeEvent = getGazeEventSync(state);
+  const gazeEvent = await getGazeEventAsync(state);
   
   if (gazeEvent) {
     const triggeredEvents = state.vitality.flags?.triggeredEvents || [];
@@ -212,7 +245,7 @@ export const processEventTurn = (state: GameState): SystemResult => {
         ...state.vitality,
         flags: {
           ...state.vitality.flags,
-          triggeredEvents: [...triggeredEvents, gazeEvent.id]
+          triggeredEvents: limitArrayLength([...triggeredEvents, gazeEvent.id], MAX_TRIGGERED_EVENTS)
         }
       }
     } as any;
@@ -222,7 +255,7 @@ export const processEventTurn = (state: GameState): SystemResult => {
   }
 
   // 普通事件
-  const event = getRandomEventSync(state);
+  const event = await getRandomEventAsync(state);
 
   if (event) {
     const triggeredEvents = state.vitality.flags?.triggeredEvents || [];
@@ -234,7 +267,7 @@ export const processEventTurn = (state: GameState): SystemResult => {
         ...state.vitality,
         flags: {
           ...state.vitality.flags,
-          triggeredEvents: [...triggeredEvents, event.id]
+          triggeredEvents: limitArrayLength([...triggeredEvents, event.id], MAX_TRIGGERED_EVENTS)
         }
       }
     } as any;
@@ -245,13 +278,32 @@ export const processEventTurn = (state: GameState): SystemResult => {
   return result;
 };
 
-// GameSystem 接口实现
+// 同步包装器（用于兼容性）
+export const processEventTurn = (_state: GameState): SystemResult => {
+  console.warn('[EventSystem] processEventTurn已弃用，请使用processEventTurnAsync');
+  // 返回空结果，真正的处理在异步流程中
+  return {
+    updates: {},
+    newTransactions: [],
+    logs: [],
+    notes: []
+  };
+};
+
+// 预加载所有事件（保留以兼容旧代码，实际使用按需加载）
+export const preloadAllEvents = async (): Promise<void> => {
+  console.log('[EventSystem] 使用按需加载策略，跳过全量预加载');
+  // 只构建索引，不加载内容
+  buildEventIndex();
+};
+
+// GameSystem 接口实现（异步版本）
 export const EventSystem: GameSystem = {
   id: 'EVENT_SYSTEM',
   priority: 95, // 高优先级，在结算前触发
 
-  processTurn: ({ state }) => {
-    return processEventTurn(state);
+  processTurn: async ({ state }) => {
+    return await processEventTurnAsync(state);
   }
 };
 

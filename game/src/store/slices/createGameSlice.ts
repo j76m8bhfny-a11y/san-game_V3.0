@@ -11,7 +11,7 @@ import { resolveEnding } from '@/logic/endings';
 import endingsData from '@/assets/data/endings.json';
 import ENDING_RULES from '@/assets/data/rules/ending_rules.json';
 import newsData from '@/assets/data/news.json';
-import { processEventTurn } from '@/systems/core/EventSystem';
+import { processEventTurnAsync } from '@/systems/core/EventSystem';
 
 // ✅ 引入 UI 清理函数
 import { clearAllNotificationTimers } from './createUISlice';
@@ -59,7 +59,7 @@ export interface GameSlice {
   
   // ✅ 重构：提取的回合结算子方法
   checkTurnLimit: (state: GameState, store: StoreState) => boolean;
-  runCoreSettlement: (state: GameState) => { updates: any; report: WeeklyReport; notes: string[] };
+  runCoreSettlement: (state: GameState) => Promise<{ updates: any; report: WeeklyReport; notes: string[] }>;
   processCryptoMarket: (state: GameState, store: StoreState) => { notes: string[] };
   applySettlementUpdates: (updates: any, report: WeeklyReport) => void;
   checkDeathCondition: (store: StoreState) => boolean;
@@ -330,9 +330,9 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
   },
 
   // ============================================================
-  // 回合推进主流程 (已重构为子方法)
+  // 回合推进主流程 (已重构为子方法) - 支持异步事件加载
   // ============================================================
-  nextTurn: () => {
+  nextTurn: async () => {
     if (get().isMenuOpen) return;
     if (get().isPaused) return; // 🔴 暂停状态下不执行回合
     if (get().prison?.inJail) return; // 监狱状态下不执行普通回合结算（由 serveTime 处理）
@@ -340,35 +340,40 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
     const state = get() as GameState;
     const store = get() as StoreState;
 
-    // ✅ 0. 回合开始时触发事件（在结算之前）
-    const eventResult = processEventTurn(state);
-    if (eventResult.updates.currentEvent) {
-      // 如果有事件触发，更新状态并暂停结算
-      set((prev) => ({
-        currentEvent: eventResult.updates.currentEvent as GameEvent,
-        isEventOpen: true,
-        vitality: {
-          ...prev.vitality,
-          flags: {
-            ...prev.vitality.flags,
-            triggeredEvents: eventResult.updates.vitality?.flags?.triggeredEvents || 
-              prev.vitality.flags.triggeredEvents
+    // ✅ 0. 回合开始时触发事件（在结算之前）- 异步加载
+    try {
+      const eventResult = await processEventTurnAsync(state);
+      if (eventResult.updates.currentEvent) {
+        // 如果有事件触发，更新状态并暂停结算
+        set((prev) => ({
+          currentEvent: eventResult.updates.currentEvent as GameEvent,
+          isEventOpen: true,
+          vitality: {
+            ...prev.vitality,
+            flags: {
+              ...prev.vitality.flags,
+              triggeredEvents: eventResult.updates.vitality?.flags?.triggeredEvents || 
+                prev.vitality.flags.triggeredEvents
+            }
           }
-        }
-      }));
-      
-      // 添加事件日志
-      eventResult.logs.forEach(log => store.addNotification?.(log, 'info'));
-      
-      // 事件触发后暂停，等待玩家处理
-      return;
+        }));
+        
+        // 添加事件日志
+        eventResult.logs.forEach(log => store.addNotification?.(log, 'info'));
+        
+        // 事件触发后暂停，等待玩家处理
+        return;
+      }
+    } catch (error) {
+      console.error('[GameSlice] 事件触发失败:', error);
+      store.addNotification?.('事件系统错误，跳过本回合事件', 'warning');
     }
 
     // 1. 回合上限检查
     if (get().checkTurnLimit(state, store)) return;
 
-    // 2. 运行核心系统结算
-    const settlementResult = get().runCoreSettlement(state);
+    // 2. 运行核心系统结算（异步）
+    const settlementResult = await get().runCoreSettlement(state);
 
     // 3. 处理加密市场
     const cryptoResult = get().processCryptoMarket(state, store);
@@ -404,8 +409,8 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
   // ------------------------------------------------------------
   // 子方法：运行核心系统结算
   // ------------------------------------------------------------
-  runCoreSettlement: (state) => {
-    const result = runTurnSettlement(state);
+  runCoreSettlement: async (state) => {
+    const result = await runTurnSettlement(state);
     return {
       updates: result.updates,
       report: result.report,
@@ -503,6 +508,12 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
     [...settlementNotes, ...cryptoNotes].forEach((n: string) => {
       store.addNotification(n, 'warning');
     });
+    
+    // ✅ 每回合结束后执行性能检查（开发模式）
+    if (import.meta.env.DEV) {
+      const { quickCheck } = require('@/utils/performanceMonitor');
+      quickCheck();
+    }
   },
 
   closeWeeklyReport: () => {

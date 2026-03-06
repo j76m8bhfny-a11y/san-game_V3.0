@@ -3,7 +3,7 @@ import { GameNotification, Bill } from '@/types/schema';
 import { StoreState } from '@/types/store';
 import SYSTEM_RULES from '@/assets/data/config/system_rules.json';
 
-const pendingTimers = new Set<NodeJS.Timeout>();
+const pendingTimers = new Set<ReturnType<typeof setTimeout>>();
 let notificationIdCounter = 0;
 
 const generateNotificationId = () => {

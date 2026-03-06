@@ -11,6 +11,9 @@ import { Config } from '@/config';
 
 export const CLASS_INITIAL_STATS = Config.vitality.classes as Record<PlayerClass, any>;
 
+// 数组长度限制常量
+const MAX_HISTORY_LENGTH = 100;  // 历史记录最大条数
+
 // 2. 初始状态
 const INITIAL_PLAYER_STATE = {
   currentRegion: RegionID.Slums,
@@ -25,6 +28,14 @@ const INITIAL_PLAYER_STATE = {
   achievedEndings: [] as string[],
   ending: null as string | null,
 };
+
+/**
+ * 限制数组长度，保留最新的N条
+ */
+function limitArrayLength<T>(arr: T[], maxLength: number): T[] {
+  if (arr.length <= maxLength) return arr;
+  return arr.slice(arr.length - maxLength);
+}
 
 export interface PlayerSlice {
   // --- State ---
@@ -61,6 +72,11 @@ export const createPlayerSlice: StateCreator<StoreState, [], [], PlayerSlice> = 
    * ⚠️ 只允许更新 PlayerSlice 定义的字段，禁止传入 vitality、bank 等其他 Slice 的字段
    */
   updatePlayerStats: (updates) => set((state: any) => {
+    // 数组长度限制检查
+    if (updates.history && updates.history.length > MAX_HISTORY_LENGTH) {
+      updates.history = limitArrayLength(updates.history, MAX_HISTORY_LENGTH);
+      console.warn(`[PlayerSlice] history超过限制，已截断至${MAX_HISTORY_LENGTH}条`);
+    }
     // 定义 PlayerSlice 允许的字段白名单
     // 注意: activeInsurances 已从 PlayerSlice 移除，统一使用 vitality.activeInsurances
     const allowedKeys = [
@@ -77,7 +93,13 @@ export const createPlayerSlice: StateCreator<StoreState, [], [], PlayerSlice> = 
         continue;
       }
       
-      const value = (updates as any)[key];
+      let value = (updates as any)[key];
+      
+      // 对history数组进行长度限制
+      if (key === 'history' && Array.isArray(value) && value.length > MAX_HISTORY_LENGTH) {
+        value = limitArrayLength(value, MAX_HISTORY_LENGTH);
+      }
+      
       // 如果是对象且不是数组，则浅合并
       if (value && typeof value === 'object' && !Array.isArray(value) &&
           merged[key] && typeof merged[key] === 'object' && !Array.isArray(merged[key])) {

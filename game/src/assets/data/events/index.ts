@@ -32,6 +32,31 @@ const eventModules: EventRegistry = (import.meta as any).glob('./*/**/*.json');
 
 class EventIndex {
   private cache: Map<string, GameEvent> = new Map();
+  private accessOrder: string[] = [];  // LRU追踪
+  private readonly MAX_CACHE_SIZE = 100;  // 最大缓存事件数
+
+  /**
+   * 更新访问顺序（LRU）
+   */
+  private updateAccessOrder(eventId: string): void {
+    const index = this.accessOrder.indexOf(eventId);
+    if (index > -1) {
+      this.accessOrder.splice(index, 1);
+    }
+    this.accessOrder.push(eventId);
+  }
+
+  /**
+   * 清理最旧的缓存项
+   */
+  private evictOldest(): void {
+    if (this.accessOrder.length === 0) return;
+    const oldestId = this.accessOrder.shift();
+    if (oldestId) {
+      this.cache.delete(oldestId);
+      console.log(`[EventIndex] 清理缓存: ${oldestId}`);
+    }
+  }
 
 
   /**
@@ -68,7 +93,13 @@ class EventIndex {
   async loadEvent(eventId: string): Promise<GameEvent | null> {
     // 检查缓存
     if (this.cache.has(eventId)) {
+      this.updateAccessOrder(eventId);
       return this.cache.get(eventId)!;
+    }
+    
+    // 缓存满了，清理最旧的
+    if (this.cache.size >= this.MAX_CACHE_SIZE) {
+      this.evictOldest();
     }
 
     // 查找对应的模块路径
@@ -84,6 +115,7 @@ class EventIndex {
       const module = await loader();
       const event = module.default;
       this.cache.set(eventId, event);
+      this.updateAccessOrder(eventId);
       return event;
     } catch (error) {
       console.error(`Failed to load event ${eventId}:`, error);
@@ -124,6 +156,18 @@ class EventIndex {
    */
   clearCache(): void {
     this.cache.clear();
+    this.accessOrder = [];
+  }
+
+  /**
+   * 获取缓存统计信息
+   */
+  getCacheStats(): { size: number; maxSize: number; hitRate: number } {
+    return {
+      size: this.cache.size,
+      maxSize: this.MAX_CACHE_SIZE,
+      hitRate: this.cache.size / this.MAX_CACHE_SIZE
+    };
   }
 
   /**

@@ -57,7 +57,7 @@ export interface WeeklyReport {
   summaryByCategory: Record<string, number>;
 }
 
-export const runTurnSettlement = (currentState: GameState) => {
+export const runTurnSettlement = async (currentState: GameState) => {
   let accumulatedUpdates: any = {};
   const logs: string[] = [];
   const notes: string[] = [];
@@ -84,7 +84,7 @@ export const runTurnSettlement = (currentState: GameState) => {
 
     if (system.processTurn) {
       // 传入最新的临时状态 (包含前置系统造成的 HP/SAN 变动)
-      const result = system.processTurn({ state: tempState });
+      const result = await system.processTurn({ state: tempState });
 
       // A. 收集 Vitality 更新 (增加安全过滤)
       if (result.updates.vitality) {

@@ -4,6 +4,32 @@ import App from "./App";
 // 引入全局样式 (包含了你的像素字体和 Tailwind)
 import "./index.css";
 
+// ✅ 注册Service Worker（PWA离线支持）
+if ('serviceWorker' in navigator && import.meta.env.PROD) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(registration => {
+        console.log('[SW] 注册成功:', registration.scope);
+        
+        // 检查更新
+        registration.addEventListener('updatefound', () => {
+          const newWorker = registration.installing;
+          if (newWorker) {
+            newWorker.addEventListener('statechange', () => {
+              if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                console.log('[SW] 发现新版本，刷新页面以更新');
+                // 可以在这里显示更新提示
+              }
+            });
+          }
+        });
+      })
+      .catch(error => {
+        console.log('[SW] 注册失败:', error);
+      });
+  });
+}
+
 // 字体加载检测
 const checkFontLoaded = () => {
   return document.fonts.load('1em "PixelFont"')

@@ -73,6 +73,17 @@ export interface VitalitySlice {
 
 const generateId = () => `${Date.now().toString(36)}_${Math.random().toString(36).substring(2, 5)}`;
 
+// 数组长度限制常量
+const MAX_LEDGER_HISTORY = 100;  // 账本历史最大条数
+
+/**
+ * 限制数组长度，保留最新的N条
+ */
+function limitArrayLength<T>(arr: T[], maxLength: number): T[] {
+  if (arr.length <= maxLength) return arr;
+  return arr.slice(arr.length - maxLength);
+}
+
 // 防止Buff触发循环的全局跟踪器
 const processingTriggers = new Set<string>();
 
@@ -230,7 +241,12 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
             vitality: {
                 ...state.vitality,
                 metrics: { ...state.vitality.metrics, gold: newGold },
-                ledger: { history: [...state.vitality.ledger.history, newRecord] }
+                ledger: { 
+                  history: limitArrayLength(
+                    [...state.vitality.ledger.history, newRecord], 
+                    MAX_LEDGER_HISTORY
+                  ) 
+                }
             }
         };
      });

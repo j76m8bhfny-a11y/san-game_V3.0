@@ -501,8 +501,8 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
     return sessionStorage.getItem('sanguo_seen_d_guide') === 'true';
   });
   
-  const bodyCompleteTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const optionClickTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const bodyCompleteTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const optionClickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // 获取System Gaze状态
   const gazeEffects = getCurrentGazeEffects({ unlockedArchives: unlockedArchives || [] } as any);

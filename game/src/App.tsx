@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useGameStore } from './store/useGameStore';
 import { loadAllGameData } from './utils/dataLoader';
-import { preloadAllEvents } from './systems/core/EventSystem';
+// 事件系统已改为按需加载，无需预导入
 
 // Components
 import { TitleScreen } from './components/game/TitleScreen';
@@ -55,10 +55,19 @@ import { DeathEffectProvider } from './components/ui/DeathEffectPause';
 // ✅ 错误边界
 import { ErrorBoundary } from './components/ErrorBoundary';
 
+// ✅ 性能监控（仅开发模式）
+import { startAutoMonitor, quickCheck } from './utils/performanceMonitor';
+
 
 const App: React.FC = () => {
   // [NEW] 初始化心跳系统（危险时播放心跳声）
   useHeartbeat();
+  
+  // [NEW] 启动性能监控（开发模式）
+  useEffect(() => {
+    const stopMonitor = startAutoMonitor();
+    return stopMonitor;
+  }, []);
   
   // [NEW] 资源暗示系统
   const { hoveredImpact } = useResourceHint();
@@ -124,11 +133,10 @@ const App: React.FC = () => {
       setLoading(true);
       setInitError(null); // 重置错误
       try {
-        // ✅ 并行加载游戏数据和事件
-        const [data, _] = await Promise.all([
-          loadAllGameData(),
-          preloadAllEvents() // 预加载所有事件到缓存
-        ]);
+        // ✅ 加载游戏数据（事件改为按需加载）
+        const data = await loadAllGameData();
+        // 事件索引已构建，内容按需加载
+        console.log('[App] 使用按需事件加载策略');
         
         // 🛡️ 防御性检查：确保数据不是 undefined
         if (!data) throw new Error("LoadData returned empty result");
@@ -149,7 +157,9 @@ const App: React.FC = () => {
   const handleRestart = () => {
     restartGame();       
     setMenuOpen(false);  
-    setViewState('TITLE'); 
+    setViewState('TITLE');
+    // 重置时执行性能检查
+    quickCheck();
   };
 
   // 🚨 1. 错误处理层 (优先级最高)

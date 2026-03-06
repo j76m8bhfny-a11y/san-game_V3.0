@@ -41,7 +41,7 @@ export const IntroComic: React.FC<IntroComicProps> = React.memo(({ onComplete })
   const [phase, setPhase] = useState<ComicPhase>('panels');
   const [visibleBubbles, setVisibleBubbles] = useState<number[]>([]);
   const [isSkipped, setIsSkipped] = useState(false);
-  const [autoPlayTimer, setAutoPlayTimer] = useState<NodeJS.Timeout | null>(null);
+  const [autoPlayTimer, setAutoPlayTimer] = useState<ReturnType<typeof setTimeout> | null>(null);
   const { playSfx } = useAudioStore();
   
   const panels: ComicPanel[] = COMIC_CONFIG?.panels || [];

@@ -5,7 +5,7 @@
  * 表现为屏幕边缘的畸变、色差、扫描线等视觉效果
  */
 
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useEffect, useState, useRef, useCallback } from 'react';
 // System Gaze Overlay - 使用 Zustand
 import { useGameStore } from '@/store/useGameStore';
 import { calculateGazeIntensity } from '@/logic/systemGaze';
@@ -20,16 +20,30 @@ export const SystemGazeOverlay: React.FC<SystemGazeOverlayProps> = ({ children }
   const intensity = calculateGazeIntensity(totalArchives);
   const [scanLine, setScanLine] = useState(0);
   
-  // 扫描线动画
+  // 扫描线动画 - 使用requestAnimationFrame替代setInterval
+  const animationRef = useRef<number | null>(null);
+  const lastTimeRef = useRef<number>(0);
+  
+  const animateScanLine = useCallback((timestamp: number) => {
+    // 控制更新频率（每50ms更新一次）
+    if (timestamp - lastTimeRef.current >= 50) {
+      setScanLine(prev => (prev + 1) % 100);
+      lastTimeRef.current = timestamp;
+    }
+    animationRef.current = requestAnimationFrame(animateScanLine);
+  }, []);
+  
   useEffect(() => {
     if (intensity < 0.3) return;
     
-    const interval = setInterval(() => {
-      setScanLine(prev => (prev + 1) % 100);
-    }, 50);
+    animationRef.current = requestAnimationFrame(animateScanLine);
     
-    return () => clearInterval(interval);
-  }, [intensity]);
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [intensity, animateScanLine]);
   
   // 根据强度计算视觉效果的样式
   const gazeStyles = useMemo(() => {

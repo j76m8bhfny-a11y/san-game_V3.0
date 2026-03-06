@@ -6,8 +6,8 @@
 import { useCallback, useEffect, useRef } from 'react';
 
 export function useGameTimer() {
-  const timersRef = useRef<Set<NodeJS.Timeout>>(new Set());
-  const intervalsRef = useRef<Set<NodeJS.Timeout>>(new Set());
+  const timersRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
+  const intervalsRef = useRef<Set<ReturnType<typeof setInterval>>>(new Set());
 
   // 组件卸载时清理所有定时器
   useEffect(() => {
@@ -76,10 +76,10 @@ export function useGameTimer() {
  * 全局定时器管理器（用于非组件场景）
  */
 class GlobalTimerManager {
-  private timers: Set<NodeJS.Timeout> = new Set();
-  private intervals: Set<NodeJS.Timeout> = new Set();
+  private timers: Set<ReturnType<typeof setTimeout>> = new Set();
+  private intervals: Set<ReturnType<typeof setInterval>> = new Set();
 
-  setTimeout(callback: () => void, delay: number): NodeJS.Timeout {
+  setTimeout(callback: () => void, delay: number): ReturnType<typeof setTimeout> {
     const timer = setTimeout(() => {
       this.timers.delete(timer);
       callback();
@@ -88,18 +88,18 @@ class GlobalTimerManager {
     return timer;
   }
 
-  setInterval(callback: () => void, delay: number): NodeJS.Timeout {
+  setInterval(callback: () => void, delay: number): ReturnType<typeof setInterval> {
     const interval = setInterval(callback, delay);
     this.intervals.add(interval);
     return interval;
   }
 
-  clearTimer(timer: NodeJS.Timeout): void {
+  clearTimer(timer: ReturnType<typeof setTimeout>): void {
     clearTimeout(timer);
     this.timers.delete(timer);
   }
 
-  clearInterval(interval: NodeJS.Timeout): void {
+  clearInterval(interval: ReturnType<typeof setInterval>): void {
     clearInterval(interval);
     this.intervals.delete(interval);
   }

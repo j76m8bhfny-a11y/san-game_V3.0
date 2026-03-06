@@ -63,5 +63,5 @@ export interface GameSystem {
   /**
    * 每周/回合结算逻辑
    */
-  processTurn?: (context: SystemContext) => SystemResult;
+  processTurn?: (context: SystemContext) => SystemResult | Promise<SystemResult>;
 }

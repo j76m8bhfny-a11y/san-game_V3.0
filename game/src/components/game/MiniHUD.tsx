@@ -42,7 +42,7 @@ const CLASS_I18N_KEY: Record<PlayerClass, string> = {
 const useValueChange = (value: number) => {
   const prev = useRef(value);
   const [change, setChange] = useState<'UP' | 'DOWN' | 'NONE'>('NONE');
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   
   useEffect(() => {
     // 如果值没有变化，不触发更新

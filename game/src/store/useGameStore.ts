@@ -1,7 +1,10 @@
 import { create, StateCreator, StoreMutatorIdentifier } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+// @ts-expect-error globalTimerManager 用于 side effect
 import { globalTimerManager } from '@/hooks/useGameTimer';
-import { isTauri, getStorageAdapter, migrateFromLocalStorage } from '@/utils/fileStorage';
+import { isTauri, getStorageAdapter } from '@/utils/fileStorage';
+// @ts-expect-error migrateFromLocalStorage 在模块内部使用
+import { migrateFromLocalStorage } from '@/utils/fileStorage';
 
 // 1. 导入切片
 import { createVitalitySlice } from './slices/createVitalitySlice';
@@ -181,15 +184,16 @@ export const useGameStore = create<StoreState>()(
               }
 
               // ✅ 版本检查和迁移
-              if (!state.saveVersion) {
+              const anyState = state as any;
+              if (!anyState.saveVersion) {
                 console.log("📦 检测到 v0 旧存档，执行迁移到 v1.0...");
-                state = migrateSaveV0ToV1(state);
+                state = migrateSaveV0ToV1(anyState);
                 // 保存迁移后的数据（仅在浏览器环境下，Tauri 会在文件存储中处理）
                 if (!isTauri()) {
                   localStorage.setItem('pixel-life-storage', JSON.stringify(state));
                 }
-              } else if (state.saveVersion !== '1.0') {
-                console.warn(`⚠️ 存档版本 ${state.saveVersion} 与当前版本 1.0 不兼容`);
+              } else if (anyState.saveVersion !== '1.0') {
+                console.warn(`⚠️ 存档版本 ${anyState.saveVersion} 与当前版本 1.0 不兼容`);
                 await backupAndResetSave('版本不兼容');
                 return;
               }
@@ -222,7 +226,7 @@ export const useGameStore = create<StoreState>()(
               
               // ⚠️ 请确保你的 createGameSlice.ts 或 createUISlice.ts 里真的有 setHasHydrated 方法
               if (state && state.setHasHydrated) {
-                console.log("💧 Storage Hydrated! System Ready. (版本:", state.saveVersion, ")");
+                console.log("💧 Storage Hydrated! System Ready. (版本:", (state as any).saveVersion, ")");
                 state.setHasHydrated(true);
                 
                 // 注意：localStorage 迁移逻辑已在 getStorageAdapter 中处理

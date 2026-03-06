@@ -1,11 +1,10 @@
 import { StateCreator } from 'zustand';
 import { Item, GameDataCache } from '@/types/schema';
 import { StoreState } from '@/types/store';
-import { eventsCache } from '@/systems/core/EventSystem';
+// 注意：events已改为按需加载，不再使用全局缓存
 import {
   loadAllGameData,
   createItemMap,
-  createEventMap,
   createBillMap,
   createArchiveMap,
   createEndingMap,
@@ -40,10 +39,10 @@ export const createSystemSlice: StateCreator<StoreState, [], [], SystemSlice> = 
 
       const cache: GameDataCache = {
         ...data,
-        events: eventsCache || [],
+        events: [],  // 事件改为按需加载
         classMap,
         itemMap: createItemMap(data.items),
-        eventMap: createEventMap(eventsCache || []),
+        eventMap: new Map(),  // 事件改为按需加载，初始为空
         billMap: createBillMap(data.bills),
         archiveMap: createArchiveMap(data.archives),
         endingMap: createEndingMap(data.endings),

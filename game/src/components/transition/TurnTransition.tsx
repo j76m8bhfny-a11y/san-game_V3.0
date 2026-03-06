@@ -170,7 +170,7 @@ export const TurnTransition: React.FC<TurnTransitionProps> = React.memo(({
       return;
     }
     
-    let typeInterval: NodeJS.Timeout | null = null;
+    let typeInterval: ReturnType<typeof setInterval> | null = null;
     
     // Phase 1: 闭眼
     const closeTimer = setTimeout(() => {

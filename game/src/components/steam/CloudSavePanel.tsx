@@ -63,16 +63,16 @@ export const CloudSavePanel: React.FC<CloudSavePanelProps> = ({
     
     setActionLoading('save');
     try {
-      // 转换 camelCase 为 snake_case 以匹配 SaveData 类型
-      const saveData = {
-        game_day: currentGameState.gameDay,
-        social_class: currentGameState.socialClass,
-        money: currentGameState.money,
-        health: currentGameState.health,
-        sanity: currentGameState.sanity,
-        triggered_events: currentGameState.triggeredEvents,
-        achievement_progress: [],
-        extra_data: undefined,
+      // 转换为 SaveData 格式
+      const saveData: any = {
+        gameDay: currentGameState.gameDay,
+        currentClass: currentGameState.socialClass,
+        gold: currentGameState.money,
+        hp: currentGameState.health,
+        insight: currentGameState.sanity,
+        triggeredEvents: currentGameState.triggeredEvents,
+        achievementProgress: [],
+        extraData: undefined,
       };
       await save(slot, saveData);
     } finally {

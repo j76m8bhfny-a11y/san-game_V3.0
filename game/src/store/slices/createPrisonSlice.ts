@@ -48,10 +48,10 @@ const handlePrisonError = (error: unknown, context: string, defaultMessage?: str
 // ==================== 辅助函数 ====================
 
 /**
- * 应用系统结算（房租、利息、账单等）
+ * 应用系统结算（房租、利息、账单等）- 异步
  */
-const applySystemSettlement = (state: GameState & { addNotification: Function }) => {
-  return runTurnSettlement(state);
+const applySystemSettlement = async (state: GameState & { addNotification: Function }) => {
+  return await runTurnSettlement(state);
 };
 
 /**
@@ -221,7 +221,7 @@ export interface PrisonSlice {
 
   // Actions
   imprison: (reason: string, turns: number, bail: number, totalDebt?: number) => void;
-  serveTime: () => { released: boolean; msg: string; died: boolean };
+  serveTime: () => Promise<{ released: boolean; msg: string; died: boolean }>;
   payCashBail: () => { success: boolean; msg: string };
   signBailBond: () => { success: boolean; msg: string };
   buyBlackMarketMedicine: () => { success: boolean; msg: string; hpRestored?: number };
@@ -253,7 +253,7 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
   },
 
   // 🔴 逻辑说明: 坐牢期间触发系统结算
-  serveTime: () => {
+  serveTime: async () => {
     const state = get();
     const { vitality, prison } = state;
 
@@ -263,8 +263,8 @@ export const createPrisonSlice: StateCreator<StoreState, [], [], PrisonSlice> = 
     }
 
     try {
-      // 1. 执行系统结算
-      const settlementResult = applySystemSettlement(state);
+      // 1. 执行系统结算（异步）
+      const settlementResult = await applySystemSettlement(state);
 
       // 2. 计算坐牢的物理惩罚（阶级差异化）
       const jailEffect = calculateDailyJailEffect(vitality.identity.currentClass);

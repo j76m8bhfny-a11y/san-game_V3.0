@@ -96,7 +96,7 @@ const triggerVibration = (pattern: number | number[]): void => {
  */
 export const useHeartbeat = (): boolean => {
   const { vitality } = useGameStore();
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   
   const hpPercent = vitality.metrics.hp / vitality.metrics.maxHp;
   const config = getHeartbeatConfig(hpPercent);

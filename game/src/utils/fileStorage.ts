@@ -27,6 +27,8 @@ export interface FileStorageAPI {
   export: (slot: number, filename: string) => Promise<void>;
   /** 从文件导入存档 */
   import: (filepath: string) => Promise<unknown>;
+  /** 备份存档 */
+  backup: (slot: number, backupName: string) => Promise<void>;
 }
 
 /** 检测是否在 Tauri 环境 */
@@ -229,7 +231,13 @@ export function getStorageAdapter() {
   // 浏览器环境回退到 localStorage
   return {
     getItem: (name: string): string | null => localStorage.getItem(name),
-    setItem: (name: string, value: string): void => localStorage.setItem(name, value),
-    removeItem: (name: string): void => localStorage.removeItem(name),
+    setItem: (name: string, value: string): Promise<void> => {
+      localStorage.setItem(name, value);
+      return Promise.resolve();
+    },
+    removeItem: (name: string): Promise<void> => {
+      localStorage.removeItem(name);
+      return Promise.resolve();
+    },
   };
 }

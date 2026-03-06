@@ -213,3 +213,192 @@ body {
 [data-font-loaded="true"] * {
   font-family: var(--font-pixel) !important;
 }
+
+/* ========================================
+   可访问性增强 (Accessibility Enhancements)
+   ======================================== */
+
+/* --- 1. 减少动画偏好支持 (prefers-reduced-motion) --- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  /* 禁用打字机动画的逐字效果，立即显示全文 */
+  .typewriter,
+  [class*="typewriter"] {
+    animation: none !important;
+  }
+  
+  /* 禁用持续浮动动画 */
+  .float,
+  [class*="float"] {
+    animation: none !important;
+  }
+  
+  /* 禁用闪烁效果（癫痫风险） */
+  .flash,
+  [class*="flash"],
+  .animate-pulse {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+  
+  /* 禁用Glitch效果 */
+  .glitch,
+  [class*="glitch"] {
+    animation: none !important;
+  }
+  
+  /* 过场动画瞬间完成 */
+  .transition-all,
+  .transition-transform,
+  .transition-opacity {
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* --- 2. 焦点可见性 (Focus Visibility) --- */
+/* 像素风格焦点环 - 高对比度 */
+*:focus-visible {
+  outline: 3px solid #00ff9d;
+  outline-offset: 2px;
+  box-shadow: 
+    0 0 0 2px #000000,
+    0 0 0 5px rgba(0, 255, 157, 0.3);
+  z-index: 100;
+}
+
+/* 按钮焦点增强 */
+button:focus-visible {
+  transform: scale(1.02);
+  filter: brightness(1.2);
+}
+
+/* 输入框焦点增强 */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  border-color: #00ff9d !important;
+  box-shadow: 
+    0 0 0 2px #000000,
+    0 0 0 4px rgba(0, 255, 157, 0.4) !important;
+}
+
+/* 链接焦点 */
+a:focus-visible {
+  text-decoration: underline;
+  text-decoration-color: #00ff9d;
+  text-decoration-thickness: 3px;
+}
+
+/* 移除默认的focus样式（避免双重轮廓） */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* --- 3. 色觉障碍友好性 --- */
+/* 不单独依赖颜色传递信息 */
+.status-critical::before {
+  content: "⚠️ ";
+}
+
+.status-success::before {
+  content: "✓ ";
+}
+
+.status-warning::before {
+  content: "▲ ";
+}
+
+/* --- 4. 高对比度模式支持 --- */
+@media (prefers-contrast: high) {
+  * {
+    border-width: 2px !important;
+  }
+  
+  button,
+  [role="button"] {
+    border: 2px solid currentColor !important;
+  }
+  
+  .text-gray-400,
+  .text-gray-500 {
+    color: #ffffff !important;
+  }
+}
+
+/* --- 5. 字体加载失败回退优化 --- */
+/* 添加本地字体文件作为最终兜底 */
+@font-face {
+  font-family: 'SystemFallback';
+  src: local('Courier New'), local('Consolas'), local('Monaco');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* 字体加载状态类 */
+.fonts-error body {
+  font-family: 'SystemFallback', 'Courier New', monospace !important;
+}
+
+/* --- 6. 触摸目标大小优化 --- */
+@media (pointer: coarse) {
+  /* 触摸设备上增大点击区域 */
+  button,
+  [role="button"],
+  input,
+  select,
+  a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* 增大间距避免误触 */
+  .touch-target {
+    margin: 4px;
+    padding: 8px;
+  }
+}
+
+/* --- 7. 防止内容溢出 --- */
+/* 确保文本不会溢出容器 */
+.text-wrap {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+/* 隐藏内容但对屏幕阅读器可见 */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* 跳过导航链接（键盘用户） */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #000;
+  color: #00ff9d;
+  padding: 8px;
+  text-decoration: none;
+  z-index: 10000;
+}
+
+.skip-link:focus {
+  top: 0;
+}

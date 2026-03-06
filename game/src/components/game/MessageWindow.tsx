@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import { useBurningConfig } from '@/hooks/useBurningConfig';
+import { usePrefersReducedMotion } from '@/hooks/useAccessibility';
 import { GameEvent } from '@/types/schema';
 import NARRATIVE_RULES from '@/assets/data/rules/narrative_rules.json';
 import { getCurrentGazeEffects, getGazeNarrative } from '@/logic/gazeEventSystem';
@@ -39,14 +40,27 @@ interface MessageWindowProps {
   event: GameEvent;
 }
 
-// 打字机组件
-const TypewriterText: React.FC<{ text: string; onComplete?: () => void; glitch?: boolean }> = ({ 
-  text, onComplete, glitch = false 
+// 打字机组件（支持减少动画偏好）
+const TypewriterText: React.FC<{ 
+  text: string; 
+  onComplete?: () => void; 
+  glitch?: boolean;
+  ariaLabel?: string;
+}> = ({ 
+  text, onComplete, glitch = false, ariaLabel 
 }) => {
   const [display, setDisplay] = useState('');
   const { playSfx } = useAudioStore();
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
+    // 如果用户偏好减少动画，立即显示全文
+    if (prefersReducedMotion) {
+      setDisplay(text);
+      onComplete && onComplete();
+      return;
+    }
+
     let i = 0;
     setDisplay('');
     const timer = setInterval(() => {
@@ -67,10 +81,14 @@ const TypewriterText: React.FC<{ text: string; onComplete?: () => void; glitch?:
       }
     }, pacing.typewriterSpeedMs);
     return () => clearInterval(timer);
-  }, [text, playSfx, onComplete, glitch]);
+  }, [text, playSfx, onComplete, glitch, prefersReducedMotion]);
 
   return (
-    <span className={`font-pixel leading-relaxed tracking-wide ${glitch ? 'text-red-400' : ''}`}>
+    <span 
+      className={`font-pixel leading-relaxed tracking-wide ${glitch ? 'text-red-400' : ''}`}
+      aria-label={ariaLabel}
+      role="text"
+    >
       {display}
     </span>
   );
@@ -585,6 +603,31 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
     setDOptionConfirm({ ...dOptionConfirm, isOpen: false });
     executeOptionSelect('D');
   };
+
+  // [NEW] 监听键盘快捷键选择事件选项（Q/W/E/R）
+  useEffect(() => {
+    const handleKeyboardOption = (e: CustomEvent<{ option: string }>) => {
+      const optionId = e.detail.option;
+      
+      // 只有在交互阶段才响应
+      if (stage !== 'INTERACTIVE') return;
+      
+      // 检查选项是否存在
+      const optionMap: Record<string, string> = { 'A': 'A', 'B': 'B', 'C': 'C', 'D': 'D' };
+      if (!optionMap[optionId]) return;
+      
+      // D选项特殊处理
+      if (optionId === 'D' && !canSeeDOption) return;
+      
+      // 执行选择
+      handleOptionClick(optionId);
+    };
+
+    window.addEventListener('select-event-option', handleKeyboardOption as EventListener);
+    return () => {
+      window.removeEventListener('select-event-option', handleKeyboardOption as EventListener);
+    };
+  }, [stage, canSeeDOption]);
   
   // 检查D选项是否可用 (支持 insightLock 或 sanLock)
   const dOptionInsightLock = (event.options.D as any)?.insightLock 
@@ -626,7 +669,13 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
   const shouldHideTitle = isFocusMode || stage === 'INIT' || !!selectedOptId;
 
   return (
-    <div className="fixed inset-0 z-30 pointer-events-none">
+    <div 
+      className="fixed inset-0 z-30 pointer-events-none"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="event-title"
+      aria-describedby="event-description"
+    >
       {/* Glitch覆盖层 */}
       {(dOptionGlitch || isGazeEvent) && <GlitchOverlay intensity={gazeEffects.intensity} />}
       
@@ -693,14 +742,20 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="absolute top-[15%] left-1/2 w-[90%] md:w-[80%] z-40 pointer-events-none" 
       >
-        <div className={`bg-black/40 backdrop-blur-md border-2 border-white p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.5)] transition-all ${isFocusMode ? 'pointer-events-none' : 'pointer-events-auto'}`}>
-          <h2 className={`font-pixel font-bold text-xl mb-4 tracking-widest uppercase border-b-2 border-white/20 pb-2 ${isGazeEvent ? 'text-red-400' : 'text-cyan-400'}`}>
+        <div 
+          className={`bg-black/40 backdrop-blur-md border-2 border-white p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.5)] transition-all ${isFocusMode ? 'pointer-events-none' : 'pointer-events-auto'}`}
+          role="document"
+        >
+          <h2 
+            id="event-title"
+            className={`font-pixel font-bold text-xl mb-4 tracking-widest uppercase border-b-2 border-white/20 pb-2 ${isGazeEvent ? 'text-red-400' : 'text-cyan-400'}`}
+          >
             {stage === 'TYPING_TITLE' && (
               <TypewriterText text={event.title} onComplete={handleTitleComplete} glitch={isGazeEvent} />
             )}
             {(stage === 'TYPING_BODY' || stage === 'INTERACTIVE') && event.title}
           </h2>
-          <div className="text-gray-200 text-sm md:text-lg min-h-[60px] font-pixel">
+          <div id="event-description" className="text-gray-200 text-sm md:text-lg min-h-[60px] font-pixel">
             {stage === 'TYPING_BODY' && (
               <TypewriterText text={descriptionText} onComplete={handleBodyComplete} glitch={isGazeEvent} />
             )}
@@ -844,6 +899,23 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
                 </div>
               </motion.div>
             )}
+
+            {/* 键盘快捷键提示 */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1 }}
+              className="absolute bottom-[80px] right-[20px] z-[55] text-[10px] text-gray-500"
+              aria-hidden="true"
+            >
+              <div className="flex gap-2">
+                {['Q','W','E','R'].map((key, i) => (
+                  <span key={key} className="px-1.5 py-0.5 bg-gray-800 rounded border border-gray-600">
+                    {key}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
 
             {/* 右下角手机 */}
             <motion.div

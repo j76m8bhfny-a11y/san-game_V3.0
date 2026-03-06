@@ -41,6 +41,7 @@ import { ResourceHintBar, useResourceHint } from './components/ui/ResourceHint';
 import { GlitchUI } from './components/fx/GlitchUI';
 import { SystemAlertModal } from './components/ui/SystemAlertModal';
 import { useHeartbeat } from './hooks/useHeartbeat';
+import { useGlobalKeyboard, useKeyboardUserDetection } from './hooks/useGlobalKeyboard';
 import { calculateGazeIntensity } from './logic/systemGaze';
 
 // [NEW] 新手引导系统
@@ -51,6 +52,7 @@ import { ProgressiveUnlock } from './components/ui/ProgressiveUnlock';
 import { DangerHints } from './components/ui/DangerHints';
 import { ModalQueueProvider } from './components/ui/ModalQueueManager';
 import { DeathEffectProvider } from './components/ui/DeathEffectPause';
+import { ScreenReaderAnnouncer, AriaLabels } from './components/ui/ScreenReaderAnnouncer';
 
 // ✅ 错误边界
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -73,6 +75,11 @@ declare global {
 const App: React.FC = () => {
   // [NEW] 初始化心跳系统（危险时播放心跳声）
   useHeartbeat();
+  
+  // [NEW] 检测键盘导航用户
+  useKeyboardUserDetection();
+  
+
   
   // [NEW] 启动性能监控（开发模式）
   useEffect(() => {
@@ -138,17 +145,56 @@ const App: React.FC = () => {
     setInsuranceOpen,  // [NEW]
     
     viewMode,
+    setViewMode,
     isCryptoOpen,
     setCryptoOpen,
     crypto, 
     setShopOpen,
     setArchiveOpen,
     setMenuOpen,
+    setInventoryOpen,
+    nextTurn,
     restartGame,
     showDeathSummary,  // [NEW] 死亡结算显示状态
     showDeathSummaryView, // [NEW] 手动显示死亡结算
     activeHousing // [NEW] 用于DangerHints
   } = useGameStore();
+
+  // [NEW] 全局键盘事件（完整功能）
+  useGlobalKeyboard({
+    isModalOpen: isMenuOpen || !!currentEvent || isShopOpen || isJobBoardOpen || isHousingOpen || isHospitalOpen || isInsuranceOpen || isArchiveOpen,
+    isEventOpen: !!currentEvent,
+    isGameActive: viewState === 'GAME' && !ending,
+    onClose: () => {
+      // 关闭最上层的弹窗
+      if (isMenuOpen) setMenuOpen(false);
+      else if (isShopOpen) setShopOpen(false);
+      else if (isJobBoardOpen) setJobBoardOpen(false);
+      else if (isHousingOpen) setHousingOpen(false);
+      else if (isHospitalOpen) setHospitalOpen(false);
+      else if (isInsuranceOpen) setInsuranceOpen(false);
+      else if (isArchiveOpen) setArchiveOpen(false);
+    },
+    onPause: () => {
+      if (!isMenuOpen && !currentEvent) setMenuOpen(true);
+    },
+    onEndTurn: () => {
+      if (!currentEvent && viewState === 'GAME') {
+        nextTurn();
+      }
+    },
+    onOpenInventory: () => {
+      setInventoryOpen(true);
+    },
+    onToggleMap: () => {
+      setViewMode(viewMode === 'MAP' ? 'REGION' : 'MAP');
+    },
+    onSave: () => {
+      // 游戏使用zustand persist自动保存
+      // Ctrl+S 触发提示，实际保存由zustand middleware处理
+      console.log('[Save] 游戏状态已自动保存');
+    },
+  });
 
   const [viewState, setViewState] = useState<'TITLE' | 'SELECT_CLASS' | 'GAME'>('TITLE');
   const [loading, setLoading] = useState(false);
@@ -236,6 +282,10 @@ const App: React.FC = () => {
     <ErrorBoundary>
     <DeathEffectProvider>
     <ModalQueueProvider>
+    {/* [NEW] 屏幕阅读器支持 */}
+    <ScreenReaderAnnouncer />
+    <AriaLabels />
+    
     {/* [NEW] 开场引导体验 */}
     {showIntro && !introCompleted && (
       <IntroExperience onComplete={handleIntroComplete} />

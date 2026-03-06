@@ -13,6 +13,7 @@ export const CLASS_INITIAL_STATS = Config.vitality.classes as Record<PlayerClass
 
 // 数组长度限制常量
 const MAX_HISTORY_LENGTH = 100;  // 历史记录最大条数
+const MAX_INVENTORY = 50;        // 背包最大容量
 
 // 2. 初始状态
 const INITIAL_PLAYER_STATE = {
@@ -98,6 +99,16 @@ export const createPlayerSlice: StateCreator<StoreState, [], [], PlayerSlice> = 
       // 对history数组进行长度限制
       if (key === 'history' && Array.isArray(value) && value.length > MAX_HISTORY_LENGTH) {
         value = limitArrayLength(value, MAX_HISTORY_LENGTH);
+      }
+      
+      // 对inventory数组进行长度限制
+      if (key === 'inventory' && Array.isArray(value) && value.length > MAX_INVENTORY) {
+        value = limitArrayLength(value, MAX_INVENTORY);
+        console.warn(`[PlayerSlice] inventory超过限制，已截断至${MAX_INVENTORY}个`);
+        // 添加通知提示玩家
+        if (state.addNotification) {
+          state.addNotification('背包已满，新物品无法放入', 'warning');
+        }
       }
       
       // 如果是对象且不是数组，则浅合并

@@ -113,7 +113,43 @@ export const useGameStore = create<StoreState>()(
         storage: createJSONStorage(() => getStorageAdapter()), 
         
         // --- 持久化白名单 ---
-        partialize: (state) => ({
+        partialize: (state) => {
+          // ✅ 存档大小检查（5MB限制）
+          const MAX_SAVE_SIZE = 5 * 1024 * 1024; // 5MB in bytes
+          
+          const serialized = JSON.stringify(state);
+          const sizeInBytes = new Blob([serialized]).size;
+          
+          if (sizeInBytes > MAX_SAVE_SIZE) {
+            console.error(`[useGameStore] 存档大小超过5MB限制 (${(sizeInBytes / 1024 / 1024).toFixed(2)}MB)，将清理历史记录`);
+            
+            // 清理历史记录以减少大小
+            return {
+              // 保留核心数据
+              saveVersion: '1.0',
+              saveTime: Date.now(),
+              vitality: {
+                ...state.vitality,
+                ledger: { history: state.vitality.ledger.history.slice(-50) }, // 只保留最近50条
+              },
+              history: state.history.slice(-50), // 只保留最近50条
+              // 其他数据正常保留
+              currentRegion: state.currentRegion,
+              activeHousing: state.activeHousing,
+              dmvQueue: state.dmvQueue,
+              activeLease: state.activeLease,
+              inventory: state.inventory,
+              unlockedArchives: state.unlockedArchives,
+              achievedEndings: state.achievedEndings,
+              bank: state.bank,
+              faith: state.faith,
+              crypto: state.crypto,
+              prison: state.prison,
+              dietState: state.dietState,
+            };
+          }
+          
+          return {
           // ✅ 0. 存档元数据（版本管理和迁移必需）
           saveVersion: '1.0',           // 存档数据结构版本
           saveTime: Date.now(),         // 保存时间戳
@@ -151,7 +187,8 @@ export const useGameStore = create<StoreState>()(
           activeBuffs: state.activeBuffs,               // 顶层 Buff 列表
           shopInventory: state.shopInventory,           // 🏪 商店库存
           vehiclePurchaseRegion: state.vehiclePurchaseRegion, // 🚗 车辆购买区域
-        }),
+          };
+        },
         
         version: 1, 
         

@@ -58,6 +58,17 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 // ✅ 性能监控（仅开发模式）
 import { startAutoMonitor, quickCheck } from './utils/performanceMonitor';
 
+// 🧪 边界检查工具（仅开发模式）
+import { BoundaryChecker, debugTools, DebugTools } from './test/boundary';
+
+// 扩展 Window 接口以支持调试工具
+declare global {
+  interface Window {
+    gameStore: typeof useGameStore;
+    debug: DebugTools;
+    BoundaryChecker: typeof BoundaryChecker;
+  }
+}
 
 const App: React.FC = () => {
   // [NEW] 初始化心跳系统（危险时播放心跳声）
@@ -67,6 +78,27 @@ const App: React.FC = () => {
   useEffect(() => {
     const stopMonitor = startAutoMonitor();
     return stopMonitor;
+  }, []);
+
+  // 🧪 开发模式调试工具
+  useEffect(() => {
+    if (import.meta.env.DEV) {
+      // 暴露 store 到 window
+      window.gameStore = useGameStore;
+      
+      // 暴露调试工具
+      window.debug = debugTools;
+      
+      // 暴露边界检查器
+      window.BoundaryChecker = BoundaryChecker;
+      
+      console.log('%c🛠️ 调试工具已加载', 'color: #4CAF50; font-size: 14px; font-weight: bold;');
+      console.log('%c可用命令:', 'color: #2196F3;');
+      console.log('  %cdebug.help()%c - 显示帮助', 'color: #FF9800;', 'color: inherit;');
+      console.log('  %cdebug.scenario("starvation")%c - 饿死危机场景', 'color: #FF9800;', 'color: inherit;');
+      console.log('  %cdebug.check()%c - 运行边界检查', 'color: #FF9800;', 'color: inherit;');
+      console.log('  %cBoundaryChecker.runAll()%c - 完整边界测试', 'color: #FF9800;', 'color: inherit;');
+    }
   }, []);
   
   // [NEW] 资源暗示系统

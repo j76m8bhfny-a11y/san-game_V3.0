@@ -320,6 +320,15 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
     const { minStat, maxStat } = SYSTEM_RULES.caps;
     const metrics = state.vitality.metrics;
     
+    // ✅ 辅助函数：安全处理数值（防止 Infinity/NaN）
+    const sanitizeValue = (value: number, defaultValue: number): number => {
+      if (!isFinite(value) || isNaN(value)) {
+        console.warn(`[modifyStats] 收到无效值: ${value}，使用默认值: ${defaultValue}`);
+        return defaultValue;
+      }
+      return value;
+    };
+    
     // 创建新的 metrics
     const newMetrics = { ...metrics, ...changes };
     
@@ -329,29 +338,37 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
     const effectiveMaxInsight = changes.maxInsight !== undefined ? changes.maxInsight : (metrics.maxInsight ?? maxStat);
     const effectiveMaxHunger = metrics.maxHunger ?? maxStat;
 
-    // 对关键属性进行钳制
+    // 对关键属性进行钳制（带 Infinity/NaN 防护）
     if (changes.hp !== undefined) {
-      newMetrics.hp = Math.max(minStat, Math.min(effectiveMaxHp, changes.hp));
+      const safeHp = sanitizeValue(changes.hp, metrics.hp);
+      newMetrics.hp = Math.max(minStat, Math.min(effectiveMaxHp, safeHp));
     }
     if (changes.insight !== undefined) {
-      newMetrics.insight = Math.max(minStat, Math.min(effectiveMaxInsight, changes.insight));
+      const safeInsight = sanitizeValue(changes.insight, metrics.insight);
+      newMetrics.insight = Math.max(minStat, Math.min(effectiveMaxInsight, safeInsight));
     }
     if (changes.gold !== undefined) {
-      newMetrics.gold = Math.max(minStat, changes.gold);
+      const GOLD_MAX = 999999999;
+      const safeGold = sanitizeValue(changes.gold, metrics.gold);
+      newMetrics.gold = Math.max(minStat, Math.min(GOLD_MAX, safeGold));
     }
     if (changes.addiction !== undefined) {
-      newMetrics.addiction = Math.max(minStat, Math.min(maxStat, changes.addiction));
+      const safeAddiction = sanitizeValue(changes.addiction, metrics.addiction);
+      newMetrics.addiction = Math.max(minStat, Math.min(maxStat, safeAddiction));
     }
     if (changes.resistance !== undefined) {
-      newMetrics.resistance = Math.max(minStat, Math.min(maxStat, changes.resistance));
+      const safeResistance = sanitizeValue(changes.resistance, metrics.resistance);
+      newMetrics.resistance = Math.max(minStat, Math.min(maxStat, safeResistance));
     }
     if (changes.hunger !== undefined) {
-      newMetrics.hunger = Math.max(minStat, Math.min(effectiveMaxHunger, changes.hunger));
+      const safeHunger = sanitizeValue(changes.hunger, metrics.hunger);
+      newMetrics.hunger = Math.max(minStat, Math.min(effectiveMaxHunger, safeHunger));
     }
     // ✅ 修复：钳制 creditScore (信用分范围 [300, 850])
     if (changes.creditScore !== undefined) {
       const { minScore, maxScore } = bankRules.creditScore;
-      newMetrics.creditScore = Math.max(minScore, Math.min(maxScore, changes.creditScore));
+      const safeCredit = sanitizeValue(changes.creditScore, metrics.creditScore);
+      newMetrics.creditScore = Math.max(minScore, Math.min(maxScore, safeCredit));
     }
     
     return {
@@ -713,12 +730,31 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
     }
   },
 
-  contractDisease: (diseaseId) => set((state: any) => ({
-    vitality: {
-      ...state.vitality,
-      activeDiseases: [...state.vitality.activeDiseases, diseaseId]
+  contractDisease: (diseaseId) => set((state: any) => {
+    const diseases = state.vitality.activeDiseases;
+    const MAX_DISEASES = 10;
+    
+    // 检查是否已达上限
+    if (diseases.length >= MAX_DISEASES) {
+      console.warn(`[VitalitySlice] 疾病数量已达上限 ${MAX_DISEASES}，无法添加 ${diseaseId}`);
+      if (state.addNotification) {
+        state.addNotification('身体已无法承受更多疾病', 'warning');
+      }
+      return {}; // 不修改状态
     }
-  })),
+    
+    // 检查是否已存在
+    if (diseases.includes(diseaseId)) {
+      return {}; // 已存在，不重复添加
+    }
+    
+    return {
+      vitality: {
+        ...state.vitality,
+        activeDiseases: [...diseases, diseaseId]
+      }
+    };
+  }),
 
   cureDisease: (diseaseId) => set((state: any) => ({
     vitality: {
@@ -1164,12 +1200,22 @@ export const createVitalitySlice: StateCreator<StoreState, [], [], VitalitySlice
     
     set((state: any) => {
       const existingBuffs = state.vitality.activeBuffs || [];
-      const buffBaseId = buff.id.split('_')[0];
+      const MAX_BUFFS = 50;
       
-      // 查找同类型Buff
+      // ✅ 检查 Buff 数量上限（同类型Buff更新除外）
+      const buffBaseId = buff.id.split('_')[0];
       const existingIndex = existingBuffs.findIndex((b: SurvivalBuff) => 
         b.id.split('_')[0] === buffBaseId
       );
+      
+      // 如果是新 Buff（不是更新现有），检查数量限制
+      if (existingIndex < 0 && existingBuffs.length >= MAX_BUFFS) {
+        console.warn(`[addSurvivalBuff] Buff数量已达上限 ${MAX_BUFFS}，无法添加: ${buff.name}`);
+        if (state.addNotification) {
+          state.addNotification('状态效果已达上限', 'warning');
+        }
+        return {}; // 不修改状态
+      }
       
       // 计算MaxHP变化（用于maxHpBonus首次应用）
       let maxHpChange = 0;

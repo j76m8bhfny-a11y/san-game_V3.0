@@ -3,6 +3,7 @@ import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import { useI18n } from '@/i18n';
 import { RegionID } from '@/types/schema';
+import { useThrottle } from '@/hooks/useThrottle';
 import { SlumsBankExterior } from './components/SlumsBankExterior';
 import { SlumsBankInterior } from './components/SlumsBankInterior';
 
@@ -36,7 +37,8 @@ export const SlumsBank: React.FC<Props> = ({ onClose }) => {
     setHasEntered(true);
   };
 
-  const handleTakeLoan = (productId: string) => {
+  // 贷款操作添加节流防止重复申请
+  const [throttledTakeLoan] = useThrottle((productId: string) => {
     const product = loanProducts.find(p => p.id === productId);
     const amount = product?.maxAmount || 0;
     const result = takeLoan(productId, amount);
@@ -47,9 +49,9 @@ export const SlumsBank: React.FC<Props> = ({ onClose }) => {
       playSfx('sfx_deny');
       addNotification(result.message, 'error');
     }
-  };
+  }, { delay: 500 });
 
-  const handleRepayLoan = (loanId: string) => {
+  const [throttledRepayLoan] = useThrottle((loanId: string) => {
     const result = repayLoan(loanId);
     if (result.success) {
       playSfx('sfx_cash');
@@ -58,9 +60,9 @@ export const SlumsBank: React.FC<Props> = ({ onClose }) => {
       playSfx('sfx_deny');
       addNotification(t('bank.insufficientFunds'), 'error');
     }
-  };
+  }, { delay: 500 });
 
-  const handleMakeInstallment = (loanId: string, amount: number) => {
+  const [throttledMakeInstallment] = useThrottle((loanId: string, amount: number) => {
     const result = makeInstallment(loanId, amount);
     if (result.success) {
       playSfx('sfx_cash');
@@ -70,7 +72,11 @@ export const SlumsBank: React.FC<Props> = ({ onClose }) => {
       addNotification(result.message, 'error');
     }
     return result;
-  };
+  }, { delay: 500 });
+
+  const handleTakeLoan = (productId: string) => throttledTakeLoan(productId);
+  const handleRepayLoan = (loanId: string) => throttledRepayLoan(loanId);
+  const handleMakeInstallment = (loanId: string, amount: number) => throttledMakeInstallment(loanId, amount);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm" onClick={onClose}>

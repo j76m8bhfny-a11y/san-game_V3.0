@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Item } from '@/types/schema';
 import { useI18n } from '@/i18n';
+import { useThrottle } from '@/hooks/useThrottle';
 
 interface Props {
   item: Item;
@@ -11,6 +12,7 @@ interface Props {
 export const SuburbsItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
   const { t } = useI18n();
   const [isHovered, setIsHovered] = useState(false);
+  const [throttledBuy, isPending] = useThrottle(onBuy, { delay: 300 });
 
   // 图标映射：使用更干净的 Emoji 或图片
   const getIcon = (tags: string[]) => {
@@ -26,7 +28,7 @@ export const SuburbsItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
       className="group relative flex flex-col items-center justify-end h-40 w-full"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={canAfford ? onBuy : undefined}
+      onClick={canAfford && !isPending() ? throttledBuy : undefined}
     >
       {/* 1. 物品本体 (悬浮感) */}
       <div className={`

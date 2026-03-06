@@ -43,6 +43,42 @@ export interface DebugTools {
   
   // 显示帮助
   help: () => void;
+
+  // ========== 容错测试用例 ==========
+  
+  // 测试存档损坏恢复 (TC-FAULT-001)
+  testCorruptedSave: () => void;
+  
+  // 测试图片404容错 (TC-FAULT-003)
+  testImage404: (imagePath: string) => void;
+  
+  // 测试快速点击防护 (TC-FAULT-004)
+  testRapidClick: (buttonSelector: string, clickCount?: number) => void;
+  
+  // 测试存储空间满 (TC-FAULT-005)
+  testStorageFull: () => (() => void);
+
+  // ========== 自动存档测试 ==========
+  
+  // 立即执行一次自动存档
+  autoSave: () => Promise<boolean>;
+  
+  // 查看自动存档列表
+  listAutoSaves: () => Promise<void>;
+  
+  // 从指定自动存档槽位加载
+  loadAutoSave: (slot: number) => Promise<boolean>;
+  
+  // 清除所有自动存档
+  clearAutoSaves: () => Promise<void>;
+
+  // ========== 加密测试 ==========
+  
+  // 测试爆仓机制
+  testLiquidation: () => void;
+  
+  // 设置 BTC 价格（用于测试）
+  setBTCPrice: (price: number) => void;
 }
 
 export interface ArrayTestResult {
@@ -522,7 +558,280 @@ export const createDebugTools = (): DebugTools => {
    BoundaryChecker.runAll()       // 完整边界检查
    BoundaryChecker.checkGold()    // 只检查金钱
    BoundaryChecker.checkHP()      // 只检查HP
+
+9. 容错测试:
+   debug.testCorruptedSave()      // TC-FAULT-001: 存档损坏测试
+   debug.testImage404('path')     // TC-FAULT-003: 图片404测试
+   debug.testRapidClick('button') // TC-FAULT-004: 快速点击测试
+   const cleanup = debug.testStorageFull() // TC-FAULT-005: 存储满测试
+   cleanup()                        // 清理测试数据
+
+10. 自动存档:
+    debug.autoSave()               // 立即执行自动存档
+    debug.listAutoSaves()          // 查看自动存档列表
+    debug.loadAutoSave(0)          // 从槽位0加载自动存档
+    debug.clearAutoSaves()         // 清除所有自动存档
+
+11. 加密测试:
+    debug.testLiquidation()        // 测试爆仓机制
+    debug.setBTCPrice(1000)        // 设置 BTC 价格测试爆仓
       `);
+    },
+
+    /**
+     * 立即执行一次自动存档
+     */
+    autoSave: async () => {
+      const { performAutoSave } = await import('@/utils/autoSave');
+      const result = await performAutoSave();
+      console.log(result ? '✅ 自动存档成功' : '❌ 自动存档失败');
+      return result;
+    },
+    
+    /**
+     * 查看自动存档列表
+     */
+    listAutoSaves: async () => {
+      const { getAutoSaves } = await import('@/utils/autoSave');
+      const saves = await getAutoSaves();
+      console.log('💾 自动存档列表:');
+      console.table(saves.map(s => ({
+        槽位: s.slot,
+        回合: s.turn,
+        金币: s.gold,
+        区域: s.region,
+        阶级: s.class,
+        时间: new Date(s.timestamp).toLocaleString()
+      })));
+    },
+    
+    /**
+     * 从自动存档加载
+     */
+    loadAutoSave: async (slot: number) => {
+      const { loadAutoSave: load } = await import('@/utils/autoSave');
+      const result = await load(slot);
+      if (result) {
+        console.log(`✅ 已从自动存档 ${slot} 加载`);
+        console.log('🔄 页面将刷新以应用状态...');
+        setTimeout(() => window.location.reload(), 1000);
+      } else {
+        console.error(`❌ 加载自动存档 ${slot} 失败`);
+      }
+      return result;
+    },
+    
+    /**
+     * 清除所有自动存档
+     */
+    clearAutoSaves: async () => {
+      const { clearAllAutoSaves } = await import('@/utils/autoSave');
+      await clearAllAutoSaves();
+      console.log('🗑️ 所有自动存档已清除');
+    },
+
+    /**
+     * 测试爆仓机制
+     * 创建高杠杆仓位然后触发爆仓
+     */
+    testLiquidation: () => {
+      const store = useGameStore.getState();
+      
+      // 确保账户已开通且有足够资金
+      if (!store.crypto.isAccountOpen) {
+        console.log('请先开通加密账户');
+        return;
+      }
+      
+      // 创建一个 100x 杠杆的多仓
+      store.openPosition('LONG', 1000, 100);
+      console.log('🎯 创建测试仓位: LONG 1000 @ 100x');
+      console.log('💡 使用 debug.setBTCPrice(价格) 来触发爆仓');
+    },
+
+    /**
+     * 设置 BTC 价格（用于测试爆仓）
+     */
+    setBTCPrice: (price: number) => {
+      const store = useGameStore.getState();
+      const currentPrice = store.crypto.btcPrice;
+      
+      console.log(`📊 BTC 价格: $${currentPrice} → $${price}`);
+      
+      // 使用 checkAndLiquidatePositions 检查爆仓
+      const result = store.checkAndLiquidatePositions(price);
+      
+      if (result.liquidated > 0) {
+        console.log(`💥 爆仓! ${result.liquidated} 个仓位被清算, 损失 $${result.totalLoss}`);
+      } else {
+        console.log('✅ 未触发爆仓');
+      }
+      
+      // 更新价格显示
+      useGameStore.setState((s: any) => ({
+        crypto: { ...s.crypto, btcPrice: price }
+      }));
+    },
+
+    /**
+     * TC-FAULT-001: 存档损坏恢复测试
+     * 模拟损坏的存档数据，测试恢复机制
+     */
+    testCorruptedSave: () => {
+      const tests = [
+        {
+          name: 'JSON语法错误',
+          setup: () => localStorage.setItem('pixel-life-storage', '{broken json'),
+          expect: '重置为初始状态'
+        },
+        {
+          name: '数值Infinity',
+          setup: () => {
+            const data = JSON.parse(localStorage.getItem('pixel-life-storage') || '{}');
+            data.vitality = { ...data.vitality, metrics: { ...data.vitality?.metrics, gold: Infinity } };
+            localStorage.setItem('pixel-life-storage', JSON.stringify(data));
+          },
+          expect: 'gold变为有效数值'
+        },
+        {
+          name: '数值NaN',
+          setup: () => {
+            const data = JSON.parse(localStorage.getItem('pixel-life-storage') || '{}');
+            data.vitality = { ...data.vitality, metrics: { ...data.vitality?.metrics, hp: NaN } };
+            localStorage.setItem('pixel-life-storage', JSON.stringify(data));
+          },
+          expect: 'hp变为60（默认值）'
+        },
+        {
+          name: '字段缺失',
+          setup: () => {
+            const data = { vitality: { metrics: { gold: 100 } } };
+            localStorage.setItem('pixel-life-storage', JSON.stringify(data));
+          },
+          expect: 'class默认为HOMELESS'
+        }
+      ];
+      
+      console.log('🧪 TC-FAULT-001: 存档损坏恢复测试');
+      console.log('请按顺序执行以下测试，每次执行后刷新页面检查恢复行为：');
+      console.table(tests.map((t, i) => ({ 
+        序号: i + 1, 
+        测试: t.name, 
+        预期: t.expect 
+      })));
+      
+      // 提供执行函数
+      return tests.map((t, i) => {
+        (debugTools as any)[`runTest${i + 1}`] = () => {
+          t.setup();
+          console.log(`✅ 已设置: ${t.name}`);
+          console.log(`💡 预期: ${t.expect}`);
+          console.log('🔄 请刷新页面查看恢复效果');
+        };
+        return t;
+      });
+    },
+
+    /**
+     * TC-FAULT-003: 图片404容错测试
+     * 模拟图片加载失败，测试占位图显示
+     */
+    testImage404: (imagePath?: string) => {
+      const testPath = imagePath || '/assets/events/evt_001.png';
+      console.log(`🧪 TC-FAULT-003: 图片404容错测试`);
+      console.log(`测试路径: ${testPath}`);
+      console.log(`
+使用方式:
+1. 重命名图片文件: ${testPath} -> ${testPath}.bak
+2. 触发显示该图片的事件
+3. 预期: 显示占位图（灰色块+文字），不空白不崩溃
+4. 测试完成后恢复图片原名
+      `);
+      
+      // 创建测试用的错误图片URL
+      const img = new Image();
+      img.onerror = () => {
+        console.log('✅ 图片错误处理正常触发');
+      };
+      img.src = testPath + '?test=' + Date.now();
+    },
+
+    /**
+     * TC-FAULT-004: 快速点击防护测试
+     * 模拟快速连续点击，测试节流效果
+     */
+    testRapidClick: (buttonSelector?: string, clickCount: number = 10) => {
+      const selector = buttonSelector || '[data-testid="buy-button"], button';
+      console.log(`🧪 TC-FAULT-004: 快速点击防护测试`);
+      console.log(`目标按钮: ${selector}`);
+      console.log(`点击次数: ${clickCount}`);
+      
+      const buttons = document.querySelectorAll(selector);
+      if (buttons.length === 0) {
+        console.warn('⚠️ 未找到目标按钮');
+        return;
+      }
+      
+      let actualClicks = 0;
+      const targetButton = buttons[0];
+      
+      // 记录点击次数
+      const clickHandler = () => { actualClicks++; };
+      targetButton.addEventListener('click', clickHandler);
+      
+      // 执行快速点击
+      console.log(`开始执行 ${clickCount} 次快速点击...`);
+      for (let i = 0; i < clickCount; i++) {
+        targetButton.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+      }
+      
+      // 延迟检查
+      setTimeout(() => {
+        targetButton.removeEventListener('click', clickHandler);
+        console.log(`✅ 快速点击测试完成`);
+        console.log(`预期点击: 1次 (被节流)`);
+        console.log(`实际点击: ${actualClicks}次`);
+        if (actualClicks <= 1) {
+          console.log('✅ 节流保护生效');
+        } else {
+          console.warn('⚠️ 节流保护可能未生效');
+        }
+      }, 1000);
+    },
+
+    /**
+     * TC-FAULT-005: 存储空间满测试
+     * 模拟 localStorage 满的情况
+     * @returns 清理函数，必须在测试后调用
+     */
+    testStorageFull: () => {
+      const keys: string[] = [];
+      
+      console.log('🧪 TC-FAULT-005: 存储空间满测试');
+      console.log('开始填充 localStorage...');
+      
+      // 填充 localStorage
+      for(let i = 0; i < 1000; i++) {
+        try {
+          const key = `__test_filler_${i}`;
+          localStorage.setItem(key, 'x'.repeat(10000));
+          keys.push(key);
+        } catch(e) {
+          console.log(`💾 存储已满，共填充 ${keys.length} 项`);
+          break;
+        }
+      }
+      
+      console.log('✅ localStorage 已填满');
+      console.log('💡 现在执行保存操作，应该显示"存储空间不足"提示');
+      console.log('⚠️ 重要: 测试完成后必须调用返回的清理函数！');
+      
+      // 返回清理函数
+      return () => {
+        console.log('🧹 开始清理测试数据...');
+        keys.forEach(k => localStorage.removeItem(k));
+        console.log(`✅ 已清理 ${keys.length} 项测试数据`);
+      };
     }
   };
 };

@@ -141,15 +141,21 @@ export const createFaithSlice: StateCreator<StoreState, [], [], FaithSlice> = (s
 
     // === 3. 处理连击 (Streak) 逻辑 ===
     // 这部分属于 Store 的状态管理，不在纯函数中
+    const MAX_STREAK = 99; // 🔴 连击上限
     const { behaviorState } = state.faith;
     let newStreak = 1;
     let msg = outcome.message || "行为已完成。";
 
     if (behaviorState.lastAction === actionType) {
-        // 动作相同，连击 +1
-        newStreak = behaviorState.currentStreak + 1;
+        // 动作相同，连击 +1，但不超过上限
+        newStreak = Math.min(behaviorState.currentStreak + 1, MAX_STREAK);
+        
+        // 达到上限时特殊提示
+        if (newStreak === MAX_STREAK && behaviorState.currentStreak < MAX_STREAK) {
+            msg = `${msg} [MAX] 你的信念已达巅峰！`;
+        }
         // 只有在连击增加时才提示进度，避免刷屏
-        if (newStreak > 1 && newStreak < config.unlockStreak) {
+        else if (newStreak > 1 && newStreak < config.unlockStreak) {
              msg = `${msg} (信念: ${newStreak}/${config.unlockStreak})`;
         }
     } else {

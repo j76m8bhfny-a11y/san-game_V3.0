@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MedicalService } from '@/types/schema';
 import { useI18n } from '@/i18n';
+import { useThrottle } from '@/hooks/useThrottle';
 
 interface Props {
   service: MedicalService;
@@ -11,6 +12,7 @@ interface Props {
 export const SuburbsMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy }) => {
   const [isHovered, setIsHovered] = useState(false);
   const { t } = useI18n();
+  const [throttledBuy, isPending] = useThrottle(onBuy, { delay: 300 });
 
   // 图标映射
   const getIcon = (type: string) => {
@@ -31,7 +33,7 @@ export const SuburbsMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy 
       `}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={canAfford ? onBuy : undefined}
+      onClick={canAfford && !isPending() ? throttledBuy : undefined}
     >
       {/* 包装盒顶部颜色条 */}
       <div className="absolute top-0 w-full h-2 bg-gradient-to-r from-red-500 to-red-600" />

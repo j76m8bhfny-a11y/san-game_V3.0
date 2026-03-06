@@ -25,6 +25,8 @@ import { StoreState } from '@/types/store';
 
 // ✅ 引入全局定时器管理器
 import { globalTimerManager } from '@/hooks/useGameTimer';
+// ✅ 引入自动存档
+import { performAutoSave } from '@/utils/autoSave';
 
 export interface GameSlice {
   // --- State ---
@@ -539,6 +541,13 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
             }
         }));
     }
+    
+    // ✅ 推进回合后执行自动存档（异步，不阻塞）
+    performAutoSave().then(success => {
+      if (success && import.meta.env.DEV) {
+        console.log('💾 自动存档完成');
+      }
+    });
     
     // 推进回合后再清空 UI 状态和账本
     set({ weeklyReport: null });

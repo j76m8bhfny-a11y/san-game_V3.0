@@ -78,6 +78,15 @@ interface AudioActions {
 // 内部变量：保存 Audio 实例，不存入 Zustand 以免序列化问题
 let bgmInstance: HTMLAudioElement | null = null;
 
+// 记录失败的音频资源，避免重复尝试
+const failedAudioAssets = new Set<string>();
+
+// 检查音频是否可用
+const isAudioAvailable = (key: string): boolean => {
+  if (failedAudioAssets.has(key)) return false;
+  return key in AUDIO_ASSETS;
+};
+
 export const useAudioStore = create<AudioState & AudioActions>()(
   devtools(
     persist(
@@ -104,22 +113,35 @@ export const useAudioStore = create<AudioState & AudioActions>()(
         playSfx: (key) => {
           const { volume, muted } = get();
           if (muted || volume === 0) return;
+          
+          // 检查音频是否可用
+          if (!isAudioAvailable(key)) {
+            // 已知的失败资源，静默跳过
+            return;
+          }
 
           try {
-            // 这里可能会因为文件不存在报 404，但在开发阶段不影响代码运行
             const audio = new Audio(AUDIO_ASSETS[key]);
             audio.volume = volume / 100;
-            audio.play().catch(_e => {
-              // 忽略因为没有用户交互导致的播放失败，或者文件缺失
-              // console.warn('SFX play failed:', e) 
+            audio.play().catch((e) => {
+              // 记录失败的资源，下次跳过
+              failedAudioAssets.add(key);
+              console.warn(`🎵 音效播放失败 (${key}):`, e.message);
             });
           } catch (e) {
-            console.warn(`Audio asset missing: ${key}`);
+            failedAudioAssets.add(key);
+            console.warn(`🎵 音效资源缺失: ${key}`);
           }
         },
 
         playBgm: (key) => {
           const { currentBgmKey, volume, muted } = get();
+          
+          // 检查音频是否可用
+          if (!isAudioAvailable(key)) {
+            console.warn(`🎵 BGM 资源不可用: ${key}`);
+            return;
+          }
           
           // 如果已经在播放同一首，则忽略
           if (currentBgmKey === key && bgmInstance && !bgmInstance.paused) return;
@@ -139,15 +161,17 @@ export const useAudioStore = create<AudioState & AudioActions>()(
             // 尝试播放 (浏览器可能拦截自动播放，需要用户交互)
             const playPromise = audio.play();
             if (playPromise !== undefined) {
-              playPromise.catch(error => {
-                console.warn('BGM Auto-play prevented:', error);
+              playPromise.catch(() => {
+                // 自动播放被阻止，不记录为资源缺失
+                console.log('🎵 BGM 自动播放被浏览器阻止');
               });
             }
 
             bgmInstance = audio;
             set({ currentBgmKey: key });
           } catch (e) {
-            console.warn(`BGM asset missing: ${key}`);
+            failedAudioAssets.add(key);
+            console.warn(`🎵 BGM 资源缺失: ${key}`);
           }
         },
 

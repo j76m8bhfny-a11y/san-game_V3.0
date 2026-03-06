@@ -3,6 +3,7 @@ import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import { useI18n } from '@/i18n';
 import { RegionID } from '@/types/schema';
+import { useThrottle } from '@/hooks/useThrottle';
 
 import { SlumsExterior } from './components/SlumsExterior';
 import { SlumsInterior } from './components/SlumsInterior';
@@ -33,8 +34,8 @@ export const SlumsHousing: React.FC<Props> = ({ onClose }) => {
   // 判断当前是否已拥有此房源
   const isRentingThis = activeHousing?.definitionId === slumsHouse.id;
 
-  // 处理动作
-  const handleRent = () => {
+  // 处理动作（添加节流防止重复操作）
+  const [throttledRent] = useThrottle(() => {
     const result = rentHousing(slumsHouse.id);
     if (result.success) {
       // 使用现有音效 'sfx_paper' 模拟搭建帐篷的声音
@@ -44,16 +45,19 @@ export const SlumsHousing: React.FC<Props> = ({ onClose }) => {
       playSfx('sfx_deny');
       addNotification(result.message, 'error');
     }
-  };
+  }, { delay: 500 });
 
-  const handleMoveOut = () => {
+  const [throttledMoveOut] = useThrottle(() => {
     // 使用现有音效 'sfx_paper' 模拟拆除
     playSfx('sfx_paper');
     const result = moveOut();
     if (result.success) {
       addNotification(t('housing.moveOut'), 'info');
     }
-  };
+  }, { delay: 500 });
+
+  const handleRent = () => throttledRent();
+  const handleMoveOut = () => throttledMoveOut();
 
   const handleSleep = () => {
     // 使用现有音效 'sfx_heartbeat' 模拟休息的心跳声

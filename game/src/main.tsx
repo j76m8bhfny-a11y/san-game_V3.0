@@ -4,6 +4,24 @@ import App from "./App";
 // 引入全局样式 (包含了你的像素字体和 Tailwind)
 import "./index.css";
 
+// ✅ 全局未捕获 Promise 错误处理
+window.addEventListener('unhandledrejection', (event) => {
+  console.error('🔴 未处理的 Promise 错误:', event.reason);
+  // 防止错误上报服务重复记录
+  event.preventDefault();
+  
+  // 生产环境可以接入错误上报服务（如 Sentry）
+  // if (import.meta.env.PROD) {
+  //   reportError(event.reason, 'unhandledrejection');
+  // }
+});
+
+// ✅ 全局 JS 错误捕获
+window.addEventListener('error', (event) => {
+  console.error('🔴 全局 JS 错误:', event.error);
+  event.preventDefault();
+});
+
 // ✅ 注册Service Worker（PWA离线支持）
 if ('serviceWorker' in navigator && import.meta.env.PROD) {
   window.addEventListener('load', () => {

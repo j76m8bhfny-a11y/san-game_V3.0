@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Item } from '@/types/schema';
 import { useI18n } from '@/i18n';
+import { useThrottle } from '@/hooks/useThrottle';
 
 interface Props {
   item: Item;
@@ -11,6 +12,7 @@ interface Props {
 export const SlumsItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
   const { t } = useI18n();
   const [isHovered, setIsHovered] = useState(false);
+  const [throttledBuy, isPending] = useThrottle(onBuy, { delay: 300 });
 
   // 1. 生成随机视觉参数 (仅在组件挂载时计算一次)
   // 模拟物品是随意扔在车里的
@@ -37,7 +39,7 @@ export const SlumsItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onClick={canAfford ? onBuy : undefined}
+      onClick={canAfford && !isPending() ? throttledBuy : undefined}
     >
       {/* 物品本体容器 */}
       <div className={`

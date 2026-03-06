@@ -3,6 +3,7 @@ import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import { useI18n } from '@/i18n';
 import { RegionID } from '@/types/schema';
+import { useThrottle } from '@/hooks/useThrottle';
 import { DowntownExterior } from './components/DowntownExterior';
 import { DowntownInterior } from './components/DowntownInterior';
 
@@ -30,7 +31,8 @@ export const DowntownHousing: React.FC<Props> = ({ onClose }) => {
 
   const isOwningThis = activeHousing?.definitionId === houseData.id;
 
-  const handleBuy = () => {
+  // 处理动作（添加节流防止重复操作）
+  const [throttledBuy] = useThrottle(() => {
     const result = buyHousing(houseData.id);
     if (result.success) {
       playSfx('sfx_sci_fi_door'); // 高科技门声
@@ -39,15 +41,18 @@ export const DowntownHousing: React.FC<Props> = ({ onClose }) => {
       playSfx('sfx_deny');
       addNotification(result.message, 'error');
     }
-  };
+  }, { delay: 500 });
 
-  const handleMoveOut = () => {
+  const [throttledMoveOut] = useThrottle(() => {
     playSfx('sfx_click');
     const result = moveOut();
     if (result.success) {
       addNotification(result.message, 'info');
     }
-  };
+  }, { delay: 500 });
+
+  const handleBuy = () => throttledBuy();
+  const handleMoveOut = () => throttledMoveOut();
 
   const handleSleep = () => {
     playSfx('sfx_ambient_drone'); // 低沉的氛围音

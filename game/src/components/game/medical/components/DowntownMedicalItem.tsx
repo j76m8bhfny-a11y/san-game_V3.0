@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { MedicalService } from '@/types/schema';
 import { useI18n } from '@/i18n';
+import { useThrottle } from '@/hooks/useThrottle';
 
 interface Props {
   service: MedicalService;
@@ -11,10 +12,11 @@ interface Props {
 export const DowntownMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy }) => {
   const [isHovered, setIsHovered] = useState(false);
   const { t } = useI18n();
+  const [throttledBuy, isPending] = useThrottle(onBuy, { delay: 300 });
 
   return (
     <button
-      onClick={canAfford ? onBuy : undefined}
+      onClick={canAfford && !isPending() ? throttledBuy : undefined}
       disabled={!canAfford}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

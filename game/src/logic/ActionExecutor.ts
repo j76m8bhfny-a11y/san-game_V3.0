@@ -6,7 +6,30 @@ export interface ActionResult {
   logs: string[];
 }
 
+// 最大递归深度，防止事件配置错误导致栈溢出
+const MAX_RECURSION_DEPTH = 10;
+
+// 递归深度追踪
+let recursionDepth = 0;
+
 export const executeAction = (state: GameState, action: GameAction): ActionResult => {
+  // 检查递归深度
+  if (recursionDepth > MAX_RECURSION_DEPTH) {
+    console.error(`🔴 ActionExecutor: 递归深度超过最大值 ${MAX_RECURSION_DEPTH}，可能存在循环依赖`);
+    return { 
+      updates: {}, 
+      logs: [`[错误] 动作执行超过最大递归深度`] 
+    };
+  }
+
+  recursionDepth++;
+  const result = executeActionInternal(state, action);
+  recursionDepth--;
+  
+  return result;
+};
+
+const executeActionInternal = (state: GameState, action: GameAction): ActionResult => {
   const updates: any = {};
   const logs: string[] = [];
   const { code, params } = action;
@@ -106,6 +129,7 @@ export const executeAction = (state: GameState, action: GameAction): ActionResul
         }
         
         subActions.forEach((subAction: GameAction) => {
+          // 递归调用，会经过深度检查
           const subResult = executeAction(currentState, subAction);
           
           // 合并 updates
@@ -160,4 +184,4 @@ export const executeAction = (state: GameState, action: GameAction): ActionResul
   }
 
   return { updates, logs };
-};
+}; // end of executeActionInternal

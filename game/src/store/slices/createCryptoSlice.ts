@@ -27,6 +27,9 @@ export interface CryptoSlice {
   processWeeklyMarket: (allNews: NewsItem[]) => { logs: string[]; notes: string[] };
   resetWeeklyTradeCount: () => void;  // 🔴 新增：每周重置
   canTradeThisTurn: () => boolean;    // 🔴 新增：检查能否交易
+  
+  // 🔴 新增：立即检查并处理爆仓
+  checkAndLiquidatePositions: (currentPrice: number) => { liquidated: number; totalLoss: number };
 }
 
 export const createCryptoSlice: StateCreator<StoreState, [], [], CryptoSlice> = (set, get) => ({
@@ -183,6 +186,81 @@ export const createCryptoSlice: StateCreator<StoreState, [], [], CryptoSlice> = 
     return crypto.weeklyTradesCount < marketRules.trading.maxTradesPerTurn;
   },
 
+  // 🔴 新增：立即检查并处理爆仓（价格剧烈波动时调用）
+  checkAndLiquidatePositions: (currentPrice: number) => {
+    const state = get() as GameState & { 
+      addTransaction: Function; 
+      modifyStats: Function; 
+      addNotification: Function;
+    };
+    const { crypto } = state;
+    
+    const remainingPositions: CryptoPosition[] = [];
+    let liquidatedCount = 0;
+    let totalLoss = 0;
+    let totalInsightChange = 0;
+    const liquidationNotes: string[] = [];
+    
+    crypto.positions.forEach((pos: CryptoPosition) => {
+      const isLiquidated = checkLiquidation(pos, currentPrice);
+      
+      if (isLiquidated) {
+        liquidatedCount++;
+        totalLoss += pos.principal;
+        
+        // 记录爆仓损失到账本
+        state.addTransaction(
+          'MISC', 
+          -pos.principal, 
+          `[爆仓] ${pos.type} x${pos.leverage} @ $${pos.entryPrice.toFixed(0)}`
+        );
+        
+        // 爆仓灵视暴击
+        const liquidationInsightSpike = marketRules.insight?.liquidationSpike ?? 30;
+        totalInsightChange += liquidationInsightSpike;
+        
+        liquidationNotes.push(
+          `💥 仓位爆仓! ${pos.type} ${pos.leverage}x杠杆, 损失 $${pos.principal}`
+        );
+        
+        console.warn(`[爆仓] ${pos.type} x${pos.leverage} 仓位被强制平仓`);
+      } else {
+        remainingPositions.push(pos);
+      }
+    });
+    
+    // 如果有爆仓，更新状态
+    if (liquidatedCount > 0) {
+      // 更新仓位列表
+      set((s: any) => ({
+        crypto: { ...s.crypto, positions: remainingPositions }
+      }));
+      
+      // 应用灵视变更
+      if (totalInsightChange !== 0) {
+        state.modifyStats({ 
+          insight: state.vitality.metrics.insight + totalInsightChange 
+        });
+      }
+      
+      // 发送通知
+      state.addNotification(
+        `⚠️ ${liquidatedCount} 个仓位爆仓! 损失 $${totalLoss}`,
+        'error'
+      );
+      
+      // 如果损失严重，额外警告
+      if (totalLoss > 10000) {
+        state.addNotification(
+          '💀 巨额爆仓损失... 你的存在主义危机加深了',
+          'warning'
+        );
+      }
+    }
+    
+    return { liquidated: liquidatedCount, totalLoss };
+  },
+
   // 🔴 新增：每周重置交易次数
   resetWeeklyTradeCount: () => {
     set((s: any) => ({
@@ -212,37 +290,18 @@ export const createCryptoSlice: StateCreator<StoreState, [], [], CryptoSlice> = 
     const newsEffect = weeklyNews ? weeklyNews.effect : 0;
     const { price: nextPrice, trend } = calculateNextPrice(btcPrice, newsEffect);
 
-    // 2. 检查爆仓
-    const remainingPositions: CryptoPosition[] = [];
-    positions.forEach((pos: CryptoPosition) => {
-      // ⚠️ 注意: checkLiquidation 内部也读取了 configuration 阈值，且包含高杠杆插针机制
-      const isLiquidated = checkLiquidation(pos, nextPrice);
-      
-      if (isLiquidated) {
-        logs.push(`BTC爆仓: 损失 $${pos.principal}`);
-        notes.push(`[强平通知] 市场剧烈波动，你的 ${pos.leverage}x ${pos.type} 仓位已爆仓，本金归零。`);
-        // 记录爆仓损失到账本
-        state.addTransaction('MISC', -pos.principal, `爆仓强平: ${pos.type} x${pos.leverage} 仓位`);
-        
-        // 🔴 爆仓灵视暴击: +30 Insight
-        const liquidationInsightSpike = marketRules.insight?.liquidationSpike ?? 30;
-        totalInsightChange += liquidationInsightSpike;
-        notes.push(`[存在主义危机] 看着归零的账户，你瞬间看透了去中心化金融的本质。灵视+${liquidationInsightSpike}！`);
-        
-        // 🔴 添加PTSD debuff (如果配置了)
-        if (marketRules.insight?.ptsdBuff) {
-          const ptsd = marketRules.insight.ptsdBuff;
-          state.addNotification(`获得状态: ${ptsd.name} (${ptsd.duration}回合)`, 'warning');
-          // 注意: 实际的debuff添加需要通过buff系统，这里先做通知
-        }
-      } else {
-        remainingPositions.push(pos);
-      }
-    });
+    // 2. 检查爆仓（使用统一的爆仓检查函数）
+    const { checkAndLiquidatePositions } = get();
+    const liquidationResult = checkAndLiquidatePositions(nextPrice);
     
-    // 应用灵视变更
-    if (totalInsightChange !== 0) {
-      state.modifyStats({ insight: state.vitality.metrics.insight + totalInsightChange });
+    if (liquidationResult.liquidated > 0) {
+      logs.push(`BTC爆仓: 损失 $${liquidationResult.totalLoss}`);
+      notes.push(`[强平通知] 市场剧烈波动，${liquidationResult.liquidated} 个仓位已爆仓，损失 $${liquidationResult.totalLoss}`);
+      
+      // 🔴 爆仓灵视暴击
+      const liquidationInsightSpike = (marketRules.insight?.liquidationSpike ?? 30) * liquidationResult.liquidated;
+      totalInsightChange += liquidationInsightSpike;
+      notes.push(`[存在主义危机] 看着归零的账户，你瞬间看透了去中心化金融的本质。灵视+${liquidationInsightSpike}！`);
     }
 
     // 3. 生成给下周看的新闻 (Forecast)
@@ -270,14 +329,21 @@ export const createCryptoSlice: StateCreator<StoreState, [], [], CryptoSlice> = 
           ...s.crypto,
           btcPrice: nextPrice,
           priceHistory: newHistory,
-          positions: remainingPositions,
+          // positions 已由 checkAndLiquidatePositions 更新
           weeklyNews: nextWeekNews,
           weeklyTradesCount: 0  // 🔴 每周重置交易次数
         }
       };
     });
 
-    // 5. 生成大盘日志
+    // 5. 应用灵视变更（持仓焦虑等）
+    if (totalInsightChange !== 0) {
+      state.modifyStats({ 
+        insight: state.vitality.metrics.insight + totalInsightChange 
+      });
+    }
+
+    // 6. 生成大盘日志
     if (nextPrice !== btcPrice) {
       const changePercent = ((nextPrice - btcPrice) / btcPrice * 100).toFixed(2);
       const trendEmoji = parseFloat(changePercent) > 0 ? '📈' : '📉';

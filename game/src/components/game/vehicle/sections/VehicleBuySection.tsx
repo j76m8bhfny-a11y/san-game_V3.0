@@ -8,6 +8,7 @@ import { getAvailableVehicles, getVehicleConfig, hasVehicleOrLease } from '../co
 import { LoanTermsModal } from '../shared/LoanTermsModal';
 import { Car, AlertTriangle, CreditCard } from 'lucide-react';
 import loansData from '@/assets/data/loans.json';
+import { useThrottle } from '@/hooks/useThrottle';
 
 interface VehicleBuySectionProps {
   region: RegionID;
@@ -45,15 +46,16 @@ export const VehicleBuySection: React.FC<VehicleBuySectionProps> = ({
     return checkCreditForPurchase(vehicleId);
   };
 
-  const handleBuy = (vehicleId: string, price: number) => {
+  // 车辆购买操作添加节流
+  const [throttledBuy] = useThrottle((vehicleId: string, price: number) => {
     if (!canAfford(price)) {
       return;
     }
     buyItem(vehicleId);
     setSelectedVehicle(null);
-  };
+  }, { delay: 500 });
 
-  const handleLoanClick = (vehicleId: string, price: number, nameKey: string, loanProductId: string) => {
+  const [throttledLoanClick] = useThrottle((vehicleId: string, price: number, nameKey: string, loanProductId: string) => {
     setLoanVehicle({
       id: vehicleId,
       price,
@@ -61,9 +63,9 @@ export const VehicleBuySection: React.FC<VehicleBuySectionProps> = ({
       loanProductId
     });
     setShowLoanModal(true);
-  };
+  }, { delay: 500 });
 
-  const handleLoanConfirm = () => {
+  const [throttledLoanConfirm] = useThrottle(() => {
     if (!loanVehicle) return;
     
     const loanProduct = (loansData as unknown as LoanProduct[]).find(p => p.id === loanVehicle.loanProductId);
@@ -110,7 +112,12 @@ export const VehicleBuySection: React.FC<VehicleBuySectionProps> = ({
     
     setShowLoanModal(false);
     setLoanVehicle(null);
-  };
+  }, { delay: 500 });
+
+  const handleBuy = (vehicleId: string, price: number) => throttledBuy(vehicleId, price);
+  const handleLoanClick = (vehicleId: string, price: number, nameKey: string, loanProductId: string) => 
+    throttledLoanClick(vehicleId, price, nameKey, loanProductId);
+  const handleLoanConfirm = () => throttledLoanConfirm();
 
   return (
     <div className="space-y-4">

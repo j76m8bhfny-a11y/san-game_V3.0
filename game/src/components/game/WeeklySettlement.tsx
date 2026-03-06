@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 import { Disease, WeeklyReport } from '@/types/schema';
 import { useI18n } from '@/i18n';
+import { useThrottle } from '@/hooks/useThrottle';
 
 // ✅ 1. 引入统一配置加载器
 import { Config } from '@/config';
@@ -74,11 +75,15 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
       .filter((d: Disease | undefined): d is Disease => !!d && d.type === 'ACUTE');
   }, [activeDiseases, gameDataCache]);
 
-  // 3. 处理"下一周"
-  const handleNextWeek = () => {
+  // 3. 处理"下一周"（添加 500ms 节流防止重复点击）
+  const [throttledNextWeek] = useThrottle(() => {
     // [NEW] 先关闭结算界面，然后启动过渡动画
     closeWeeklyReport();
     setShowTransition(true);
+  }, { delay: 500 });
+
+  const handleNextWeek = () => {
+    throttledNextWeek();
   };
   
   // [NEW] 过渡动画完成后的处理

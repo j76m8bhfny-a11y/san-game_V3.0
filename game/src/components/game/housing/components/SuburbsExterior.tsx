@@ -1,6 +1,7 @@
 import React from 'react';
 import { Housing } from '@/types/schema';
 import { useI18n } from '@/i18n';
+import { useThrottle } from '@/hooks/useThrottle';
 
 interface Props {
   house: Housing;
@@ -11,6 +12,7 @@ interface Props {
 
 export const SuburbsExterior: React.FC<Props> = ({ house, gold, onBuy, onClose }) => {
   const { t } = useI18n();
+  const [throttledBuy, isPending] = useThrottle(onBuy, { delay: 500 });
   // 假设中产阶级主要是买房 (Buy)，读取 buyConfig
   // 如果没有 buyConfig，则回退到租赁逻辑
   const isSale = !!house.buyConfig;
@@ -51,7 +53,7 @@ export const SuburbsExterior: React.FC<Props> = ({ house, gold, onBuy, onClose }
       <div className="relative z-10 flex flex-col items-center justify-center h-full ml-auto w-1/2 mr-10">
         
         <button
-          onClick={canAfford ? onBuy : undefined}
+          onClick={canAfford && !isPending() ? throttledBuy : undefined}
           disabled={!canAfford}
           className={`
             group relative w-72 h-96 transition-transform duration-500

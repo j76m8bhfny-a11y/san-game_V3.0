@@ -3,6 +3,7 @@ import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import { useI18n } from '@/i18n';
 import { RegionID } from '@/types/schema';
+import { useThrottle } from '@/hooks/useThrottle';
 import { SuburbsExterior } from './components/SuburbsExterior';
 import { SuburbsInterior } from './components/SuburbsInterior';
 
@@ -30,7 +31,8 @@ export const SuburbsHousing: React.FC<Props> = ({ onClose }) => {
 
   const isOwningThis = activeHousing?.definitionId === houseData.id;
 
-  const handleBuy = () => {
+  // 处理动作（添加节流防止重复操作）
+  const [throttledBuy] = useThrottle(() => {
     // 郊区只支持购买
     const result = buyHousing(houseData.id);
     if (result.success) {
@@ -40,15 +42,18 @@ export const SuburbsHousing: React.FC<Props> = ({ onClose }) => {
       playSfx('sfx_deny');
       addNotification(result.message, 'error');
     }
-  };
+  }, { delay: 500 });
 
-  const handleMoveOut = () => {
+  const [throttledMoveOut] = useThrottle(() => {
     playSfx('sfx_click');
     const result = moveOut();
     if (result.success) {
       addNotification(result.message, 'info');
     }
-  };
+  }, { delay: 500 });
+
+  const handleBuy = () => throttledBuy();
+  const handleMoveOut = () => throttledMoveOut();
 
   const handleRest = () => {
     playSfx('sfx_bird_chirp'); // 或者是轻音乐

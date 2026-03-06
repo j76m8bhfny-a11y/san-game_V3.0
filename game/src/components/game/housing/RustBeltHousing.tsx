@@ -3,6 +3,7 @@ import { useGameStore } from '@/store/useGameStore';
 import { useAudioStore } from '@/store/useAudioStore';
 import { useI18n } from '@/i18n';
 import { RegionID } from '@/types/schema';
+import { useThrottle } from '@/hooks/useThrottle';
 import { RustBeltExterior } from './components/RustBeltExterior';
 import { RustBeltInterior } from './components/RustBeltInterior';
 
@@ -30,7 +31,8 @@ export const RustBeltHousing: React.FC<Props> = ({ onClose }) => {
 
   const isRentingThis = activeHousing?.definitionId === houseData.id;
 
-  const handleRent = () => {
+  // 处理动作（添加节流防止重复操作）
+  const [throttledRent] = useThrottle(() => {
     const result = rentHousing(houseData.id);
     if (result.success) {
       playSfx('sfx_keys_jingle'); // 钥匙声
@@ -39,15 +41,18 @@ export const RustBeltHousing: React.FC<Props> = ({ onClose }) => {
       playSfx('sfx_deny');
       addNotification(result.message, 'error');
     }
-  };
+  }, { delay: 500 });
 
-  const handleMoveOut = () => {
+  const [throttledMoveOut] = useThrottle(() => {
     playSfx('sfx_click');
     const result = moveOut();
     if (result.success) {
       addNotification(t('housing.moveOut'), 'info');
     }
-  };
+  }, { delay: 500 });
+
+  const handleRent = () => throttledRent();
+  const handleMoveOut = () => throttledMoveOut();
 
   const handleSleep = () => {
     playSfx('sfx_neon_hum'); // 或者是空调噪音

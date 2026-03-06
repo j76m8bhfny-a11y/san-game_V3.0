@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useI18n } from '@/i18n';
 import { Item } from '@/types/schema';
+import { useThrottle } from '@/hooks/useThrottle';
 
 interface Props {
   item: Item;
@@ -12,6 +13,18 @@ export const DowntownItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
   const { t } = useI18n();
   const [isHovered, setIsHovered] = useState(false);
   const [isSigning, setIsSigning] = useState(false);
+  const [throttledBuy, isPending] = useThrottle(
+    () => {
+      if (!canAfford) return;
+      setIsSigning(true);
+      // 模拟签字动画时间
+      setTimeout(() => {
+        onBuy();
+        setIsSigning(false);
+      }, 800);
+    },
+    { delay: 300 }
+  );
 
   // 极简的高级图标
   const getIcon = (tags: string[]) => {
@@ -22,13 +35,7 @@ export const DowntownItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
   };
 
   const handleBuy = () => {
-    if (!canAfford) return;
-    setIsSigning(true);
-    // 模拟签字动画时间
-    setTimeout(() => {
-      onBuy();
-      setIsSigning(false);
-    }, 800);
+    throttledBuy();
   };
 
   return (
@@ -77,16 +84,18 @@ export const DowntownItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
 
         <button
           onClick={handleBuy}
-          disabled={!canAfford || isSigning}
+          disabled={!canAfford || isSigning || isPending()}
           className={`
             relative px-6 py-2 overflow-hidden transition-all duration-300
-            ${!canAfford 
+            ${!canAfford || isPending()
                ? 'text-gray-600 cursor-not-allowed' 
                : 'hover:bg-[#d4af37] hover:text-black text-[#d4af37] border border-[#d4af37]'}
           `}
         >
           {isSigning ? (
             <span className="font-handwriting text-xl animate-pulse">{t('shop.signing')}</span>
+          ) : isPending() ? (
+            <span className="font-handwriting text-xl animate-pulse">{t('shop.processing')}</span>
           ) : !canAfford ? (
             <span className="text-xs uppercase font-pixel tracking-widest">{t('shop.insufficientAsset')}</span>
           ) : (

@@ -34,8 +34,8 @@ export const RustBeltInterior: React.FC<Props> = ({ housing: _housing, onSleep, 
 
       {/* 2. 右上角：房间状态 (钥匙牌) */}
       <div className="absolute top-6 right-8 rotate-3 z-10">
-        <div className="bg-green-800 text-yellow-400 w-24 h-36 rounded-full flex flex-col items-center justify-center shadow-xl border-4 border-yellow-500/50">
-          <div className="w-2 h-2 bg-black rounded-full mb-2" />
+        <div className="bg-green-800 text-yellow-400 w-24 h-36 rounded-sm flex flex-col items-center justify-center shadow-pixel-sm border-4 border-yellow-500/50">
+          <div className="w-2 h-2 bg-black rounded-sm mb-2" />
           <span className="text-3xl font-black font-mono">204</span>
           <span className="text-[10px] mt-1 opacity-80 uppercase">Motel 6</span>
         </div>
@@ -48,7 +48,7 @@ export const RustBeltInterior: React.FC<Props> = ({ housing: _housing, onSleep, 
           className="group relative w-48 h-40"
         >
           {/* TV 图片 */}
-          <img src="/assets/housing/ui_tv_set.png" className="w-full h-full object-contain drop-shadow-2xl" />
+          <img src="/assets/housing/ui_tv_set.png" className="w-full h-full object-contain drop-shadow-pixel-sm render-pixelated" />
           
           {/* 屏幕内容 */}
           <div className="absolute top-[20%] left-[15%] w-[60%] h-[50%] bg-[#111] overflow-hidden rounded-sm">
@@ -58,7 +58,7 @@ export const RustBeltInterior: React.FC<Props> = ({ housing: _housing, onSleep, 
               <div className="w-full h-full bg-black" />
             )}
             {/* 屏幕反光 */}
-            <div className="absolute inset-0 bg-gradient-to-tr from-transparent to-white/10 pointer-events-none" />
+            <div className="absolute inset-0 bg-white/5 pointer-events-none" />
           </div>
 
           <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-black/80 text-blue-300 px-2 py-1 text-xs font-mono opacity-0 group-hover:opacity-100 transition-opacity">
@@ -75,7 +75,7 @@ export const RustBeltInterior: React.FC<Props> = ({ housing: _housing, onSleep, 
           onClick={onMoveOut}
           className="group flex flex-col items-center opacity-60 hover:opacity-100 transition-opacity"
         >
-          <div className="w-14 h-14 bg-[#2a2a2a] rounded-lg border-2 border-gray-600 flex items-center justify-center shadow-lg group-hover:border-red-500">
+          <div className="w-14 h-14 bg-[#2a2a2a] rounded-sm border-2 border-gray-600 flex items-center justify-center shadow-pixel-sm group-hover:border-red-500">
             🔑
           </div>
           <span className="mt-2 bg-black/80 text-red-400 text-xs px-2 py-1 font-mono uppercase">{t('housing.moveOut')}</span>
@@ -86,7 +86,7 @@ export const RustBeltInterior: React.FC<Props> = ({ housing: _housing, onSleep, 
           onClick={onSleep}
           className="group relative w-64 transition-transform hover:scale-105"
         >
-          <img src="/assets/housing/ui_messy_bed.png" className="w-full object-contain drop-shadow-2xl" />
+          <img src="/assets/housing/ui_messy_bed.png" className="w-full object-contain drop-shadow-pixel-sm render-pixelated" />
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
              <span className="font-black text-3xl text-white drop-shadow-[0_2px_0_rgba(0,0,0,1)] uppercase tracking-widest">
                {t('housing.regen')}
@@ -99,7 +99,7 @@ export const RustBeltInterior: React.FC<Props> = ({ housing: _housing, onSleep, 
           onClick={onClose}
           className="group flex flex-col items-center opacity-60 hover:opacity-100 transition-opacity"
         >
-          <div className="w-14 h-14 bg-[#2a2a2a] rounded-lg border-2 border-gray-600 flex items-center justify-center shadow-lg group-hover:border-white">
+          <div className="w-14 h-14 bg-[#2a2a2a] rounded-sm border-2 border-gray-600 flex items-center justify-center shadow-pixel-sm group-hover:border-white">
             🚶
           </div>
           <span className="mt-2 bg-black/80 text-gray-300 text-xs px-2 py-1 font-mono uppercase">{t('common.close')}</span>

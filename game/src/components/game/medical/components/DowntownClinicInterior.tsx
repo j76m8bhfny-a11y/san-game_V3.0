@@ -25,19 +25,19 @@ export const DowntownClinicInterior: React.FC<Props> = ({ services, gold, onBuy,
       >
         {/* 覆盖一层科技感的网格 */}
         <div className="absolute inset-0 bg-[url('/assets/fx/grid_overlay.png')] opacity-10" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black" />
+        <div className="absolute inset-0 bg-black/60" />
       </div>
 
       {/* 2. 容器：全息操作台 */}
       <div className="relative z-10 w-full max-w-6xl h-[85%] flex">
         
         {/* 左侧：身体状态监控 (装饰) */}
-        <div className="w-1/3 h-full border-r border-cyan-900/30 bg-black/60 backdrop-blur-md p-8 flex flex-col justify-center">
+        <div className="w-1/3 h-full border-r border-cyan-900/30 backdrop-solid-dark p-8 flex flex-col justify-center">
            <div className="mb-8">
              <div className="text-[10px] text-cyan-600 font-mono mb-1">SUBJECT ANALYSIS</div>
              <div className="w-full h-64 border border-cyan-500/20 relative overflow-hidden flex items-center justify-center">
                 {/* 模拟人体扫描图 */}
-                <img src="/assets/medical/ui_body_scan.png" className="h-full object-contain opacity-80 animate-pulse-slow" />
+                <img src="/assets/medical/ui_body_scan.png" className="h-full object-contain opacity-80 animate-pulse-slow render-pixelated" />
                 <div className="absolute top-0 w-full h-1 bg-cyan-400/50 animate-scan" />
              </div>
            </div>
@@ -59,7 +59,7 @@ export const DowntownClinicInterior: React.FC<Props> = ({ services, gold, onBuy,
         </div>
 
         {/* 右侧：服务选择矩阵 */}
-        <div className="flex-1 p-10 bg-gradient-to-l from-black/80 to-transparent flex flex-col">
+        <div className="flex-1 p-10 bg-black/60 flex flex-col">
           <div className="mb-6 flex justify-between items-end">
             <h2 className="text-3xl font-thin text-white tracking-[0.2em]">{t('hospital.title')}</h2>
             <div className="text-cyan-600 text-[10px] font-mono">V 4.2.0 BETA</div>

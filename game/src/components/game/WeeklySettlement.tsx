@@ -131,17 +131,17 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
         onComplete={handleTransitionComplete}
       />
       
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       <div 
-        className="fixed inset-0 flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
+        className="fixed inset-0 flex items-center justify-center backdrop-solid-dark p-4"
         style={{ zIndex: modalZIndex }} // ✅ 使用配置的 Z-Index
       >
         <motion.div 
           // ✅ 使用配置的动画缩放比例
-          initial={{ y: 50, opacity: 0, scale: animationScale }}
+          initial={false}
           animate={{ y: 0, opacity: 1, scale: 1 }}
           exit={{ y: 50, opacity: 0, scale: animationScale }}
-          className="w-full max-w-md bg-[#F5F5F7] dark:bg-[#111] rounded-3xl shadow-2xl overflow-hidden flex flex-col font-pixel relative border border-gray-200 dark:border-gray-800"
+          className="w-full max-w-md bg-[#F5F5F7] dark:bg-[#111] rounded-sm shadow-pixel overflow-hidden flex flex-col font-pixel relative border border-gray-200 dark:border-gray-800"
         >
           {/* Header */}
           <div className="p-6 pb-2 bg-white dark:bg-[#161616]">
@@ -159,7 +159,7 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
             
             {/* 财务摘要 */}
             <div className="mt-6 grid grid-cols-2 gap-3">
-               <div className="bg-gray-50 dark:bg-white/5 p-4 rounded-2xl">
+               <div className="bg-gray-50 dark:bg-white/5 p-4 rounded-sm">
                  <div className="text-xs text-gray-400 mb-1 flex items-center gap-1">
                    <TrendingUp size={12} /> {t('weeklySettlement.income')}
                  </div>
@@ -167,7 +167,7 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
                    +${summary.totalIncome}
                  </div>
                </div>
-               <div className="bg-gray-50 dark:bg-white/5 p-4 rounded-2xl">
+               <div className="bg-gray-50 dark:bg-white/5 p-4 rounded-sm">
                  <div className="text-xs text-gray-400 mb-1 flex items-center gap-1">
                    <TrendingDown size={12} /> {t('weeklySettlement.expense')}
                  </div>
@@ -179,7 +179,7 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
 
             {/* Crypto 简报 */}
             {crypto.isAccountOpen && (
-              <div className="mt-3 py-2 px-3 bg-gray-900 rounded-lg flex justify-between items-center text-xs">
+              <div className="mt-3 py-2 px-3 bg-gray-900 rounded-sm flex justify-between items-center text-xs">
                 <div className="flex items-center gap-2 text-gray-400">
                   <Bitcoin size={14} className="text-amber-500" />
                   <span>BTC/USD</span>
@@ -221,7 +221,7 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
           <div className="p-6 bg-white dark:bg-[#161616] border-t border-gray-200 dark:border-gray-800">
              {/* 疾病警告 */}
              {acuteDiseases.length > 0 && (
-               <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-xl flex items-center gap-3 text-sm font-bold border border-red-500/20">
+               <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 rounded-sm flex items-center gap-3 text-sm font-bold border border-red-500/20">
                  <AlertCircle className="shrink-0 animate-pulse" />
                  <div>
                    <div className="uppercase text-[10px] opacity-70">{t('weeklySettlement.medicalAlert')}</div>
@@ -240,7 +240,7 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
              {/* 🔴 监狱状态：显示服刑按钮，禁用正常下一周 */}
              {prison?.inJail ? (
                <div className="space-y-3">
-                 <div className="p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+                 <div className="p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-sm">
                    <p className="text-sm text-orange-700 dark:text-orange-300 text-center">
                      ⚠️ 你正在服刑中，无法执行正常回合结算
                    </p>
@@ -250,7 +250,7 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
                      // 关闭结算界面，让玩家通过 JailOverlay 服刑
                      closeWeeklyReport();
                    }}
-                   className="w-full py-4 bg-orange-600 hover:bg-orange-500 text-white rounded-xl font-bold text-lg transition-all flex items-center justify-center gap-2 shadow-xl"
+                   className="w-full py-4 bg-orange-600 hover:bg-orange-500 text-white rounded-sm font-bold text-lg transition-all flex items-center justify-center gap-2 shadow-pixel-sm"
                  >
                    返回监狱 <ArrowRight size={20} />
                  </button>
@@ -258,7 +258,7 @@ export const WeeklySettlement: React.FC<WeeklySettlementProps> = ({ isOpen }) =>
              ) : (
                <button
                  onClick={handleNextWeek}
-                 className="w-full py-4 bg-black dark:bg-white text-white dark:text-black rounded-xl font-bold text-lg hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 shadow-xl"
+                 className="w-full py-4 bg-black dark:bg-white text-white dark:text-black rounded-sm font-bold text-lg hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 shadow-pixel-sm"
                >
                  {t('weeklySettlement.nextWeek', { week: time.currentTurn + 1 })} <ArrowRight size={20} />
                </button>

@@ -263,10 +263,10 @@ const GuardianContent: React.FC<{
       exit={{ opacity: 0, y: 20, scale: 0.95 }}
       className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 max-w-md w-[90%]"
     >
-      <div className={`relative p-5 rounded-2xl border backdrop-blur-md shadow-2xl ${colors.bg} ${colors.border}`}>
+      <div className={`relative p-5 rounded-sm border backdrop-solid shadow-pixel-sm ${colors.bg} ${colors.border}`}>
         {/* 头部 */}
         <div className="flex items-center gap-3 mb-3">
-          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${hint.priority === 'urgent' ? 'bg-red-500/30' : 'bg-indigo-500/30'}`}>
+          <div className={`w-10 h-10 rounded-sm flex items-center justify-center ${hint.priority === 'urgent' ? 'bg-red-500/30' : 'bg-indigo-500/30'}`}>
             <Ghost className="w-5 h-5 text-white" />
           </div>
           <div className="flex-1">
@@ -305,7 +305,7 @@ const GuardianContent: React.FC<{
           </button>
           <button
             onClick={onClose}
-            className={`px-4 py-2 rounded-lg text-sm font-medium text-white transition-all ${colors.button}`}
+            className={`px-4 py-2 rounded-sm text-sm font-medium text-white transition-all ${colors.button}`}
           >
             明白了
           </button>
@@ -314,7 +314,7 @@ const GuardianContent: React.FC<{
         {/* 紧急效果 */}
         {hint.priority === 'urgent' && (
           <motion.div
-            className="absolute inset-0 rounded-2xl bg-purple-500/10 pointer-events-none"
+            className="absolute inset-0 rounded-sm bg-purple-500/10 pointer-events-none"
             animate={{ opacity: [0.1, 0.2, 0.1] }}
             transition={{ duration: 2, repeat: Infinity }}
           />

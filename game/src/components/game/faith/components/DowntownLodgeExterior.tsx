@@ -64,7 +64,7 @@ export const DowntownLodgeExterior: React.FC<Props> = ({ onEnter, onClose }) => 
       </div>
 
       {/* 3. 氛围遮罩 */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black pointer-events-none" />
+      <div className="absolute inset-0 bg-black/60 pointer-events-none" />
 
       <button 
         onClick={onClose}

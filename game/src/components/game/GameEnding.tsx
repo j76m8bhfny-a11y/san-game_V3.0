@@ -54,7 +54,7 @@ export const GameEnding: React.FC<GameEndingProps> = ({ endingId, onRestart, onV
   return (
     // 外层容器允许滚动
     <div className={`fixed inset-0 z-[10000] overflow-y-auto transition-colors duration-1000
-      ${isAwakened ? 'bg-gradient-to-b from-amber-950 via-black to-amber-950' : 'bg-black'}
+      ${isAwakened ? 'bg-black' : 'bg-black'}
     `}>
       
       {/* 背景动态 */}
@@ -69,7 +69,7 @@ export const GameEnding: React.FC<GameEndingProps> = ({ endingId, onRestart, onV
             {[...Array(20)].map((_, i) => (
               <div
                 key={i}
-                className="absolute w-1 h-1 bg-amber-400/40 rounded-full animate-ping"
+                className="absolute w-1 h-1 bg-amber-400/40 rounded-sm animate-ping"
                 style={{
                   left: `${Math.random() * 100}%`,
                   top: `${Math.random() * 100}%`,
@@ -102,12 +102,12 @@ export const GameEnding: React.FC<GameEndingProps> = ({ endingId, onRestart, onV
           </div>
 
           {/* ✅ 新增：ED-22 特殊标题样式 - 金色发光边框 */}
-          <div className={`relative mb-8 ${isAwakened ? 'p-8 rounded-lg' : ''}`}>
+          <div className={`relative mb-8 ${isAwakened ? 'p-8 rounded-sm' : ''}`}>
             {isAwakened && (
               <>
                 {/* 金色边框光效 */}
-                <div className="absolute inset-0 bg-gradient-to-r from-amber-600/0 via-amber-500/50 to-amber-600/0 animate-shimmer rounded-lg" />
-                <div className="absolute inset-0 border-2 border-amber-400 rounded-lg shadow-[0_0_30px_rgba(251,191,36,0.5)]" />
+                <div className="absolute inset-0 bg-amber-500/50 animate-shimmer rounded-sm" />
+                <div className="absolute inset-0 border-2 border-amber-400 rounded-sm shadow-[0_0_30px_rgba(251,191,36,0.5)]" />
                 {/* 四角装饰 */}
                 <div className="absolute -top-1 -left-1 w-4 h-4 border-t-2 border-l-2 border-amber-300" />
                 <div className="absolute -top-1 -right-1 w-4 h-4 border-t-2 border-r-2 border-amber-300" />
@@ -127,9 +127,9 @@ export const GameEnding: React.FC<GameEndingProps> = ({ endingId, onRestart, onV
           </div>
 
           {/* 描述文本框 */}
-          <div className={`w-full p-6 md:p-10 rounded-sm mb-12 shadow-2xl relative group
+          <div className={`w-full p-6 md:p-10 rounded-sm mb-12 shadow-pixel relative group
             ${isAwakened 
-              ? 'bg-gradient-to-br from-amber-950/80 to-black border-2 border-amber-600/50' 
+              ? 'bg-[#1a1005] border-2 border-amber-600/50' 
               : 'bg-[#111] border border-gray-800'}
           `}>
             {/* 四角装饰 */}
@@ -189,7 +189,7 @@ export const GameEnding: React.FC<GameEndingProps> = ({ endingId, onRestart, onV
               className={`
                 group relative px-10 py-4 font-bold text-lg tracking-widest transition-all duration-300 overflow-hidden cursor-pointer active:scale-95
                 ${isAwakened 
-                  ? 'bg-gradient-to-r from-amber-700 to-amber-600 hover:from-amber-600 hover:to-amber-500 text-amber-100 border-2 border-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.4)]' 
+                  ? 'bg-pixel-gradient-amber text-amber-100 border-2 border-amber-400 shadow-[0_0_20px_rgba(251,191,36,0.4)] hover:brightness-110' 
                   : isDeath 
                     ? 'bg-red-900/20 hover:bg-red-600 text-red-500 hover:text-white border border-red-800' 
                     : 'bg-white text-black hover:bg-gray-200'}

@@ -38,7 +38,7 @@ export const SuburbsInsuranceEnroll: React.FC<{ onClose: () => void }> = ({ onCl
     return (
       <div 
         key={plan.id}
-        className={`border-2 rounded-lg p-4 transition-all ${
+        className={`border-2 rounded-sm p-4 transition-all ${
           isActive 
             ? 'border-blue-500 bg-blue-50' 
             : 'border-gray-200 hover:border-blue-300 bg-white'
@@ -63,26 +63,26 @@ export const SuburbsInsuranceEnroll: React.FC<{ onClose: () => void }> = ({ onCl
         {/* 保障范围 */}
         <div className="flex flex-wrap gap-2 mb-4">
           {plan.coverage.emergencyCovered && (
-            <span className="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-green-100 text-green-700 rounded-full">
+            <span className="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-green-100 text-green-700 rounded-sm">
               <Check size={10} /> {t('insurance.coverage.emergency')}
             </span>
           )}
           {plan.coverage.mentalCovered && (
-            <span className="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-purple-100 text-purple-700 rounded-full">
+            <span className="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-purple-100 text-purple-700 rounded-sm">
               <Check size={10} /> {t('insurance.coverage.mental')}
             </span>
           )}
           {plan.coverage.addictionCovered && (
-            <span className="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-blue-100 text-blue-700 rounded-full">
+            <span className="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-blue-100 text-blue-700 rounded-sm">
               <Check size={10} /> {t('insurance.coverage.addiction')}
             </span>
           )}
           {isAuto && plan.coverage.autoCovered && (
-            <span className="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-orange-100 text-orange-700 rounded-full">
+            <span className="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-orange-100 text-orange-700 rounded-sm">
               <Check size={10} /> {t('insurance.coverage.auto')}
             </span>
           )}
-          <span className="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-gray-100 text-gray-600 rounded-full">
+          <span className="inline-flex items-center gap-1 text-[10px] px-2 py-1 bg-gray-100 text-gray-600 rounded-sm">
             <Info size={10} /> {t('insurance.coverage.copay')} {(plan.coverage.copayModifier * 100).toFixed(0)}%
           </span>
         </div>
@@ -103,7 +103,7 @@ export const SuburbsInsuranceEnroll: React.FC<{ onClose: () => void }> = ({ onCl
   };
 
   return (
-    <div className="w-[420px] bg-gradient-to-br from-blue-50 to-white rounded-lg border-2 border-blue-200 shadow-xl overflow-hidden flex flex-col max-h-[80vh]">
+    <div className="w-[420px] bg-blue-50 rounded-sm border-2 border-blue-200 shadow-pixel-sm overflow-hidden flex flex-col max-h-[80vh]">
       {/* 头部 */}
       <div className="bg-blue-900 text-white p-6">
         <div className="flex items-center gap-3 mb-2">

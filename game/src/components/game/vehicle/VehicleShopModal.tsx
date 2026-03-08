@@ -20,19 +20,19 @@ export const VehicleShopModal: React.FC<VehicleShopModalProps> = ({
   const config = getVehicleShopConfig(region);
   
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={false}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         className="fixed inset-0 z-[7000] flex items-center justify-center bg-black/80 p-4"
         onClick={onClose}
       >
         <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
+          initial={false}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.9, opacity: 0 }}
-          className="relative w-full max-w-4xl max-h-[90vh] overflow-hidden rounded-lg shadow-2xl"
+          className="relative w-full max-w-4xl max-h-[90vh] overflow-hidden rounded-sm shadow-pixel"
           style={{ backgroundColor: '#1a1a2e' }}
           onClick={e => e.stopPropagation()}
         >

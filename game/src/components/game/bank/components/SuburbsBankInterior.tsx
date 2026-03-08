@@ -77,11 +77,11 @@ export const SuburbsBankInterior: React.FC<Props> = ({
       </div>
 
       {/* 2. 屏幕容器 (CRT 效果) */}
-      <div className="relative z-10 w-[640px] h-[480px] bg-[#004080] border-[16px] border-gray-300 rounded-lg shadow-[0_0_50px_rgba(0,100,255,0.2)] overflow-hidden">
+      <div className="relative z-10 w-[640px] h-[480px] bg-[#004080] border-[16px] border-gray-300 rounded-sm shadow-[0_0_50px_rgba(0,100,255,0.2)] overflow-hidden">
         
         {/* CRT 扫描线与发光 */}
         <div className="absolute inset-0 bg-[url('/assets/fx/scanlines.png')] opacity-20 pointer-events-none z-50" />
-        <div className="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent pointer-events-none z-50" />
+        <div className="absolute inset-0 bg-white/5 pointer-events-none z-50" />
         <div className="absolute inset-0 shadow-[inset_0_0_80px_rgba(0,0,0,0.6)] pointer-events-none z-50" />
 
         {/* 屏幕内容 */}
@@ -261,7 +261,7 @@ export const SuburbsBankInterior: React.FC<Props> = ({
 
       {/* 3. 打印凭条动画 (Loan Receipt) */}
       <div className={`
-        absolute bottom-0 left-1/2 -translate-x-1/2 w-48 bg-white text-black p-4 font-mono text-[10px] shadow-xl transform transition-transform duration-1000 z-40
+        absolute bottom-0 left-1/2 -translate-x-1/2 w-48 bg-white text-black p-4 font-mono text-[10px] shadow-pixel transform transition-transform duration-1000 z-40
         ${receiptAnim ? 'translate-y-[-10%]' : 'translate-y-[110%]'}
       `}>
         <div className="text-center border-b border-black pb-1 mb-2">TRANSACTION RECEIPT</div>

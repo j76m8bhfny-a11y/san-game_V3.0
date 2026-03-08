@@ -117,7 +117,7 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
         className="fixed inset-0 z-[5000] flex items-center justify-center cursor-pointer"
         onClick={() => setMode('READER')} 
       >
-        <div className="absolute inset-0 bg-black/20 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 backdrop-solid-dark" />
         <motion.div
           // ✅ 4. 使用配置中的动画参数
           initial={{
@@ -131,10 +131,10 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
             rotate: random() * (impactAnimation.settleRotationRange[1] - impactAnimation.settleRotationRange[0]) + impactAnimation.settleRotationRange[0]
           }}
           transition={{ type: "spring", stiffness: impactAnimation.stiffness, damping: impactAnimation.damping }}
-          className="relative w-[90vw] max-w-md bg-[#f0f0f0] shadow-2xl p-6 md:p-10 rotate-1 border border-gray-300"
+          className="relative w-[90vw] max-w-md bg-[#f0f0f0] shadow-pixel p-6 md:p-10 rotate-1 border border-gray-300"
           style={{ backgroundImage: `url("/assets/textures/paper_texture.png")` }} 
         >
-           <div className="absolute -top-4 right-10 w-4 h-12 bg-gray-400 rounded-full border-2 border-gray-500 shadow-sm z-10" />
+           <div className="absolute -top-4 right-10 w-4 h-12 bg-gray-400 rounded-sm border-2 border-gray-500 shadow-sm z-10" />
            <div className="border-b-2 border-black/80 pb-2 mb-4">
              <h2 className="text-3xl font-black uppercase tracking-tighter text-black">{currentDoc.title}</h2>
              <p className="font-mono text-[10px] text-gray-600 mt-1">CASE_ID: {currentDoc.id}</p>
@@ -166,7 +166,7 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
       {/* Header */}
       <div className="absolute top-0 left-0 right-0 h-16 bg-[#0a0a0a] border-b border-gray-800 flex items-center justify-between px-6 z-10">
         <div className="flex items-center gap-3">
-          <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+          <div className="w-3 h-3 bg-red-500 rounded-sm animate-pulse" />
           <span className="text-gray-400 font-mono tracking-widest text-xs">{t('archive.database')}</span>
         </div>
         <button onClick={onClose} className="text-gray-500 hover:text-white font-mono text-xs uppercase">[ {t('common.close')} ]</button>
@@ -222,7 +222,7 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
                       <>
                         <div className="flex-1 w-full overflow-hidden relative grayscale group-hover:grayscale-0 transition-all p-2">
                            {itemImage ? (
-                             <img src={itemImage} className="w-full h-full object-cover mix-blend-multiply opacity-80" />
+                             <img src={itemImage} className="w-full h-full object-cover mix-blend-multiply opacity-80 render-pixelated" />
                            ) : (
                              <div className="w-full h-full flex items-center justify-center border border-gray-300">
                                <span className="text-4xl font-black text-gray-300/50 select-none">
@@ -267,7 +267,7 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
           <motion.div 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="w-full h-full bg-[#f0e6d2] text-[#1a1a1a] shadow-2xl overflow-hidden flex flex-col md:flex-row relative rounded-sm"
+            className="w-full h-full bg-[#f0e6d2] text-[#1a1a1a] shadow-pixel-sm overflow-hidden flex flex-col md:flex-row relative rounded-sm"
           >
              <div className="absolute inset-0 bg-[url('/assets/textures/noise.svg')] opacity-30 mix-blend-multiply pointer-events-none z-0" />
 
@@ -301,9 +301,9 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
              {/* 右侧图片区 */}
              <div className="w-full md:w-[45%] bg-[#e6dac0] p-8 md:p-12 flex flex-col items-center relative z-10">
                 {currentDoc.image ? (
-                  <div className="relative w-full aspect-square bg-white p-3 shadow-lg rotate-2 hover:rotate-0 transition-transform duration-500 mb-6">
+                  <div className="relative w-full aspect-square bg-white p-3 shadow-pixel-sm rotate-2 hover:rotate-0 transition-transform duration-500 mb-6">
                     <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-24 h-6 bg-[#dcdcdc]/80 rotate-[-3deg] shadow-sm z-20" />
-                    <img src={currentDoc.image} className="w-full h-full object-cover mix-blend-multiply grayscale contrast-125" />
+                    <img src={currentDoc.image} className="w-full h-full object-cover mix-blend-multiply grayscale contrast-125 render-pixelated" />
                   </div>
                 ) : (
                   <div className="w-full aspect-square border-4 border-double border-gray-400/50 flex items-center justify-center mb-6">
@@ -317,7 +317,7 @@ export const BlackBox: React.FC<BlackBoxProps> = ({ onClose }) => {
                 <div className="mt-auto w-full flex justify-center">
                   <button
                     onClick={() => { playSfx('sfx_click'); handleCloseReader(); }}
-                    className="px-8 py-3 bg-[#1a1a1a] text-[#f0e6d2] font-mono font-bold tracking-[0.2em] text-sm hover:bg-red-900 transition-colors shadow-lg"
+                    className="px-8 py-3 bg-[#1a1a1a] text-[#f0e6d2] font-mono font-bold tracking-[0.2em] text-sm hover:bg-red-900 transition-colors shadow-pixel-sm"
                   >
                     {viewingId ? `[ ${t('archive.accept')} ]` : `[ ${t('common.back')} ]`}
                   </button>

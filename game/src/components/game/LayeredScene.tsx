@@ -137,7 +137,7 @@ export const LayeredScene: React.FC<LayeredSceneProps> = ({
         {/* 1. 信仰/精神按钮 */}
         <button 
           onClick={() => setFaithOpen(true)}
-          className="w-12 h-12 bg-black/60 border border-zinc-600 hover:border-yellow-500 hover:bg-zinc-900 transition-all rounded-sm flex items-center justify-center group relative shadow-lg backdrop-blur-sm"
+          className="w-12 h-12 bg-black/60 border border-zinc-600 hover:border-yellow-500 hover:bg-zinc-900 transition-all rounded-sm flex items-center justify-center group relative shadow-pixel-sm backdrop-solid-dark"
         >
           <span className="text-xl group-hover:scale-110 transition-transform">👁️</span>
           <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 text-xs bg-black text-white px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-zinc-700 pointer-events-none">
@@ -148,7 +148,7 @@ export const LayeredScene: React.FC<LayeredSceneProps> = ({
         {/* 2. 银行/信用按钮 */}
         <button 
           onClick={() => setBankOpen(true)}
-          className="w-12 h-12 bg-black/60 border border-zinc-600 hover:border-blue-500 hover:bg-zinc-900 transition-all rounded-sm flex items-center justify-center group relative shadow-lg backdrop-blur-sm"
+          className="w-12 h-12 bg-black/60 border border-zinc-600 hover:border-blue-500 hover:bg-zinc-900 transition-all rounded-sm flex items-center justify-center group relative shadow-pixel-sm backdrop-solid-dark"
         >
           <span className="text-xl group-hover:scale-110 transition-transform">💳</span>
           <span className="absolute right-full mr-3 top-1/2 -translate-y-1/2 text-xs bg-black text-white px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-zinc-700 pointer-events-none">

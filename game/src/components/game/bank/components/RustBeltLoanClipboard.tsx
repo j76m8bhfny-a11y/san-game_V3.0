@@ -16,7 +16,7 @@ export const RustBeltLoanClipboard: React.FC<Props> = ({ product, creditScore, o
     <div 
       onClick={canAfford ? onSign : undefined}
       className={`
-        relative w-full h-40 bg-[#5c4033] rounded-t-lg shadow-lg cursor-pointer transition-transform duration-200 group
+        relative w-full h-40 bg-[#5c4033] rounded-t-lg shadow-pixel-sm cursor-pointer transition-transform duration-200 group
         ${canAfford ? 'hover:-translate-y-2' : 'opacity-60 grayscale cursor-not-allowed'}
       `}
     >

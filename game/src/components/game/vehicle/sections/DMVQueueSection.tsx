@@ -45,7 +45,7 @@ export const DMVQueueSection: React.FC<DMVQueueSectionProps> = ({
   // 如果已经有驾照，显示完成状态
   if (hasValidLicense) {
     return (
-      <div className="p-4 rounded-lg border border-white/10 bg-white/5">
+      <div className="p-4 rounded-sm border border-white/10 bg-white/5">
         <h4 className="text-white font-semibold mb-2">
           {t(uiText.dmvTitleKey || 'vehicleShop.rustbelt.dmvTitle')}
         </h4>
@@ -63,7 +63,7 @@ export const DMVQueueSection: React.FC<DMVQueueSectionProps> = ({
     const isComplete = dmvQueue.currentNumber >= dmvQueue.ticketNumber && dmvQueue.waitTurnsRemaining <= 0;
     
     return (
-      <div className="p-4 rounded-lg border border-white/10 bg-white/5">
+      <div className="p-4 rounded-sm border border-white/10 bg-white/5">
         <h4 className="text-white font-semibold mb-2">
           {t(uiText.dmvTitleKey || 'vehicleShop.rustbelt.dmvTitle')}
         </h4>
@@ -90,9 +90,9 @@ export const DMVQueueSection: React.FC<DMVQueueSectionProps> = ({
         </div>
         
         {/* 进度条 */}
-        <div className="w-full bg-white/10 rounded-full h-2 mb-4">
+        <div className="w-full bg-white/10 rounded-sm h-2 mb-4">
           <div 
-            className="bg-amber-500 h-2 rounded-full transition-all duration-500"
+            className="bg-amber-500 h-2 rounded-sm transition-all duration-500"
             style={{ width: `${Math.min(100, 100 - progress)}%` }}
           />
         </div>
@@ -128,7 +128,7 @@ export const DMVQueueSection: React.FC<DMVQueueSectionProps> = ({
   
   // 初始状态 - 开始排队
   return (
-    <div className="p-4 rounded-lg border border-white/10 bg-white/5">
+    <div className="p-4 rounded-sm border border-white/10 bg-white/5">
       <h4 className="text-white font-semibold mb-2">
         {t(uiText.dmvTitleKey || 'vehicleShop.rustbelt.dmvTitle')}
       </h4>

@@ -38,17 +38,17 @@ export const AchievementNotification: React.FC = () => {
   }, [notification]);
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {notification && (
         <motion.div
-          initial={{ opacity: 0, y: -100, scale: 0.8 }}
+          initial={false}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -50, scale: 0.9 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           className="fixed top-4 right-4 z-50 w-80"
           onClick={dismiss}
         >
-          <div className="bg-gradient-to-br from-yellow-500/20 to-orange-600/20 backdrop-blur-md border border-yellow-500/30 rounded-xl overflow-hidden shadow-2xl">
+          <div className="bg-yellow-500/10 border border-yellow-500/30 backdrop-solid-dark rounded-sm overflow-hidden shadow-pixel-sm">
             {/* 进度条 */}
             <div className="h-1 bg-gray-700/50">
               <motion.div
@@ -61,7 +61,7 @@ export const AchievementNotification: React.FC = () => {
 
             <div className="p-4 flex items-start gap-4">
               {/* 图标 */}
-              <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-lg flex items-center justify-center shadow-lg">
+              <div className="flex-shrink-0 w-12 h-12 bg-pixel-gradient-gold rounded-sm flex items-center justify-center shadow-pixel-sm">
                 <Trophy className="w-7 h-7 text-white" />
               </div>
 

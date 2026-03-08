@@ -66,7 +66,7 @@ export class ErrorBoundary extends Component<Props, State> {
       // 自定义降级 UI
       return (
         <div className="min-h-screen bg-black text-green-500 font-mono flex items-center justify-center p-4">
-          <div className="max-w-2xl w-full border border-green-500/30 bg-green-900/10 p-8 rounded-lg">
+          <div className="max-w-2xl w-full border border-green-500/30 bg-green-900/10 p-8 rounded-sm">
             {/* 标题 */}
             <div className="flex items-center gap-4 mb-6">
               <div className="text-4xl">⚠️</div>

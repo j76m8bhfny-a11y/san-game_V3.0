@@ -29,7 +29,7 @@ export const SlumsOffering: React.FC<Props> = ({ item, count, isSelected, onClic
     >
       {/* 选中光圈 */}
       {isSelected && (
-        <div className="absolute inset-0 bg-orange-500/30 rounded-full blur-md animate-pulse" />
+        <div className="absolute inset-0 bg-orange-500/30 rounded-sm blur-md animate-pulse" />
       )}
 
       {/* 物品本体 */}

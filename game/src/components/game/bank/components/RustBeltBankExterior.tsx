@@ -45,7 +45,7 @@ export const RustBeltBankExterior: React.FC<Props> = ({ onEnter, onClose }) => {
         onClick={onEnter}
       >
         <div className={`
-          relative w-64 h-80 border-8 border-gray-300 bg-blue-900/10 backdrop-blur-[2px]
+          relative w-64 h-80 border-8 border-gray-300 backdrop-solid-dark
           transition-all duration-500 flex flex-col items-center justify-center
           ${isHovered ? 'border-blue-500 bg-blue-900/20' : ''}
         `}>

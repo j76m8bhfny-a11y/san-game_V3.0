@@ -47,7 +47,7 @@ export const MapPin: React.FC<MapPinProps> = ({
       {/* 2. 悬停高亮区域 (用半透明马克笔涂抹效果) */}
       <div 
         className={`
-          absolute inset-0 bg-blend-multiply transition-opacity duration-300 rounded-lg
+          absolute inset-0 bg-blend-multiply transition-opacity duration-300 rounded-sm
           ${isCurrent ? 'bg-black/5' : 'group-hover:bg-yellow-100/20'}
         `}
       />
@@ -76,7 +76,7 @@ export const MapPin: React.FC<MapPinProps> = ({
 
         {/* 当前位置标记 */}
         {isCurrent && (
-          <div className="inline-block bg-red-600 text-white text-xs font-bold px-3 py-1 -rotate-6 shadow-lg">
+          <div className="inline-block bg-red-600 text-white text-xs font-bold px-3 py-1 -rotate-6 shadow-pixel-sm">
             {t('map.currentLocation')}
           </div>
         )}

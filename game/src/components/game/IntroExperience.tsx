@@ -112,7 +112,7 @@ export const IntroExperience: React.FC<IntroExperienceProps> = ({ onComplete }) 
                 每一周结束时，系统会计算你的<span className="text-cyan-400">生存率</span>。
                 如果运气不好，你可能会死亡——然后<span className="text-purple-400">重新开始</span>。
               </p>
-              <div className="mt-6 p-4 bg-gray-800/50 rounded-lg border border-gray-700">
+              <div className="mt-6 p-4 bg-gray-800/50 rounded-sm border border-gray-700">
                 <p className="text-sm text-gray-500">
                   💡 但不用担心，你解锁的档案会保留下来，让你在下一轮变得更强大。
                 </p>
@@ -129,8 +129,8 @@ export const IntroExperience: React.FC<IntroExperienceProps> = ({ onComplete }) 
           content: (
             <div className="space-y-4">
               <div className="flex items-center gap-4 mb-6">
-                <div className="flex-1 h-4 bg-gray-800 rounded-full overflow-hidden">
-                  <div className="w-3/4 h-full bg-red-500 rounded-full" />
+                <div className="flex-1 h-4 bg-gray-800 rounded-sm overflow-hidden">
+                  <div className="w-3/4 h-full bg-red-500 rounded-sm" />
                 </div>
                 <span className="text-red-400 font-mono">75/100</span>
               </div>
@@ -155,8 +155,8 @@ export const IntroExperience: React.FC<IntroExperienceProps> = ({ onComplete }) 
           content: (
             <div className="space-y-4">
               <div className="flex items-center gap-4 mb-6">
-                <div className="flex-1 h-4 bg-gray-800 rounded-full overflow-hidden">
-                  <div className="w-1/2 h-full bg-orange-500 rounded-full" />
+                <div className="flex-1 h-4 bg-gray-800 rounded-sm overflow-hidden">
+                  <div className="w-1/2 h-full bg-orange-500 rounded-sm" />
                 </div>
                 <span className="text-orange-400 font-mono">50/100</span>
               </div>
@@ -181,8 +181,8 @@ export const IntroExperience: React.FC<IntroExperienceProps> = ({ onComplete }) 
           content: (
             <div className="space-y-4">
               <div className="flex items-center gap-4 mb-6">
-                <div className="flex-1 h-4 bg-gray-800 rounded-full overflow-hidden">
-                  <div className="w-1/3 h-full bg-purple-500 rounded-full" />
+                <div className="flex-1 h-4 bg-gray-800 rounded-sm overflow-hidden">
+                  <div className="w-1/3 h-full bg-purple-500 rounded-sm" />
                 </div>
                 <span className="text-purple-400 font-mono">35/100</span>
               </div>
@@ -274,7 +274,7 @@ export const IntroExperience: React.FC<IntroExperienceProps> = ({ onComplete }) 
   const progress = ((currentIndex + 1) / steps.length) * 100;
   
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {!isSkipped && (
         <motion.div
           initial={{ opacity: 0 }}
@@ -283,7 +283,7 @@ export const IntroExperience: React.FC<IntroExperienceProps> = ({ onComplete }) 
           className="fixed inset-0 z-[200] bg-black flex items-center justify-center p-4"
         >
           {/* 背景 */}
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-900 via-black to-gray-900" />
+          <div className="absolute inset-0 bg-black" />
           <div className="absolute inset-0 opacity-10 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-cyan-900 via-transparent to-transparent" />
           
           {/* 内容容器 */}
@@ -297,9 +297,9 @@ export const IntroExperience: React.FC<IntroExperienceProps> = ({ onComplete }) 
           >
             {/* 进度条 */}
             <div className="absolute -top-8 left-0 right-0">
-              <div className="h-1 bg-gray-800 rounded-full overflow-hidden">
+              <div className="h-1 bg-gray-800 rounded-sm overflow-hidden">
                 <motion.div
-                  className="h-full bg-gradient-to-r from-cyan-500 to-purple-500"
+                  className="h-full bg-pixel-gradient-cyan"
                   initial={{ width: 0 }}
                   animate={{ width: `${progress}%` }}
                   transition={{ duration: 0.3 }}
@@ -312,7 +312,7 @@ export const IntroExperience: React.FC<IntroExperienceProps> = ({ onComplete }) 
             </div>
             
             {/* 主卡片 */}
-            <div className="bg-gray-900/90 border border-gray-700 rounded-2xl p-8 shadow-2xl">
+            <div className="bg-gray-900/90 border border-gray-700 rounded-sm p-8 shadow-pixel">
               {/* 图标（如果有） */}
               {stepContent.icon && (
                 <motion.div
@@ -321,7 +321,7 @@ export const IntroExperience: React.FC<IntroExperienceProps> = ({ onComplete }) 
                   transition={{ delay: 0.1, type: "spring" }}
                   className="flex justify-center mb-6"
                 >
-                  <div className="p-4 bg-gray-800 rounded-full">
+                  <div className="p-4 bg-gray-800 rounded-sm">
                     {stepContent.icon}
                   </div>
                 </motion.div>
@@ -354,9 +354,9 @@ export const IntroExperience: React.FC<IntroExperienceProps> = ({ onComplete }) 
                 
                 <button
                   onClick={nextStep}
-                  className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-600 to-purple-600 
-                           hover:from-cyan-500 hover:to-purple-500 text-white font-bold rounded-lg
-                           transition-all shadow-lg shadow-cyan-500/20"
+                  className="flex items-center gap-2 px-6 py-3 bg-pixel-gradient-cyan 
+                           hover:from-cyan-500 hover:to-purple-500 text-white font-bold rounded-sm
+                           transition-all shadow-pixel-sm shadow-cyan-500/20"
                 >
                   {currentStep === 'ready' ? (
                     <>

@@ -53,9 +53,9 @@ export const DowntownExterior: React.FC<Props> = ({ house, gold, onBuy, onClose 
       {/* 3. 交互区：生物识别面板 */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full mb-10">
         
-        <div className="relative w-80 bg-black/80 backdrop-blur-md border border-[#333] shadow-2xl p-8 flex flex-col items-center">
+        <div className="relative w-80 backdrop-solid-dark border border-[#333] shadow-pixel p-8 flex flex-col items-center">
           {/* 面板顶部的摄像头/扫描仪 */}
-          <div className="w-full h-1 bg-gradient-to-r from-transparent via-blue-500 to-transparent opacity-50 mb-8" />
+          <div className="w-full h-1 bg-blue-500/50 opacity-50 mb-8" />
           
           <div className="text-gray-400 text-xs font-mono uppercase mb-4 tracking-widest">
             Identity Verification
@@ -66,7 +66,7 @@ export const DowntownExterior: React.FC<Props> = ({ house, gold, onBuy, onClose 
             onClick={handleInteract}
             disabled={!canAfford || isScanning}
             className={`
-              relative w-32 h-32 rounded-full border-2 flex items-center justify-center transition-all duration-500
+              relative w-32 h-32 rounded-sm border-2 flex items-center justify-center transition-all duration-500
               ${isScanning 
                 ? 'border-blue-500 shadow-[0_0_50px_rgba(59,130,246,0.5)]' 
                 : canAfford 
@@ -75,7 +75,7 @@ export const DowntownExterior: React.FC<Props> = ({ house, gold, onBuy, onClose 
             `}
           >
             {isScanning ? (
-              <div className="absolute inset-0 border-t-2 border-blue-400 rounded-full animate-spin" />
+              <div className="absolute inset-0 border-t-2 border-blue-400 rounded-sm animate-spin" />
             ) : (
               <img 
                 src="/assets/housing/ui_fingerprint.png" 

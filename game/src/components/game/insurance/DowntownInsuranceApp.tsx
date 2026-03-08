@@ -38,13 +38,13 @@ export const DowntownInsuranceApp: React.FC<{ onClose: () => void }> = ({ onClos
     return (
       <div 
         key={plan.id}
-        className={`p-4 rounded-2xl transition-all duration-300 border ${isActive ? 'bg-white border-blue-200 shadow-lg shadow-blue-100' : 'bg-white border-slate-100 shadow-sm'}`}
+        className={`p-4 rounded-sm transition-all duration-300 border ${isActive ? 'bg-white border-blue-200 shadow-pixel-sm shadow-blue-100' : 'bg-white border-slate-100 shadow-sm'}`}
       >
         <div className="flex justify-between items-start mb-2">
-          <div className={`w-10 h-10 rounded-full flex items-center justify-center ${isAuto ? 'bg-blue-50 text-blue-600' : 'bg-red-50 text-red-600'}`}>
+          <div className={`w-10 h-10 rounded-sm flex items-center justify-center ${isAuto ? 'bg-blue-50 text-blue-600' : 'bg-red-50 text-red-600'}`}>
             {isAuto ? <Car size={20} /> : <Heart size={20} />}
           </div>
-          <div className={`text-sm font-bold px-3 py-1 rounded-full ${isActive ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-500'}`}>
+          <div className={`text-sm font-bold px-3 py-1 rounded-sm ${isActive ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-500'}`}>
             {isActive ? t('insurance.enroll') : t('insurance.cancel')}
           </div>
         </div>
@@ -70,9 +70,9 @@ export const DowntownInsuranceApp: React.FC<{ onClose: () => void }> = ({ onClos
           {/* iOS Style Toggle Switch */}
           <button 
             onClick={() => handleToggle(plan.id)}
-            className={`w-12 h-7 rounded-full transition-colors relative ${isActive ? 'bg-green-500' : 'bg-slate-300'}`}
+            className={`w-12 h-7 rounded-sm transition-colors relative ${isActive ? 'bg-green-500' : 'bg-slate-300'}`}
           >
-            <div className={`absolute top-1 w-5 h-5 bg-white rounded-full shadow-sm transition-transform duration-300 ${isActive ? 'left-6' : 'left-1'}`} />
+            <div className={`absolute top-1 w-5 h-5 bg-white rounded-sm shadow-sm transition-transform duration-300 ${isActive ? 'left-6' : 'left-1'}`} />
           </button>
         </div>
       </div>
@@ -80,7 +80,7 @@ export const DowntownInsuranceApp: React.FC<{ onClose: () => void }> = ({ onClos
   };
 
   return (
-    <div className="w-[375px] h-[667px] bg-white rounded-[3rem] border-8 border-gray-900 shadow-2xl overflow-hidden flex flex-col relative">
+    <div className="w-[375px] h-[667px] bg-white rounded-[3rem] border-8 border-gray-900 shadow-pixel-sm overflow-hidden flex flex-col relative">
       {/* 状态栏模拟 */}
       <div className="h-6 bg-white flex justify-between px-6 items-center text-[10px] font-pixel font-bold text-gray-800 pt-2">
         <span>9:41</span>
@@ -123,7 +123,7 @@ export const DowntownInsuranceApp: React.FC<{ onClose: () => void }> = ({ onClos
               {autoPlans.map(renderPlanCard)}
             </div>
           ) : (
-            <div className="bg-slate-100 rounded-xl p-4 text-center">
+            <div className="bg-slate-100 rounded-sm p-4 text-center">
               <p className="text-sm text-slate-400">{t('insurance.auto.needVehicle')}</p>
             </div>
           )}
@@ -131,7 +131,7 @@ export const DowntownInsuranceApp: React.FC<{ onClose: () => void }> = ({ onClos
       </div>
 
       {/* Bottom Bar */}
-      <div className="h-1 bg-black w-1/3 mx-auto mb-2 rounded-full opacity-20"></div>
+      <div className="h-1 bg-black w-1/3 mx-auto mb-2 rounded-sm opacity-20"></div>
     </div>
   );
 };

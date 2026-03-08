@@ -135,10 +135,10 @@ export const ClassSelectorModal: React.FC<ClassSelectorProps> = ({ onConfirm }) 
         })}
       </div>
 
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {selected && (
           <motion.button
-            initial={{ opacity: 0, y: 20 }}
+            initial={false}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
             onClick={handleConfirm}

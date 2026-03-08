@@ -81,17 +81,17 @@ export const CloudSaveConflictDialog: React.FC<CloudSaveConflictDialogProps> = (
 
   return (
     <FocusTrap isActive={isOpen} onClose={onCancel}>
-      <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+      <div className="fixed inset-0 z-[100] flex items-center justify-center backdrop-solid-dark p-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 20 }}
-          className="w-full max-w-2xl bg-gray-900 rounded-2xl border border-gray-700 overflow-hidden"
+          className="w-full max-w-2xl bg-gray-900 rounded-sm border border-gray-700 overflow-hidden"
         >
           {/* 警告头部 */}
-          <div className="p-6 border-b border-gray-700 bg-gradient-to-r from-red-900/30 to-orange-900/30">
+          <div className="p-6 border-b border-gray-700 bg-red-900/30">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-red-500/20 flex items-center justify-center">
+              <div className="w-12 h-12 rounded-sm bg-red-500/20 flex items-center justify-center">
                 <AlertTriangle className="w-6 h-6 text-red-400" />
               </div>
               <div>
@@ -106,7 +106,7 @@ export const CloudSaveConflictDialog: React.FC<CloudSaveConflictDialogProps> = (
           {/* 存档对比 */}
           <div className="p-6 grid grid-cols-2 gap-4 border-b border-gray-700">
             {/* 本地存档 */}
-            <div className="p-4 bg-gray-800/50 rounded-xl border border-gray-700">
+            <div className="p-4 bg-gray-800/50 rounded-sm border border-gray-700">
               <div className="flex items-center gap-2 mb-3">
                 <HardDrive className="w-5 h-5 text-green-400" />
                 <span className="font-bold text-white">本地存档</span>
@@ -126,7 +126,7 @@ export const CloudSaveConflictDialog: React.FC<CloudSaveConflictDialogProps> = (
             </div>
 
             {/* 云端存档 */}
-            <div className="p-4 bg-gray-800/50 rounded-xl border border-gray-700">
+            <div className="p-4 bg-gray-800/50 rounded-sm border border-gray-700">
               <div className="flex items-center gap-2 mb-3">
                 <Cloud className="w-5 h-5 text-blue-400" />
                 <span className="font-bold text-white">云端存档</span>
@@ -158,14 +158,14 @@ export const CloudSaveConflictDialog: React.FC<CloudSaveConflictDialogProps> = (
                 <button
                   key={option.id}
                   onClick={() => setSelectedOption(option.id)}
-                  className={`w-full flex items-center gap-4 p-4 rounded-xl border-2 transition-all text-left
+                  className={`w-full flex items-center gap-4 p-4 rounded-sm border-2 transition-all text-left
                     ${isSelected 
                       ? `${option.bgColor} ${option.borderColor} border-2` 
                       : 'bg-gray-800/50 border-gray-700 hover:border-gray-600'
                     }
                   `}
                 >
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${option.bgColor}`}>
+                  <div className={`w-10 h-10 rounded-sm flex items-center justify-center ${option.bgColor}`}>
                     <Icon className={`w-5 h-5 ${option.color}`} />
                   </div>
                   <div className="flex-1">
@@ -176,10 +176,10 @@ export const CloudSaveConflictDialog: React.FC<CloudSaveConflictDialogProps> = (
                       {option.description}
                     </div>
                   </div>
-                  <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center
+                  <div className={`w-5 h-5 rounded-sm border-2 flex items-center justify-center
                     ${isSelected ? `${option.borderColor} ${option.bgColor}` : 'border-gray-600'}
                   `}>
-                    {isSelected && <div className={`w-2.5 h-2.5 rounded-full ${option.color.replace('text-', 'bg-')}`} />}
+                    {isSelected && <div className={`w-2.5 h-2.5 rounded-sm ${option.color.replace('text-', 'bg-')}`} />}
                   </div>
                 </button>
               );
@@ -190,13 +190,13 @@ export const CloudSaveConflictDialog: React.FC<CloudSaveConflictDialogProps> = (
           <div className="p-6 border-t border-gray-700 flex gap-3">
             <button
               onClick={onCancel}
-              className="flex-1 py-3 px-4 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-lg font-medium transition-colors"
+              className="flex-1 py-3 px-4 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded-sm font-medium transition-colors"
             >
               取消
             </button>
             <button
               onClick={() => onResolve(selectedOption)}
-              className="flex-1 py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+              className="flex-1 py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded-sm font-medium transition-colors"
             >
               确认选择
             </button>

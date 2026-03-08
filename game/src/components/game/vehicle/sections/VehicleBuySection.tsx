@@ -145,7 +145,7 @@ export const VehicleBuySection: React.FC<VehicleBuySectionProps> = ({
           return (
             <motion.div
               key={vehicle.id}
-              className={`p-3 rounded-lg border ${
+              className={`p-3 rounded-sm border ${
                 selectedVehicle === vehicle.id
                   ? 'border-blue-500 bg-blue-500/10'
                   : 'border-white/10 bg-white/5'
@@ -154,7 +154,7 @@ export const VehicleBuySection: React.FC<VehicleBuySectionProps> = ({
               whileHover={{ scale: 1.02 }}
             >
               <div className="flex items-start gap-3">
-                <div className="p-2 bg-white/10 rounded-lg">
+                <div className="p-2 bg-white/10 rounded-sm">
                   <Car size={20} className="text-white/70" />
                 </div>
                 <div className="flex-1">

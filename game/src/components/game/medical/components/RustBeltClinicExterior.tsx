@@ -45,12 +45,12 @@ export const RustBeltClinicExterior: React.FC<Props> = ({ onEnter, onClose }) =>
       >
         {/* 玻璃门反光效果 */}
         <div className={`
-          w-64 h-96 border-4 border-gray-600 bg-blue-900/20 backdrop-blur-[2px]
+          w-64 h-96 border-4 border-gray-600 backdrop-solid-dark
           transition-all duration-500 relative overflow-hidden group-hover:bg-blue-900/10
           ${isHovered ? 'border-blue-400 shadow-[0_0_30px_rgba(59,130,246,0.3)]' : ''}
         `}>
           {/* 把手 */}
-          <div className="absolute top-1/2 right-4 w-2 h-24 bg-gray-400 rounded-full" />
+          <div className="absolute top-1/2 right-4 w-2 h-24 bg-gray-400 rounded-sm" />
           
           {/* 门上的贴纸 */}
           <div className="absolute bottom-10 left-4 space-y-2 opacity-80">

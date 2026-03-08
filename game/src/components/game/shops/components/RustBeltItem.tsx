@@ -38,11 +38,11 @@ export const RustBeltItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
         {getIcon(item.tags)}
         
         {/* 玻璃反光效果 (在物品上) */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-50 pointer-events-none rounded-full" />
+        <div className="absolute inset-0 bg-white/5 opacity-50 pointer-events-none rounded-sm" />
       </div>
 
       {/* 2. 货架层板 (Item stand) */}
-      <div className="absolute bottom-0 w-full h-2 bg-gradient-to-r from-[#334155] via-[#475569] to-[#334155] shadow-lg rounded-sm z-0" />
+      <div className="absolute bottom-0 w-full h-2 bg-[#334155] shadow-pixel rounded-sm z-0" />
 
       {/* 3. 价格标签 (贴在货架边缘的塑料片) */}
       <div className={`
@@ -63,7 +63,7 @@ export const RustBeltItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
       {/* 4. 详情悬浮窗 (透过玻璃看详情) */}
       <div className={`
         absolute bottom-full mb-2 w-40 bg-black/90 border border-green-500/30 text-green-500 p-2 
-        backdrop-blur-md shadow-[0_0_15px_rgba(0,255,0,0.1)] pointer-events-none z-50
+        backdrop-solid-dark shadow-[0_0_15px_rgba(0,255,0,0.1)] pointer-events-none z-50
         transition-all duration-200
         ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}
       `}>

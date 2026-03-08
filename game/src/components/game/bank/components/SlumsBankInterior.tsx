@@ -69,7 +69,7 @@ export const SlumsBankInterior: React.FC<Props> = ({
       </div>
 
       {/* 2. 店员剪影 (模糊且有威胁感) */}
-      <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-64 h-64 bg-black/80 blur-xl rounded-full opacity-80 animate-pulse-slow" />
+      <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-64 h-64 bg-black/80 blur-xl rounded-sm opacity-80 animate-pulse-slow" />
 
       {/* 3. 防弹玻璃层 (前景) */}
       <div className="absolute inset-0 z-10 pointer-events-none">
@@ -85,7 +85,7 @@ export const SlumsBankInterior: React.FC<Props> = ({
       <div className="absolute bottom-0 w-full h-1/3 bg-[#2a2a2a] border-t-8 border-[#1a1a1a] shadow-inner flex items-center justify-center z-20">
         
         {/* 交易动画区域 */}
-        <div className="relative w-96 h-32 bg-[#111] rounded-lg border-4 border-[#333] shadow-[inset_0_0_20px_black] overflow-hidden flex items-center justify-center">
+        <div className="relative w-96 h-32 bg-[#111] rounded-sm border-4 border-[#333] shadow-[inset_0_0_20px_black] overflow-hidden flex items-center justify-center">
           
           {transactionAnim === 'NONE' && (
             <div className="text-gray-600 font-mono text-xs animate-pulse">
@@ -96,14 +96,14 @@ export const SlumsBankInterior: React.FC<Props> = ({
           {/* 拿钱动画 */}
           {transactionAnim === 'TAKE' && (
             <div className="animate-slide-in-down">
-              <img src="/assets/bank/ui_money_roll.png" className="w-32 drop-shadow-xl" />
+              <img src="/assets/bank/ui_money_roll.png" className="w-32 drop-shadow-pixel-sm render-pixelated" />
             </div>
           )}
 
           {/* 还钱动画 */}
           {transactionAnim === 'GIVE' && (
             <div className="animate-slide-out-up">
-              <img src="/assets/bank/ui_money_stack.png" className="w-32 drop-shadow-xl" />
+              <img src="/assets/bank/ui_money_stack.png" className="w-32 drop-shadow-pixel-sm render-pixelated" />
             </div>
           )}
         </div>
@@ -137,9 +137,9 @@ export const SlumsBankInterior: React.FC<Props> = ({
               const warning = getSkipWarning(loan, currentTurn);
               const totalOwed = getTotalOwed(loan);
               return (
-                <div key={loan.id} className={`${status.bgColor} border ${status.borderColor} p-3 w-full max-w-[240px] shadow-lg relative group rotate-1 hover:rotate-0 transition-transform`}>
+                <div key={loan.id} className={`${status.bgColor} border ${status.borderColor} p-3 w-full max-w-[240px] shadow-pixel relative group rotate-1 hover:rotate-0 transition-transform`}>
                   {/* 钉子效果 */}
-                  <div className="absolute -top-2 -right-2 w-4 h-4 bg-red-600 rounded-full" />
+                  <div className="absolute -top-2 -right-2 w-4 h-4 bg-red-600 rounded-sm" />
                   
                   {/* 头部：金额和状态 */}
                   <div className="flex justify-between items-start mb-1">

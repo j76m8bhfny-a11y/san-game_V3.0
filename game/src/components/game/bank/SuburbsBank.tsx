@@ -80,9 +80,9 @@ export const SuburbsBank: React.FC<Props> = ({ onClose }) => {
   const handleMakeInstallment = (loanId: string, amount: number) => throttledMakeInstallment(loanId, amount);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-solid-dark" onClick={onClose}>
       <div 
-        className="w-full max-w-5xl aspect-video bg-[#0a0a0a] shadow-2xl overflow-hidden border border-gray-800 relative"
+        className="w-full max-w-5xl aspect-video bg-[#0a0a0a] shadow-pixel overflow-hidden border border-gray-800 relative"
         onClick={e => e.stopPropagation()}
       >
         {hasEntered ? (

@@ -38,7 +38,7 @@ export const RustBeltExterior: React.FC<Props> = ({ house, gold, onRent, onClose
             NO-TELL<br/>MOTEL
           </h1>
           <div className="flex items-center gap-2 mt-2">
-            <div className="w-3 h-3 rounded-full bg-red-500 animate-ping" />
+            <div className="w-3 h-3 rounded-sm bg-red-500 animate-ping" />
             <span className="text-red-300 font-mono text-sm tracking-widest">{t('housing.vacancy')}</span>
           </div>
         </div>
@@ -58,7 +58,7 @@ export const RustBeltExterior: React.FC<Props> = ({ house, gold, onRent, onClose
           {/* 写字板底图 */}
           <img 
             src="/assets/housing/ui_clipboard.png" 
-            className="absolute inset-0 w-full h-full object-contain drop-shadow-2xl" 
+            className="absolute inset-0 w-full h-full object-contain drop-shadow-pixel render-pixelated" 
             alt="Check-in Clipboard"
           />
           

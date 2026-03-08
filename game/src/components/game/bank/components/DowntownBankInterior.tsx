@@ -55,12 +55,12 @@ export const DowntownBankInterior: React.FC<Props> = ({
         style={{ backgroundImage: "url('/assets/bank/downtown_bank_interior.jpg')" }}
       >
         {/* 动态光照：金条的反光 */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80" />
+        <div className="absolute inset-0 bg-black/60" />
         <div className="absolute top-0 right-0 w-1/2 h-full bg-[#d4af37]/5 blur-3xl animate-pulse-slow" />
       </div>
 
       {/* 2. 桌面层 */}
-      <div className="absolute bottom-0 w-full h-1/3 bg-gradient-to-t from-black to-transparent z-10" />
+      <div className="absolute bottom-0 w-full h-1/3 bg-black/80 z-10" />
       
       <div className="relative z-20 w-full max-w-6xl h-full flex pt-10 px-8 gap-12">
         
@@ -88,12 +88,12 @@ export const DowntownBankInterior: React.FC<Props> = ({
           {/* 金条/现金堆 (Visual Wealth) */}
           <div className="absolute bottom-10 right-0 w-full h-1/2 flex items-end justify-end pointer-events-none">
              {getGoldStackImage() && (
-               <img src={getGoldStackImage()!} className="max-w-full max-h-full object-contain drop-shadow-[0_0_30px_rgba(212,175,55,0.3)] animate-float-slow" />
+               <img src={getGoldStackImage()!} className="max-w-full max-h-full object-contain drop-shadow-[0_0_30px_rgba(212,175,55,0.3)] animate-float-slow render-pixelated" />
              )}
           </div>
 
           {/* 债务清单 (悬浮在金条上方) */}
-          <div className="absolute top-10 right-0 w-96 bg-black/70 backdrop-blur-md border border-[#d4af37]/30 p-6 rounded-sm max-h-[70%] overflow-y-auto custom-scrollbar">
+          <div className="absolute top-10 right-0 w-96 backdrop-solid-dark border border-[#d4af37]/30 p-6 rounded-sm max-h-[70%] overflow-y-auto custom-scrollbar">
              <h3 className="text-gray-400 text-xs font-mono uppercase tracking-widest mb-4">{t('bank.liabilities')}</h3>
              
              {activeLoans.length === 0 ? (
@@ -173,7 +173,7 @@ export const DowntownBankInterior: React.FC<Props> = ({
 
       {/* 3. 签字动画层 */}
       {signAnim && (
-        <div className="absolute inset-0 flex items-center justify-center z-50 bg-black/20 backdrop-blur-[2px]">
+        <div className="absolute inset-0 flex items-center justify-center z-50 backdrop-solid-dark">
           <div className="text-6xl font-handwriting text-[#d4af37] animate-signature">
             {t('common.approved')}
           </div>

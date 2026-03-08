@@ -35,13 +35,13 @@ export const RustBeltChurchExterior: React.FC<Props> = ({ onEnter, onClose }) =>
         `}>
           ✝
           {/* 光晕效果 */}
-          <div className="absolute inset-0 bg-red-500/30 blur-3xl rounded-full mix-blend-screen animate-pulse-fast" />
+          <div className="absolute inset-0 bg-red-500/30 blur-3xl rounded-sm mix-blend-screen animate-pulse-fast" />
         </div>
       </div>
 
       {/* 3. 橱窗贴纸 */}
       <div className="absolute bottom-1/3 left-10 opacity-70 rotate-2">
-        <div className="bg-white p-2 text-black font-marker text-sm w-32 text-center shadow-lg transform origin-top-left animate-swing">
+        <div className="bg-white p-2 text-black font-marker text-sm w-32 text-center shadow-pixel-sm transform origin-top-left animate-swing">
           {t('faith.signage')}
         </div>
       </div>
@@ -54,7 +54,7 @@ export const RustBeltChurchExterior: React.FC<Props> = ({ onEnter, onClose }) =>
         onClick={onEnter}
       >
         <div className={`
-          bg-black/60 backdrop-blur-sm border-2 border-white/20 px-6 py-3
+          backdrop-solid-dark border-2 border-white/20 px-6 py-3
           text-white font-mono text-xl tracking-widest uppercase
           transition-all duration-300
           ${isHovered ? 'bg-red-900/80 border-red-500 scale-110' : 'hover:bg-black/80'}

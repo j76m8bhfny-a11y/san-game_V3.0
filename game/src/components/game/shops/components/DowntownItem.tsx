@@ -57,9 +57,9 @@ export const DowntownItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
       {/* 1. 物品展示区 (Spotlight) */}
       <div className="relative h-48 flex items-center justify-center mb-6 overflow-hidden">
         {/* 光束效果 */}
-        <div className={`absolute inset-0 bg-gradient-to-b from-white/5 to-transparent transition-opacity duration-500 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
+        <div className={`absolute inset-0 bg-white/5 transition-opacity duration-500 ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
         
-        <div className={`text-7xl text-white/90 drop-shadow-2xl transition-transform duration-700 ${isHovered ? 'scale-110' : 'scale-100'}`}>
+        <div className={`text-7xl text-white/90 drop-shadow-pixel-sm transition-transform duration-700 ${isHovered ? 'scale-110' : 'scale-100'}`}>
           {getIcon(item.tags)}
         </div>
       </div>

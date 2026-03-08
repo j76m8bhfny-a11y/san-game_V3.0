@@ -28,28 +28,28 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
 
   // 动态背景遮罩
   const overlayClass = isSlums 
-    ? "bg-black/60 backdrop-blur-[2px]" 
+    ? "backdrop-solid-dark" 
     : isFactory
     ? "bg-black/80 backdrop-grayscale"
     : isSuburbs
-    ? "bg-white/20 backdrop-blur-sm"
-    : "bg-slate-900/60 backdrop-blur-sm";
+    ? "backdrop-solid-light"
+    : "backdrop-solid-dark";
 
   // 主容器样式
   const containerClass = `
     relative w-full max-w-5xl max-h-[90vh] overflow-y-auto overflow-x-hidden
     transition-all duration-300 bg-cover bg-center
     ${isSlums ? "bg-[url('/assets/job/slums/wood_bg.jpg')] p-4 rotate-1 rounded-sm shadow-[20px_20px_60px_rgba(0,0,0,0.8)] border-4 border-[#3e2723]" : ""}
-    ${isFactory ? "bg-[url('/assets/job/rust/metal_bg.jpg')] p-6 border-t-8 border-yellow-700 rounded-none shadow-2xl ring-1 ring-white/10" : ""}
-    ${isSuburbs ? "bg-[url('/assets/job/suburbs/glass_bg.jpg')] p-8 rounded-2xl shadow-2xl border border-white/30" : ""}
-    ${isDowntown ? "bg-[url('/assets/job/downtown/leather_bg.jpg')] p-6 rounded-lg shadow-[0_0_60px_rgba(0,0,0,0.8)] border border-amber-900/50" : ""}
+    ${isFactory ? "bg-[url('/assets/job/rust/metal_bg.jpg')] p-6 border-t-8 border-yellow-700 rounded-none shadow-pixel ring-1 ring-white/10" : ""}
+    ${isSuburbs ? "bg-[url('/assets/job/suburbs/glass_bg.jpg')] p-8 rounded-sm shadow-pixel border border-white/30" : ""}
+    ${isDowntown ? "bg-[url('/assets/job/downtown/leather_bg.jpg')] p-6 rounded-sm shadow-[0_0_60px_rgba(0,0,0,0.8)] border border-amber-900/50" : ""}
   `;
 
   // Header 背景
   const headerClass = `
     flex justify-between items-start mb-6 sticky top-0 z-20 px-2 pt-2
-    ${isSuburbs ? 'bg-white/80 backdrop-blur rounded-lg pb-4' : ''}
-    ${isDowntown ? 'bg-black/30 backdrop-blur pb-4 border-b border-amber-600/30' : ''}
+    ${isSuburbs ? 'backdrop-solid-light rounded-sm pb-4' : ''}
+    ${isDowntown ? 'backdrop-solid-dark pb-4 border-b border-amber-600/30' : ''}
   `;
 
   // 工作列表容器样式
@@ -57,8 +57,8 @@ export const JobBoardModal: React.FC<JobBoardModalProps> = ({ isOpen, onClose })
     min-h-[400px] p-2
     ${isSlums ? "flex flex-wrap content-start gap-6" : ""}
     ${isFactory ? "grid grid-cols-1 gap-2 bg-black/50 border border-white/10 p-4" : ""}
-    ${isSuburbs ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4 bg-white/10 rounded-xl" : ""}
-    ${isDowntown ? "grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-black/20 rounded-lg border border-amber-900/20" : ""}
+    ${isSuburbs ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4 bg-white/10 rounded-sm" : ""}
+    ${isDowntown ? "grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-black/20 rounded-sm border border-amber-900/20" : ""}
   `;
 
   return (
@@ -136,7 +136,7 @@ const HeaderContent: React.FC<{ isSlums: boolean; isFactory: boolean; isSuburbs:
           <span className="font-marker text-red-500 text-2xl block mt-1 rotate-1 ml-4 bg-black/40 px-3 py-1 w-max">
             {t('job.slums.tagline')}
           </span>
-          <div className="absolute -top-6 -left-4 text-4xl drop-shadow-lg">📌</div>
+          <div className="absolute -top-6 -left-4 text-4xl drop-shadow-pixel">📌</div>
         </div>
       )}
       
@@ -149,7 +149,7 @@ const HeaderContent: React.FC<{ isSlums: boolean; isFactory: boolean; isSuburbs:
             {t('job.board')}
           </h2>
           <div className="flex items-center gap-2 mt-2">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+            <div className="w-2 h-2 bg-green-500 rounded-sm animate-pulse" />
             <span className="text-stone-400 font-mono text-xs">{t('job.systemOnline')}</span>
           </div>
         </div>
@@ -157,7 +157,7 @@ const HeaderContent: React.FC<{ isSlums: boolean; isFactory: boolean; isSuburbs:
       
       {isSuburbs && (
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-700 rounded-xl flex items-center justify-center text-white text-2xl shadow-lg">
+          <div className="w-12 h-12 bg-blue-600 rounded-sm flex items-center justify-center text-white text-2xl shadow-pixel-sm">
             💼
           </div>
           <div>
@@ -171,7 +171,7 @@ const HeaderContent: React.FC<{ isSlums: boolean; isFactory: boolean; isSuburbs:
       
       {isDowntown && (
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 bg-gradient-to-br from-amber-600 to-amber-800 rounded-lg flex items-center justify-center text-white text-2xl shadow-lg border border-amber-500">
+          <div className="w-12 h-12 bg-amber-700 rounded-sm flex items-center justify-center text-white text-2xl shadow-pixel-sm border border-amber-500">
             ✦
           </div>
           <div>
@@ -195,9 +195,9 @@ const CloseButton: React.FC<{
   
   const buttonClass = `
     transition-all duration-200 z-50
-    ${isSlums ? "w-10 h-10 bg-red-700 text-white font-marker text-xl rounded-sm border-2 border-white/80 shadow-lg rotate-3 hover:rotate-12 hover:scale-110" : ""}
+    ${isSlums ? "w-10 h-10 bg-red-700 text-white font-marker text-xl rounded-sm border-2 border-white/80 shadow-pixel-sm rotate-3 hover:rotate-12 hover:scale-110" : ""}
     ${isFactory ? "px-4 py-2 bg-red-900/40 text-red-400 font-mono border border-red-700 hover:bg-red-900 hover:text-white" : ""}
-    ${isSuburbs ? "w-8 h-8 rounded-full bg-slate-200 text-slate-500 hover:bg-slate-300 flex items-center justify-center shadow" : ""}
+    ${isSuburbs ? "w-8 h-8 rounded-sm bg-slate-200 text-slate-500 hover:bg-slate-300 flex items-center justify-center shadow" : ""}
     ${isDowntown ? "w-10 h-10 rounded bg-black/50 text-amber-400 border border-amber-600/50 hover:bg-amber-900/30 hover:text-amber-200 font-pixel" : ""}
   `;
   

@@ -41,7 +41,7 @@ const TwitterNewsContent: React.FC<{
       {/* Twitter风格顶部 */}
       <div className="bg-[#1e2732] p-3 border-b border-gray-700 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-gradient-to-br from-orange-500 to-yellow-500 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg">
+          <div className="w-10 h-10 bg-orange-500 rounded-sm flex items-center justify-center text-white font-bold text-lg shadow-pixel-sm">
             ₿
           </div>
           <div>
@@ -51,7 +51,7 @@ const TwitterNewsContent: React.FC<{
         </div>
         <button 
           onClick={onClose}
-          className="text-gray-500 hover:text-white text-2xl transition-colors w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10"
+          className="text-gray-500 hover:text-white text-2xl transition-colors w-8 h-8 flex items-center justify-center rounded-sm hover:bg-white/10"
         >
           ×
         </button>
@@ -65,7 +65,7 @@ const TwitterNewsContent: React.FC<{
         </div>
         
         {/* BREAKING 标签 */}
-        <div className={`inline-block px-3 py-1 rounded-full text-[10px] font-bold font-mono tracking-wider ${effectBg} ${effectColor}`}>
+        <div className={`inline-block px-3 py-1 rounded-sm text-[10px] font-bold font-mono tracking-wider ${effectBg} ${effectColor}`}>
           {marketRules.news.popup.prefix}
         </div>
         
@@ -75,7 +75,7 @@ const TwitterNewsContent: React.FC<{
         </div>
         
         {/* 影响指示 - 模糊化显示 */}
-        <div className={`flex items-center gap-3 p-3 rounded-lg ${effectBg} border`}>
+        <div className={`flex items-center gap-3 p-3 rounded-sm ${effectBg} border`}>
           <span className="text-2xl">{effectIcon}</span>
           <div>
             <div className="text-[10px] text-gray-500 uppercase tracking-wider">Market Signal</div>
@@ -171,11 +171,11 @@ const NewsPhone: React.FC<{
       <img 
         src="/assets/ui/pixel_phone_frame.png" 
         alt="Phone Shell"
-        className="absolute inset-0 w-full h-full object-fill z-20 pointer-events-none"
+        className="absolute inset-0 w-full h-full object-fill z-20 pointer-events-none render-pixelated"
         onError={(e) => { e.currentTarget.style.display = 'none'; }} 
       />
       
-      <div className="absolute inset-0 border-[12px] border-gray-800 bg-gray-900 rounded-[30px] z-10 shadow-xl" style={{ display: 'none' }} id="fallback-shell"></div>
+      <div className="absolute inset-0 border-[12px] border-gray-800 bg-gray-900 rounded-[30px] z-10 shadow-pixel" style={{ display: 'none' }} id="fallback-shell"></div>
 
       <div className="relative z-10 w-[52%] h-[72%] bg-[#15202b] rounded-[30px] overflow-hidden flex flex-col mb-[138px] mr-[100px]">
         {/* 手机屏幕内容 - Twitter风格 */}
@@ -210,7 +210,7 @@ export const CryptoNewsPopup: React.FC<CryptoNewsPopupProps> = ({ news, onClose 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        className="absolute inset-0 z-0 bg-black/60 backdrop-blur-sm"
+        className="absolute inset-0 z-0 backdrop-solid-dark"
       />
 
       {/* 左下角人物 */}
@@ -223,7 +223,7 @@ export const CryptoNewsPopup: React.FC<CryptoNewsPopupProps> = ({ news, onClose 
         <img 
           src="/assets/scenes/player_back.png" 
           alt="Player" 
-          className="w-full object-contain drop-shadow-[0_0_20px_rgba(0,0,0,0.8)]"
+          className="w-full object-contain drop-shadow-[0_0_20px_rgba(0,0,0,0.8)] render-pixelated"
           onError={(e) => { e.currentTarget.style.display = 'none'; }}
         />
       </motion.div>

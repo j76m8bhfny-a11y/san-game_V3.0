@@ -29,8 +29,8 @@ export const BankModal: React.FC<Props> = ({ isOpen, onClose }) => {
       return <RustBeltBank onClose={onClose} />;
     default:
       return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm" onClick={onClose}>
-          <div className="bg-gray-800 p-8 rounded-lg border border-gray-600 text-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-solid-dark" onClick={onClose}>
+          <div className="bg-gray-800 p-8 rounded-sm border border-gray-600 text-center">
             <h2 className="text-xl text-white mb-2 font-mono">{t('bank.title')}</h2>
             <p className="text-gray-400 mb-4">{t('bank.underRenovation', { region: currentRegion })}</p>
             <button 

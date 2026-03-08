@@ -79,9 +79,9 @@ export const SlumsBank: React.FC<Props> = ({ onClose }) => {
   const handleMakeInstallment = (loanId: string, amount: number) => throttledMakeInstallment(loanId, amount);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-solid-dark" onClick={onClose}>
       <div 
-        className="w-full max-w-4xl aspect-video bg-[#111] shadow-2xl overflow-hidden border-4 border-[#333] relative"
+        className="w-full max-w-4xl aspect-video bg-[#111] shadow-pixel overflow-hidden border-4 border-[#333] relative"
         onClick={e => e.stopPropagation()}
       >
         {hasEntered ? (

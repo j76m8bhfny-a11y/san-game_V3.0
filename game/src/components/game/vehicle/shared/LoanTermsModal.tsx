@@ -48,7 +48,7 @@ export const LoanTermsModal: React.FC<LoanTermsModalProps> = ({
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
-        className="w-full max-w-md bg-[#1a1a2e] border border-white/20 rounded-lg p-6"
+        className="w-full max-w-md bg-[#1a1a2e] border border-white/20 rounded-sm p-6"
       >
         {/* 标题 */}
         <div className="flex justify-between items-center mb-4">

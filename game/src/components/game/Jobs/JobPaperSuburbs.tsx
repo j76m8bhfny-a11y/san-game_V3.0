@@ -29,17 +29,17 @@ export const JobPaperSuburbs: React.FC<Props> = ({
 
   return (
     <div className={`
-      flex flex-col p-5 rounded-xl border transition-all duration-300 bg-[url('/assets/job/suburbs/card_clean.png')] bg-cover
+      flex flex-col p-5 rounded-sm border transition-all duration-300 bg-[url('/assets/job/suburbs/card_clean.png')] bg-cover
       ${isActive 
-        ? 'border-blue-400 ring-2 ring-blue-400/30 shadow-lg' 
+        ? 'border-blue-400 ring-2 ring-blue-400/30 shadow-pixel-sm' 
         : canApply 
           ? 'border-slate-200 hover:border-blue-300 hover:shadow-md'
           : 'border-slate-200 opacity-60 grayscale-[0.5]'}
     `}>
       <div className="flex justify-between items-start mb-4">
         <div className={`
-          w-10 h-10 rounded-lg flex items-center justify-center text-white font-bold text-lg shadow-sm
-          ${isActive ? 'bg-gradient-to-br from-blue-500 to-blue-700' : 'bg-gradient-to-br from-slate-600 to-slate-800'}
+          w-10 h-10 rounded-sm flex items-center justify-center text-white font-bold text-lg shadow-sm
+          ${isActive ? 'bg-blue-600' : 'bg-slate-700'}
         `}>
           {job.title?.[0] || '?'}
         </div>
@@ -77,11 +77,11 @@ export const JobPaperSuburbs: React.FC<Props> = ({
           onClick={onAction}
           disabled={!isActive && !canApply}
           className={`
-            px-4 py-2 rounded-lg text-xs font-bold transition-all
+            px-4 py-2 rounded-sm text-xs font-bold transition-all
             ${isActive 
               ? 'bg-red-50 text-red-500 hover:bg-red-100' 
               : canApply 
-                ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:shadow-lg hover:-translate-y-0.5'
+                ? 'bg-blue-600 text-white hover:shadow-pixel-sm hover:-translate-y-0.5'
                 : 'bg-slate-200 text-slate-400 cursor-not-allowed'}
           `}
         >

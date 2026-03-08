@@ -44,7 +44,7 @@ export const SlumsMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy })
       {/* 物品本体 */}
       <div className={`
         text-6xl transition-all duration-200 filter
-        ${isHovered ? 'scale-125 drop-shadow-2xl brightness-110' : 'drop-shadow-md brightness-90'}
+        ${isHovered ? 'scale-125 drop-shadow-pixel-sm brightness-110' : 'drop-shadow-md brightness-90'}
         ${!canAfford ? 'grayscale opacity-50' : ''}
       `}>
         {getIcon(service.type)}
@@ -68,7 +68,7 @@ export const SlumsMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy })
         ${isHovered ? 'opacity-100 scale-100 rotate-0' : 'opacity-0 scale-95 rotate-6'}
       `}>
         {/* 纸条上的血迹装饰 */}
-        <div className="absolute top-0 right-0 w-6 h-6 bg-red-800/20 rounded-full blur-md" />
+        <div className="absolute top-0 right-0 w-6 h-6 bg-red-800/20 rounded-sm blur-md" />
         
         <h3 className="font-black font-mono text-sm uppercase mb-1">{service.name}</h3>
         <p className="text-[10px] font-pixel leading-tight text-gray-600 mb-2">

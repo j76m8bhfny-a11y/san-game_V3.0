@@ -60,10 +60,10 @@ export const SlumsInsuranceFlyer: React.FC<{ onClose: () => void }> = ({ onClose
         <button
           onClick={() => handleAction(plan)}
           className={`
-            absolute -right-3 -bottom-3 w-14 h-14 rounded-full border-4 
+            absolute -right-3 -bottom-3 w-14 h-14 rounded-sm border-4 
             flex items-center justify-center font-marker text-xs transition-all
             ${isActive 
-              ? 'bg-red-700 border-red-900 text-white rotate-12 scale-110 shadow-xl' 
+              ? 'bg-red-700 border-red-900 text-white rotate-12 scale-110 shadow-pixel-sm' 
               : 'bg-white border-red-600 text-red-600 -rotate-12 hover:scale-110 hover:bg-red-50'}
           `}
         >

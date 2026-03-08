@@ -92,7 +92,7 @@ export const MapDashboard: React.FC = () => {
         </div>
 
         {/* 装饰：咖啡渍 */}
-        <div className="absolute bottom-10 right-20 w-32 h-32 bg-[#4a3b2a] rounded-full mix-blend-multiply opacity-20 blur-sm pointer-events-none" 
+        <div className="absolute bottom-10 right-20 w-32 h-32 bg-[#4a3b2a] rounded-sm mix-blend-multiply opacity-20 blur-sm pointer-events-none" 
              style={{ maskImage: 'radial-gradient(transparent 40%, black 100%)' }} />
       </div>
 

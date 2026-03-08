@@ -38,13 +38,13 @@ export const PauseMenu: React.FC<PauseMenuProps> = ({
   };
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {isOpen && (
         <div className="fixed inset-0 z-[9000] flex items-center justify-center bg-black/60 p-4">
           
           {/* 档案袋容器 */}
           <motion.div 
-            initial={{ scale: 0.9, opacity: 0, y: 30 }}
+            initial={false}
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.9, opacity: 0, y: 30 }}
             className="relative"
@@ -55,7 +55,7 @@ export const PauseMenu: React.FC<PauseMenuProps> = ({
 
             {/* 档案袋主体 */}
             <motion.div
-              className="relative w-[340px] md:w-[440px] bg-[#c9a961] shadow-2xl"
+              className="relative w-[340px] md:w-[440px] bg-[#c9a961] shadow-pixel-sm"
               animate={animationStage !== 'closed' ? { rotateY: -3, x: -10 } : { rotateY: 0, x: 0 }}
               transition={{ duration: 0.8, ease: 'easeInOut' }}
               style={{
@@ -106,7 +106,7 @@ export const PauseMenu: React.FC<PauseMenuProps> = ({
                         animate={{ opacity: 0, y: -30 }}
                         transition={{ delay: 0.5, duration: 0.3 }}
                       >
-                        <div className="w-3 h-3 bg-[#8b4513] rounded-full shadow-md" />
+                        <div className="w-3 h-3 bg-[#8b4513] rounded-sm shadow-md" />
                         <svg className="absolute top-2 left-2 w-28 h-16" style={{ overflow: 'visible' }} viewBox="0 0 100 40">
                           <motion.path
                             d="M 5,20 C 30,5 50,35 95,20"
@@ -118,14 +118,14 @@ export const PauseMenu: React.FC<PauseMenuProps> = ({
                             transition={{ duration: 0.6, ease: 'easeInOut' }}
                           />
                         </svg>
-                        <div className="absolute top-8 left-28 w-3 h-3 bg-[#8b4513] rounded-full shadow-md" />
+                        <div className="absolute top-8 left-28 w-3 h-3 bg-[#8b4513] rounded-sm shadow-md" />
                       </motion.div>
                     </div>
                   </div>
                 ) : (
                   /* 完全打开 - 显示内部表单 */
                   <motion.div
-                    initial={{ opacity: 0, y: 30 }}
+                    initial={false}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                     className="pt-4"
@@ -142,7 +142,7 @@ export const PauseMenu: React.FC<PauseMenuProps> = ({
           </motion.div>
 
           {/* 设置弹窗 */}
-          <AnimatePresence>
+          <AnimatePresence mode="wait">
             {showSettings && <SettingsModal onClose={() => setShowSettings(false)} />}
           </AnimatePresence>
         </div>
@@ -195,7 +195,7 @@ const PauseMenuForm: React.FC<{
             {t('pauseMenu.form.title')}
           </h2>
           {/* 机密印章小图标 */}
-          <div className="w-12 h-12 border-2 border-red-700 rounded-full flex items-center justify-center opacity-60 transform rotate-12">
+          <div className="w-12 h-12 border-2 border-red-700 rounded-sm flex items-center justify-center opacity-60 transform rotate-12">
             <span className="text-red-700 font-black text-[8px] text-center leading-tight">
               {t('settings.confidential')}
             </span>

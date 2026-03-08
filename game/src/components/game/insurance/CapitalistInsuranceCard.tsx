@@ -33,12 +33,12 @@ export const CapitalistInsuranceCard: React.FC<{ onClose: () => void }> = ({ onC
   };
 
   return (
-    <div className="relative w-[600px] bg-[#0a0a0a] rounded-xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] border border-[#333] flex flex-col p-8 overflow-hidden group">
+    <div className="relative w-[600px] bg-[#0a0a0a] rounded-sm shadow-[0_20px_60px_rgba(0,0,0,0.8)] border border-[#333] flex flex-col p-8 overflow-hidden group">
       {/* 背景纹理 */}
       <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/black-leather.png')] opacity-80" />
       
       {/* 装饰金边 */}
-      <div className="absolute inset-4 border border-[#d4af37] opacity-30 rounded-lg pointer-events-none" />
+      <div className="absolute inset-4 border border-[#d4af37] opacity-30 rounded-sm pointer-events-none" />
       
       {/* 内容层 */}
       <div className="relative z-10 flex flex-col h-full justify-between space-y-6">
@@ -48,14 +48,14 @@ export const CapitalistInsuranceCard: React.FC<{ onClose: () => void }> = ({ onC
             <h2 className="text-[#d4af37] font-pixel text-3xl tracking-[0.2em] uppercase">Apex <span className="text-white/20">Biosciences</span></h2>
             <p className="text-[#d4af37]/60 font-pixel text-xs tracking-widest mt-1">PREMIUM INSURANCE SERVICES</p>
           </div>
-          <div className="w-12 h-12 border border-[#d4af37] rounded-full flex items-center justify-center opacity-50">
+          <div className="w-12 h-12 border border-[#d4af37] rounded-sm flex items-center justify-center opacity-50">
             <span className="text-[#d4af37] font-pixel text-2xl">A</span>
           </div>
         </div>
 
         {/* VIP医疗保险卡 */}
         {medicalPlan && (
-          <div className="bg-gradient-to-r from-[#1a1a1a] to-[#0a0a0a] border border-[#d4af37]/30 rounded-lg p-6">
+          <div className="bg-[#111] border border-[#d4af37]/30 rounded-sm p-6">
             <div className="flex items-center gap-3 mb-4">
               <Heart className="text-red-500" size={24} />
               <h3 className="text-[#d4af37] font-pixel text-xl">{medicalPlan.name}</h3>
@@ -82,7 +82,7 @@ export const CapitalistInsuranceCard: React.FC<{ onClose: () => void }> = ({ onC
 
         {/* 车险卡 */}
         {autoPlan && hasVehicle && (
-          <div className="bg-gradient-to-r from-[#1a1a1a] to-[#0a0a0a] border border-blue-500/30 rounded-lg p-6">
+          <div className="bg-[#111] border border-blue-500/30 rounded-sm p-6">
             <div className="flex items-center gap-3 mb-4">
               <Car className="text-blue-500" size={24} />
               <h3 className="text-blue-400 font-pixel text-xl">{autoPlan.name}</h3>
@@ -108,7 +108,7 @@ export const CapitalistInsuranceCard: React.FC<{ onClose: () => void }> = ({ onC
         )}
 
         {!hasVehicle && (
-          <div className="bg-[#1a1a1a] border border-gray-700 rounded-lg p-6 text-center">
+          <div className="bg-[#1a1a1a] border border-gray-700 rounded-sm p-6 text-center">
             <Car className="text-gray-600 mx-auto mb-2" size={32} />
             <p className="text-gray-500 text-sm">{t('insurance.auto.needVehicle')}</p>
           </div>
@@ -135,7 +135,7 @@ export const CapitalistInsuranceCard: React.FC<{ onClose: () => void }> = ({ onC
       </div>
 
       {/* 光效扫光 */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 pointer-events-none" />
+      <div className="absolute inset-0 hidden" />
     </div>
   );
 };

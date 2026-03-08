@@ -26,8 +26,8 @@ export const DowntownClinicExterior: React.FC<Props> = ({ onEnter, onClose }) =>
 
       {/* 2. Logo与品牌：神秘、高端 */}
       <div className="relative z-10 self-center mt-12 text-center opacity-90">
-        <div className="w-16 h-16 mx-auto bg-white/10 backdrop-blur-md border border-white/30 rounded-full flex items-center justify-center mb-4 shadow-[0_0_30px_rgba(0,255,255,0.2)]">
-          <div className="w-8 h-8 border-2 border-cyan-400 rounded-full animate-pulse-slow" />
+        <div className="w-16 h-16 mx-auto backdrop-solid-dark border border-white/30 rounded-sm flex items-center justify-center mb-4 shadow-[0_0_30px_rgba(0,255,255,0.2)]">
+          <div className="w-8 h-8 border-2 border-cyan-400 rounded-sm animate-pulse-slow" />
         </div>
         <h1 className="text-4xl font-thin text-white tracking-[0.3em] uppercase">
           AETHELGARD
@@ -46,14 +46,14 @@ export const DowntownClinicExterior: React.FC<Props> = ({ onEnter, onClose }) =>
       >
         {/* 呼吸灯光效 */}
         <div className={`
-          absolute inset-0 bg-gradient-to-t from-cyan-900/40 via-transparent to-transparent
+          absolute inset-0 bg-cyan-900/20
           transition-opacity duration-1000
           ${isHovered ? 'opacity-100' : 'opacity-0'}
         `} />
 
         {/* 门体：巨大的无缝玻璃 */}
         <div className={`
-          w-[400px] h-[500px] border-x border-t border-white/10 bg-white/5 backdrop-blur-[1px]
+          w-[400px] h-[500px] border-x border-t border-white/10 backdrop-solid-dark
           transition-all duration-700 flex flex-col items-center justify-center
           ${isHovered ? 'bg-white/10 border-cyan-500/30 shadow-[0_0_50px_rgba(34,211,238,0.2)]' : ''}
         `}>
@@ -64,7 +64,7 @@ export const DowntownClinicExterior: React.FC<Props> = ({ onEnter, onClose }) =>
             [ BIOMETRIC AUTHENTICATED ]
           </div>
           <div className={`
-            mt-2 w-1 h-12 bg-gradient-to-b from-transparent via-cyan-400 to-transparent opacity-50
+            mt-2 w-1 h-12 bg-cyan-400/50 opacity-50
             transition-all duration-500
             ${isHovered ? 'h-0' : 'h-12'}
           `} />

@@ -51,7 +51,7 @@ export const SteamInitializer: React.FC<SteamInitializerProps> = ({
   if (isInitializing && showLoadingScreen) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-blue-500 mb-4" />
+        <div className="animate-spin rounded-sm h-16 w-16 border-t-2 border-b-2 border-blue-500 mb-4" />
         <p className="text-lg font-medium">正在连接 Steam...</p>
         <p className="text-sm text-gray-400 mt-2">首次启动可能需要几秒钟</p>
       </div>
@@ -70,13 +70,13 @@ export const SteamInitializer: React.FC<SteamInitializerProps> = ({
         <div className="flex gap-4">
           <button
             onClick={retry}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-medium transition-colors"
+            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-sm font-medium transition-colors"
           >
             重试连接
           </button>
           <button
             onClick={() => setShowContent(true)}
-            className="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-medium transition-colors"
+            className="px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-sm font-medium transition-colors"
           >
             离线模式继续
           </button>

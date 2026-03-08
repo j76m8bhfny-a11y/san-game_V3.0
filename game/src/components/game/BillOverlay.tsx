@@ -42,14 +42,14 @@ export const BillOverlay: React.FC<{ bill: Bill }> = ({ bill }) => {
   return (
     // ✅ 4. 使用配置的 Z-Index (原: z-[6000])
     <div 
-      className="fixed inset-0 bg-black/80 flex items-center justify-center p-4 backdrop-blur-sm"
+      className="fixed inset-0 backdrop-solid-dark flex items-center justify-center p-4"
       style={{ zIndex: overlayZIndex }} 
     >
       <motion.div
         // ✅ 5. 使用配置的动画参数 (原: scale: 0.9, y: 50)
         initial={{ scale: animation.initialScale, opacity: 0, y: animation.initialY }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
-        className="relative w-full max-w-md bg-[#Fdfbf7] text-black shadow-2xl overflow-hidden"
+        className="relative w-full max-w-md bg-[#Fdfbf7] text-black shadow-pixel overflow-hidden"
         style={{ clipPath: 'polygon(0 0, 100% 0, 100% 98%, 98% 100%, 0 100%)' }}
       >
         {/* 顶部装饰条 */}
@@ -109,7 +109,7 @@ export const BillOverlay: React.FC<{ bill: Bill }> = ({ bill }) => {
           {bill.roast && (
             <div className="mt-4 pt-4 border-t border-dashed border-gray-300">
                <div className="flex gap-3 items-center">
-                 <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold shrink-0">
+                 <div className="w-8 h-8 rounded-sm bg-black text-white flex items-center justify-center text-xs font-bold shrink-0">
                    {t('bill.medical')}
                  </div>
                  <p className="text-sm font-bold text-gray-900 font-pixel">

@@ -84,9 +84,9 @@ export const RustBeltBank: React.FC<Props> = ({ onClose }) => {
   const handleMakeInstallment = (loanId: string, amount: number) => throttledMakeInstallment(loanId, amount);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-solid-dark" onClick={onClose}>
       <div 
-        className="w-full max-w-5xl aspect-video bg-[#d1d5db] shadow-2xl overflow-hidden border-4 border-gray-600 relative"
+        className="w-full max-w-5xl aspect-video bg-[#d1d5db] shadow-pixel overflow-hidden border-4 border-gray-600 relative"
         onClick={e => e.stopPropagation()}
       >
         {hasEntered ? (

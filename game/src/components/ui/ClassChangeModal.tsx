@@ -187,7 +187,7 @@ export const ClassChangeModal: React.FC<ClassChangeModalProps> = React.memo(({
             {changes.map((_, idx) => (
               <div
                 key={idx}
-                className={`w-2 h-2 rounded-full transition-colors ${
+                className={`w-2 h-2 rounded-sm transition-colors ${
                   idx === currentIndex ? 'bg-white' : 'bg-white/30'
                 }`}
               />
@@ -200,7 +200,7 @@ export const ClassChangeModal: React.FC<ClassChangeModalProps> = React.memo(({
           initial={{ scale: 0.8, y: 50 }}
           animate={{ scale: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="bg-black/80 backdrop-blur-lg border-2 rounded-2xl p-8 text-center overflow-hidden"
+          className="backdrop-solid-dark border-2 rounded-sm p-8 text-center overflow-hidden"
           style={{ borderColor: visualConfig?.accentColor || '#666' }}
         >
           {/* 标题 */}
@@ -281,7 +281,7 @@ export const ClassChangeModal: React.FC<ClassChangeModalProps> = React.memo(({
           <AnimatePresence mode="wait">
             {animationPhase === 'reveal' && descConfig && typeof descConfig === 'object' && (
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
                 className="space-y-4 mb-6"
@@ -322,7 +322,7 @@ export const ClassChangeModal: React.FC<ClassChangeModalProps> = React.memo(({
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.4 }}
-              className="bg-white/5 border border-white/10 rounded-lg p-3 mb-6"
+              className="bg-white/5 border border-white/10 rounded-sm p-3 mb-6"
             >
               <div className="flex items-center gap-2 text-sm text-gray-400">
                 <span>💡</span>
@@ -338,7 +338,7 @@ export const ClassChangeModal: React.FC<ClassChangeModalProps> = React.memo(({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
               onClick={handleClose}
-              className="w-full py-4 font-black uppercase tracking-widest rounded-lg transition-all hover:scale-[1.02] active:scale-95"
+              className="w-full py-4 font-black uppercase tracking-widest rounded-sm transition-all hover:scale-[1.02] active:scale-95"
               style={{ 
                 backgroundColor: visualConfig?.accentColor,
                 color: 'black'
@@ -396,7 +396,7 @@ const ParticleEffect: React.FC<ParticleEffectProps> = React.memo(({ type, isActi
             delay: p.delay,
             ease: "easeOut"
           }}
-          className="absolute w-2 h-2 rounded-full"
+          className="absolute w-2 h-2 rounded-sm"
           style={{
             backgroundColor: type === 'upgrade' ? '#fbbf24' : '#6b7280',
             boxShadow: `0 0 10px ${type === 'upgrade' ? '#fbbf24' : '#6b7280'}`

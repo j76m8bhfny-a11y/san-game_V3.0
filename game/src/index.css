@@ -176,6 +176,162 @@ body {
     );
     box-shadow: 2px 2px 0 rgba(0,0,0,0.2);
   }
+
+  /* ========================================
+     视觉质量优化工具类
+     ======================================== */
+  
+  /* 像素艺术图片渲染 - 禁用双线性插值 */
+  .render-pixelated {
+    image-rendering: -webkit-crisp-edges;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+  }
+  
+  /* 动画性能优化 - 强制整数层渲染 */
+  .motion-optimized {
+    will-change: transform;
+    transform: translateZ(0);
+  }
+  
+  /* 像素风格阴影 - 硬边阴影替代模糊阴影 */
+  .shadow-pixel {
+    box-shadow: 
+      4px 0 0 0 rgba(0,0,0,0.5),
+      0 4px 0 0 rgba(0,0,0,0.5),
+      4px 4px 0 0 rgba(0,0,0,0.5);
+  }
+  
+  .shadow-pixel-sm {
+    box-shadow: 
+      2px 0 0 0 rgba(0,0,0,0.4),
+      0 2px 0 0 rgba(0,0,0,0.4),
+      2px 2px 0 0 rgba(0,0,0,0.4);
+  }
+  
+  /* 纯色遮罩替代毛玻璃效果 */
+  .backdrop-solid {
+    background-color: rgba(0, 0, 0, 0.85);
+  }
+  
+  .backdrop-solid-light {
+    background-color: rgba(255, 255, 255, 0.92);
+  }
+  
+  .backdrop-solid-dark {
+    background-color: rgba(17, 17, 17, 0.95);
+  }
+  
+  /* 像素风格边框 - 硬边 */
+  .border-pixel {
+    border-style: solid;
+    border-width: 2px;
+  }
+  
+  /* 禁用亚像素渲染 */
+  .no-subpixel {
+    transform: translate3d(0, 0, 0);
+  }
+
+  /* ========================================
+     像素渐变工具类 - 离散步进模拟像素感
+     ======================================== */
+  
+  /* 水平双色像素渐变 */
+  .bg-pixel-gradient-r {
+    background: repeating-linear-gradient(
+      90deg,
+      var(--gradient-from, #000) 0px,
+      var(--gradient-from, #000) 4px,
+      var(--gradient-to, #333) 4px,
+      var(--gradient-to, #333) 8px
+    );
+  }
+  
+  /* 金色成就渐变 */
+  .bg-pixel-gradient-gold {
+    background: repeating-linear-gradient(
+      135deg,
+      #fbbf24 0px,
+      #fbbf24 4px,
+      #f59e0b 4px,
+      #f59e0b 8px,
+      #d97706 8px,
+      #d97706 12px
+    );
+  }
+  
+  /* 彩虹像素渐变 */
+  .bg-pixel-gradient-rainbow {
+    background: repeating-linear-gradient(
+      90deg,
+      #ef4444 0px,
+      #ef4444 4px,
+      #f59e0b 4px,
+      #f59e0b 8px,
+      #10b981 8px,
+      #10b981 12px,
+      #3b82f6 12px,
+      #3b82f6 16px
+    );
+  }
+  
+  /* 蓝青像素渐变 */
+  .bg-pixel-gradient-cyan {
+    background: repeating-linear-gradient(
+      90deg,
+      #06b6d4 0px,
+      #06b6d4 4px,
+      #0891b2 4px,
+      #0891b2 8px
+    );
+  }
+  
+  /* 紫粉像素渐变 */
+  .bg-pixel-gradient-purple {
+    background: repeating-linear-gradient(
+      90deg,
+      #a855f7 0px,
+      #a855f7 4px,
+      #ec4899 4px,
+      #ec4899 8px
+    );
+  }
+  
+  /* 琥珀色像素渐变 */
+  .bg-pixel-gradient-amber {
+    background: repeating-linear-gradient(
+      90deg,
+      #d97706 0px,
+      #d97706 4px,
+      #b45309 4px,
+      #b45309 8px
+    );
+  }
+  
+  /* 红色像素渐变 */
+  .bg-pixel-gradient-red {
+    background: repeating-linear-gradient(
+      90deg,
+      #dc2626 0px,
+      #dc2626 4px,
+      #991b1b 4px,
+      #991b1b 8px
+    );
+  }
+  
+  /* 天空蓝像素渐变 */
+  .bg-pixel-gradient-sky {
+    background: repeating-linear-gradient(
+      180deg,
+      #7dd3fc 0px,
+      #7dd3fc 4px,
+      #bae6fd 4px,
+      #bae6fd 8px,
+      #fef3c7 8px,
+      #fef3c7 12px
+    );
+  }
 }
 
 /* 滚动条美化 */

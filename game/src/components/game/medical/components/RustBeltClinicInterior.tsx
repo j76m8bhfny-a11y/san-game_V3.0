@@ -37,7 +37,7 @@ export const RustBeltClinicInterior: React.FC<Props> = ({ services, gold, onBuy,
       </div>
 
       {/* 2. 容器：接待柜台界面 */}
-      <div className="relative z-10 w-full max-w-4xl h-[85%] bg-[#1e293b] border-8 border-[#334155] shadow-2xl flex flex-col md:flex-row">
+      <div className="relative z-10 w-full max-w-4xl h-[85%] bg-[#1e293b] border-8 border-[#334155] shadow-pixel flex flex-col md:flex-row">
         
         {/* 左侧：服务菜单 (Menu Board) */}
         <div className="flex-1 bg-[#0f172a] border-r-4 border-[#334155] p-6 flex flex-col relative overflow-hidden">
@@ -65,7 +65,7 @@ export const RustBeltClinicInterior: React.FC<Props> = ({ services, gold, onBuy,
           </div>
 
           {/* 玻璃反光层 (UI上) */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-white/5 pointer-events-none" />
         </div>
 
         {/* 右侧：交互窗口 (Reception Window) */}

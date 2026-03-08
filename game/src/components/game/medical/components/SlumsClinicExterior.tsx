@@ -44,7 +44,7 @@ export const SlumsClinicExterior: React.FC<Props> = ({ onEnter, onClose }) => {
         <div className="absolute top-[30%] right-[30%] opacity-80 transform rotate-12">
           <img 
             src="/assets/medical/ui_graffiti_cross.png" 
-            className="w-32 drop-shadow-lg" 
+            className="w-32 drop-shadow-pixel-sm" 
             alt="Red Cross"
           />
         </div>

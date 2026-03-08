@@ -145,7 +145,7 @@ const ResourceIcon: React.FC<{
   
   return (
     <motion.div
-      className={`relative flex items-center gap-2 px-3 py-2 rounded-lg border ${colors.border} ${colors.bg} ${colors.glow} transition-all duration-300`}
+      className={`relative flex items-center gap-2 px-3 py-2 rounded-sm border ${colors.border} ${colors.bg} ${colors.glow} transition-all duration-300`}
       animate={isActive ? {
         scale: animation.scale,
         rotate: animation.rotate,
@@ -163,9 +163,9 @@ const ResourceIcon: React.FC<{
       <div className="flex flex-col">
         <span className="text-[10px] text-gray-400 uppercase">{label}</span>
         <div className="flex items-center gap-1.5">
-          <div className="w-16 h-1.5 bg-gray-800 rounded-full overflow-hidden">
+          <div className="w-16 h-1.5 bg-gray-800 rounded-sm overflow-hidden">
             <motion.div
-              className={`h-full rounded-full ${
+              className={`h-full rounded-sm ${
                 percent < 25 ? 'bg-red-500' : 
                 percent < 50 ? 'bg-yellow-500' : 
                 'bg-green-500'
@@ -235,7 +235,7 @@ export const ResourceHintBar: React.FC<ResourceHintProps> = ({
       }}
       transition={{ duration: 0.3 }}
     >
-      <div className="flex items-center gap-3 px-4 py-3 bg-black/80 backdrop-blur-md rounded-xl border border-white/10">
+      <div className="flex items-center gap-3 px-4 py-3 backdrop-solid-dark rounded-sm border border-white/10">
         {/* HP */}
         {(levels.hp !== 'none' || !hasAnyHint) && (
           <ResourceIcon

@@ -135,7 +135,7 @@ export const IntroComic: React.FC<IntroComicProps> = React.memo(({ onComplete })
   
   // 获取气泡样式
   const getBubbleStyle = (type: string, position: string): string => {
-    const baseStyle = 'absolute p-4 font-bold text-sm md:text-base shadow-lg';
+    const baseStyle = 'absolute p-4 font-bold text-sm md:text-base shadow-pixel';
     const positionStyles: Record<string, string> = {
       'top': 'top-4 left-1/2 -translate-x-1/2 max-w-[80%]',
       'center': 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-[70%]',
@@ -146,8 +146,8 @@ export const IntroComic: React.FC<IntroComicProps> = React.memo(({ onComplete })
     
     const typeStyles: Record<string, string> = {
       'narration': 'bg-yellow-100 text-black border-2 border-black font-pixel italic',
-      'dialogue': 'bg-white text-black border-2 border-black rounded-lg',
-      'thought': 'bg-blue-100 text-black border-2 border-blue-400 rounded-full font-italic'
+      'dialogue': 'bg-white text-black border-2 border-black rounded-sm',
+      'thought': 'bg-blue-100 text-black border-2 border-blue-400 rounded-sm font-italic'
     };
     
     return `${baseStyle} ${positionStyles[position] || positionStyles.center} ${typeStyles[type] || typeStyles.dialogue}`;
@@ -168,7 +168,7 @@ export const IntroComic: React.FC<IntroComicProps> = React.memo(({ onComplete })
   if (isSkipped) return null;
   
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -239,7 +239,7 @@ export const IntroComic: React.FC<IntroComicProps> = React.memo(({ onComplete })
                 <motion.div
                   initial={{ y: -50, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  className="absolute top-0 left-0 right-0 p-4 bg-gradient-to-b from-black/80 to-transparent"
+                  className="absolute top-0 left-0 right-0 p-4 bg-black/60"
                 >
                   <h2 
                     className="text-white text-lg md:text-xl font-black uppercase tracking-wider text-center"
@@ -288,7 +288,7 @@ export const IntroComic: React.FC<IntroComicProps> = React.memo(({ onComplete })
                 {panels.map((_, idx) => (
                   <div
                     key={idx}
-                    className={`w-2 h-2 rounded-full transition-colors ${
+                    className={`w-2 h-2 rounded-sm transition-colors ${
                       idx === currentPanelIndex ? 'bg-white' : 'bg-white/30'
                     }`}
                   />

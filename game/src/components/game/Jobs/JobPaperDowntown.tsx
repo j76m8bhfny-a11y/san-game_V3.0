@@ -29,17 +29,17 @@ export const JobPaperDowntown: React.FC<Props> = ({
 
   return (
     <div className={`
-      flex flex-col p-6 rounded-lg border transition-all duration-300 bg-[url('/assets/job/downtown/stationery.png')] bg-cover
+      flex flex-col p-6 rounded-sm border transition-all duration-300 bg-[url('/assets/job/downtown/stationery.png')] bg-cover
       ${isActive 
-        ? 'border-amber-600 ring-2 ring-amber-600/30 shadow-xl' 
+        ? 'border-amber-600 ring-2 ring-amber-600/30 shadow-pixel-sm' 
         : canApply 
-          ? 'border-amber-800/30 hover:border-amber-600/50 hover:shadow-lg'
+          ? 'border-amber-800/30 hover:border-amber-600/50 hover:shadow-pixel-sm'
           : 'border-amber-900/20 opacity-70'}
     `}>
       <div className="flex justify-between items-start mb-4">
         <div className={`
           w-10 h-10 rounded flex items-center justify-center text-white font-pixel font-bold text-lg shadow-md border-2
-          ${isActive ? 'bg-gradient-to-br from-amber-600 to-amber-800 border-amber-400' : 'bg-gradient-to-br from-slate-700 to-slate-900 border-slate-600'}
+          ${isActive ? 'bg-amber-700 border-amber-400' : 'bg-slate-800 border-slate-600'}
         `}>
           {job.title?.[0] || '?'}
         </div>
@@ -81,7 +81,7 @@ export const JobPaperDowntown: React.FC<Props> = ({
             ${isActive 
               ? 'bg-red-50 text-red-700 border-red-300 hover:bg-red-100' 
               : canApply 
-                ? 'bg-gradient-to-r from-amber-600 to-amber-700 text-white border-amber-500 hover:shadow-lg hover:shadow-amber-900/20 hover:-translate-y-0.5'
+                ? 'bg-amber-700 text-white border-amber-500 hover:shadow-pixel-sm hover:shadow-amber-900/20 hover:-translate-y-0.5'
                 : 'bg-slate-200 text-slate-400 border-slate-300 cursor-not-allowed'}
           `}
         >

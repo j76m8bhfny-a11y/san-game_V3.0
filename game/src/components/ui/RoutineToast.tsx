@@ -9,15 +9,15 @@ export const RoutineToast: React.FC = () => {
 
   return (
     <div className="fixed top-20 right-4 z-[9999] flex flex-col gap-2 pointer-events-none">
-      <AnimatePresence>
-        {notifications.map((notif) => (
+      <AnimatePresence mode="wait">
+        {notifications.slice(0, 5).map((notif) => (
           <motion.div
             key={notif.id}
-            initial={{ opacity: 0, x: 50 }}
+            initial={false}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: 50 }}
             className={`
-              px-4 py-3 rounded shadow-lg backdrop-blur-md border-l-4 min-w-[200px]
+              px-4 py-3 rounded shadow-pixel-sm backdrop-solid border-l-4 min-w-[200px]
               ${(toastStyles as Record<string, string>)[notif.type] || (toastStyles as Record<string, string>)['info']}
             `}
           >

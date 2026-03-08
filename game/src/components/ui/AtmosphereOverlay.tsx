@@ -215,10 +215,10 @@ export const AtmosphereOverlay: React.FC<{ children: React.ReactNode }> = ({
       </div>
       
       {/* 危险状态覆盖层 */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isDangerous && (
           <motion.div
-            initial={{ opacity: 0 }}
+            initial={false}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}

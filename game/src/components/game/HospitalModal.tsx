@@ -86,8 +86,8 @@ const DefaultHospitalView: React.FC<{ onClose: () => void }> = ({ onClose }) => 
   const selectedService = services.find(s => s.id === selectedServiceId);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md p-4 font-mono">
-      <div className={`w-full max-w-4xl h-[80vh] ${theme.bg} border-2 ${theme.border} rounded-xl shadow-2xl flex overflow-hidden relative`}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-solid-dark p-4 font-mono">
+      <div className={`w-full max-w-4xl h-[80vh] ${theme.bg} border-2 ${theme.border} rounded-sm shadow-pixel flex overflow-hidden relative`}>
         
         {/* Left: Service List */}
         <div className="w-1/3 border-r border-white/10 flex flex-col bg-black/20">
@@ -104,7 +104,7 @@ const DefaultHospitalView: React.FC<{ onClose: () => void }> = ({ onClose }) => 
               <button
                 key={service.id}
                 onClick={() => setSelectedServiceId(service.id)}
-                className={`w-full text-left p-4 rounded-lg border transition-all ${
+                className={`w-full text-left p-4 rounded-sm border transition-all ${
                   selectedServiceId === service.id 
                     ? `${theme.accent} border-current bg-white/5` 
                     : 'border-transparent text-gray-500 hover:bg-white/5 hover:text-gray-300'
@@ -145,7 +145,7 @@ const DefaultHospitalView: React.FC<{ onClose: () => void }> = ({ onClose }) => 
                     </div>
 
                     {/* Effects Preview */}
-                    <div className="grid grid-cols-2 gap-4 bg-black/30 p-4 rounded-lg border border-white/5">
+                    <div className="grid grid-cols-2 gap-4 bg-black/30 p-4 rounded-sm border border-white/5">
                         <EffectRow label={t('hospital.effect.hpRestore')} value={selectedService.effects?.hpRestore} icon={<Heart size={14}/>} color="text-green-400" />
                         <EffectRow label={t('hospital.effect.insightRestore')} value={selectedService.effects?.insightRestore} icon={<Activity size={14}/>} color="text-amber-400" />
                         {selectedService.effects?.addiction && (
@@ -190,9 +190,9 @@ const DefaultHospitalView: React.FC<{ onClose: () => void }> = ({ onClose }) => 
                        onClick={() => handleTreatment(selectedService.id)}
                        disabled={!canAfford}
                        className={`
-                         w-full py-4 rounded-lg font-bold text-lg transition-all flex items-center justify-center gap-2
+                         w-full py-4 rounded-sm font-bold text-lg transition-all flex items-center justify-center gap-2
                          ${canAfford 
-                           ? 'bg-white text-black hover:scale-[1.02] hover:shadow-lg' 
+                           ? 'bg-white text-black hover:scale-[1.02] hover:shadow-pixel-sm' 
                            : 'bg-gray-800 text-gray-500 cursor-not-allowed border border-gray-700' 
                          }
                        `}

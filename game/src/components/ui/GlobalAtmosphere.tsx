@@ -23,9 +23,9 @@ const AwakenedEye = ({ index: _index }: { index: number }) => {
         animationDelay: `${styleConfig.delay}s`,
         animationDuration: `${styleConfig.duration}s`
       }}
-      className="absolute w-8 h-4 border border-amber-400/60 rounded-full flex items-center justify-center pointer-events-none blur-[0.5px] animate-eye-glow"
+      className="absolute w-8 h-4 border border-amber-400/60 rounded-sm flex items-center justify-center pointer-events-none blur-[0.5px] animate-eye-glow"
     >
-      <div className="w-1.5 h-1.5 bg-amber-400 rounded-full" />
+      <div className="w-1.5 h-1.5 bg-amber-400 rounded-sm" />
     </div>
   );
 };
@@ -57,7 +57,7 @@ export const GlobalAtmosphere: React.FC = () => {
       />
 
       {/* 2. 觉醒层（真知之眼） */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isAwakened && (
           <div className="absolute inset-0">
              {[...Array(isTranscendent ? 5 : 3)].map((_, i) => <AwakenedEye key={i} index={i} />)}

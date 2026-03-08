@@ -39,7 +39,7 @@ const JailOverlay: React.FC = () => {
       <motion.div 
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="relative z-10 bg-zinc-900 border-2 border-zinc-700 p-8 max-w-2xl w-full shadow-2xl"
+        className="relative z-10 bg-zinc-900 border-2 border-zinc-700 p-8 max-w-2xl w-full shadow-pixel"
       >
         {/* 头部信息 */}
         <div className="text-center mb-8">
@@ -59,7 +59,7 @@ const JailOverlay: React.FC = () => {
                 {/* 字段已确认为 turnsServed / sentenceTurns */}
                 {prison.turnsServed} / {prison.sentenceTurns} <span className="text-sm font-normal text-zinc-500">{t('jail.turns')}</span>
               </div>
-              <div className="w-full h-2 bg-zinc-900 mt-2 rounded-full overflow-hidden">
+              <div className="w-full h-2 bg-zinc-900 mt-2 rounded-sm overflow-hidden">
                 <div
                   className="h-full bg-red-600"
                   style={{ width: `${prison.sentenceTurns > 0 ? (prison.turnsServed / prison.sentenceTurns) * 100 : 0}%` }}

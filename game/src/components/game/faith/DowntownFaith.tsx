@@ -10,7 +10,7 @@ export const DowntownFaith: React.FC<Props> = ({ onClose }) => {
 
   return (
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-xl" 
+      className="fixed inset-0 z-50 flex items-center justify-center backdrop-solid-dark" 
       onClick={onClose}
     >
       <div 

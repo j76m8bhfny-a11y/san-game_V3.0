@@ -16,13 +16,13 @@ export const TooltipLayer: React.FC = () => {
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[60]">
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }} 
+          initial={false} 
           animate={{ opacity: 1, scale: 1 }} 
           exit={{ opacity: 0 }}
           style={{ left: finalX, top: finalY }}
-          className="absolute bg-black/90 border border-green-500/50 text-green-100 p-3 rounded shadow-[0_0_15px_rgba(0,255,0,0.2)] max-w-[200px] backdrop-blur-sm"
+          className="absolute bg-black/90 border border-green-500/50 text-green-100 p-3 rounded shadow-[0_0_15px_rgba(0,255,0,0.2)] max-w-[200px] backdrop-solid-dark"
         >
           <div className="h-1 w-full bg-green-500/30 mb-2" />
           <div className="text-xs font-mono leading-relaxed">{content}</div>

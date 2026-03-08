@@ -27,16 +27,16 @@ export const SuburbsMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy 
   return (
     <div 
       className={`
-        relative group cursor-pointer w-full h-32 bg-white rounded-xl shadow-md border border-gray-100
+        relative group cursor-pointer w-full h-32 bg-white rounded-sm shadow-md border border-gray-100
         transition-all duration-300 overflow-hidden flex flex-col items-center justify-center
-        ${canAfford ? 'hover:shadow-xl hover:border-red-200 hover:-translate-y-1' : 'opacity-60 grayscale cursor-not-allowed'}
+        ${canAfford ? 'hover:shadow-pixel-sm hover:border-red-200 hover:-translate-y-1' : 'opacity-60 grayscale cursor-not-allowed'}
       `}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={canAfford && !isPending() ? throttledBuy : undefined}
     >
       {/* 包装盒顶部颜色条 */}
-      <div className="absolute top-0 w-full h-2 bg-gradient-to-r from-red-500 to-red-600" />
+      <div className="absolute top-0 w-full h-2 bg-red-500" />
 
       {/* 物品图标 */}
       <div className={`

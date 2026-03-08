@@ -42,7 +42,7 @@ export const LicenseBuySection: React.FC<LicenseBuySectionProps> = ({
   if (filteredLicenses.length === 0) return null;
 
   return (
-    <div className="p-4 rounded-lg border border-white/10 bg-white/5">
+    <div className="p-4 rounded-sm border border-white/10 bg-white/5">
       <h4 className="text-white font-semibold mb-2">
         {isElite 
           ? t(uiText.eliteLicenseTitleKey || 'vehicleShop.downtown.eliteLicenseTitle')
@@ -96,7 +96,7 @@ export const LicenseBuySection: React.FC<LicenseBuySectionProps> = ({
               whileHover={{ scale: 1.02 }}
             >
               <div className="flex items-start gap-3">
-                <div className={`p-2 rounded-lg ${isEliteLicense ? 'bg-yellow-500/20' : 'bg-white/10'}`}>
+                <div className={`p-2 rounded-sm ${isEliteLicense ? 'bg-yellow-500/20' : 'bg-white/10'}`}>
                   {isEliteLicense ? (
                     <Shield size={18} className="text-yellow-400" />
                   ) : (

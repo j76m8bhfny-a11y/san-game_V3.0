@@ -16,12 +16,12 @@ export const RustBeltShop: React.FC<Props> = ({ onClose }) => {
   const gold = vitality.metrics.gold;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-solid-dark" onClick={onClose}>
       
       {/* 1. 商店容器：模拟透过防弹玻璃看货架 */}
       <div 
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-6xl aspect-video bg-[#1e293b] shadow-2xl overflow-hidden border-8 border-[#334155] flex flex-col"
+        className="relative w-full max-w-6xl aspect-video bg-[#1e293b] shadow-pixel overflow-hidden border-8 border-[#334155] flex flex-col"
         style={{
           backgroundImage: "url('/assets/shops/rust_shelves_bg.jpg')", // 货架背景
           backgroundSize: 'cover',
@@ -29,7 +29,7 @@ export const RustBeltShop: React.FC<Props> = ({ onClose }) => {
         }}
       >
         {/* --- 顶部：荧光灯管与招牌 --- */}
-        <div className="h-24 bg-gradient-to-b from-black/80 to-transparent z-10 flex justify-between items-start p-6">
+        <div className="h-24 bg-black/60 z-10 flex justify-between items-start p-6">
           {/* 闪烁的霓虹灯招牌 */}
           <div className="border-4 border-red-900 bg-black/50 px-4 py-2 shadow-[0_0_20px_rgba(220,38,38,0.4)] animate-pulse">
             <h1 className="text-3xl font-black text-red-500 font-mono tracking-[0.2em] uppercase italic glitch-text">
@@ -79,10 +79,10 @@ export const RustBeltShop: React.FC<Props> = ({ onClose }) => {
            <div className="absolute inset-0 bg-[url('/assets/fx/scratch_glass.png')] opacity-30 mix-blend-screen" />
            
            {/* 3. 反光 (高光条) */}
-           <div className="absolute top-0 right-0 w-[200%] h-full bg-gradient-to-r from-transparent via-white/5 to-transparent -skew-x-12 translate-x-[-50%]" />
+           <div className="absolute top-0 right-0 w-[200%] h-full bg-white/5 -skew-x-12 translate-x-[-50%]" />
 
            {/* 4. 贴纸：只收现金 */}
-           <div className="absolute bottom-10 right-10 rotate-[-5deg] border-2 border-white/30 bg-red-600/90 text-white px-4 py-2 font-black font-pixel text-xl shadow-lg">
+           <div className="absolute bottom-10 right-10 rotate-[-5deg] border-2 border-white/30 bg-red-600/90 text-white px-4 py-2 font-black font-pixel text-xl shadow-pixel">
              CASH ONLY
            </div>
            <div className="absolute bottom-24 right-12 rotate-[2deg] border border-white/20 bg-yellow-500/90 text-black px-3 py-1 font-bold font-mono text-xs shadow-md">
@@ -92,7 +92,7 @@ export const RustBeltShop: React.FC<Props> = ({ onClose }) => {
 
         {/* --- 底部：金属交易槽 (互动区) --- */}
         <div className="h-20 bg-[#334155] border-t-4 border-[#475569] flex items-center justify-center relative z-30 shadow-[0_-10px_20px_rgba(0,0,0,0.5)]">
-           <div className="w-1/2 h-12 bg-[#1e293b] rounded-lg border-2 border-[#0f172a] shadow-inner flex items-center justify-center">
+           <div className="w-1/2 h-12 bg-[#1e293b] rounded-sm border-2 border-[#0f172a] shadow-inner flex items-center justify-center">
              <span className="text-slate-600 font-mono text-xs tracking-widest uppercase">
                SLIDE ITEMS HERE
              </span>

@@ -25,20 +25,20 @@ const InteractableObject: React.FC<InteractableObjectProps> = ({ label, style, b
       {/* 默认状态图片 */}
       <img 
         src={baseImage} 
-        className="w-full h-auto object-contain drop-shadow-xl group-hover:opacity-0 absolute inset-0 transition-opacity duration-300" 
+        className="w-full h-auto object-contain drop-shadow-pixel group-hover:opacity-0 absolute inset-0 transition-opacity duration-300 render-pixelated" 
         alt={label} 
       />
       
       {/* Hover 状态图片 (发光/动态) */}
       <img 
         src={hoverImage} 
-        className="w-full h-auto object-contain drop-shadow-[0_0_20px_rgba(255,165,0,0.6)] opacity-0 group-hover:opacity-100 transition-opacity duration-300" 
+        className="w-full h-auto object-contain drop-shadow-[0_0_20px_rgba(255,165,0,0.6)] opacity-0 group-hover:opacity-100 transition-opacity duration-300 render-pixelated" 
         alt={label} 
       />
       
       {/* 标签提示 (工业风格: 黑黄配色) */}
       <div className="absolute -top-14 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 pointer-events-none">
-        <div className="bg-[#2a2a2a] text-[#ffd700] px-2 py-1 font-pixel text-xs border-2 border-[#ffd700] tracking-widest shadow-lg uppercase whitespace-nowrap">
+        <div className="bg-[#2a2a2a] text-[#ffd700] px-2 py-1 font-pixel text-xs border-2 border-[#ffd700] tracking-widest shadow-pixel-sm uppercase whitespace-nowrap">
           {label}
         </div>
         {/* 连接线 */}
@@ -78,14 +78,14 @@ const NarrativeProp: React.FC<NarrativePropProps> = ({ text, style, baseImage, a
       <div className={`relative w-full h-full transition-transform duration-200 ${isActive ? 'scale-105' : 'group-hover:scale-102'}`}>
         <img 
           src={isActive && activeImage ? activeImage : baseImage} 
-          className="w-full h-auto object-contain drop-shadow-lg"
+          className="w-full h-auto object-contain drop-shadow-pixel-sm render-pixelated"
           alt="Narrative Prop" 
         />
         
         {/* 漫画风格对话气泡 */}
         <div className={`
           absolute -top-24 left-1/2 -translate-x-1/2 w-48 z-30
-          bg-white text-black p-3 rounded-lg font-pixel text-xs border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,0.5)]
+          bg-white text-black p-3 rounded-sm font-pixel text-xs border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,0.5)]
           transition-all duration-300 origin-bottom
           ${isActive ? 'opacity-100 scale-100' : 'opacity-0 scale-50 pointer-events-none'}
         `}>

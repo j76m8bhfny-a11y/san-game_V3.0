@@ -51,12 +51,12 @@ const MenuCard: React.FC<MenuCardProps> = ({
       }}
       onMouseLeave={() => onHover(null)}
       className={`
-        relative w-28 h-44 md:w-40 md:h-60 rounded-sm shadow-2xl
+        relative w-28 h-44 md:w-40 md:h-60 rounded-sm shadow-pixel-sm
         flex flex-col items-center justify-end pb-4 px-2
         transition-shadow duration-300 group
         ${color} 
         ${disabled ? 'cursor-not-allowed grayscale' : 'cursor-pointer hover:shadow-cyan-500/50'}
-        border border-white/10 backdrop-blur-sm
+        border border-white/10 backdrop-solid-dark
       `}
     >
       <div className="absolute inset-0 p-4 flex flex-col items-center justify-center overflow-hidden rounded-sm">
@@ -132,23 +132,23 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
       {/* Language Toggle Button - Top Right */}
       <button
         onClick={toggleLanguage}
-        className="absolute top-6 right-6 z-50 px-3 py-1.5 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full text-xs font-medium text-white/80 hover:text-white transition-all"
+        className="absolute top-6 right-6 z-50 px-3 py-1.5 bg-white/10 hover:bg-white/20 backdrop-solid-dark border border-white/20 rounded-sm text-xs font-medium text-white/80 hover:text-white transition-all"
       >
         {locale === 'zh-CN' ? '中文 / EN' : 'EN / 中文'}
       </button>
 
       {/* L0: Background - American Dream Sky Theme */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-b from-sky-300 via-sky-200 to-amber-100">
+      <div className="absolute inset-0 z-0 bg-pixel-gradient-sky">
         <div className="absolute inset-0 bg-[url('/assets/textures/grid.svg')] opacity-10 [transform:perspective(500px)_rotateX(60deg)] origin-bottom" />
         {/* Pixel Clouds */}
         <div className="absolute top-20 left-10 w-32 h-16 bg-white/60 rounded-sm" style={{ clipPath: 'polygon(20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%, 0% 50%)' }} />
         <div className="absolute top-32 right-20 w-24 h-12 bg-white/40 rounded-sm" style={{ clipPath: 'polygon(20% 0%, 80% 0%, 100% 50%, 80% 100%, 20% 100%, 0% 50%)' }} />
       </div>
 
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {glitchTrigger && (
           <motion.div 
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            initial={false} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="absolute inset-0 bg-red-600 mix-blend-color-dodge z-10 pointer-events-none"
           />
         )}
@@ -163,7 +163,7 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
         >
           <h1 className="text-5xl md:text-8xl font-pixel font-black text-white tracking-tighter drop-shadow-[0_0_30px_rgba(255,255,255,0.4)]">
             AMERICAN<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-gray-500">INSIGHT</span>
+            <span className="text-transparent bg-clip-text bg-gray-300">INSIGHT</span>
           </h1>
           <motion.div 
             initial={{ opacity: 0, scale: 2 }}
@@ -184,7 +184,7 @@ export const TitleScreen: React.FC<TitleScreenProps> = ({ onStart }) => {
           onClick={() => handleStart('NEW')} onHover={() => setHoverItem(t('titleScreen.hover.new'))} delay={0.2}
         >
           <div className="w-full h-full border-2 border-green-800/20 rounded flex flex-col items-center justify-start pt-4 bg-green-50">
-             <div className="w-12 h-12 bg-gray-300 rounded-full mb-2 border border-gray-400" />
+             <div className="w-12 h-12 bg-gray-300 rounded-sm mb-2 border border-gray-400" />
              <div className="w-16 h-2 bg-gray-300 rounded mb-1" />
              <div className="w-10 h-2 bg-gray-300 rounded" />
              <div className="mt-auto mb-2 text-[8px] text-green-800 font-bold">US DEPT OF STATE</div>

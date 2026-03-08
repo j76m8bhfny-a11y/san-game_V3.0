@@ -33,7 +33,7 @@ const ManilaEnvelope: React.FC<{
     <div className="relative" style={{ perspective: '1000px' }}>
       {/* 档案袋背面 */}
       <motion.div
-        className="relative w-[360px] md:w-[480px] bg-[#c9a961] shadow-2xl"
+        className="relative w-[360px] md:w-[480px] bg-[#c9a961] shadow-pixel-sm"
         style={{
           backgroundImage: `
             repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 4px),
@@ -67,7 +67,7 @@ const ManilaEnvelope: React.FC<{
               {/* 顶部：机密标记 */}
               <div className="flex justify-between items-start">
                 {/* 国土安全部徽章 */}
-                <div className="w-20 h-20 bg-[#1a365d] rounded-full flex items-center justify-center border-4 border-[#c9a961] shadow-lg">
+                <div className="w-20 h-20 bg-[#1a365d] rounded-sm flex items-center justify-center border-4 border-[#c9a961] shadow-pixel-sm">
                   <div className="text-center text-white text-[8px] leading-tight">
                     <div className="font-bold">DHS</div>
                     <div className="scale-75">🇺🇸</div>
@@ -76,7 +76,7 @@ const ManilaEnvelope: React.FC<{
 
                 {/* 机密印章 */}
                 <div className="transform rotate-12">
-                  <div className="w-24 h-24 border-4 border-red-700 rounded-full flex items-center justify-center opacity-80"
+                  <div className="w-24 h-24 border-4 border-red-700 rounded-sm flex items-center justify-center opacity-80"
                     style={{ borderStyle: 'double', borderWidth: '6px' }}
                   >
                     <div className="text-red-700 font-black text-xs text-center leading-tight">
@@ -90,7 +90,7 @@ const ManilaEnvelope: React.FC<{
               {!isOpen && (
                 <motion.button
                   onClick={handleOpen}
-                  className="self-center px-8 py-4 bg-[#8b7355] hover:bg-[#7a6548] text-[#f5f5dc] font-mono text-sm tracking-widest border-2 border-[#5a4a35] shadow-lg transition-all"
+                  className="self-center px-8 py-4 bg-[#8b7355] hover:bg-[#7a6548] text-[#f5f5dc] font-mono text-sm tracking-widest border-2 border-[#5a4a35] shadow-pixel-sm transition-all"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -139,7 +139,7 @@ const ManilaEnvelope: React.FC<{
               transition={{ delay: isOpen ? 0 : 0.5, duration: 0.5 }}
             >
               {/* 按钮底座 */}
-              <div className="w-4 h-4 bg-[#8b4513] rounded-full shadow-lg" />
+              <div className="w-4 h-4 bg-[#8b4513] rounded-sm shadow-pixel-sm" />
               {/* 红线 */}
               <svg className="absolute top-2 left-2 w-32 h-20 pointer-events-none" style={{ overflow: 'visible' }}>
                 <motion.path
@@ -153,7 +153,7 @@ const ManilaEnvelope: React.FC<{
                 />
               </svg>
               {/* 另一端按钮 */}
-              <div className="absolute top-8 left-28 w-4 h-4 bg-[#8b4513] rounded-full shadow-lg" />
+              <div className="absolute top-8 left-28 w-4 h-4 bg-[#8b4513] rounded-sm shadow-pixel" />
             </motion.div>
           </div>
         )}

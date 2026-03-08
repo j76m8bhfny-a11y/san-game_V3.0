@@ -25,14 +25,14 @@ const InteractableObject: React.FC<InteractableProps> = ({ label, style, baseIma
       {/* 默认状态图片 */}
       <img 
         src={baseImage} 
-        className="w-full h-full object-contain drop-shadow-2xl group-hover:opacity-0 absolute inset-0 transition-opacity duration-500 ease-in-out" 
+        className="w-full h-full object-contain drop-shadow-pixel group-hover:opacity-0 absolute inset-0 transition-opacity duration-500 ease-in-out render-pixelated" 
         alt={label} 
       />
       
       {/* Hover 状态图片 (发光/动态) */}
       <img 
         src={hoverImage} 
-        className="w-full h-full object-contain drop-shadow-[0_0_30px_rgba(255,215,0,0.6)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out" 
+        className="w-full h-full object-contain drop-shadow-[0_0_30px_rgba(255,215,0,0.6)] opacity-0 group-hover:opacity-100 transition-opacity duration-500 ease-in-out render-pixelated" 
         alt={label} 
       />
       
@@ -70,7 +70,7 @@ const ChargingBullProp = () => {
     >
       <img 
         src={isActive ? "/assets/scenes/downtown/prop_bull_charging.png" : "/assets/scenes/downtown/prop_bull.png"}
-        className="w-full drop-shadow-2xl transition-all duration-300"
+        className="w-full drop-shadow-pixel-sm transition-all duration-300 render-pixelated"
         alt="Charging Bull" 
       />
       {/* 喷气特效 (简单的 CSS 动画) */}
@@ -107,7 +107,7 @@ const LuxuryCarProp = () => {
     >
       <img 
         src={isActive ? "/assets/scenes/downtown/prop_luxury_car_lights.png" : "/assets/scenes/downtown/prop_luxury_car.png"}
-        className="w-full drop-shadow-2xl"
+        className="w-full drop-shadow-pixel-sm render-pixelated"
         alt="Luxury Car" 
       />
       {/* 车灯光效 */}
@@ -144,7 +144,7 @@ const HologramStockBoardProp = () => {
     >
       <img 
         src={isActive ? "/assets/scenes/downtown/prop_hologram_stock_active.png" : "/assets/scenes/downtown/prop_hologram_stock.png"}
-        className="w-full drop-shadow-2xl"
+        className="w-full drop-shadow-pixel-sm render-pixelated"
         alt="Hologram Stock Board" 
       />
       {/* 全息扫描线效果 */}
@@ -185,8 +185,8 @@ export const DowntownScene: React.FC = () => {
       <ParallaxLayer depth={0.05}>
         <div className="w-[110vw] h-full bg-[url('/assets/scenes/downtown/sky_night.jpg')] bg-cover bg-center opacity-100" />
         {/* 动态探照灯效果 */}
-        <div className="absolute top-[-20%] left-[20%] w-[10vw] h-[150vh] bg-gradient-to-b from-white/20 to-transparent rotate-[25deg] animate-pulse blur-2xl origin-top" style={{ animationDuration: '4s' }} />
-        <div className="absolute top-[-20%] right-[30%] w-[8vw] h-[150vh] bg-gradient-to-b from-blue-500/10 to-transparent rotate-[-15deg] animate-pulse blur-2xl origin-top" style={{ animationDuration: '7s' }} />
+        <div className="absolute top-[-20%] left-[20%] w-[10vw] h-[150vh] bg-white/10 rotate-[25deg] animate-pulse blur-2xl origin-top" style={{ animationDuration: '4s' }} />
+        <div className="absolute top-[-20%] right-[30%] w-[8vw] h-[150vh] bg-blue-500/5 rotate-[-15deg] animate-pulse blur-2xl origin-top" style={{ animationDuration: '7s' }} />
       </ParallaxLayer>
 
       {/* --- Layer 1: 金融街底图 --- */}
@@ -288,10 +288,10 @@ export const DowntownScene: React.FC = () => {
       {/* --- Layer 3: 氛围滤镜 --- */}
       
       {/* 蓝色冷调叠加 (Blue Hour) */}
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-[#001020]/50 via-transparent to-[#100500]/40 mix-blend-overlay" />
+      <div className="absolute inset-0 pointer-events-none bg-[#001020]/30 mix-blend-overlay" />
       
       {/* 底部金色反光 (模拟湿漉漉的街道反射霓虹灯) */}
-      <div className="absolute bottom-0 left-0 w-full h-[30%] bg-gradient-to-t from-[#d4af37]/10 to-transparent mix-blend-screen pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-full h-[30%] bg-[#d4af37]/5 mix-blend-screen pointer-events-none" />
       
       {/* 细微的科幻/全息网格线 (极淡，体现高端感) */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:100px_100px] pointer-events-none opacity-20" />

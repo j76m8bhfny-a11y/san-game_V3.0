@@ -65,12 +65,12 @@ export const SlumsItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
       {/* 详情浮窗 (Tooltip)：像是便利贴 */}
       <div className={`
         absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 
-        bg-[#fff9c4] text-black p-3 shadow-2xl rotate-1
+        bg-[#fff9c4] text-black p-3 shadow-pixel-sm rotate-1
         transition-all duration-200 pointer-events-none z-50
         ${isHovered ? 'opacity-100 scale-100' : 'opacity-0 scale-95 translate-y-2'}
       `}>
         {/* 胶带效果 */}
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-6 bg-white/40 rotate-2 backdrop-blur-[1px]" />
+        <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-6 bg-white/40 rotate-2 backdrop-solid-light" />
         
         <h3 className="font-bold text-sm uppercase border-b border-black/10 pb-1 mb-1">{item.name}</h3>
         <p className="text-xs font-pixel leading-tight text-gray-800 italic">"{item.flavorText}"</p>

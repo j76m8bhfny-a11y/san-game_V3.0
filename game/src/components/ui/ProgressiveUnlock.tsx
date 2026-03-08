@@ -159,14 +159,14 @@ const UnlockContent: React.FC<{
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center backdrop-solid-dark p-4"
       onClick={onClose}
     >
       <motion.div
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
-        className={`relative max-w-md w-full p-6 rounded-2xl border ${style.bg} ${style.border}`}
+        className={`relative max-w-md w-full p-6 rounded-sm border ${style.bg} ${style.border}`}
         onClick={(e) => e.stopPropagation()}
       >
         <motion.div
@@ -175,7 +175,7 @@ const UnlockContent: React.FC<{
           transition={{ delay: 0.1, type: "spring" }}
           className="absolute -top-6 left-1/2 -translate-x-1/2"
         >
-          <div className="w-12 h-12 rounded-full flex items-center justify-center bg-gradient-to-br from-yellow-400 to-amber-500 shadow-lg shadow-yellow-500/30">
+          <div className="w-12 h-12 rounded-sm flex items-center justify-center bg-pixel-gradient-gold shadow-pixel-sm shadow-yellow-500/30">
             <Unlock className="w-6 h-6 text-black" />
           </div>
         </motion.div>
@@ -188,7 +188,7 @@ const UnlockContent: React.FC<{
         </div>
         
         <div className="flex justify-center my-4">
-          <div className={`p-4 rounded-full bg-white/10 ${style.text}`}>
+          <div className={`p-4 rounded-sm bg-white/10 ${style.text}`}>
             {feature.icon}
           </div>
         </div>
@@ -205,7 +205,7 @@ const UnlockContent: React.FC<{
         
         <button
           onClick={onClose}
-          className={`w-full py-3 rounded-lg text-white font-medium transition-colors ${style.button}`}
+          className={`w-full py-3 rounded-sm text-white font-medium transition-colors ${style.button}`}
         >
           知道了
         </button>

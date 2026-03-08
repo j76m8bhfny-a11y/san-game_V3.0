@@ -62,7 +62,7 @@ export const SteamStatusIndicator: React.FC<SteamStatusIndicatorProps> = ({
         className="fixed top-4 left-4 z-40"
       >
         <div
-          className={`flex items-center gap-3 px-4 py-2 rounded-xl border backdrop-blur-md transition-all cursor-pointer ${
+          className={`flex items-center gap-3 px-4 py-2 rounded-sm border backdrop-solid-dark transition-all cursor-pointer ${
             isConnected
               ? 'bg-green-500/10 border-green-500/30 hover:bg-green-500/20'
               : 'bg-gray-800/80 border-gray-700 hover:bg-gray-700/80'
@@ -73,7 +73,7 @@ export const SteamStatusIndicator: React.FC<SteamStatusIndicatorProps> = ({
           <div className="relative">
             <SteamIcon className={`w-5 h-5 ${isConnected ? 'text-green-400' : 'text-gray-500'}`} />
             {isConnected && (
-              <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-400 rounded-full" />
+              <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-400 rounded-sm" />
             )}
           </div>
 
@@ -100,13 +100,13 @@ export const SteamStatusIndicator: React.FC<SteamStatusIndicatorProps> = ({
         </div>
 
         {/* 展开菜单 */}
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
           {isExpanded && isConnected && (
             <motion.div
-              initial={{ opacity: 0, y: -10, scale: 0.95 }}
+              initial={false}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
-              className="absolute top-full left-0 mt-2 w-48 bg-gray-900/95 backdrop-blur-md rounded-xl border border-gray-700 overflow-hidden shadow-xl"
+              className="absolute top-full left-0 mt-2 w-48 backdrop-solid-dark rounded-sm border border-gray-700 overflow-hidden shadow-pixel"
             >
               <MenuItem
                 icon={<Trophy className="w-4 h-4" />}

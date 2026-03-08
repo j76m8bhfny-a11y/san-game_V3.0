@@ -33,21 +33,21 @@ export const SuburbsItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
       {/* 1. 物品本体 (悬浮感) */}
       <div className={`
         relative text-6xl transition-all duration-300 z-20 mb-3
-        ${isHovered ? 'scale-110 -translate-y-2 drop-shadow-xl' : 'drop-shadow-md'}
+        ${isHovered ? 'scale-110 -translate-y-2 drop-shadow-pixel-sm' : 'drop-shadow-md'}
         ${!canAfford ? 'opacity-50 grayscale' : 'cursor-pointer'}
       `}>
         {getIcon(item.tags)}
         
         {/* 有机认证标签 (装饰) */}
         {item.tags.includes('FOOD') && (
-          <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-600 rounded-full flex items-center justify-center border border-white shadow-sm">
+          <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-600 rounded-sm flex items-center justify-center border border-white shadow-sm">
             <span className="text-[8px] text-white font-bold">BIO</span>
           </div>
         )}
       </div>
 
       {/* 2. 木质货架层板 (Shelf) */}
-      <div className="absolute bottom-8 w-[120%] h-4 bg-[#d4a373] border-t border-[#faedcd] shadow-lg rounded-sm z-10" />
+      <div className="absolute bottom-8 w-[120%] h-4 bg-[#d4a373] border-t border-[#faedcd] shadow-pixel rounded-sm z-10" />
       <div className="absolute bottom-5 w-[110%] h-3 bg-[#a98467] z-0 rounded-b-sm" />
 
       {/* 3. 价格标签 (黑板吊牌风格) */}
@@ -55,7 +55,7 @@ export const SuburbsItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
       <div className={`
         absolute -bottom-2 left-1/2 -translate-x-1/2 
         bg-[#1e1e1e] border-2 border-[#8b4513] rounded-md
-        w-20 h-10 flex flex-col items-center justify-center shadow-lg
+        w-20 h-10 flex flex-col items-center justify-center shadow-pixel-sm
         transition-transform origin-top z-30
         ${isHovered ? 'rotate-[-2deg] scale-110' : 'rotate-0'}
       `}>
@@ -72,7 +72,7 @@ export const SuburbsItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
 
       {/* 4. 详情悬浮卡片 (干净的白色卡片) */}
       <div className={`
-        absolute bottom-full mb-4 w-48 bg-white p-4 rounded-xl shadow-2xl border border-gray-100
+        absolute bottom-full mb-4 w-48 bg-white p-4 rounded-sm shadow-pixel border border-gray-100
         text-center pointer-events-none z-50 transition-all duration-200
         ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
       `}>
@@ -81,8 +81,8 @@ export const SuburbsItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
          <p className="text-xs text-gray-500 italic mb-2">"{item.flavorText}"</p>
          
          <div className="flex justify-center gap-2 text-[10px] font-medium">
-            {item.effects?.hp !== undefined && <span className="text-green-600 bg-green-50 px-2 py-0.5 rounded-full">{t('common.hp')} {item.effects.hp > 0 ? '+' : ''}{item.effects.hp}</span>}
-            {item.effects?.insight !== undefined && <span className="text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full">灵视{item.effects.insight > 0 ? '+' : ''}{item.effects.insight}</span>}
+            {item.effects?.hp !== undefined && <span className="text-green-600 bg-green-50 px-2 py-0.5 rounded-sm">{t('common.hp')} {item.effects.hp > 0 ? '+' : ''}{item.effects.hp}</span>}
+            {item.effects?.insight !== undefined && <span className="text-amber-600 bg-amber-50 px-2 py-0.5 rounded-sm">灵视{item.effects.insight > 0 ? '+' : ''}{item.effects.insight}</span>}
          </div>
 
          {!canAfford && (

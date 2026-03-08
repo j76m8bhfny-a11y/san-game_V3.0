@@ -27,10 +27,10 @@ export const SuburbsClinicInterior: React.FC<Props> = ({ services, gold, onBuy, 
       </div>
 
       {/* 2. 容器：整洁的商品陈列区 */}
-      <div className="relative z-10 w-full max-w-5xl h-[85%] bg-white/90 backdrop-blur-md shadow-2xl rounded-2xl border border-white flex flex-col overflow-hidden">
+      <div className="relative z-10 w-full max-w-5xl h-[85%] backdrop-solid-light shadow-pixel rounded-sm border border-white flex flex-col overflow-hidden">
         
         {/* 顶部：分类与广告 */}
-        <div className="h-20 border-b border-gray-100 flex items-center justify-between px-8 bg-gradient-to-r from-red-50 to-white">
+        <div className="h-20 border-b border-gray-100 flex items-center justify-between px-8 bg-red-50">
           <div>
             <h2 className="text-2xl font-black text-gray-800 tracking-tight">{t('hospital.title')}</h2>
             <div className="text-xs text-gray-500 font-medium">Pick up your prescription</div>
@@ -38,8 +38,8 @@ export const SuburbsClinicInterior: React.FC<Props> = ({ services, gold, onBuy, 
           
           <div className="flex items-center gap-4">
              {/* 医保提示 */}
-             <div className="flex items-center gap-2 bg-blue-50 px-3 py-1 rounded-full border border-blue-100">
-               <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
+             <div className="flex items-center gap-2 bg-blue-50 px-3 py-1 rounded-sm border border-blue-100">
+               <span className="w-2 h-2 bg-blue-500 rounded-sm animate-pulse" />
                <span className="text-[10px] text-blue-600 font-bold uppercase">{t('hospital.insurance.covered')}</span>
              </div>
              
@@ -74,7 +74,7 @@ export const SuburbsClinicInterior: React.FC<Props> = ({ services, gold, onBuy, 
            
            <button 
              onClick={onClose}
-             className="px-6 py-2 bg-white border border-gray-300 rounded-lg text-gray-600 font-bold text-sm hover:bg-gray-100 transition-colors shadow-sm"
+             className="px-6 py-2 bg-white border border-gray-300 rounded-sm text-gray-600 font-bold text-sm hover:bg-gray-100 transition-colors shadow-sm"
            >
              {t('common.close')}
            </button>

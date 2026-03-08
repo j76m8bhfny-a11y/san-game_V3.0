@@ -79,12 +79,12 @@ export const SlumsShrineInterior: React.FC<Props> = ({ onClose }) => {
         
         {/* === 祭坛视觉主体 === */}
         <div className={`
-          relative w-64 h-64 border-4 border-dashed rounded-full flex items-center justify-center transition-all duration-500
+          relative w-64 h-64 border-4 border-dashed rounded-sm flex items-center justify-center transition-all duration-500
           ${selectedItemId ? 'border-red-500/50 bg-red-900/20' : 'border-white/10'}
           ${isAnimating ? 'scale-90 opacity-50' : ''}
         `}>
           {!selectedItemId && !isAnimating && (
-            <div className="text-[100px] opacity-60 drop-shadow-2xl grayscale">
+            <div className="text-[100px] opacity-60 drop-shadow-pixel-sm grayscale">
               {mode === 'NATIVE' ? placeholderIcons.broken_statue : '🌑'}
             </div>
           )}
@@ -137,7 +137,7 @@ export const SlumsShrineInterior: React.FC<Props> = ({ onClose }) => {
           <button
             onClick={handleSacrificeItem}
             disabled={!selectedItemId || isAnimating}
-            className="bg-red-900/80 text-red-100 font-marker text-xl px-8 py-2 border border-red-500 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-red-800 transition-colors"
+            className="bg-red-900/80 text-red-100 font-marker text-xl px-8 py-2 border border-red-500 shadow-pixel-sm disabled:opacity-50 disabled:cursor-not-allowed hover:bg-red-800 transition-colors"
           >
             {isAnimating ? t('faith.pray') : selectedItemId ? t('faith.offer') : t('faith.join')}
           </button>
@@ -156,7 +156,7 @@ export const SlumsShrineInterior: React.FC<Props> = ({ onClose }) => {
 
       {/* 底部物品栏 (仅主场显示) */}
       {mode === 'NATIVE' && (
-        <div className="absolute bottom-0 w-full bg-gradient-to-t from-black via-black/90 to-transparent p-6 z-20">
+        <div className="absolute bottom-0 w-full bg-black/80 p-6 z-20">
           <div className="flex justify-center gap-4 overflow-x-auto pb-4 px-8">
              {uniqueItems.length === 0 && <div className="text-gray-600 font-mono text-xs">{t('inventory.empty')}</div>}
              {uniqueItems.map(item => (

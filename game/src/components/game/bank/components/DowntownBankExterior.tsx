@@ -33,18 +33,18 @@ export const DowntownBankExterior: React.FC<Props> = ({ onEnter, onClose }) => {
         onClick={onEnter}
       >
         <div className={`
-          relative w-96 h-96 rounded-full border-[20px] border-[#8b7d6b] 
-          shadow-[0_0_50px_rgba(0,0,0,0.8)] bg-gradient-to-br from-[#d4af37] to-[#8b7d6b]
+          relative w-96 h-96 rounded-sm border-[20px] border-[#8b7d6b] 
+          shadow-[0_0_50px_rgba(0,0,0,0.8)] bg-[#c4a030]
           flex items-center justify-center transition-transform duration-1000 ease-in-out
           ${isHovered ? 'rotate-180 scale-105' : 'rotate-0'}
         `}>
           {/* 锁盘纹理 */}
-          <div className="absolute inset-0 rounded-full border-4 border-black/20 opacity-50" />
+          <div className="absolute inset-0 rounded-sm border-4 border-black/20 opacity-50" />
           <div className="absolute w-full h-2 bg-black/20 rotate-0" />
           <div className="absolute w-full h-2 bg-black/20 rotate-90" />
           
           {/* 中心把手 */}
-          <div className="w-32 h-32 bg-[#2a2a2a] rounded-full shadow-inner flex items-center justify-center border-4 border-[#5c5c5c]">
+          <div className="w-32 h-32 bg-[#2a2a2a] rounded-sm shadow-inner flex items-center justify-center border-4 border-[#5c5c5c]">
              <div className="text-[#d4af37] font-mono text-xs tracking-widest opacity-80">
                THE VAULT
              </div>

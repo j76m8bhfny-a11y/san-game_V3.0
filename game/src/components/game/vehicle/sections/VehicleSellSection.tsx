@@ -43,7 +43,7 @@ export const VehicleSellSection: React.FC<VehicleSellSectionProps> = ({
 
   if (!currentVehicle) {
     return (
-      <div className="p-4 rounded-lg border border-white/10 bg-white/5">
+      <div className="p-4 rounded-sm border border-white/10 bg-white/5">
         <h4 className="text-white font-semibold mb-2">
           {isTradeIn ? t(uiText.tradeInTitleKey || '') : t(uiText.sellTitleKey)}
         </h4>
@@ -53,7 +53,7 @@ export const VehicleSellSection: React.FC<VehicleSellSectionProps> = ({
   }
 
   return (
-    <div className="p-4 rounded-lg border border-white/10 bg-white/5">
+    <div className="p-4 rounded-sm border border-white/10 bg-white/5">
       <h4 className="text-white font-semibold mb-3">
         {isTradeIn ? t(uiText.tradeInTitleKey || '') : t(uiText.sellTitleKey)}
       </h4>
@@ -64,7 +64,7 @@ export const VehicleSellSection: React.FC<VehicleSellSectionProps> = ({
 
       {/* 当前车辆信息 */}
       <div className="flex items-center gap-3 mb-4">
-        <div className="p-2 bg-white/10 rounded-lg">
+        <div className="p-2 bg-white/10 rounded-sm">
           <Car size={20} className="text-white/70" />
         </div>
         <div className="flex-1">

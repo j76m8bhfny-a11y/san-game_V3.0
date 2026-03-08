@@ -49,7 +49,7 @@ const InteractiveElement: React.FC<PropProps> = ({
       {/* A. 默认状态图片 */}
       <img 
         src={baseImage} 
-        className={`w-full h-auto object-contain drop-shadow-lg transition-opacity duration-300 absolute inset-0
+        className={`w-full h-auto object-contain drop-shadow-pixel transition-opacity duration-300 absolute inset-0 render-pixelated
           ${(isActive && isNarrative) ? 'opacity-0' : 'group-hover:opacity-0'}`}
         alt={label || 'prop'} 
       />
@@ -57,7 +57,7 @@ const InteractiveElement: React.FC<PropProps> = ({
       {/* B. 激活状态图片 (悬停 或 点击后) */}
       <img 
         src={hoverImage} 
-        className={`w-full h-auto object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-opacity duration-300
+        className={`w-full h-auto object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)] transition-opacity duration-300 render-pixelated
           ${(isActive && isNarrative) ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
         alt={label || 'prop_active'} 
       />
@@ -65,7 +65,7 @@ const InteractiveElement: React.FC<PropProps> = ({
       {/* C. 功能标签 (仅功能建筑显示) */}
       {!isNarrative && label && (
         <div className="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 pointer-events-none z-20">
-          <div className="bg-black/80 text-[#f0e6d2] px-3 py-1 font-pixel text-xs border border-[#f0e6d2]/30 tracking-widest shadow-lg whitespace-nowrap">
+          <div className="bg-black/80 text-[#f0e6d2] px-3 py-1 font-pixel text-xs border border-[#f0e6d2]/30 tracking-widest shadow-pixel-sm whitespace-nowrap">
             {label}
           </div>
           <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-t-[6px] border-t-black/80 mx-auto mt-[-1px]"></div>
@@ -75,7 +75,7 @@ const InteractiveElement: React.FC<PropProps> = ({
       {/* D. 叙事气泡 (仅点击后显示) */}
       {showBubble && (
         <div className="absolute -top-16 left-1/2 -translate-x-1/2 z-30 animate-bounce-in">
-          <div className="bg-white text-black px-4 py-2 font-pixel text-xs border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,0.5)] rounded-lg relative whitespace-nowrap">
+          <div className="bg-white text-black px-4 py-2 font-pixel text-xs border-2 border-black shadow-[4px_4px_0px_rgba(0,0,0,0.5)] rounded-sm relative whitespace-nowrap">
             {dialogue}
             {/* 气泡小三角 */}
             <div className="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-white border-r-2 border-b-2 border-black transform rotate-45"></div>
@@ -230,7 +230,7 @@ export const SlumsScene: React.FC = () => {
       </ParallaxLayer>
 
       {/* --- Layer 3: 氛围遮罩 --- */}
-      <div className="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/80 via-transparent to-black/40" />
+      <div className="absolute inset-0 pointer-events-none bg-black/60" />
       <div className="absolute inset-0 pointer-events-none bg-[url('/assets/fx/noise_grain.png')] opacity-10 mix-blend-overlay" />
     </BaseScene>
 

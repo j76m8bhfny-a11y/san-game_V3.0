@@ -112,7 +112,7 @@ export const PlayerStatsPanel: React.FC<Props> = ({ isOpen, onClose }) => {
     <div className="fixed inset-0 z-[9999]" style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0 }}>
       {/* 遮罩层 - 全屏可点击 */}
       <div 
-        className="absolute inset-0 bg-black/40 backdrop-blur-sm cursor-pointer"
+        className="absolute inset-0 backdrop-solid-dark cursor-pointer"
         onClick={handleClose}
         style={{ position: 'absolute', inset: 0 }}
       />
@@ -123,9 +123,9 @@ export const PlayerStatsPanel: React.FC<Props> = ({ isOpen, onClose }) => {
         style={{ top: '80px', position: 'absolute' }}
       >
         {/* 面板内容 */}
-        <div className="bg-gradient-to-b from-[#1a1a2e] to-[#0f0f1a] rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+        <div className="bg-[#0f0f1a] rounded-sm border border-white/10 shadow-pixel-sm overflow-hidden">
           {/* 顶部装饰线 */}
-          <div className="h-1 bg-gradient-to-r from-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500" />
+          <div className="h-1 bg-pixel-gradient-rainbow" />
           
           {/* 紧凑内容区 */}
           <div className="p-4 space-y-3">
@@ -133,7 +133,7 @@ export const PlayerStatsPanel: React.FC<Props> = ({ isOpen, onClose }) => {
             {/* 第一行：身份 + 核心属性 */}
             <div className="flex items-center gap-4">
               {/* 阶级标识 */}
-              <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white/5 border border-white/10 shrink-0">
+              <div className="flex items-center gap-2 px-3 py-2 rounded-sm bg-white/5 border border-white/10 shrink-0">
                 <span className="text-xl">{classInfo.icon}</span>
                 <div>
                   <div className={`text-sm font-bold ${classInfo.color}`}>
@@ -196,7 +196,7 @@ export const PlayerStatsPanel: React.FC<Props> = ({ isOpen, onClose }) => {
                   value={netWorth} 
                   color={netWorth >= 0 ? 'text-emerald-400' : 'text-rose-400'} 
                 />
-                <div className="px-3 py-1.5 rounded-lg bg-black/40 border border-white/10">
+                <div className="px-3 py-1.5 rounded-sm bg-black/40 border border-white/10">
                   <div className="text-[10px] text-gray-500">{t('hud.stats.credit')}</div>
                   <div className={`text-sm font-mono font-bold ${creditScore >= 650 ? 'text-blue-400' : creditScore >= 500 ? 'text-yellow-400' : 'text-red-400'}`}>
                     {creditScore}
@@ -216,7 +216,7 @@ export const PlayerStatsPanel: React.FC<Props> = ({ isOpen, onClose }) => {
               {/* 关闭按钮 */}
               <button 
                 onClick={handleClose}
-                className="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition-all active:scale-95 shrink-0"
+                className="w-10 h-10 rounded-sm bg-white/5 hover:bg-white/10 border border-white/10 flex items-center justify-center transition-all active:scale-95 shrink-0"
               >
                 <X size={20} className="text-gray-400" />
               </button>
@@ -299,14 +299,14 @@ const MiniBar: React.FC<{
 }> = ({ icon, label, value, max, color, warning }) => {
   const pct = Math.min((value / max) * 100, 100);
   return (
-    <div className={`px-2 py-1.5 rounded-lg bg-black/40 border ${warning ? 'border-red-500/50' : 'border-white/10'}`}>
+    <div className={`px-2 py-1.5 rounded-sm bg-black/40 border ${warning ? 'border-red-500/50' : 'border-white/10'}`}>
       <div className="flex items-center justify-between mb-1">
         <span className={`text-[10px] ${warning ? 'text-red-400' : 'text-gray-500'}`}>{icon} {label}</span>
         <span className={`text-[10px] font-mono font-bold ${warning ? 'text-red-400' : 'text-white'}`}>
           {Math.floor(value)}
         </span>
       </div>
-      <div className="h-1 bg-gray-800 rounded-full overflow-hidden">
+      <div className="h-1 bg-gray-800 rounded-sm overflow-hidden">
         <div className={`h-full ${color} ${warning ? 'animate-pulse' : ''}`} style={{ width: `${pct}%` }} />
       </div>
     </div>
@@ -319,7 +319,7 @@ const MoneyBox: React.FC<{
   value: number;
   color: string;
 }> = ({ label, value, color }) => (
-  <div className="px-3 py-1.5 rounded-lg bg-black/40 border border-white/10 min-w-[80px]">
+  <div className="px-3 py-1.5 rounded-sm bg-black/40 border border-white/10 min-w-[80px]">
     <div className="text-[10px] text-gray-500">{label}</div>
     <div className={`text-sm font-mono font-bold ${color} truncate`}>
       ${value.toLocaleString()}
@@ -335,7 +335,7 @@ const PointDot: React.FC<{
   color: string;
 }> = ({ icon, label, value, color }) => (
   <div className="flex items-center gap-2">
-    <div className={`w-6 h-6 rounded-full ${color} flex items-center justify-center text-xs shadow-lg shrink-0`}>
+    <div className={`w-6 h-6 rounded-sm ${color} flex items-center justify-center text-xs shadow-pixel-sm shrink-0`}>
       {icon}
     </div>
     <div>
@@ -353,7 +353,7 @@ const StatusIcon: React.FC<{
   label: string;
   active: boolean;
 }> = ({ icon, label, active }) => (
-  <div className={`flex items-center gap-1.5 px-2 py-1.5 rounded-lg border whitespace-nowrap ${active ? 'bg-green-500/10 border-green-500/30 text-green-400' : 'bg-white/5 border-white/10 text-gray-500'}`}>
+  <div className={`flex items-center gap-1.5 px-2 py-1.5 rounded-sm border whitespace-nowrap ${active ? 'bg-green-500/10 border-green-500/30 text-green-400' : 'bg-white/5 border-white/10 text-gray-500'}`}>
     {icon}
     <span className="text-[10px]">{label}</span>
   </div>

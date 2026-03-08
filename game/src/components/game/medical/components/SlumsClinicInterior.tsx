@@ -28,20 +28,20 @@ export const SlumsClinicInterior: React.FC<Props> = ({ services, gold, onBuy, on
       </div>
 
       {/* 2. 容器：不锈钢托盘 */}
-      <div className="relative z-10 w-[80%] max-w-3xl aspect-[4/3] bg-[#d1d5db] rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] border-4 border-[#9ca3af] flex flex-col overflow-hidden">
+      <div className="relative z-10 w-[80%] max-w-3xl aspect-[4/3] bg-[#d1d5db] rounded-sm shadow-[0_20px_50px_rgba(0,0,0,0.8)] border-4 border-[#9ca3af] flex flex-col overflow-hidden">
         {/* 金属质感叠加 */}
         <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/brushed-alum.png')] opacity-50 pointer-events-none" />
         
         {/* 托盘边缘的反光 */}
-        <div className="absolute top-0 left-0 right-0 h-4 bg-gradient-to-b from-white/50 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-black/20 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-4 bg-white/30" />
+        <div className="absolute bottom-0 left-0 right-0 h-8 bg-black/10" />
 
         {/* 物品散落区 */}
         <div className="flex-1 p-12 flex flex-wrap content-center justify-center gap-12 relative">
           
           {/* 血迹装饰 (位于物品下方) */}
-          <img src="/assets/fx/blood_stain_1.png" className="absolute top-[20%] left-[10%] w-32 opacity-60 pointer-events-none mix-blend-multiply" />
-          <img src="/assets/fx/blood_stain_2.png" className="absolute bottom-[30%] right-[20%] w-40 opacity-40 pointer-events-none mix-blend-multiply" />
+          <img src="/assets/fx/blood_stain_1.png" className="absolute top-[20%] left-[10%] w-32 opacity-60 pointer-events-none mix-blend-multiply render-pixelated" />
+          <img src="/assets/fx/blood_stain_2.png" className="absolute bottom-[30%] right-[20%] w-40 opacity-40 pointer-events-none mix-blend-multiply render-pixelated" />
 
           {services.map((service) => (
             <SlumsMedicalItem 

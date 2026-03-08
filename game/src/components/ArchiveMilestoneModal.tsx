@@ -34,16 +34,16 @@ export const ArchiveMilestoneModal: React.FC = () => {
   const isMajorUnlock = pendingMilestone.type === 'unlock';
   
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
-      <div className="relative max-w-lg w-full mx-4 bg-gray-900 border border-gray-700 rounded-xl overflow-hidden shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-solid-dark">
+      <div className="relative max-w-lg w-full mx-4 bg-gray-900 border border-gray-700 rounded-sm overflow-hidden shadow-pixel">
         {/* 顶部发光条 */}
-        <div className={`h-1 ${isMajorUnlock ? 'bg-gradient-to-r from-purple-500 via-pink-500 to-red-500' : 'bg-gradient-to-r from-blue-500 to-cyan-500'}`} />
+        <div className={`h-1 ${isMajorUnlock ? 'bg-pixel-gradient-purple' : 'bg-pixel-gradient-cyan'}`} />
         
         {/* 内容区 */}
         <div className="p-6">
           {/* 标题 */}
           <div className="text-center mb-6">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-800 mb-4">
+            <div className="inline-flex items-center justify-center w-16 h-16 rounded-sm bg-gray-800 mb-4">
               {isMajorUnlock ? (
                 <svg className="w-8 h-8 text-pink-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -65,7 +65,7 @@ export const ArchiveMilestoneModal: React.FC = () => {
             {pendingMilestone.rewards.map((reward: any, index: number) => (
               <div 
                 key={index}
-                className={`p-4 rounded-lg border ${
+                className={`p-4 rounded-sm border ${
                   reward.type === 'narrative' 
                     ? 'bg-purple-900/20 border-purple-700/50' 
                     : reward.type === 'mechanic'
@@ -113,7 +113,7 @@ export const ArchiveMilestoneModal: React.FC = () => {
           </div>
           
           {/* 当前状态概览 */}
-          <div className="bg-gray-800/50 rounded-lg p-4 mb-6">
+          <div className="bg-gray-800/50 rounded-sm p-4 mb-6">
             <h3 className="text-sm font-medium text-gray-400 mb-3">当前状态</h3>
             <div className="grid grid-cols-2 gap-4">
               <div className="text-center">
@@ -147,9 +147,9 @@ export const ArchiveMilestoneModal: React.FC = () => {
           {/* 按钮 */}
           <button
             onClick={dismissMilestone}
-            className={`w-full py-3 px-4 rounded-lg font-medium transition-all ${
+            className={`w-full py-3 px-4 rounded-sm font-medium transition-all ${
               isMajorUnlock
-                ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white'
+                ? 'bg-pixel-gradient-purple text-white hover:brightness-110'
                 : 'bg-cyan-600 hover:bg-cyan-500 text-white'
             }`}
           >
@@ -159,8 +159,8 @@ export const ArchiveMilestoneModal: React.FC = () => {
         
         {/* 装饰性背景 */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute -top-20 -right-20 w-40 h-40 bg-cyan-500/10 rounded-full blur-3xl" />
-          <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-purple-500/10 rounded-full blur-3xl" />
+          <div className="absolute -top-20 -right-20 w-40 h-40 bg-cyan-500/10 rounded-sm blur-3xl" />
+          <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-purple-500/10 rounded-sm blur-3xl" />
         </div>
       </div>
     </div>

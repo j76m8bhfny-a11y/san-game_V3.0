@@ -35,7 +35,7 @@ export const SlumsShrineExterior: React.FC<Props> = ({ onEnter, onClose }) => {
         {/* 烛光特效 (Hover时变强) */}
         <div className={`
           absolute bottom-[20%] left-[50%] -translate-x-1/2 w-[30%] h-[30%]
-          bg-orange-500/20 mix-blend-screen blur-[50px] rounded-full
+          bg-orange-500/20 mix-blend-screen blur-[50px] rounded-sm
           transition-all duration-700 animate-pulse
           ${isHovered ? 'opacity-100 scale-150' : 'opacity-40 scale-100'}
         `} />

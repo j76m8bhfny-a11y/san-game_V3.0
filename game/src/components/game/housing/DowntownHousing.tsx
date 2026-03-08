@@ -70,7 +70,7 @@ export const DowntownHousing: React.FC<Props> = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-xl" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-solid-dark" onClick={onClose}>
       <div 
         className="w-full max-w-6xl aspect-video bg-[#050505] shadow-[0_0_50px_rgba(255,255,255,0.1)] overflow-hidden border border-[#333] relative"
         onClick={e => e.stopPropagation()}

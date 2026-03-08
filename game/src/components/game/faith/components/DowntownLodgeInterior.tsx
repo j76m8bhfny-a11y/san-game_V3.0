@@ -54,7 +54,7 @@ export const DowntownLodgeInterior: React.FC<Props> = ({ onClose }) => {
         className="absolute inset-0 z-0 bg-cover bg-center opacity-40"
         style={{ background: placeholderBackgrounds.downtown_lodge_interior }}
       >
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-transparent to-black" />
+        <div className="absolute inset-0 bg-black/60" />
       </div>
 
       {/* 核心交互：名册 */}

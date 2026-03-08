@@ -53,7 +53,7 @@ export const SlumsExterior: React.FC<Props> = ({ house, gold, onRent, onClose })
           {/* 纸板贴图 */}
           <img 
             src="/assets/housing/ui_cardboard_sign.png" 
-            className="absolute inset-0 w-full h-full object-contain drop-shadow-2xl" 
+            className="absolute inset-0 w-full h-full object-contain drop-shadow-pixel render-pixelated" 
             alt="Sign"
           />
           

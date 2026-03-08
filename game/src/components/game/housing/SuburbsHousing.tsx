@@ -70,9 +70,9 @@ export const SuburbsHousing: React.FC<Props> = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-solid-dark" onClick={onClose}>
       <div 
-        className="w-full max-w-5xl aspect-video bg-[#f3f4f6] shadow-2xl overflow-hidden border-8 border-white relative rounded-lg"
+        className="w-full max-w-5xl aspect-video bg-[#f3f4f6] shadow-pixel overflow-hidden border-8 border-white relative rounded-sm"
         onClick={e => e.stopPropagation()}
       >
         {isOwningThis ? (

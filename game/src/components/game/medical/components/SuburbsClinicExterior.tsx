@@ -27,7 +27,7 @@ export const SuburbsClinicExterior: React.FC<Props> = ({ onEnter, onClose }) => 
       </div>
 
       {/* 2. 招牌：专业、商业化 */}
-      <div className="relative z-10 mt-6 self-start ml-10 bg-white/90 p-4 rounded-lg shadow-xl border-t-4 border-red-600">
+      <div className="relative z-10 mt-6 self-start ml-10 bg-white/90 p-4 rounded-sm shadow-pixel-sm border-t-4 border-red-600">
         <div className="flex items-center gap-3">
           <div className="bg-red-600 text-white font-bold w-10 h-10 flex items-center justify-center rounded text-xl shadow-md">
             Rx
@@ -52,12 +52,12 @@ export const SuburbsClinicExterior: React.FC<Props> = ({ onEnter, onClose }) => 
       >
         {/* 门体 */}
         <div className={`
-          relative w-80 h-96 bg-blue-100/20 backdrop-blur-sm border-x-8 border-t-8 border-gray-300
-          transition-all duration-700 overflow-hidden shadow-2xl
+          relative w-80 h-96 backdrop-solid-light border-x-8 border-t-8 border-gray-300
+          transition-all duration-700 overflow-hidden shadow-pixel-sm
           ${isHovered ? 'w-[450px] bg-blue-100/10' : ''}
         `}>
           {/* 门玻璃上的倒影 */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-white/30 to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-white/20 pointer-events-none" />
           
           {/* 门把手/中缝 */}
           <div className={`
@@ -70,7 +70,7 @@ export const SuburbsClinicExterior: React.FC<Props> = ({ onEnter, onClose }) => 
             absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-500 delay-100
             ${isHovered ? 'opacity-100' : ''}
           `}>
-             <span className="bg-white/80 text-gray-800 px-4 py-1 rounded-full font-bold text-sm shadow-lg tracking-wider">
+             <span className="bg-white/80 text-gray-800 px-4 py-1 rounded-sm font-bold text-sm shadow-pixel-sm tracking-wider">
                WELCOME
              </span>
           </div>
@@ -87,7 +87,7 @@ export const SuburbsClinicExterior: React.FC<Props> = ({ onEnter, onClose }) => 
 
       <button 
         onClick={onClose}
-        className="relative z-20 self-center mt-auto bg-white/80 px-6 py-2 rounded-full text-gray-600 hover:text-red-600 text-xs font-bold uppercase shadow-lg transition-all hover:scale-105"
+        className="relative z-20 self-center mt-auto bg-white/80 px-6 py-2 rounded-sm text-gray-600 hover:text-red-600 text-xs font-bold uppercase shadow-pixel-sm transition-all hover:scale-105"
       >
         {t('common.close')}
       </button>

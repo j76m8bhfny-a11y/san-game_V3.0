@@ -162,7 +162,7 @@ const PlayerSprite: React.FC<{
       <img 
         src={displaySprite} 
         alt={altText}
-        className="w-full object-contain drop-shadow-[0_0_20px_rgba(0,0,0,0.8)]"
+        className="w-full object-contain drop-shadow-[0_0_20px_rgba(0,0,0,0.8)] render-pixelated"
         onError={(e) => {
           // 图片加载失败时回退到默认（防死循环）
           const fallback = '/assets/scenes/player_back.png';
@@ -280,7 +280,7 @@ const PixelSMSBubble: React.FC<{
           animate={{ opacity: 1, scale: 1 }}
           className="absolute -top-6 left-1/2 -translate-x-1/2 z-20"
         >
-          <div className="px-2 py-0.5 bg-cyan-900/90 border border-cyan-500/50 rounded-full text-[9px] text-cyan-300 flex items-center gap-1 whitespace-nowrap">
+          <div className="px-2 py-0.5 bg-cyan-900/90 border border-cyan-500/50 rounded-sm text-[9px] text-cyan-300 flex items-center gap-1 whitespace-nowrap">
             <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
             </svg>
@@ -290,7 +290,7 @@ const PixelSMSBubble: React.FC<{
       )}
       
       {/* [NEW] 幽灵低语 - 仅在燃烧状态显示 */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {isBurned && ghostWhisper && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -334,7 +334,7 @@ const PixelSMSBubble: React.FC<{
             initial={{ opacity: 0 }}
             animate={{ opacity: [0, burningConfig?.ashOpacity || 0.4, 0] }}
             transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 2 }}
-            className="absolute inset-0 bg-gradient-to-t from-gray-600/50 via-transparent to-gray-400/20 pointer-events-none rounded-sm"
+            className="absolute inset-0 bg-gray-600/30 pointer-events-none rounded-sm"
           />
         )}
         
@@ -344,7 +344,7 @@ const PixelSMSBubble: React.FC<{
         
         {/* 悬停时的详细提示 - D选项专用（燃烧时不显示） */}
         {!isBurned && isDOption && (
-          <div className="hidden group-hover:block absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-48 p-3 bg-gray-900/95 border border-red-500/30 rounded-lg text-xs z-50 shadow-xl">
+          <div className="hidden group-hover:block absolute bottom-full mb-2 left-1/2 -translate-x-1/2 w-48 p-3 bg-gray-900/95 border border-red-500/30 rounded-sm text-xs z-50 shadow-pixel">
             <div className="text-gray-400 mb-2 text-center font-bold">⚠️ 真相的代价</div>
             
             {/* 伤害对比 */}
@@ -393,7 +393,7 @@ const PixelSMSBubble: React.FC<{
 const PixelReceivedBubble: React.FC<{ text: string; glitch?: boolean }> = ({ text, glitch }) => {
   return (
     <div className="flex justify-start items-end gap-2 w-full pr-4 pl-2">
-      <div className="w-6 h-6 bg-[#8E8E93] rounded-full flex-shrink-0 mb-1 shadow-sm border border-black/10"></div>
+      <div className="w-6 h-6 bg-[#8E8E93] rounded-sm flex-shrink-0 mb-1 shadow-sm border border-black/10"></div>
       <div 
         className={`relative w-full text-left text-sm font-bold font-pixel py-2 px-3 leading-tight bg-[#E9E9EB] text-black shadow-[2px_2px_0px_#999] ${glitch ? 'border border-red-400' : ''}`}
         style={{ clipPath: `polygon(4px 0, calc(100% - 4px) 0, 100% 4px, 100% calc(100% - 4px), calc(100% - 4px) 100%, 4px 100%, 0 calc(100% - 4px), 0 4px)` }}
@@ -431,11 +431,11 @@ const PixelPhone: React.FC<{
       <img 
         src="/assets/ui/pixel_phone_frame.png" 
         alt="Phone Shell"
-        className="absolute inset-0 w-full h-full object-fill z-20 pointer-events-none"
+        className="absolute inset-0 w-full h-full object-fill z-20 pointer-events-none render-pixelated"
         onError={(e) => { e.currentTarget.style.display = 'none'; }} 
       />
       
-      <div className="absolute inset-0 border-[12px] border-gray-800 bg-gray-900 rounded-[30px] z-10 shadow-xl" style={{ display: 'none' }} id="fallback-shell"></div>
+      <div className="absolute inset-0 border-[12px] border-gray-800 bg-gray-900 rounded-[30px] z-10 shadow-pixel" style={{ display: 'none' }} id="fallback-shell"></div>
 
       <div className="relative z-10 w-[52%] h-[72%] bg-[#f2f2f7] rounded-[30px] overflow-hidden flex flex-col font-pixel mb-[138px] mr-[100px]">
         <div className="absolute inset-0 pointer-events-none z-20 opacity-10 bg-[linear-gradient(#000_1px,transparent_1px)] [background-size:100%_4px]" />
@@ -468,7 +468,7 @@ const PixelPhone: React.FC<{
                   <motion.div 
                     key={opt.id} 
                     layout 
-                    initial={{ opacity: 0, y: 20 }} 
+                    initial={false} 
                     animate={{ opacity: 1, y: 0 }} 
                     exit={{ opacity: 0, scale: 0.8 }}
                   >
@@ -488,7 +488,7 @@ const PixelPhone: React.FC<{
           </div>
         </div>
 
-        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-1/3 h-1.5 bg-black/80 rounded-full z-30"></div>
+        <div className="absolute bottom-2 left-1/2 -translate-x-1/2 w-1/3 h-1.5 bg-black/80 rounded-sm z-30"></div>
       </div>
     </div>
   );
@@ -686,7 +686,7 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
         transition={{ duration: 2 }}
         className="absolute inset-0 z-0"
       >
-        <img src={eventImg} alt="Event Scene" className="w-full h-full object-cover" />
+        <img src={eventImg} alt="Event Scene" className="w-full h-full object-cover render-pixelated" />
         <div className="absolute inset-0 bg-black/40" />
       </motion.div>
 
@@ -702,9 +702,9 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
       {/* System Gaze警告 */}
       {gazeNarrative && (
         <motion.div 
-          initial={{ opacity: 0, y: -20 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
-          className="absolute top-4 left-1/2 -translate-x-1/2 z-50 px-4 py-2 bg-red-900/50 border border-red-500/50 rounded-lg"
+          className="absolute top-4 left-1/2 -translate-x-1/2 z-50 px-4 py-2 bg-red-900/50 border border-red-500/50 rounded-sm"
         >
           <div className="flex items-center gap-2 text-red-200 text-sm">
             <svg className="w-5 h-5 animate-pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -743,7 +743,7 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
         className="absolute top-[15%] left-1/2 w-[90%] md:w-[80%] z-40 pointer-events-none" 
       >
         <div 
-          className={`bg-black/40 backdrop-blur-md border-2 border-white p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.5)] transition-all ${isFocusMode ? 'pointer-events-none' : 'pointer-events-auto'}`}
+          className={`backdrop-solid-dark border-2 border-white p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.5)] transition-all ${isFocusMode ? 'pointer-events-none' : 'pointer-events-auto'}`}
           role="document"
         >
           <h2 
@@ -769,7 +769,7 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
       {/* 修改器显示 */}
       {modifiers.length > 0 && (
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           className="absolute bottom-4 left-1/2 -translate-x-1/2 z-50 flex gap-2"
         >
@@ -782,16 +782,16 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
       )}
       
       {/* D选项减免结算动画 */}
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {showReductionModal && selectedOptId === 'D' && dOptionReduction > 0 && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: 50 }}
+            initial={false}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: -50 }}
             transition={{ type: "spring", damping: 20 }}
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50"
           >
-            <div className="bg-gray-900/95 border-2 border-cyan-500 rounded-2xl p-6 shadow-[0_0_50px_rgba(34,211,238,0.3)] min-w-[280px]">
+            <div className="bg-gray-900/95 border-2 border-cyan-500 rounded-sm p-6 shadow-[0_0_50px_rgba(34,211,238,0.3)] min-w-[280px]">
               <div className="text-center">
                 <motion.div 
                   initial={{ scale: 0 }}
@@ -805,7 +805,7 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
                 <div className="text-gray-400 text-xs mb-4">来自过去轮回的记忆保护着你</div>
                 
                 {/* 减免对比可视化 */}
-                <div className="bg-black/40 rounded-xl p-4 mb-4">
+                <div className="bg-black/40 rounded-sm p-4 mb-4">
                   <div className="flex items-center justify-between mb-3">
                     <div className="text-center flex-1">
                       <div className="text-red-400 text-2xl font-bold">{dOptionOriginalHp}</div>
@@ -855,7 +855,7 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
         )}
       </AnimatePresence>
 
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {stage === 'INTERACTIVE' && (
           <>
             {/* [UPDATED] 左下角人物 - 根据阶级和灵视切换 */}
@@ -870,7 +870,7 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
             {/* 🌟 能看到D选项时的引导提示（只显示一次） */}
             {canSeeDOption && !selectedOptId && stage === 'INTERACTIVE' && !hasSeenDOptionGuide && (
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
+                initial={false}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 1 }}
                 className="absolute bottom-[400px] right-[50px] z-[55] max-w-[200px]"
@@ -879,7 +879,7 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
                   setHasSeenDOptionGuide(true);
                 }}
               >
-                <div className="bg-cyan-900/90 border border-cyan-500/50 rounded-xl p-4 shadow-xl relative">
+                <div className="bg-cyan-900/90 border border-cyan-500/50 rounded-sm p-4 shadow-pixel-sm relative">
                   <button 
                     onClick={() => setHasSeenDOptionGuide(true)}
                     className="absolute top-1 right-1 text-cyan-500/50 hover:text-cyan-400 text-xs"
@@ -919,7 +919,7 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
 
             {/* 右下角手机 */}
             <motion.div
-              initial={{ x: '100%', y: '100%', rotate: 10 }}
+              initial={false}
               animate={isFocusMode ? { x: 100, y: 300, rotate: 10, opacity: 0 } : { x: 0, y: 0, rotate: 0, opacity: 1 }}
               transition={{ type: "spring", damping: 20, stiffness: 100 }}
               className="absolute bottom-[-100px] right-[0px] z-50 pointer-events-auto origin-bottom-right"
@@ -938,7 +938,7 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
       
       {/* 底部状态栏 - 档案与System Gaze状态 */}
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
+        initial={false}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
         className="absolute bottom-0 left-0 right-0 h-10 bg-black/60 border-t border-gray-700/50 
@@ -963,12 +963,12 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
               </svg>
               <span className="font-pixel">D选项减免: {Math.round(dOptionReduction * 100)}%</span>
               {/* 进度条 */}
-              <div className="w-20 h-1.5 bg-gray-700 rounded-full overflow-hidden">
+              <div className="w-20 h-1.5 bg-gray-700 rounded-sm overflow-hidden">
                 <motion.div 
                   initial={{ width: 0 }}
                   animate={{ width: `${(dOptionReduction / 0.67) * 100}%` }}
                   transition={{ duration: 0.5 }}
-                  className="h-full bg-green-500 rounded-full"
+                  className="h-full bg-green-500 rounded-sm"
                 />
               </div>
               <span className="text-[9px] text-gray-500">上限67%</span>

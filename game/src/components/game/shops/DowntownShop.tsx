@@ -16,7 +16,7 @@ export const DowntownShop: React.FC<Props> = ({ onClose }) => {
   const gold = vitality.metrics.gold;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/95 backdrop-blur-xl" onClick={onClose}>
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-solid-dark" onClick={onClose}>
       
       {/* 1. 场景容器：私人会所 VIP 室 */}
       <div 
@@ -36,7 +36,7 @@ export const DowntownShop: React.FC<Props> = ({ onClose }) => {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(253,224,71,0.1),transparent_60%)] pointer-events-none" />
         
         {/* --- 左侧：尊贵的侧边栏 (Concierge) --- */}
-        <div className="relative z-10 w-1/4 h-full bg-black/80 border-r border-white/10 flex flex-col p-10 backdrop-blur-md">
+        <div className="relative z-10 w-1/4 h-full bg-black/80 border-r border-white/10 flex flex-col p-10 backdrop-solid-dark">
           <div className="mb-12">
             <h1 className="text-5xl font-pixel text-[#d4af37] mb-2 tracking-widest">
               {t('shop.title')}

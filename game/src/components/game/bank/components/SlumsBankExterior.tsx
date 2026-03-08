@@ -47,7 +47,7 @@ export const SlumsBankExterior: React.FC<Props> = ({ onEnter, onClose }) => {
         onClick={onEnter}
       >
         <div className={`
-          relative w-64 h-80 border-4 border-gray-700 bg-black/40 backdrop-blur-sm
+          relative w-64 h-80 border-4 border-gray-700 backdrop-solid-dark
           flex items-center justify-center transition-all duration-300
           ${isHovered ? 'border-yellow-600 bg-black/60 scale-105' : ''}
         `}>

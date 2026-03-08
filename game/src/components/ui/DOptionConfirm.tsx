@@ -151,16 +151,16 @@ export const DOptionConfirm: React.FC<DOptionConfirmProps> = ({
   if (!isOpen) return null;
   
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={false}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm"
+        className="fixed inset-0 z-[100] flex items-center justify-center backdrop-solid-dark"
         onClick={onCancel}
       >
         <motion.div
-          initial={{ scale: 0.9, opacity: 0, y: 20 }}
+          initial={false}
           animate={{ 
             scale: isShaking ? [1, 1.02, 0.98, 1] : 1, 
             opacity: 1, 
@@ -170,7 +170,7 @@ export const DOptionConfirm: React.FC<DOptionConfirmProps> = ({
           transition={{
             scale: isShaking ? { duration: 0.1, repeat: 2 } : { duration: 0.2 },
           }}
-          className={`relative w-full max-w-md mx-4 ${config.bgColor} border-2 ${config.borderColor} rounded-lg overflow-hidden`}
+          className={`relative w-full max-w-md mx-4 ${config.bgColor} border-2 ${config.borderColor} rounded-sm overflow-hidden`}
           onClick={(e) => e.stopPropagation()}
         >
           {/* 顶部警告条 */}
@@ -298,7 +298,7 @@ export const DOptionConfirm: React.FC<DOptionConfirmProps> = ({
           {/* 危险等级装饰 */}
           {riskLevel === 'extreme' && (
             <motion.div
-              className="absolute inset-0 border-2 border-red-500/30 rounded-lg pointer-events-none"
+              className="absolute inset-0 border-2 border-red-500/30 rounded-sm pointer-events-none"
               animate={{
                 boxShadow: [
                   'inset 0 0 20px rgba(239, 68, 68, 0.1)',

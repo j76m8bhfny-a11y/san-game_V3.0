@@ -37,12 +37,12 @@ export const FeedbackLayer: React.FC = () => {
 
   return (
     <div className="fixed inset-0 pointer-events-none z-[9999] overflow-hidden">
-      <AnimatePresence>
+      <AnimatePresence mode="wait">
         {/* 受伤反馈：红屏闪烁 */}
         {activeEffect === 'DAMAGE' && (
           <motion.div
             key="damage"
-            initial={{ opacity: 0 }}
+            initial={false}
             animate={{ opacity: [0, 0.4, 0] }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
@@ -54,7 +54,7 @@ export const FeedbackLayer: React.FC = () => {
         {activeEffect === 'HEAL' && (
           <motion.div
             key="heal"
-            initial={{ opacity: 0, scale: 1.1 }}
+            initial={false}
             animate={{ opacity: 0.6, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5, ease: "easeOut" }}

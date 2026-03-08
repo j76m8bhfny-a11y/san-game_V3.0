@@ -21,13 +21,13 @@ export const DowntownMedicalItem: React.FC<Props> = ({ service, canAfford, onBuy
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       className={`
-        w-full h-32 relative border border-white/10 bg-black/40 backdrop-blur-sm
+        w-full h-32 relative border border-white/10 backdrop-solid-dark
         flex flex-col items-center justify-center overflow-hidden transition-all duration-300 group
         ${canAfford ? 'hover:border-cyan-500/50 hover:bg-black/60 cursor-pointer' : 'opacity-40 grayscale cursor-not-allowed'}
       `}
     >
       {/* 激活时的扫描线特效 */}
-      <div className={`absolute inset-0 bg-gradient-to-b from-transparent via-cyan-500/10 to-transparent h-[200%] w-full animate-scan pointer-events-none ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
+      <div className={`absolute inset-0 bg-cyan-500/5 h-[200%] w-full animate-scan pointer-events-none ${isHovered ? 'opacity-100' : 'opacity-0'}`} />
 
       {/* 图标 (抽象符号) */}
       <div className="text-2xl mb-2 text-cyan-100 drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">

@@ -124,12 +124,12 @@ export const DangerHints: React.FC<DangerHintsProps> = ({
     <AnimatePresence mode="wait">
       <motion.div
         key={criticalHint.id}
-        initial={{ opacity: 0, y: -20 }}
+        initial={false}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: -20 }}
         className={`
           fixed top-20 left-1/2 -translate-x-1/2 z-50
-          px-4 py-2 rounded-lg border backdrop-blur-sm
+          px-4 py-2 rounded-sm border backdrop-solid
           flex items-center gap-2
           ${getSeverityStyles(criticalHint.severity)}
         `}

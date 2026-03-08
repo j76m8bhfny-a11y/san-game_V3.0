@@ -69,7 +69,7 @@ export const RustBeltBankInterior: React.FC<Props> = ({
       </div>
 
       {/* 2. 柜台玻璃隔断 */}
-      <div className="absolute bottom-0 w-full h-1/2 bg-gradient-to-t from-black/10 to-transparent pointer-events-none z-10" />
+      <div className="absolute bottom-0 w-full h-1/2 bg-black/5 pointer-events-none z-10" />
 
       {/* 3. 核心交互区：两个窗口 */}
       <div className="relative z-20 w-full max-w-5xl h-full flex pt-20 px-10 gap-20">
@@ -98,7 +98,7 @@ export const RustBeltBankInterior: React.FC<Props> = ({
             PAYMENTS & TELLER
           </div>
 
-          <div className="w-full bg-white/80 backdrop-blur-sm border-4 border-gray-300 p-4 rounded-lg shadow-xl h-[60%] overflow-y-auto custom-scrollbar relative">
+          <div className="w-full backdrop-solid-light border-4 border-gray-300 p-4 rounded-sm shadow-pixel-sm h-[60%] overflow-y-auto custom-scrollbar relative">
              <h3 className="text-xs font-bold text-gray-500 uppercase mb-2 border-b border-gray-300 pb-1">
                {t('bank.outstandingDebts')}
              </h3>
@@ -179,7 +179,7 @@ export const RustBeltBankInterior: React.FC<Props> = ({
              {/* 现金放入动画 */}
              {cashAnim && (
                <div className="absolute inset-0 flex items-center justify-center z-50 bg-white/50">
-                 <img src="/assets/bank/ui_money_hand.png" className="w-32 animate-slide-out-up" />
+                 <img src="/assets/bank/ui_money_hand.png" className="w-32 animate-slide-out-up render-pixelated" />
                </div>
              )}
           </div>

@@ -23,11 +23,11 @@ export const SuburbsInterior: React.FC<Props> = ({ housing, onRest, onPayBills, 
         }}
       >
         {/* 窗外阳光投射 */}
-        <div className="absolute inset-0 bg-gradient-to-r from-yellow-100/20 to-transparent mix-blend-overlay pointer-events-none" />
+        <div className="absolute inset-0 bg-yellow-100/10 mix-blend-overlay pointer-events-none" />
       </div>
 
       {/* 2. 左上角：房屋信息 (像是一个相框) */}
-      <div className="absolute top-8 left-8 z-10 bg-white p-4 shadow-xl border-8 border-[#d4a373] transform -rotate-1 max-w-xs">
+      <div className="absolute top-8 left-8 z-10 bg-white p-4 shadow-pixel border-8 border-[#d4a373] transform -rotate-1 max-w-xs">
         <h2 className="text-gray-800 font-pixel font-bold text-lg border-b border-gray-200 pb-2 mb-2">
           Home Sweet Home
         </h2>
@@ -50,9 +50,9 @@ export const SuburbsInterior: React.FC<Props> = ({ housing, onRest, onPayBills, 
       {/* 3. 交互物体：桌上的账单堆 (Pay Bills) */}
       <div className="absolute bottom-20 left-20 z-10 group cursor-pointer" onClick={onPayBills}>
         <div className="relative w-32 h-24 transition-transform group-hover:scale-110 group-hover:-translate-y-2">
-          <img src="/assets/housing/ui_bill_stack.png" className="w-full h-full object-contain drop-shadow-xl" />
+          <img src="/assets/housing/ui_bill_stack.png" className="w-full h-full object-contain drop-shadow-pixel-sm render-pixelated" />
           {/* 提示气泡 */}
-          <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white px-3 py-1 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+          <div className="absolute -top-10 left-1/2 -translate-x-1/2 bg-white px-3 py-1 rounded-sm shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
             <span className="text-xs font-bold text-gray-700">{t('housing.weeklyCost')}</span>
           </div>
         </div>
@@ -66,7 +66,7 @@ export const SuburbsInterior: React.FC<Props> = ({ housing, onRest, onPayBills, 
           onClick={onMoveOut}
           className="group flex flex-col items-center opacity-60 hover:opacity-100 transition-opacity"
         >
-          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md border border-gray-200 group-hover:border-red-400">
+          <div className="w-12 h-12 bg-white rounded-sm flex items-center justify-center shadow-md border border-gray-200 group-hover:border-red-400">
             🏷️
           </div>
           <span className="mt-1 bg-white/90 text-gray-500 text-[10px] px-2 py-0.5 rounded shadow-sm font-bold uppercase">
@@ -79,8 +79,8 @@ export const SuburbsInterior: React.FC<Props> = ({ housing, onRest, onPayBills, 
           onClick={onRest}
           className="group relative w-56 transition-transform hover:scale-105"
         >
-          <img src="/assets/housing/ui_sofa.png" className="w-full object-contain drop-shadow-2xl" />
-          <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-[#1e3a8a] text-white px-4 py-1 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+          <img src="/assets/housing/ui_sofa.png" className="w-full object-contain drop-shadow-pixel-sm render-pixelated" />
+          <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 bg-[#1e3a8a] text-white px-4 py-1 rounded-sm shadow-pixel opacity-0 group-hover:opacity-100 transition-opacity">
              <span className="font-bold text-sm uppercase tracking-wider">
                {t('housing.regen')}
              </span>
@@ -92,7 +92,7 @@ export const SuburbsInterior: React.FC<Props> = ({ housing, onRest, onPayBills, 
           onClick={onClose}
           className="group flex flex-col items-center opacity-60 hover:opacity-100 transition-opacity"
         >
-          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-md border border-gray-200 group-hover:border-blue-400">
+          <div className="w-12 h-12 bg-white rounded-sm flex items-center justify-center shadow-md border border-gray-200 group-hover:border-blue-400">
             🚪
           </div>
           <span className="mt-1 bg-white/90 text-gray-500 text-[10px] px-2 py-0.5 rounded shadow-sm font-bold uppercase">{t('common.close')}</span>

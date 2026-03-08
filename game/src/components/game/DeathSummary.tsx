@@ -59,7 +59,7 @@ const CauseAnalysis: React.FC<{ cause: DeathCause; description: string }> = ({
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.3 }}
-      className="bg-black/40 rounded-xl p-5 border border-white/10"
+      className="bg-black/40 rounded-sm p-5 border border-white/10"
     >
       <div className="flex items-start gap-4">
         <div className={`text-4xl ${causeInfo.color}`}>{causeInfo.icon}</div>
@@ -96,7 +96,7 @@ const MistakesList: React.FC<{ mistakes: any[] }> = ({ mistakes }) => {
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.5 + index * 0.1 }}
-          className={`p-3 rounded-lg border text-sm ${SEVERITY_COLORS[mistake.severity as keyof typeof SEVERITY_COLORS]}`}
+          className={`p-3 rounded-sm border text-sm ${SEVERITY_COLORS[mistake.severity as keyof typeof SEVERITY_COLORS]}`}
         >
           <div className="flex items-center gap-2">
             <span className="text-xs opacity-60">第{mistake.turn}周</span>
@@ -128,7 +128,7 @@ const SuggestionsList: React.FC<{ suggestions: any[] }> = ({ suggestions }) => {
           initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.7 + index * 0.1 }}
-          className={`p-4 rounded-lg border ${PRIORITY_COLORS[suggestion.priority as keyof typeof PRIORITY_COLORS]}`}
+          className={`p-4 rounded-sm border ${PRIORITY_COLORS[suggestion.priority as keyof typeof PRIORITY_COLORS]}`}
         >
           <div className="flex items-center gap-2 mb-1">
             <span className={`text-xs font-bold px-2 py-0.5 rounded ${
@@ -157,7 +157,7 @@ const ArchiveProgress: React.FC<{
 }> = ({ runArchives, totalArchives, currentReduction, previousReduction }) => {
   if (runArchives.length === 0) {
     return (
-      <div className="bg-black/40 rounded-xl p-5 border border-white/10 text-center">
+      <div className="bg-black/40 rounded-sm p-5 border border-white/10 text-center">
         <div className="text-3xl mb-2">📭</div>
         <p className="text-gray-400 text-sm">本次没有解锁新档案</p>
         <p className="text-xs text-gray-600 mt-2">
@@ -172,7 +172,7 @@ const ArchiveProgress: React.FC<{
       initial={{ opacity: 0, scale: 0.95 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ delay: 0.8 }}
-      className="bg-cyan-900/20 border border-cyan-500/30 rounded-xl p-5"
+      className="bg-cyan-900/20 border border-cyan-500/30 rounded-sm p-5"
     >
       <div className="flex items-center gap-2 mb-4">
         <Archive className="w-5 h-5 text-cyan-400" />
@@ -226,12 +226,12 @@ const ArchiveProgress: React.FC<{
           <span className="text-gray-400 text-sm">档案收集进度</span>
           <span className="text-white font-bold">{totalArchives} / 240</span>
         </div>
-        <div className="w-full h-2 bg-gray-800 rounded-full overflow-hidden">
+        <div className="w-full h-2 bg-gray-800 rounded-sm overflow-hidden">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${(totalArchives / 240) * 100}%` }}
             transition={{ delay: 1, duration: 0.8 }}
-            className="h-full bg-gradient-to-r from-cyan-500 to-purple-500"
+            className="h-full bg-pixel-gradient-cyan"
           />
         </div>
       </div>
@@ -286,14 +286,14 @@ export const DeathSummary: React.FC<DeathSummaryProps> = ({ onRestart }) => {
     >
       {/* 背景效果 */}
       <div className="absolute inset-0 opacity-20 bg-[url('/assets/textures/noise.svg')]">
-        <div className="absolute inset-0 bg-gradient-to-b from-red-900/10 via-transparent to-black" />
+        <div className="absolute inset-0 bg-red-900/10" />
       </div>
 
       <motion.div
         initial={{ scale: 0.9, y: 50 }}
         animate={{ scale: 1, y: 0 }}
         transition={{ type: "spring", damping: 20 }}
-        className="relative max-w-3xl w-full bg-gray-900/95 border border-gray-700 rounded-2xl p-6 md:p-8 shadow-2xl my-8"
+        className="relative max-w-3xl w-full bg-gray-900/95 border border-gray-700 rounded-sm p-6 md:p-8 shadow-pixel my-8"
       >
         {/* 标题 */}
         <div className="text-center mb-6">
@@ -301,7 +301,7 @@ export const DeathSummary: React.FC<DeathSummaryProps> = ({ onRestart }) => {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ delay: 0.2, type: "spring" }}
-            className="inline-flex items-center justify-center w-20 h-20 bg-red-500/20 rounded-full mb-4"
+            className="inline-flex items-center justify-center w-20 h-20 bg-red-500/20 rounded-sm mb-4"
           >
             <Skull className="w-10 h-10 text-red-500" />
           </motion.div>
@@ -319,7 +319,7 @@ export const DeathSummary: React.FC<DeathSummaryProps> = ({ onRestart }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-black/40 rounded-xl p-4 text-center"
+            className="bg-black/40 rounded-sm p-4 text-center"
           >
             <Clock className="w-5 h-5 text-gray-500 mx-auto mb-1" />
             <div className="text-2xl font-bold text-white">{survivedWeeks}</div>
@@ -330,7 +330,7 @@ export const DeathSummary: React.FC<DeathSummaryProps> = ({ onRestart }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25 }}
-            className="bg-black/40 rounded-xl p-4 text-center"
+            className="bg-black/40 rounded-sm p-4 text-center"
           >
             <RotateCcw className="w-5 h-5 text-gray-500 mx-auto mb-1" />
             <div className="text-2xl font-bold text-white">{totalDeaths}</div>
@@ -341,7 +341,7 @@ export const DeathSummary: React.FC<DeathSummaryProps> = ({ onRestart }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-black/40 rounded-xl p-4 text-center"
+            className="bg-black/40 rounded-sm p-4 text-center"
           >
             <Archive className="w-5 h-5 text-gray-500 mx-auto mb-1" />
             <div className="text-2xl font-bold text-cyan-400">{runArchives.length}</div>
@@ -375,7 +375,7 @@ export const DeathSummary: React.FC<DeathSummaryProps> = ({ onRestart }) => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.1 }}
-          className="bg-gradient-to-r from-purple-900/30 to-cyan-900/30 rounded-xl p-4 mb-6 border border-purple-500/20"
+          className="bg-purple-900/30 rounded-sm p-4 mb-6 border border-purple-500/20"
         >
           <p className="text-center text-gray-300 text-sm">
             {analysis.replayIncentive}
@@ -390,11 +390,9 @@ export const DeathSummary: React.FC<DeathSummaryProps> = ({ onRestart }) => {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
           onClick={handleRestart}
-          className="w-full py-4 bg-gradient-to-r from-cyan-600 to-purple-600 
-                     hover:from-cyan-500 hover:to-purple-500
-                     text-white font-bold text-lg rounded-xl
-                     shadow-lg shadow-cyan-500/25
-                     transition-all"
+          className="w-full py-4 bg-pixel-gradient-cyan text-white font-bold text-lg rounded-sm
+                     shadow-pixel-sm shadow-cyan-500/25
+                     hover:brightness-110 transition-all"
         >
           开始新的轮回
         </motion.button>

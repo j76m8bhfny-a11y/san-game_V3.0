@@ -51,7 +51,7 @@ export const FaithModal: React.FC = () => {
   return (
     // 全屏遮罩容器
     <div 
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-sm" 
+      className="fixed inset-0 z-50 flex items-center justify-center backdrop-solid-dark" 
       onClick={handleClose}
     >
        {/* 内容容器 
@@ -59,7 +59,7 @@ export const FaithModal: React.FC = () => {
          max-w-5xl 限制最大宽度，避免在大屏上太散
        */}
        <div 
-         className="w-full max-w-5xl aspect-video relative overflow-hidden shadow-2xl border border-gray-800 bg-black"
+         className="w-full max-w-5xl aspect-video relative overflow-hidden shadow-pixel border border-gray-800 bg-black"
          onClick={e => e.stopPropagation()} // 防止点击内部触发关闭
        >
          {renderContent()}

@@ -18,7 +18,7 @@ export const NoviceOptions: React.FC = () => {
 
   return (
     <div className="absolute inset-0 z-30 flex items-center justify-center pointer-events-none">
-      <div className="bg-black/80 backdrop-blur-md p-6 rounded-xl border border-white/10 shadow-2xl pointer-events-auto min-w-[320px]">
+      <div className="backdrop-solid-dark p-6 rounded-sm border border-white/10 shadow-pixel pointer-events-auto min-w-[320px]">
         <h2 className="text-white font-pixel text-xl mb-4 text-center tracking-widest border-b border-white/20 pb-2">
           {t('faith.make_choice')}
         </h2>
@@ -38,7 +38,7 @@ export const NoviceOptions: React.FC = () => {
                 key={key}
                 onClick={() => performNoviceAction(key as NoviceActionType)}
                 className={`
-                  relative group flex items-center justify-between p-4 rounded-lg border transition-all duration-200
+                  relative group flex items-center justify-between p-4 rounded-sm border transition-all duration-200
                   ${isStreakActive 
                     ? 'bg-white/10 border-orange-500/50 shadow-[0_0_15px_rgba(249,115,22,0.2)]' 
                     : 'bg-black/40 border-white/5 hover:bg-white/5 hover:border-white/20'
@@ -57,7 +57,7 @@ export const NoviceOptions: React.FC = () => {
 
                 {/* 右侧：连击计数器 (动态显示) */}
                 {isStreakActive && streakCount > 0 && (
-                  <div className="absolute -top-2 -right-2 bg-orange-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow-lg animate-pulse">
+                  <div className="absolute -top-2 -right-2 bg-orange-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-sm shadow-pixel animate-pulse">
                     x{streakCount}
                   </div>
                 )}

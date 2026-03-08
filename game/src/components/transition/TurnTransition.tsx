@@ -296,7 +296,7 @@ export const TurnTransition: React.FC<TurnTransitionProps> = React.memo(({
                 initial={{ rotateX: 0 }}
                 animate={{ rotateX: -180 }}
                 transition={{ duration: timings.calendarFlipDuration, ease: "easeInOut" }}
-                className="absolute inset-0 bg-gray-800 rounded-lg border border-gray-600 flex items-center justify-center backface-hidden"
+                className="absolute inset-0 bg-gray-800 rounded-sm border border-gray-600 flex items-center justify-center backface-hidden"
                 style={{ 
                   width: 200, 
                   height: 120,
@@ -314,7 +314,7 @@ export const TurnTransition: React.FC<TurnTransitionProps> = React.memo(({
                 initial={{ rotateX: 180 }}
                 animate={{ rotateX: 0 }}
                 transition={{ duration: timings.calendarFlipDuration, ease: "easeInOut" }}
-                className="bg-white rounded-lg border-2 border-gray-300 flex items-center justify-center shadow-2xl"
+                className="bg-white rounded-sm border-2 border-gray-300 flex items-center justify-center shadow-pixel-sm"
                 style={{ 
                   width: 200, 
                   height: 120,

@@ -44,7 +44,7 @@ export const SuburbsExterior: React.FC<Props> = ({ house, gold, onBuy, onClose }
       <div className="absolute bottom-10 left-10 z-10 transform -rotate-2">
         <img 
           src="/assets/housing/prop_hoa_sign.png" 
-          className="w-24 drop-shadow-xl hover:scale-105 transition-transform cursor-help" 
+          className="w-24 drop-shadow-pixel-sm hover:scale-105 transition-transform cursor-help render-pixelated" 
           title="HOA Rules: Grass must be 2 inches. No trash cans visible."
         />
       </div>
@@ -61,11 +61,11 @@ export const SuburbsExterior: React.FC<Props> = ({ house, gold, onBuy, onClose }
           `}
         >
           {/* 牌子柱子 */}
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-full bg-white border border-gray-300 shadow-lg" />
-          <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-full h-4 bg-white border border-gray-300 shadow-lg" />
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-4 h-full bg-white border border-gray-300 shadow-pixel" />
+          <div className="absolute top-[20%] left-1/2 -translate-x-1/2 w-full h-4 bg-white border border-gray-300 shadow-pixel" />
 
           {/* 挂着的牌子主体 */}
-          <div className="absolute top-[25%] left-1/2 -translate-x-1/2 w-full bg-white border-4 border-[#1e3a8a] shadow-2xl p-4 text-center transform origin-top group-hover:rotate-1 transition-transform">
+          <div className="absolute top-[25%] left-1/2 -translate-x-1/2 w-full bg-white border-4 border-[#1e3a8a] shadow-pixel p-4 text-center transform origin-top group-hover:rotate-1 transition-transform">
             <div className="bg-[#1e3a8a] text-white font-pixel font-bold py-1 uppercase tracking-widest mb-2">
               {isSale ? 'FOR SALE' : 'FOR LEASE'}
             </div>
@@ -93,7 +93,7 @@ export const SuburbsExterior: React.FC<Props> = ({ house, gold, onBuy, onClose }
             {/* 按钮伪装成挂在下面的小牌子 */}
             <div className={`
               absolute -bottom-16 left-1/2 -translate-x-1/2 w-[90%] 
-              bg-[#d97706] text-white font-bold py-2 shadow-lg
+              bg-[#d97706] text-white font-bold py-2 shadow-pixel-sm
               border-2 border-white flex items-center justify-center gap-2
               transform origin-top animate-swing
             `}>
@@ -102,12 +102,12 @@ export const SuburbsExterior: React.FC<Props> = ({ house, gold, onBuy, onClose }
             </div>
             
             {/* 挂钩 */}
-            <div className="absolute -top-6 left-10 w-2 h-6 border-l-2 border-r-2 border-gray-400 rounded-full" />
-            <div className="absolute -top-6 right-10 w-2 h-6 border-l-2 border-r-2 border-gray-400 rounded-full" />
+            <div className="absolute -top-6 left-10 w-2 h-6 border-l-2 border-r-2 border-gray-400 rounded-sm" />
+            <div className="absolute -top-6 right-10 w-2 h-6 border-l-2 border-r-2 border-gray-400 rounded-sm" />
           </div>
 
           {!canAfford && (
-            <div className="absolute top-[40%] left-1/2 -translate-x-1/2 bg-red-600 text-white font-black px-4 py-1 rotate-[-10deg] shadow-lg whitespace-nowrap z-20">
+            <div className="absolute top-[40%] left-1/2 -translate-x-1/2 bg-red-600 text-white font-black px-4 py-1 rotate-[-10deg] shadow-pixel whitespace-nowrap z-20">
               INSUFFICIENT FUNDS
             </div>
           )}
@@ -115,7 +115,7 @@ export const SuburbsExterior: React.FC<Props> = ({ house, gold, onBuy, onClose }
 
         <button 
           onClick={onClose}
-          className="mt-20 bg-white/80 hover:bg-white text-gray-600 px-6 py-2 rounded-full shadow-lg font-bold text-sm backdrop-blur-sm transition-all"
+          className="mt-20 bg-white/80 hover:bg-white text-gray-600 px-6 py-2 rounded-sm shadow-pixel-sm font-bold text-sm backdrop-solid-light transition-all"
         >
           {t('common.close')}
         </button>

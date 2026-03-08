@@ -27,10 +27,10 @@ export const RegionView: React.FC = () => {
              onClick={() => setViewMode('MAP')}
              className="
                group flex items-center gap-3 px-5 py-2 
-               bg-black/40 backdrop-blur-md 
-               border border-white/10 rounded-full 
+               backdrop-solid-dark 
+               border border-white/10 rounded-sm 
                hover:bg-white/10 hover:border-white/40 
-               transition-all duration-300 shadow-lg
+               transition-all duration-300 shadow-pixel-sm
              "
            >
              <span className="text-xl group-hover:scale-110 transition-transform">🗺️</span>
@@ -44,7 +44,7 @@ export const RegionView: React.FC = () => {
       {/* 3. 事件遮罩层 */}
       {/* 当触发剧情事件时，让街景变暗模糊，突显 App.tsx 里的 MessageWindow */}
       {currentEvent && (
-        <div className="absolute inset-0 z-40 bg-black/60 backdrop-blur-[3px] transition-opacity duration-500" />
+        <div className="absolute inset-0 z-40 backdrop-solid-dark transition-opacity duration-500" />
       )}
 
       {/* 4. 氛围层：全局暗角 (Vignette) */}

@@ -28,7 +28,7 @@ export const SlumsInterior: React.FC<Props> = ({ housing, onSleep, onMoveOut, on
 
       {/* 2. 左上角：状态栏 (用胶带贴在帐篷布上) */}
       <div className="relative z-10 self-start transform rotate-1">
-        <div className="bg-yellow-100/90 text-black px-4 py-3 shadow-lg border-2 border-white/50 clip-tape">
+        <div className="bg-yellow-100/90 text-black px-4 py-3 shadow-pixel-sm border-2 border-white/50 clip-tape">
           <h2 className="text-xl font-marker font-bold uppercase border-b border-black/20 pb-1 mb-1">
             {t('housing.title')}
           </h2>
@@ -53,7 +53,7 @@ export const SlumsInterior: React.FC<Props> = ({ housing, onSleep, onMoveOut, on
           onClick={onMoveOut}
           className="flex flex-col items-center group opacity-60 hover:opacity-100 transition-opacity"
         >
-          <div className="w-12 h-12 bg-black/50 rounded-full flex items-center justify-center border border-white/20 group-hover:bg-red-900/50 group-hover:border-red-500 transition-colors">
+          <div className="w-12 h-12 bg-black/50 rounded-sm flex items-center justify-center border border-white/20 group-hover:bg-red-900/50 group-hover:border-red-500 transition-colors">
             🗑️
           </div>
           <span className="text-[10px] text-gray-400 mt-2 font-mono uppercase bg-black/80 px-1">{t('housing.moveOut')}</span>
@@ -66,8 +66,8 @@ export const SlumsInterior: React.FC<Props> = ({ housing, onSleep, onMoveOut, on
         >
           <div className="relative w-24 h-24">
             {/* 睡袋图标/图片 */}
-            <div className="absolute inset-0 bg-orange-600/20 rounded-full blur-xl group-hover:bg-orange-500/40 transition-colors" />
-            <img src="/assets/housing/ui_sleeping_bag.png" className="relative z-10 w-full h-full object-contain drop-shadow-xl" />
+            <div className="absolute inset-0 bg-orange-600/20 rounded-sm blur-xl group-hover:bg-orange-500/40 transition-colors" />
+            <img src="/assets/housing/ui_sleeping_bag.png" className="relative z-10 w-full h-full object-contain drop-shadow-pixel-sm render-pixelated" />
           </div>
           <span className="text-lg text-orange-200 font-marker mt-[-10px] relative z-20 text-shadow">
             {t('housing.regen')}
@@ -79,7 +79,7 @@ export const SlumsInterior: React.FC<Props> = ({ housing, onSleep, onMoveOut, on
           onClick={onClose}
           className="flex flex-col items-center group opacity-60 hover:opacity-100 transition-opacity"
         >
-          <div className="w-12 h-12 bg-black/50 rounded-full flex items-center justify-center border border-white/20 group-hover:bg-white/20 transition-colors">
+          <div className="w-12 h-12 bg-black/50 rounded-sm flex items-center justify-center border border-white/20 group-hover:bg-white/20 transition-colors">
             🚪
           </div>
           <span className="text-[10px] text-gray-400 mt-2 font-mono uppercase bg-black/80 px-1">{t('common.close')}</span>

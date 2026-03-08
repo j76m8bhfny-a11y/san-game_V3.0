@@ -150,9 +150,9 @@ export const SystemAlertModal: React.FC<SystemAlertModalProps> = ({
   if (!isOpen) return null;
   
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       <motion.div
-        initial={{ opacity: 0 }}
+        initial={false}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         className="fixed inset-0 z-[200] flex items-center justify-center bg-black/90"
@@ -169,7 +169,7 @@ export const SystemAlertModal: React.FC<SystemAlertModalProps> = ({
         
         {/* 主弹窗 */}
         <motion.div
-          initial={{ scale: 0.95, opacity: 0 }}
+          initial={false}
           animate={{ scale: 1, opacity: 1 }}
           exit={{ scale: 0.95, opacity: 0 }}
           className={`
@@ -200,10 +200,10 @@ export const SystemAlertModal: React.FC<SystemAlertModalProps> = ({
             </div>
             
             {/* 后果警告 */}
-            <AnimatePresence>
+            <AnimatePresence mode="wait">
               {messageComplete && (
                 <motion.div
-                  initial={{ opacity: 0, x: -10 }}
+                  initial={false}
                   animate={{ opacity: 1, x: 0 }}
                   className={`pl-4 border-l-2 ${isZh ? 'border-red-600' : 'border-green-600'}`}
                 >

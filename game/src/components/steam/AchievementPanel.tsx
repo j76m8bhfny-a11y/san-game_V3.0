@@ -32,12 +32,12 @@ export const AchievementPanel: React.FC<AchievementPanelProps> = ({ isOpen, onCl
   const progressPercent = totalCount > 0 ? (unlockedCount / totalCount) * 100 : 0;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-solid-dark">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.9 }}
-        className="w-full max-w-2xl max-h-[80vh] bg-gray-900 rounded-2xl border border-gray-700 overflow-hidden flex flex-col"
+        className="w-full max-w-2xl max-h-[80vh] bg-gray-900 rounded-sm border border-gray-700 overflow-hidden flex flex-col"
       >
         {/* 头部 */}
         <div className="p-6 border-b border-gray-700">
@@ -53,16 +53,16 @@ export const AchievementPanel: React.FC<AchievementPanelProps> = ({ isOpen, onCl
             </div>
             <button
               onClick={onClose}
-              className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+              className="p-2 hover:bg-gray-800 rounded-sm transition-colors"
             >
               <X className="w-6 h-6 text-gray-400" />
             </button>
           </div>
 
           {/* 进度条 */}
-          <div className="h-3 bg-gray-800 rounded-full overflow-hidden">
+          <div className="h-3 bg-gray-800 rounded-sm overflow-hidden">
             <motion.div
-              className="h-full bg-gradient-to-r from-yellow-400 to-orange-500"
+              className="h-full bg-pixel-gradient-gold"
               initial={{ width: 0 }}
               animate={{ width: `${progressPercent}%` }}
               transition={{ duration: 1, ease: 'easeOut' }}
@@ -75,7 +75,7 @@ export const AchievementPanel: React.FC<AchievementPanelProps> = ({ isOpen, onCl
               <button
                 key={type}
                 onClick={() => setFilter(type)}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-4 py-2 rounded-sm text-sm font-medium transition-colors ${
                   filter === type
                     ? 'bg-blue-600 text-white'
                     : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
@@ -113,17 +113,17 @@ const AchievementCard: React.FC<{ achievement: Achievement }> = ({ achievement }
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className={`flex items-center gap-4 p-4 rounded-xl border transition-all ${
+      className={`flex items-center gap-4 p-4 rounded-sm border transition-all ${
         isUnlocked
-          ? 'bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border-yellow-500/30'
+          ? 'bg-yellow-500/10 border-yellow-500/30'
           : 'bg-gray-800/50 border-gray-700 opacity-60'
       }`}
     >
       {/* 图标 */}
       <div
-        className={`flex-shrink-0 w-14 h-14 rounded-xl flex items-center justify-center ${
+        className={`flex-shrink-0 w-14 h-14 rounded-sm flex items-center justify-center ${
           isUnlocked
-            ? 'bg-gradient-to-br from-yellow-400 to-orange-500'
+            ? 'bg-pixel-gradient-gold'
             : 'bg-gray-700'
         }`}
       >
@@ -149,9 +149,9 @@ const AchievementCard: React.FC<{ achievement: Achievement }> = ({ achievement }
         <p className="text-sm text-gray-400 mt-1">{achievement.description}</p>
         {achievement.is_progressive && (
           <div className="mt-2">
-            <div className="h-1.5 bg-gray-700 rounded-full overflow-hidden">
+            <div className="h-1.5 bg-gray-700 rounded-sm overflow-hidden">
               <div
-                className="h-full bg-blue-500 rounded-full"
+                className="h-full bg-blue-500 rounded-sm"
                 style={{
                   width: `${(achievement.current_progress / achievement.max_progress) * 100}%`,
                 }}

@@ -41,7 +41,7 @@ export const JobPaperRust: React.FC<Props> = ({
           w-12 h-16 rounded-sm flex flex-col items-center justify-center shadow-inner relative overflow-hidden shrink-0
           ${isActive ? 'bg-green-900/60 text-green-400' : 'bg-[#d4c4b0] text-stone-800'}
         `}>
-          <div className="w-3 h-3 bg-[#1a1a1a] rounded-full absolute -top-1.5" />
+          <div className="w-3 h-3 bg-[#1a1a1a] rounded-sm absolute -top-1.5" />
           <span className="font-mono font-bold text-2xl tracking-tighter">
             {job.title?.substring(0, 2).toUpperCase() || '??'}
           </span>

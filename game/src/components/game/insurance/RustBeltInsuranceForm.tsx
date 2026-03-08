@@ -82,7 +82,7 @@ export const RustBeltInsuranceForm: React.FC<{ onClose: () => void }> = ({ onClo
   );
 
   return (
-    <div className="w-[500px] bg-[#d4d4d8] rounded-sm shadow-2xl flex flex-col relative overflow-hidden">
+    <div className="w-[500px] bg-[#d4d4d8] rounded-sm shadow-pixel-sm flex flex-col relative overflow-hidden">
       {/* 金属夹子顶部 */}
       <div className="h-16 bg-[#27272a] flex items-center justify-center shadow-md relative z-20">
         <div className="w-32 h-8 bg-[#52525b] rounded-b-lg border-b-4 border-[#3f3f46]"></div>

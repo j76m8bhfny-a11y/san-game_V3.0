@@ -15,13 +15,13 @@ export const RoastModal = () => {
   const { stiffness, damping, initialScale } = NARRATIVE_RULES.ui.impactAnimation;
 
   return (
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
       {currentRoast && (
         <motion.div
           key="roast-notification"
           // ✅ 3. 应用配置中的初始缩放 (initialScale)
           // 初始状态：在屏幕顶部之外，且带有缩放效果
-          initial={{ opacity: 0, y: -150, x: '-50%', scale: initialScale ?? 0.9 }}
+          initial={false}
           
           // 激活状态：下滑到顶部位置，恢复正常大小
           animate={{ opacity: 1, y: 0, x: '-50%', scale: 1 }}
@@ -40,13 +40,13 @@ export const RoastModal = () => {
         >
           {/* iOS Glassmorphism Container 
              - bg-white/80: 高透白底
-             - backdrop-blur-2xl: 极强的毛玻璃模糊
+             - backdrop-solid-light: 极强的毛玻璃模糊
              - saturate-150: 增加透出背景的鲜艳度（iOS特征）
           */}
           <div className="
             relative overflow-hidden
             bg-white/70 
-            backdrop-blur-2xl 
+            backdrop-solid-light 
             backdrop-saturate-150
             border border-white/50
             rounded-[22px] 
@@ -82,7 +82,7 @@ export const RoastModal = () => {
                 shrink-0       
                 px-5 py-2.5    
                 bg-[#000000]/5 hover:bg-[#000000]/10 active:bg-[#000000]/15
-                rounded-xl
+                rounded-sm
                 text-[15px] font-semibold text-[#007AFF]
                 transition-colors duration-200
                 flex items-center justify-center

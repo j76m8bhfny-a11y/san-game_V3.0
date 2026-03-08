@@ -28,25 +28,25 @@ const InteractableObject: React.FC<InteractableProps> = ({
       style={style}
     >
       {/* 1. 阴影 (模拟地面投影) */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] h-[10%] bg-black/40 blur-md rounded-full" />
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] h-[10%] bg-black/40 blur-md rounded-sm" />
 
       {/* 2. 基础图片 */}
       <img 
         src={baseImage} 
-        className="relative w-full h-auto object-contain transition-opacity duration-300 group-hover:opacity-0" 
+        className="relative w-full h-auto object-contain transition-opacity duration-300 group-hover:opacity-0 render-pixelated" 
         alt={label} 
       />
       
       {/* 3. 悬停图片 (高亮/开门状态) */}
       <img 
         src={hoverImage} 
-        className="absolute inset-0 w-full h-auto object-contain opacity-0 transition-opacity duration-300 group-hover:opacity-100" 
+        className="absolute inset-0 w-full h-auto object-contain opacity-0 transition-opacity duration-300 group-hover:opacity-100 render-pixelated" 
         alt={label} 
       />
 
       {/* 4. 标签 (中产阶级风格：干净、极简、白色无衬线) */}
       <div className="absolute -top-16 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0 pointer-events-none z-20">
-        <div className="bg-white/90 text-gray-800 px-4 py-2 font-pixel font-bold text-xs tracking-widest shadow-xl border border-gray-200 rounded-sm uppercase whitespace-nowrap">
+        <div className="bg-white/90 text-gray-800 px-4 py-2 font-pixel font-bold text-xs tracking-widest shadow-pixel-sm border border-gray-200 rounded-sm uppercase whitespace-nowrap">
           {label}
         </div>
         {/* 倒三角箭头 */}
@@ -75,11 +75,11 @@ const NarrativeProp: React.FC<{
       style={style}
       onClick={handleClick}
     >
-      <img src={image} className="w-full drop-shadow-md" alt="prop" />
+      <img src={image} className="w-full drop-shadow-md render-pixelated" alt="prop" />
       
       {/* 气泡对话框 */}
       {active && (
-        <div className="absolute -top-20 left-1/2 -translate-x-1/2 bg-[#2a2a2a] text-white text-xs p-3 rounded-lg shadow-2xl min-w-[150px] text-center z-50 animate-bounce-in">
+        <div className="absolute -top-20 left-1/2 -translate-x-1/2 bg-[#2a2a2a] text-white text-xs p-3 rounded-sm shadow-pixel min-w-[150px] text-center z-50 animate-bounce-in">
           {message}
           <div className="absolute bottom-[-6px] left-1/2 -translate-x-1/2 w-3 h-3 bg-[#2a2a2a] rotate-45"></div>
         </div>
@@ -116,7 +116,7 @@ export const SuburbsScene: React.FC = () => {
       {/* ================= Layer 1: 街道底图 (中速) ================= */}
       <ParallaxLayer depth={0.3}>
         <div 
-          className="w-[120vw] h-full bg-cover bg-center shadow-lg"
+          className="w-[120vw] h-full bg-cover bg-center shadow-pixel-sm"
           style={{ backgroundImage: "url('/assets/scenes/suburbs/street_base.jpg')" }} 
         />
       </ParallaxLayer>

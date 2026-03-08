@@ -46,14 +46,14 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
       />
 
       {/* iPad Pro 终端 */}
-      <div className="relative z-10 w-[640px] h-[480px] bg-white rounded-[2rem] shadow-2xl border-8 border-gray-900 flex flex-col overflow-hidden transform transition-all hover:scale-[1.01]">
+      <div className="relative z-10 w-[640px] h-[480px] bg-white rounded-[2rem] shadow-pixel-sm border-8 border-gray-900 flex flex-col overflow-hidden transform transition-all hover:scale-[1.01]">
         
         {/* 顶部状态栏 */}
         <div className="h-6 bg-gray-50 flex items-center justify-between px-4 border-b border-gray-200">
           <div className="flex gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-red-400" />
-            <div className="w-2 h-2 rounded-full bg-yellow-400" />
-            <div className="w-2 h-2 rounded-full bg-green-400" />
+            <div className="w-2 h-2 rounded-sm bg-red-400" />
+            <div className="w-2 h-2 rounded-sm bg-yellow-400" />
+            <div className="w-2 h-2 rounded-sm bg-green-400" />
           </div>
           <div className="text-[9px] text-gray-400 font-mono uppercase">
             {mode === 'NATIVE' ? t('faith.os_version') : t('faith.guest_session')}
@@ -65,8 +65,8 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
           
           {/* Loading 遮罩 */}
           {processing && (
-            <div className="absolute inset-0 bg-white/90 z-30 flex flex-col items-center justify-center backdrop-blur-sm">
-              <div className="w-8 h-8 border-4 border-blue-100 border-t-blue-600 rounded-full animate-spin mb-3" />
+            <div className="absolute inset-0 z-30 flex flex-col items-center justify-center backdrop-solid-light">
+              <div className="w-8 h-8 border-4 border-blue-100 border-t-blue-600 rounded-sm animate-spin mb-3" />
               <div className="text-xs text-blue-600 font-bold uppercase tracking-widest">{t('faith.processing')}</div>
             </div>
           )}
@@ -87,7 +87,7 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
                         onClick={() => handleNoviceAction(NoviceActionType.DEDICATE)}
                         className="flex flex-col items-center gap-2 group"
                     >
-                        <div className="w-16 h-16 bg-blue-500 rounded-2xl flex items-center justify-center text-3xl text-white shadow-lg group-hover:scale-105 transition-transform">
+                        <div className="w-16 h-16 bg-blue-500 rounded-sm flex items-center justify-center text-3xl text-white shadow-pixel-sm group-hover:scale-105 transition-transform">
                             💰
                         </div>
                         <span className="text-xs font-medium text-gray-600">{t('faith.donate')}</span>
@@ -99,7 +99,7 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
                         onClick={() => handleNoviceAction(NoviceActionType.AID)}
                         className="flex flex-col items-center gap-2 group"
                     >
-                        <div className="w-16 h-16 bg-green-500 rounded-2xl flex items-center justify-center text-3xl text-white shadow-lg group-hover:scale-105 transition-transform">
+                        <div className="w-16 h-16 bg-green-500 rounded-sm flex items-center justify-center text-3xl text-white shadow-pixel-sm group-hover:scale-105 transition-transform">
                             🤝
                         </div>
                         <span className="text-xs font-medium text-gray-600">{t('faith.volunteer')}</span>
@@ -111,7 +111,7 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
                         onClick={() => handleNoviceAction(NoviceActionType.SACRIFICE)}
                         className="flex flex-col items-center gap-2 group"
                     >
-                        <div className="w-16 h-16 bg-red-500 rounded-2xl flex items-center justify-center text-3xl text-white shadow-lg group-hover:scale-105 transition-transform">
+                        <div className="w-16 h-16 bg-red-500 rounded-sm flex items-center justify-center text-3xl text-white shadow-pixel-sm group-hover:scale-105 transition-transform">
                             🩸
                         </div>
                         <span className="text-xs font-medium text-gray-600">{t('faith.bio_data')}</span>
@@ -123,7 +123,7 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
                         onClick={() => handleNoviceAction(NoviceActionType.REJECT)}
                         className="flex flex-col items-center gap-2 group"
                     >
-                        <div className="w-16 h-16 bg-gray-700 rounded-2xl flex items-center justify-center text-3xl text-white shadow-lg group-hover:scale-105 transition-transform">
+                        <div className="w-16 h-16 bg-gray-700 rounded-sm flex items-center justify-center text-3xl text-white shadow-pixel-sm group-hover:scale-105 transition-transform">
                             🔌
                         </div>
                         <span className="text-xs font-medium text-gray-600">{t('faith.logout')}</span>
@@ -170,9 +170,9 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
                  {activeTab === 'GIVE' ? (
                      <div 
                        onClick={() => handleAction(performFaithRite)}
-                       className="bg-white p-4 rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-blue-400 cursor-pointer transition-all flex items-center gap-4"
+                       className="bg-white p-4 rounded-sm border border-gray-200 shadow-sm hover:shadow-md hover:border-blue-400 cursor-pointer transition-all flex items-center gap-4"
                      >
-                       <div className="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center text-2xl">🌱</div>
+                       <div className="w-12 h-12 bg-blue-50 rounded-sm flex items-center justify-center text-2xl">🌱</div>
                        <div>
                          <h3 className="font-bold text-gray-800">{t('faith.daily_tithe')}</h3>
                          <p className="text-xs text-gray-500">{t('faith.auto_deduct')}</p>
@@ -195,7 +195,7 @@ export const SuburbsChurchInterior: React.FC<Props> = ({ onClose }) => {
                 </p>
                 <button
                   onClick={() => handleAction(performFaithRite)}
-                  className="bg-gray-800 text-white px-8 py-3 rounded-full text-sm font-bold uppercase tracking-widest hover:bg-black transition-colors shadow-lg"
+                  className="bg-gray-800 text-white px-8 py-3 rounded-sm text-sm font-bold uppercase tracking-widest hover:bg-black transition-colors shadow-pixel-sm"
                 >
                   {t('faith.execute_rite')}
                 </button>

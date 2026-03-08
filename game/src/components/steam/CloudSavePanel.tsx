@@ -107,8 +107,8 @@ export const CloudSavePanel: React.FC<CloudSavePanelProps> = ({
   // 未连接 Steam
   if (!isConnected) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
-        <div className="bg-gray-900 rounded-2xl border border-gray-700 p-8 max-w-md text-center">
+      <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-solid-dark">
+        <div className="bg-gray-900 rounded-sm border border-gray-700 p-8 max-w-md text-center">
           <CloudOff className="w-16 h-16 text-gray-500 mx-auto mb-4" />
           <h2 className="text-xl font-bold text-white mb-2">Steam 未连接</h2>
           <p className="text-gray-400 mb-6">
@@ -116,7 +116,7 @@ export const CloudSavePanel: React.FC<CloudSavePanelProps> = ({
           </p>
           <button
             onClick={onClose}
-            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-medium"
+            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-sm text-white font-medium"
           >
             关闭
           </button>
@@ -126,12 +126,12 @@ export const CloudSavePanel: React.FC<CloudSavePanelProps> = ({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center backdrop-solid-dark">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.9 }}
-        className="w-full max-w-3xl max-h-[85vh] bg-gray-900 rounded-2xl border border-gray-700 overflow-hidden flex flex-col"
+        className="w-full max-w-3xl max-h-[85vh] bg-gray-900 rounded-sm border border-gray-700 overflow-hidden flex flex-col"
       >
         {/* 头部 */}
         <div className="p-6 border-b border-gray-700">
@@ -149,14 +149,14 @@ export const CloudSavePanel: React.FC<CloudSavePanelProps> = ({
               <button
                 onClick={() => sync()}
                 disabled={isSaving || isLoading}
-                className="p-2 hover:bg-gray-800 rounded-lg transition-colors disabled:opacity-50"
+                className="p-2 hover:bg-gray-800 rounded-sm transition-colors disabled:opacity-50"
                 title="强制同步"
               >
                 <RefreshCw className={`w-5 h-5 text-gray-400 ${(isSaving || isLoading) ? 'animate-spin' : ''}`} />
               </button>
               <button
                 onClick={onClose}
-                className="p-2 hover:bg-gray-800 rounded-lg transition-colors"
+                className="p-2 hover:bg-gray-800 rounded-sm transition-colors"
               >
                 <X className="w-6 h-6 text-gray-400" />
               </button>
@@ -165,7 +165,7 @@ export const CloudSavePanel: React.FC<CloudSavePanelProps> = ({
 
           {/* 存储配额 */}
           {storageUsage && (
-            <div className="mt-4 p-3 bg-gray-800/50 rounded-lg">
+            <div className="mt-4 p-3 bg-gray-800/50 rounded-sm">
               <div className="flex items-center justify-between text-sm mb-2">
                 <span className="text-gray-400 flex items-center gap-2">
                   <HardDrive className="w-4 h-4" />
@@ -175,9 +175,9 @@ export const CloudSavePanel: React.FC<CloudSavePanelProps> = ({
                   {formatSize(storageUsage.used)} / {formatSize(storageUsage.total)}
                 </span>
               </div>
-              <div className="h-2 bg-gray-700 rounded-full overflow-hidden">
+              <div className="h-2 bg-gray-700 rounded-sm overflow-hidden">
                 <div
-                  className="h-full bg-blue-500 rounded-full"
+                  className="h-full bg-blue-500 rounded-sm"
                   style={{
                     width: `${(storageUsage.used / storageUsage.total) * 100}%`,
                   }}
@@ -265,7 +265,7 @@ const SaveSlotCard: React.FC<SaveSlotCardProps> = ({
   return (
     <motion.div
       onClick={onSelect}
-      className={`p-4 rounded-xl border cursor-pointer transition-all ${
+      className={`p-4 rounded-sm border cursor-pointer transition-all ${
         isSelected
           ? 'bg-blue-500/10 border-blue-500/50'
           : 'bg-gray-800/50 border-gray-700 hover:border-gray-600'
@@ -305,7 +305,7 @@ const SaveSlotCard: React.FC<SaveSlotCardProps> = ({
                 onSave();
               }}
               disabled={isLoading === 'save'}
-              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600/50 rounded-lg text-sm font-medium text-white transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600/50 rounded-sm text-sm font-medium text-white transition-colors"
             >
               <Upload className="w-4 h-4" />
               {isLoading === 'save' ? '保存中...' : '保存'}
@@ -320,7 +320,7 @@ const SaveSlotCard: React.FC<SaveSlotCardProps> = ({
                   onLoad();
                 }}
                 disabled={isLoading === 'load'}
-                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-green-600 hover:bg-green-700 disabled:bg-green-600/50 rounded-lg text-sm font-medium text-white transition-colors"
+                className="flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-green-600 hover:bg-green-700 disabled:bg-green-600/50 rounded-sm text-sm font-medium text-white transition-colors"
               >
                 <Download className="w-4 h-4" />
                 {isLoading === 'load' ? '加载中...' : '加载'}
@@ -332,7 +332,7 @@ const SaveSlotCard: React.FC<SaveSlotCardProps> = ({
                   onDelete();
                 }}
                 disabled={isLoading === 'delete'}
-                className="px-3 py-2 bg-red-600/20 hover:bg-red-600/30 disabled:opacity-50 rounded-lg text-red-400 transition-colors"
+                className="px-3 py-2 bg-red-600/20 hover:bg-red-600/30 disabled:opacity-50 rounded-sm text-red-400 transition-colors"
               >
                 <Trash2 className="w-4 h-4" />
               </button>

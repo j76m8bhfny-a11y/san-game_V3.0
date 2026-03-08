@@ -91,7 +91,7 @@ export const LazyImage: React.FC<LazyImageProps> = ({
       {/* 加载指示器 */}
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-900/50">
-          <div className="w-8 h-8 border-2 border-gray-600 border-t-blue-500 rounded-full animate-spin" />
+          <div className="w-8 h-8 border-2 border-gray-600 border-t-blue-500 rounded-sm animate-spin" />
         </div>
       )}
       

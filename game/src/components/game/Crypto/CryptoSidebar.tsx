@@ -123,8 +123,8 @@ export const CryptoSidebar: React.FC = () => {
           {/* 左侧：闪烁绿点 + 网络状态 */}
           <div className="flex items-center gap-2">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-sm bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-sm h-2 w-2 bg-green-500"></span>
             </span>
             <span className="text-[10px] text-red-500 font-mono tracking-wider animate-pulse">
               {marketRules.ui.header.networkStatus}
@@ -376,7 +376,7 @@ export const CryptoSidebar: React.FC = () => {
                           <span>@ ${pos.entryPrice}</span>
                         </div>
                         
-                        <div className="absolute inset-0 bg-black/80 hidden group-hover:flex items-center justify-center backdrop-blur-sm">
+                        <div className="absolute inset-0 bg-black/80 hidden group-hover:flex items-center justify-center backdrop-solid-dark">
                           <button 
                             onClick={() => { playSfx('sfx_cash'); closePosition(pos.id); }}
                             className="px-4 py-1 border border-white/20 text-white hover:bg-white/10 text-xs font-mono transition-colors"

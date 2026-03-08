@@ -82,7 +82,7 @@ export const InventorySidebar: React.FC = () => {
             ({inventory.length} / {shopRules.inventory.maxSize})
           </span>
         </h2>
-        <button onClick={() => setInventoryOpen(false)} className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-white/10 text-gray-500 hover:text-white transition-colors">
+        <button onClick={() => setInventoryOpen(false)} className="w-8 h-8 flex items-center justify-center rounded-sm hover:bg-white/10 text-gray-500 hover:text-white transition-colors">
           ✕
         </button>
       </div>
@@ -109,22 +109,22 @@ export const InventorySidebar: React.FC = () => {
                 key={`${item.id}-${idx}`}
                 onClick={() => { playSfx('sfx_click'); setSelectedItemId(item.id); }}
                 className={`
-                  aspect-square rounded-xl border flex items-center justify-center relative transition-all group overflow-hidden
+                  aspect-square rounded-sm border flex items-center justify-center relative transition-all group overflow-hidden
                   ${selectedItemId === item.id 
                     ? 'bg-white/10 border-amber-500/50 shadow-[0_0_15px_rgba(245,158,11,0.2)]' 
                     : 'bg-white/5 border-white/5 hover:bg-white/10 hover:border-white/20'}
                 `}
               >
-                <span className="text-2xl filter drop-shadow-lg">
+                <span className="text-2xl filter drop-shadow-pixel-sm">
                   {getItemIcon(item)}
                 </span>
-                <div className={`absolute bottom-1 right-1 w-2 h-2 rounded-full ${getTypeColor(item.type)}`}></div>
+                <div className={`absolute bottom-1 right-1 w-2 h-2 rounded-sm ${getTypeColor(item.type)}`}></div>
               </button>
             ))}
             
             {/* 可选：显示空的占位格子以暗示总容量，提升 UI 质感 */}
             {/* Array.from({ length: Math.max(0, shopRules.inventory.maxSize - inventory.length) }).map((_, i) => (
-               <div key={i} className="aspect-square rounded-xl border border-white/5 bg-black/20" />
+               <div key={i} className="aspect-square rounded-sm border border-white/5 bg-black/20" />
             )) */}
           </div>
         )}
@@ -197,7 +197,7 @@ export const InventorySidebar: React.FC = () => {
               onClick={handleUse}
               disabled={selectedItem.type !== ItemType.CONSUMABLE}
               className={`
-                w-full py-3 rounded-lg font-bold text-sm tracking-widest transition-all
+                w-full py-3 rounded-sm font-bold text-sm tracking-widest transition-all
                 ${selectedItem.type === ItemType.CONSUMABLE
                   ? 'bg-white text-black hover:bg-gray-200 active:scale-95'
                   : 'bg-white/5 text-white/30 cursor-not-allowed border border-white/5'}
@@ -223,7 +223,7 @@ const FilterTab = ({ label, icon, active, onClick }: any) => (
   <button 
     onClick={onClick}
     className={`
-      flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold transition-all whitespace-nowrap
+      flex items-center gap-1.5 px-4 py-1.5 rounded-sm text-xs font-bold transition-all whitespace-nowrap
       ${active ? 'bg-white text-black' : 'bg-transparent text-gray-500 hover:text-white hover:bg-white/5'}
     `}
   >

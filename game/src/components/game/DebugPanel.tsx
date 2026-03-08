@@ -50,11 +50,11 @@ export const DebugPanel: React.FC<DebugPanelProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-[9000] flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+    <div className="fixed inset-0 z-[9000] flex items-center justify-center backdrop-solid-dark p-4">
       <motion.div 
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
-        className="w-full max-w-2xl bg-slate-900 border-2 border-green-500 rounded-lg shadow-2xl overflow-hidden font-mono text-green-400"
+        className="w-full max-w-2xl bg-slate-900 border-2 border-green-500 rounded-sm shadow-pixel overflow-hidden font-mono text-green-400"
       >
         {/* Header */}
         <div className="bg-green-500/10 px-6 py-4 border-b border-green-500/30 flex justify-between items-center">

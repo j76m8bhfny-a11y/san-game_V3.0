@@ -131,14 +131,14 @@ export const MiniHUD: React.FC = () => {
 
   return (
     <div className="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[98%] max-w-5xl pointer-events-none select-none">
-      <div className="rounded-2xl px-3 py-2 md:px-6 md:py-3 flex items-center justify-between pointer-events-auto shadow-2xl bg-neutral-900/90 backdrop-blur-md border border-white/10 text-white transition-all duration-300">
+      <div className="rounded-sm px-3 py-2 md:px-6 md:py-3 flex items-center justify-between pointer-events-auto shadow-pixel-sm backdrop-solid-dark border border-white/10 text-white transition-all duration-300">
         
         {/* Left Section */}
         <div className="flex items-center gap-3 md:gap-6">
           
           {/* Time & Class */}
           <div className="flex items-center gap-3">
-            <div className="flex flex-col items-center justify-center w-10 h-10 bg-white/5 rounded-full border border-white/10 shadow-lg">
+            <div className="flex flex-col items-center justify-center w-10 h-10 bg-white/5 rounded-sm border border-white/10 shadow-pixel-sm">
               <div className="text-[8px] font-bold text-gray-400 uppercase tracking-widest leading-none mb-0.5">{t('hud.week', { turn: '' }).replace('{turn}', '')}</div>
               <div className="text-base md:text-lg font-black font-pixel text-white leading-none">
                 {vitality.time.currentTurn}
@@ -147,7 +147,7 @@ export const MiniHUD: React.FC = () => {
 
             <button 
               onClick={() => { playSfx('sfx_click'); setStatsPanelOpen(true); }}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-lg border shadow-inner transition-all duration-500 cursor-pointer hover:scale-105 hover:brightness-110 ${classInfo.bg} ${classInfo.text} ${classInfo.border}`}
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-sm border shadow-inner transition-all duration-500 cursor-pointer hover:scale-105 hover:brightness-110 ${classInfo.bg} ${classInfo.text} ${classInfo.border}`}
             >
               <span className="text-sm filter drop-shadow-sm">{classInfo.icon}</span>
               <span className="hidden md:block text-[10px] font-black tracking-widest uppercase font-mono pt-0.5">
@@ -172,7 +172,7 @@ export const MiniHUD: React.FC = () => {
                     {Math.floor(hp)}<span className="text-[10px] text-gray-500 opacity-50">/{maxHp}</span>
                   </span>
                </div>
-               <div className="w-16 md:w-24 h-1.5 bg-gray-800 rounded-full overflow-hidden border border-white/5">
+               <div className="w-16 md:w-24 h-1.5 bg-gray-800 rounded-sm overflow-hidden border border-white/5">
                   <div className={`h-full transition-all duration-500 ${hp < thresholds.hpLow ? 'bg-red-600 shadow-[0_0_10px_red]' : 'bg-green-500'}`} style={{ width: `${Math.min((hp / maxHp) * 100, 100)}%` }} />
                </div>
             </button>
@@ -187,7 +187,7 @@ export const MiniHUD: React.FC = () => {
                   </span>
                   <span className="font-mono font-bold text-xs md:text-sm text-white">{insight}<span className="text-[10px] text-gray-500 opacity-50">/{maxInsight}</span></span>
                </div>
-               <div className="w-16 md:w-24 h-1.5 bg-gray-800 rounded-full overflow-hidden border border-white/5">
+               <div className="w-16 md:w-24 h-1.5 bg-gray-800 rounded-sm overflow-hidden border border-white/5">
                   <div className={`h-full transition-all duration-500 ${insight > insightHigh ? 'bg-amber-500 shadow-[0_0_10px_amber]' : insight > insightMedium ? 'bg-purple-500 shadow-[0_0_8px_purple]' : insight > insightLow ? 'bg-blue-500' : 'bg-gray-500'}`} style={{ width: `${Math.min((insight / maxInsight) * 100, 100)}%` }} />
                </div>
             </button>
@@ -201,24 +201,24 @@ export const MiniHUD: React.FC = () => {
                  {addiction > 0 && (
                    <div className="group relative flex flex-col items-center justify-center pt-1">
                       <div className="text-xs animate-bounce" style={{ animationDuration: '3s' }}>💉</div>
-                      <div className="w-8 h-1 bg-gray-800 rounded-full mt-1 overflow-hidden border border-white/10">
+                      <div className="w-8 h-1 bg-gray-800 rounded-sm mt-1 overflow-hidden border border-white/10">
                          <div className={`h-full ${addiction > thresholds.addictionHigh ? 'bg-purple-500' : 'bg-purple-800'}`} style={{ width: `${Math.min((addiction / GLOBAL_MAX) * 100, 100)}%` }} />
                       </div>
                    </div>
                  )}
                  {activeDiseases.length > 0 && (
-                   <div className="relative group flex items-center justify-center w-8 h-8 bg-red-900/30 rounded-full border border-red-500/50 animate-pulse">
+                   <div className="relative group flex items-center justify-center w-8 h-8 bg-red-900/30 rounded-sm border border-red-500/50 animate-pulse">
                       <span className="text-sm">🦠</span>
-                      <div className="absolute top-full mt-3 left-1/2 -translate-x-1/2 w-max max-w-[150px] px-3 py-2 bg-black/95 text-red-200 text-[10px] rounded-lg border border-red-500/30 opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                      <div className="absolute top-full mt-3 left-1/2 -translate-x-1/2 w-max max-w-[150px] px-3 py-2 bg-black/95 text-red-200 text-[10px] rounded-sm border border-red-500/30 opacity-0 group-hover:opacity-100 transition-opacity z-50">
                          <div className="font-bold border-b border-red-500/30 mb-1 pb-1">{t('hud.status.disease')}</div>
                          {diseaseNames}
                       </div>
                    </div>
                  )}
                  {activeInsurance && (
-                   <div className="flex items-center justify-center w-8 h-8 bg-emerald-900/20 rounded-full border border-emerald-500/30 group">
+                   <div className="flex items-center justify-center w-8 h-8 bg-emerald-900/20 rounded-sm border border-emerald-500/30 group">
                       <span className="text-sm">🛡️</span>
-                      <div className="absolute top-full mt-3 left-1/2 -translate-x-1/2 w-max px-3 py-2 bg-black/95 text-emerald-200 text-[10px] rounded-lg border border-emerald-500/30 opacity-0 group-hover:opacity-100 transition-opacity z-50">
+                      <div className="absolute top-full mt-3 left-1/2 -translate-x-1/2 w-max px-3 py-2 bg-black/95 text-emerald-200 text-[10px] rounded-sm border border-emerald-500/30 opacity-0 group-hover:opacity-100 transition-opacity z-50">
                          <div className="font-bold border-b border-emerald-500/30 mb-1 pb-1">{t('hud.status.hasInsurance')}</div>
                          {activeInsurance.name}
                       </div>
@@ -252,7 +252,7 @@ export const MiniHUD: React.FC = () => {
              <button
                key={btn.key}
                onClick={() => { playSfx('sfx_click'); btn.action(); }}
-               className={`w-9 h-9 md:w-11 md:h-11 rounded-xl bg-white/5 flex items-center justify-center text-base md:text-xl transition-all border border-white/5 ${btn.color}`}
+               className={`w-9 h-9 md:w-11 md:h-11 rounded-sm bg-white/5 flex items-center justify-center text-base md:text-xl transition-all border border-white/5 ${btn.color}`}
                title={t(`hud.buttons.${btn.key}`)}
              >
                {btn.icon}

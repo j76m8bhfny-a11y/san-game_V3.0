@@ -17,11 +17,11 @@ export const SlumsLoanPaper: React.FC<Props> = ({ product, creditScore, onSign }
       onClick={canAfford ? onSign : undefined}
       className={`
         relative w-full h-32 bg-[#f3e5ab] shadow-md transform rotate-1 cursor-pointer transition-all duration-200 group
-        ${canAfford ? 'hover:scale-105 hover:-rotate-1 hover:shadow-xl' : 'opacity-60 grayscale cursor-not-allowed'}
+        ${canAfford ? 'hover:scale-105 hover:-rotate-1 hover:shadow-pixel-sm' : 'opacity-60 grayscale cursor-not-allowed'}
       `}
     >
       {/* 纸张污渍 */}
-      <div className="absolute top-2 right-4 w-8 h-8 bg-yellow-900/10 rounded-full blur-md" />
+      <div className="absolute top-2 right-4 w-8 h-8 bg-yellow-900/10 rounded-sm blur-md" />
       <div className="absolute bottom-4 left-10 w-12 h-4 bg-black/5 rotate-3" />
 
       {/* 胶带固定 */}

@@ -99,21 +99,21 @@ const MilestoneContent: React.FC<{
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center backdrop-solid-dark p-4"
       onClick={onClose}
     >
       <motion.div
         initial={{ scale: 0.9, y: 30, opacity: 0 }}
         animate={{ scale: 1, y: 0, opacity: 1 }}
         exit={{ scale: 0.9, y: 30, opacity: 0 }}
-        className={`relative max-w-md w-full p-6 rounded-2xl border ${style.bgColor} ${style.borderColor}`}
+        className={`relative max-w-md w-full p-6 rounded-sm border ${style.bgColor} ${style.borderColor}`}
         onClick={(e) => e.stopPropagation()}
       >
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ delay: 0.2, type: "spring" }}
-          className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${style.iconBg} text-white`}
+          className={`w-16 h-16 rounded-sm flex items-center justify-center mx-auto mb-4 ${style.iconBg} text-white`}
         >
           {style.icon}
         </motion.div>
@@ -142,7 +142,7 @@ const MilestoneContent: React.FC<{
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="mt-4 p-3 bg-red-950/50 border border-red-500/30 rounded-lg"
+            className="mt-4 p-3 bg-red-950/50 border border-red-500/30 rounded-sm"
           >
             <p className="text-xs text-red-400 text-center">
               ⚠️ 当灵视达到70时，你将看到第四个选项。准备好付出代价了吗？
@@ -152,7 +152,7 @@ const MilestoneContent: React.FC<{
         
         <button
           onClick={onClose}
-          className={`w-full mt-6 py-3 rounded-lg font-medium text-white transition-colors ${style.button}`}
+          className={`w-full mt-6 py-3 rounded-sm font-medium text-white transition-colors ${style.button}`}
         >
           继续
         </button>

@@ -145,8 +145,8 @@ export const SystemGazeOverlay: React.FC<SystemGazeOverlayProps> = ({ children }
       {/* 凝视提示 */}
       {gazeNarrative && (
         <div 
-          className={`absolute top-4 left-1/2 -translate-x-1/2 z-40 px-4 py-2 rounded-lg
-            backdrop-blur-sm border transition-all duration-500
+          className={`absolute top-4 left-1/2 -translate-x-1/2 z-40 px-4 py-2 rounded-sm
+            backdrop-solid-dark border transition-all duration-500
             ${gazeTheme === 'blue' ? 'bg-blue-900/30 border-blue-500/50 text-blue-200' : ''}
             ${gazeTheme === 'yellow' ? 'bg-yellow-900/30 border-yellow-500/50 text-yellow-200' : ''}
             ${gazeTheme === 'red' ? 'bg-red-900/30 border-red-500/50 text-red-200 animate-pulse' : ''}

@@ -50,7 +50,7 @@ export const DowntownLedger: React.FC<Props> = ({ product, creditScore, onSign }
         </div>
 
         {/* 签字区域 (Hover显示) */}
-        <div className={`absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#d4af37]/20 to-transparent flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${!canAfford ? '!opacity-0' : ''}`}>
+        <div className={`absolute right-0 top-0 bottom-0 w-24 bg-[#d4af37]/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${!canAfford ? '!opacity-0' : ''}`}>
            <span className="font-handwriting text-2xl text-[#8b4513] -rotate-12">{t('bank.signHere')}</span>
         </div>
         

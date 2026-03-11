@@ -47,10 +47,9 @@ export const IntroExperience: React.FC<IntroExperienceProps> = ({ onComplete }) 
     if (hasSeenIntro === 'true') {
       // 非首次玩家直接跳过
       onComplete();
-    } else {
-      // 首次玩家立即标记，防止刷新后重复显示
-      localStorage.setItem('has_seen_intro', 'true');
     }
+    // 注意：首次玩家不在这里标记，只在完成引导时标记
+    // 修复TC-INTRO-005: 防止刷新后丢失引导
   }, [onComplete]);
   
   const nextStep = () => {

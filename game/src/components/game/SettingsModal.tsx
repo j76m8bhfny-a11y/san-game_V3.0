@@ -168,12 +168,13 @@ const ImmigrationForm: React.FC<{
 }> = ({ onClose }) => {
   const { t, locale, setLocale } = useI18n();
   const { volume, setVolume, muted, toggleMute } = useAudioStore();
-  const [activeSection, setActiveSection] = useState<'audio' | 'display' | 'language'>('audio');
+  const [activeSection, setActiveSection] = useState<'audio' | 'display' | 'language' | 'system'>('audio');
 
   const formSections = [
     { id: 'audio', label: t('settings.form.audio'), number: '1' },
     { id: 'display', label: t('settings.form.display'), number: '2' },
     { id: 'language', label: t('settings.form.language'), number: '3' },
+    { id: 'system', label: '系统', number: '4' },
   ] as const;
 
   return (
@@ -283,6 +284,29 @@ const ImmigrationForm: React.FC<{
                         {t(`settings.languageOptions.${lang}`)}
                       </button>
                     ))}
+                  </div>
+                )}
+
+                {/* SYSTEM 部分 */}
+                {section.id === 'system' && (
+                  <div className="space-y-3">
+                    <button
+                      onClick={() => {
+                        if (confirm('确定要重置所有引导吗？将清除开场漫画、新手教程和守护灵提示记录。刷新页面后重新体验。')) {
+                          localStorage.removeItem('has_seen_comic_v2');
+                          localStorage.removeItem('has_seen_intro');
+                          localStorage.removeItem('guardian_settings');
+                          sessionStorage.removeItem('sanguo_seen_d_guide');
+                          alert('引导已重置，请刷新页面以重新体验。');
+                        }
+                      }}
+                      className="w-full p-3 bg-red-500/20 hover:bg-red-500/40 text-red-300 border border-red-500/30 rounded text-left transition-all"
+                    >
+                      <div className="font-bold text-red-400 flex items-center gap-2">
+                        <span>↺</span> 重置教程
+                      </div>
+                      <div className="text-xs text-red-300/70 mt-1">清除引导记录，重新播放开场漫画和新手教程</div>
+                    </button>
                   </div>
                 )}
               </motion.div>

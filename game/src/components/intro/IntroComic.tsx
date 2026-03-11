@@ -42,6 +42,7 @@ export const IntroComic: React.FC<IntroComicProps> = React.memo(({ onComplete })
   const [visibleBubbles, setVisibleBubbles] = useState<number[]>([]);
   const [isSkipped, setIsSkipped] = useState(false);
   const [autoPlayTimer, setAutoPlayTimer] = useState<ReturnType<typeof setTimeout> | null>(null);
+  const [imageError, setImageError] = useState<Record<string, boolean>>({});
   const { playSfx } = useAudioStore();
   
   const panels: ComicPanel[] = COMIC_CONFIG?.panels || [];
@@ -166,6 +167,7 @@ export const IntroComic: React.FC<IntroComicProps> = React.memo(({ onComplete })
   };
   
   if (isSkipped) return null;
+  if (!currentPanel) return null;  // 防御性检查：防止panels为空时崩溃
   
   return (
     <AnimatePresence mode="wait">
@@ -205,7 +207,6 @@ export const IntroComic: React.FC<IntroComicProps> = React.memo(({ onComplete })
               ease: "easeInOut"
             }}
             className="absolute inset-0 flex items-center justify-center p-4 md:p-8"
-            onClick={handleNext}
           >
             {/* 漫画分镜容器 */}
             <div 
@@ -220,10 +221,33 @@ export const IntroComic: React.FC<IntroComicProps> = React.memo(({ onComplete })
               <div 
                 className="absolute inset-0 bg-cover bg-center grayscale-[30%] contrast-125"
                 style={{ 
-                  backgroundImage: `url(${currentPanel.background})`,
-                  filter: 'sepia(20%) contrast(1.1)'
+                  backgroundImage: imageError[currentPanel.id] 
+                    ? 'none' 
+                    : `url(${currentPanel.background})`,
+                  backgroundColor: imageError[currentPanel.id] ? '#1f2937' : undefined,
+                  filter: imageError[currentPanel.id] ? undefined : 'sepia(20%) contrast(1.1)'
                 }}
               >
+                {/* 图片加载错误占位符 */}
+                {imageError[currentPanel.id] && (
+                  <div 
+                    className="absolute inset-0 flex items-center justify-center bg-gray-800"
+                    role="img"
+                    aria-label="图片加载失败"
+                  >
+                    <div className="text-center text-gray-500">
+                      <div className="text-4xl mb-2" aria-hidden="true">🖼️</div>
+                      <div className="text-xs">图片加载失败</div>
+                    </div>
+                  </div>
+                )}
+                {/* 隐藏的图片标签用于错误检测 */}
+                <img 
+                  src={currentPanel.background} 
+                  className="hidden" 
+                  onError={() => setImageError(prev => ({ ...prev, [currentPanel.id]: true }))}
+                  alt=""
+                />
                 {/* 美漫网点纸效果覆盖 */}
                 <div 
                   className="absolute inset-0 opacity-20 mix-blend-overlay"

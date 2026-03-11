@@ -111,6 +111,7 @@ interface GuardianSettings {
   shownHints: string[];
   isFirstPlay: boolean;
   deathCount: number;
+  hasBeenDamaged: boolean;
 }
 
 const defaultSettings: GuardianSettings = {
@@ -118,6 +119,7 @@ const defaultSettings: GuardianSettings = {
   shownHints: [],
   isFirstPlay: true,
   deathCount: 0,
+  hasBeenDamaged: false,
 };
 
 export const GuardianHints: React.FC = () => {
@@ -134,10 +136,15 @@ export const GuardianHints: React.FC = () => {
   
   // 加载设置
   useEffect(() => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      setSettings({ ...defaultSettings, ...parsed });
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        setSettings({ ...defaultSettings, ...parsed });
+      }
+    } catch (e) {
+      console.error('Failed to load guardian settings:', e);
+      setSettings(defaultSettings);
     }
   }, []);
   
@@ -165,23 +172,27 @@ export const GuardianHints: React.FC = () => {
     if (hpPercent < 0.2 && hungerPercent > 0.7) {
       triggeredHint = GUARDIAN_MESSAGES.find(h => h.trigger === 'deathRisk') || null;
     }
-    // 2. HP危急
+    // 2. 首次受伤
+    else if (hpPercent < 1 && !settings.hasBeenDamaged && currentTurn > 1) {
+      triggeredHint = GUARDIAN_MESSAGES.find(h => h.trigger === 'firstDamage') || null;
+    }
+    // 3. HP危急
     else if (hpPercent < 0.25 && currentTurn > 1) {
       triggeredHint = GUARDIAN_MESSAGES.find(h => h.trigger === 'lowHp') || null;
     }
-    // 3. 饥饿警告
+    // 4. 饥饿警告
     else if (hungerPercent > 0.75 && currentTurn > 1) {
       triggeredHint = GUARDIAN_MESSAGES.find(h => h.trigger === 'highHunger') || null;
     }
-    // 4. 第一次事件 (仅在第1-2周触发)
+    // 5. 第一次事件 (仅在第1-2周触发)
     else if (currentEvent && currentTurn <= 2 && !settings.shownHints.includes('welcome_first_event')) {
       triggeredHint = GUARDIAN_MESSAGES.find(h => h.trigger === 'firstEvent') || null;
     }
-    // 5. 第一次看到D选项
+    // 6. 第一次看到D选项
     else if (currentInsight >= 70 && !settings.shownHints.includes('first_d_option')) {
       triggeredHint = GUARDIAN_MESSAGES.find(h => h.trigger === 'firstDOptionSeen') || null;
     }
-    // 6. 第一次遭遇系统惩罚
+    // 7. 第一次遭遇系统惩罚
     else if (archiveCount > 20 && !settings.shownHints.includes('first_gaze')) {
       triggeredHint = GUARDIAN_MESSAGES.find(h => h.trigger === 'firstGazeEvent') || null;
     }
@@ -199,6 +210,7 @@ export const GuardianHints: React.FC = () => {
         saveSettings({
           ...settings,
           shownHints: [...settings.shownHints, triggeredHint!.id],
+          hasBeenDamaged: triggeredHint!.trigger === 'firstDamage' ? true : settings.hasBeenDamaged,
         });
       }, 1500);
       

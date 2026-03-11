@@ -881,8 +881,12 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
               >
                 <div className="bg-cyan-900/90 border border-cyan-500/50 rounded-sm p-4 shadow-pixel-sm relative">
                   <button 
-                    onClick={() => setHasSeenDOptionGuide(true)}
+                    onClick={() => {
+                      sessionStorage.setItem('sanguo_seen_d_guide', 'true');
+                      setHasSeenDOptionGuide(true);
+                    }}
                     className="absolute top-1 right-1 text-cyan-500/50 hover:text-cyan-400 text-xs"
+                    aria-label="关闭引导"
                   >
                     ✕
                   </button>

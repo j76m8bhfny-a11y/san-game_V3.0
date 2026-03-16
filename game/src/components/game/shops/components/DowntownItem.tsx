@@ -27,7 +27,8 @@ export const DowntownItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
   );
 
   // 极简的高级图标
-  const getIcon = (tags: string[]) => {
+  const getIcon = (tags?: string[]) => {
+    if (!tags) return '💎';
     if (tags.includes('WEAPON')) return '♟️'; // 战略武器
     if (tags.includes('DRUG')) return '🧪';   // 生物制剂
     if (tags.includes('BOOK')) return '📜';   // 机密文件

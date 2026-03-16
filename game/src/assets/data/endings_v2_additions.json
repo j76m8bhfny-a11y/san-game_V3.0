@@ -1,0 +1,434 @@
+[
+  {
+    "id": "ED-23",
+    "title": "败血症休克",
+    "description": "伤口感染最终吞噬了你的生命。你死时高烧42度，像一块被锈蚀的废铁。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasDisease": "SEPSIS"
+    }
+  },
+  {
+    "id": "ED-24",
+    "title": "心脏病发作",
+    "description": "胸口的剧痛是你最后的知觉。你的心脏支架手术账单还躺在抽屉里，金额是50000美元。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasDisease": "HEART_DISEASE"
+    }
+  },
+  {
+    "id": "ED-25",
+    "title": "糖尿病昏迷",
+    "description": "你选择用胰岛素钱付了房租。酮症酸中毒带走了你，临终前你不再感到饥饿。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasDisease": "TYPE_2_DIABETES",
+      "maxGold": 200
+    }
+  },
+  {
+    "id": "ED-26",
+    "title": "铁锈尘肺",
+    "description": "你咳出的最后一痰里有金属颗粒——那是你二十年工龄的勋章。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasDisease": "WORKER_LUNG",
+      "requiredClass": "WORKER"
+    }
+  },
+  {
+    "id": "ED-27",
+    "title": "虚空吞噬",
+    "description": "你终于看见了世界背后的代码。那不是光，是吞噬一切的虚空。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasDisease": "VOID_PSYCHOSIS",
+      "minInsight": 80
+    }
+  },
+  {
+    "id": "ED-28",
+    "title": "坏血病终末期",
+    "description": "21天没有新鲜蔬果，你的牙龈全部溃烂。在21世纪的美国，你死于中世纪的水手病。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasDisease": "SCURVY"
+    }
+  },
+  {
+    "id": "ED-29",
+    "title": "阿片类过量",
+    "description": "你只是想止痛，但街头药片的纯度不稳定。你成为了每年70000个阿片类死亡统计中的一个。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "minAddiction": 70
+    }
+  },
+  {
+    "id": "ED-30",
+    "title": "酒精戒断",
+    "description": "你试图戒酒，但震颤性谵妄引发了癫痫发作。系统没有提供免费戒毒服务。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasBuff": "buff_addiction_alcohol",
+      "maxHp": 20
+    }
+  },
+  {
+    "id": "ED-31",
+    "title": "驱逐令执行",
+    "description": "有犯罪记录的你被所有收容所拒绝。那个冬夜，你在公园长椅上睡着了，再也没有醒来。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "requiredClass": "HOMELESS",
+      "hasFlag": "hasFelonyRecord"
+    }
+  },
+  {
+    "id": "ED-32",
+    "title": "保险拒赔死亡",
+    "description": "出狱后保险被暂停，你付不起急诊室的挂号费。在候诊室的长椅上，你静静死去。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasFlag": "insuranceSuspended"
+    }
+  },
+  {
+    "id": "ED-33",
+    "title": "饿死",
+    "description": "你花光了最后一分钱，食物银行已经关门。胃里最后一丝暖意消失后，世界变得安静。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "maxGold": 10,
+      "maxHunger": 10
+    }
+  },
+  {
+    "id": "ED-34",
+    "title": "信用死亡",
+    "description": "信用评分低于300，你连高利贷都借不到。没有资金流转，生命也就此停滞。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "maxCreditScore": 300,
+      "minDebtTurns": 10
+    }
+  },
+  {
+    "id": "ED-35",
+    "title": "爬出深渊",
+    "description": "你从无家可归者变成了中产阶级。这段路你走了52周，而其他人要走一辈子。",
+    "priority": 2,
+    "type": "SURVIVAL",
+    "conditions": {
+      "minTurn": 52,
+      "requiredClass": "MIDDLE",
+      "minCreditScore": 600
+    }
+  },
+  {
+    "id": "ED-36",
+    "title": "坠落贵族",
+    "description": "你曾是体面人，现在和流浪汉抢垃圾桶。你比其他人更清楚坠落的感觉。",
+    "priority": 3,
+    "type": "ALIENATION",
+    "conditions": {
+      "minTurn": 52,
+      "requiredClass": "HOMELESS",
+      "minGold": 500
+    }
+  },
+  {
+    "id": "ED-37",
+    "title": "阶层守护者",
+    "description": "你拒绝了所有晋升的机会，选择留在铁锈带和兄弟们一起。你守护着比金钱更重要的东西。",
+    "priority": 4,
+    "type": "STANCE",
+    "conditions": {
+      "minTurn": 52,
+      "requiredClass": "WORKER",
+      "requiredPoints": { "red": 30 }
+    }
+  },
+  {
+    "id": "ED-38",
+    "title": "虔诚信徒",
+    "description": "你把工资的十分之一给了上帝。虽然你还是个穷人，但牧师的笑容比你的存款余额更灿烂。",
+    "priority": 3,
+    "type": "ALIENATION",
+    "conditions": {
+      "minTurn": 52,
+      "requiredFaith": "CHURCH",
+      "maxInsight": 40
+    }
+  },
+  {
+    "id": "ED-39",
+    "title": "兄弟会领袖",
+    "description": "你在贫民窟建立了互助网络。当系统抛弃他们时，你成为了那个递出面包的人。",
+    "priority": 4,
+    "type": "STANCE",
+    "conditions": {
+      "minTurn": 52,
+      "requiredFaith": "BROTHERHOOD",
+      "requiredPoints": { "red": 50 }
+    }
+  },
+  {
+    "id": "ED-40",
+    "title": "邪教祭品",
+    "description": "你献祭了太多——金钱、健康、理智。当教主开着法拉利离开时，你才明白自己只是燃料。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "requiredFaith": "CULT",
+      "maxHp": 30
+    }
+  },
+  {
+    "id": "ED-41",
+    "title": "革命先知",
+    "description": "你不再相信任何神，只相信人民的力量。FBI的文件里，你的名字被红色标记。",
+    "priority": 4,
+    "type": "STANCE",
+    "conditions": {
+      "minTurn": 52,
+      "requiredFaith": "REVOLUTION",
+      "minInsight": 70
+    }
+  },
+  {
+    "id": "ED-42",
+    "title": "零工经济祭品",
+    "description": "你是Uber司机、送餐员、TaskRabbit杂工。52周后你没有401K、没有医保，只有一辆磨损的车。",
+    "priority": 2,
+    "type": "SURVIVAL",
+    "conditions": {
+      "minTurn": 52,
+      "requiredClass": "WORKER",
+      "maxGold": 20000
+    }
+  },
+  {
+    "id": "ED-43",
+    "title": "公司忠犬",
+    "description": "你从未跳过槽，从未请过病假。公司爱你——直到下个季度的裁员名单。但现在，你是优秀员工。",
+    "priority": 3,
+    "type": "ALIENATION",
+    "conditions": {
+      "minTurn": 52,
+      "maxInsight": 30,
+      "minGold": 10000
+    }
+  },
+  {
+    "id": "ED-44",
+    "title": "债务自由",
+    "description": "你还清了所有债务，包括那笔像是永恒的助学贷款。自由的味道，是没有任何还款提醒的早晨。",
+    "priority": 4,
+    "type": "STANCE",
+    "conditions": {
+      "minTurn": 52,
+      "maxGold": 100000
+    }
+  },
+  {
+    "id": "ED-45",
+    "title": "银行奴隶",
+    "description": "你有了房子，也有了30年的锁链。恭喜，你的墓碑上将刻着：按时还款的公民。",
+    "priority": 2,
+    "type": "SURVIVAL",
+    "conditions": {
+      "minTurn": 52,
+      "minDebtTurns": 20,
+      "minCreditScore": 650
+    }
+  },
+  {
+    "id": "ED-46",
+    "title": "现金之王",
+    "description": "你几乎不用银行，只用现金交易。FBI怀疑你是毒贩，但其实你只是想逃离信用评分系统。",
+    "priority": 5,
+    "type": "UR",
+    "conditions": {
+      "minTurn": 52,
+      "minGold": 500000,
+      "maxCreditScore": 400
+    }
+  },
+  {
+    "id": "ED-47",
+    "title": "疾病幸存者",
+    "description": "一场大病让你负债累累，但你活了下来。现在你知道了：在美国，生病是一种特权。",
+    "priority": 4,
+    "type": "STANCE",
+    "conditions": {
+      "minTurn": 52,
+      "maxGold": 0,
+      "maxHp": 80
+    }
+  },
+  {
+    "id": "ED-48",
+    "title": "未诊断的代价",
+    "description": "你感觉到了症状，但付不起诊断费。52周后，那个可治愈的病变成了致命的东西。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasDisease": "CHRONIC",
+      "minTurn": 45
+    }
+  },
+  {
+    "id": "ED-49",
+    "title": "医疗难民",
+    "description": "你在美国医疗系统中幸存下来，但代价是终身债务。你的病历比小说还厚，账单比圣经还重。",
+    "priority": 5,
+    "type": "UR",
+    "conditions": {
+      "minTurn": 52,
+      "maxGold": -30000
+    }
+  },
+  {
+    "id": "ED-50",
+    "title": "完美信用囚徒",
+    "description": "你从未逾期还款。银行爱你，你的信用评分像你的血压一样健康。完美得像一场表演。",
+    "priority": 3,
+    "type": "ALIENATION",
+    "conditions": {
+      "minTurn": 52,
+      "minCreditScore": 800,
+      "maxInsight": 40
+    }
+  },
+  {
+    "id": "ED-51",
+    "title": "重罪烙印",
+    "description": "有犯罪记录的你被所有体面工作拒绝。但你活了下来，用那些不体面的方式。",
+    "priority": 2,
+    "type": "SURVIVAL",
+    "conditions": {
+      "minTurn": 52,
+      "hasFlag": "hasFelonyRecord"
+    }
+  },
+  {
+    "id": "ED-52",
+    "title": "监狱毕业生",
+    "description": "你在监狱里读完了大学课程。出狱后你成为了帮助囚犯的社工，把地狱变成了教室。",
+    "priority": 4,
+    "type": "STANCE",
+    "conditions": {
+      "minTurn": 52,
+      "hasFlag": "hasFelonyRecord",
+      "minInsight": 50
+    }
+  },
+  {
+    "id": "ED-53",
+    "title": "隐士",
+    "description": "你几乎不再与人交流。窗外的世界太吵了，而你的大脑里有整个宇宙在运转。",
+    "priority": 3,
+    "type": "ALIENATION",
+    "conditions": {
+      "minTurn": 52,
+      "minInsight": 80,
+      "maxGold": 5000
+    }
+  },
+  {
+    "id": "ED-54",
+    "title": "档案收藏家",
+    "description": "你收集了25个档案，拼凑出系统的真相。知识没有让你富有，但让你自由。",
+    "priority": 4,
+    "type": "STANCE",
+    "conditions": {
+      "minTurn": 52,
+      "minInsight": 60
+    }
+  },
+  {
+    "id": "ED-55",
+    "title": "永不为奴",
+    "description": "你拒绝了所有全职工作的offer。不稳定，但自由——这是你唯一拥有的奢侈品。",
+    "priority": 4,
+    "type": "STANCE",
+    "conditions": {
+      "minTurn": 52,
+      "requiredPoints": { "red": 40 }
+    }
+  },
+  {
+    "id": "ED-56",
+    "title": "囤积狂",
+    "description": "你的房间堆满了罐头、药品和末日装备。如果核战爆发，你至少可以安心地发疯。",
+    "priority": 3,
+    "type": "ALIENATION",
+    "conditions": {
+      "minTurn": 52,
+      "minGold": 2000,
+      "maxGold": 15000
+    }
+  },
+  {
+    "id": "ED-57",
+    "title": "零消费主义者",
+    "description": "你几乎不花钱。在这个消费主义宗教里，你是个异教徒——也是最自由的人。",
+    "priority": 4,
+    "type": "STANCE",
+    "conditions": {
+      "minTurn": 52,
+      "maxGold": 30000,
+      "minInsight": 40
+    }
+  },
+  {
+    "id": "ED-58",
+    "title": "房东之路",
+    "description": "你终于也成了那个收租的人。看着租客的挣扎，你想起曾经的自己——然后调高了一点租金。",
+    "priority": 2,
+    "type": "SURVIVAL",
+    "conditions": {
+      "minTurn": 52,
+      "requiredClass": "MIDDLE",
+      "requiredPoints": { "wolf": 30 }
+    }
+  },
+  {
+    "id": "ED-59",
+    "title": "车辆奴隶",
+    "description": "没车就没法工作，为了养车你必须工作。你被困在这个轮子里，像仓鼠一样奔跑。",
+    "priority": 2,
+    "type": "SURVIVAL",
+    "conditions": {
+      "minTurn": 52,
+      "hasItem": "VEHICLE",
+      "requiredClass": "WORKER"
+    }
+  },
+  {
+    "id": "ED-60",
+    "title": "觉醒边缘",
+    "description": "你几乎看透了系统的代码，但还差一点。那种接近真理却无法触及的痛苦，比无知更折磨。",
+    "priority": 5,
+    "type": "UR",
+    "conditions": {
+      "minTurn": 52,
+      "minInsight": 95,
+      "maxInsight": 99
+    }
+  }
+]

@@ -71,37 +71,28 @@ document.documentElement.classList.add('fonts-loading');
 // ========================================
 // 视觉/渲染质量调试工具
 // ========================================
-declare global {
-  interface Window {
-    debug?: {
-      checkPixelRendering: () => any;
-      checkZpixFont: () => Promise<any>;
-      checkTailwindCompliance: () => any;
-      checkSystemScaling: () => any;
-      runVisualAudit: () => Promise<any>;
-    };
-  }
-}
+// Window.debug 类型在 debugTools.ts 中定义
 
-// 挂载调试工具到 window
-window.debug = {
+// 挂载视觉检查工具到 window.debug（在 debugTools 初始化后执行）
+const tools = {
   // 检查像素渲染设置
   checkPixelRendering: () => {
     const issues = [];
     const html = document.documentElement;
     const htmlStyle = window.getComputedStyle(html);
     
-    if (htmlStyle.webkitFontSmoothing !== 'none') {
+    const fontSmoothing = (htmlStyle as any).webkitFontSmoothing;
+    if (fontSmoothing !== 'none') {
       issues.push({
         element: 'html',
         issue: '抗锯齿未禁用',
-        current: htmlStyle.webkitFontSmoothing,
+        current: fontSmoothing,
         expected: 'none'
       });
     }
     
     // 检查图片渲染
-    document.querySelectorAll('img[src*=".png"]').forEach(img => {
+    document.querySelectorAll<HTMLImageElement>('img[src*=".png"]').forEach(img => {
       const style = window.getComputedStyle(img);
       if (!style.imageRendering.includes('pixelated') && !style.imageRendering.includes('crisp-edges')) {
         issues.push({
@@ -224,10 +215,10 @@ window.debug = {
       dpr: window.devicePixelRatio,
       
       checks: {
-        pixelRendering: window.debug?.checkPixelRendering(),
-        zpixFont: await window.debug?.checkZpixFont(),
-        tailwindCompliance: window.debug?.checkTailwindCompliance(),
-        systemScaling: window.debug?.checkSystemScaling()
+        pixelRendering: (window as any).debug?.checkPixelRendering?.(),
+        zpixFont: await (window as any).debug?.checkZpixFont?.(),
+        tailwindCompliance: (window as any).debug?.checkTailwindCompliance?.(),
+        systemScaling: (window as any).debug?.checkSystemScaling?.()
       }
     };
     
@@ -237,6 +228,13 @@ window.debug = {
     return report;
   }
 };
+
+// 合并到 window.debug（在 debugTools 之后执行）
+if (window.debug) {
+  Object.assign(window.debug, tools);
+} else {
+  (window as any).debug = tools;
+}
 
 // 等待字体加载
 Promise.race([

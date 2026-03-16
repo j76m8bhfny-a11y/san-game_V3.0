@@ -1,0 +1,216 @@
+[
+  {
+    "id": "ED-01",
+    "title": "冷冻披萨的温度",
+    "description": "验尸官说你是低体温症，但其实你只是因为付不起暖气费。现在的你就像一块硬邦邦的冷冻披萨，只是没人会把你放进微波炉。",
+    "roast": "在这个国家，连冻死都是一种奢侈——至少你不用再担心账单了。",
+    "priority": 1,
+    "type": "DEATH",
+    "category": "CLASSIC"
+  },
+  {
+    "id": "ED-02",
+    "title": "止痛药幻境",
+    "description": "止痛药治好了你的背痛，也顺便治好了你的呼吸。好消息是，你死前那几分钟，真的以为自己是世界首富。",
+    "roast": "这是最便宜的通往天堂的机票——只要$12.99，家庭装。",
+    "priority": 1,
+    "type": "DEATH",
+    "category": "CLASSIC"
+  },
+  {
+    "id": "ED-03",
+    "title": "零件批发",
+    "description": "你的角膜在加州，肾在德州，心脏在纽约。你是如此热爱美国，以至于把自己分成了好几份融入了这片土地。",
+    "roast": "你的身体比你有生之年去过更多的州。这是终极的美国梦——成为出口商品。",
+    "priority": 1,
+    "type": "DEATH",
+    "category": "CLASSIC"
+  },
+  {
+    "id": "ED-04",
+    "title": "暴力催收",
+    "description": "警察上门执行驱逐令时你反抗了。执法记录仪恰好没电了，但邻居的手机拍下了全过程——在TikTok上获得了百万点赞。",
+    "roast": "你的死亡获得了100万点赞，比你的生命更有价值。这就是内容创作者经济。",
+    "priority": 1,
+    "type": "DEATH",
+    "category": "CLASSIC",
+    "conditions": { "maxGold": -5000 }
+  },
+  {
+    "id": "ED-05",
+    "title": "天台的抛物线",
+    "description": "你看清了世界的源代码是一坨屎山。100倍杠杆爆仓的那一刻，你决定关机。从顶楼跳下去只需8秒，这8秒是你这辈子最自由的时刻。",
+    "roast": "8秒的自由，80年的账单。这笔交易划算吗？你已经不能回答了。",
+    "priority": 1,
+    "type": "DEATH",
+    "category": "CLASSIC"
+  },
+  {
+    "id": "ED-06",
+    "title": "月光电池",
+    "description": "你没死，也没富。你每天睁眼就欠银行钱，闭眼还在想账单。你不是在生活，你是在为银行的利息打工。你是一款即使漏液了还在坚持供电的干电池。",
+    "roast": "恭喜，你是银行最喜欢的电池型号——永远不会断电，直到彻底报废。",
+    "priority": 2,
+    "type": "SURVIVAL",
+    "category": "CLASSIC",
+    "conditions": { "requiredClass": "WORKER" }
+  },
+  {
+    "id": "ED-07",
+    "title": "沉默的耗材",
+    "description": "你学会了跟狗抢食，学会了睡在排气口。你不仅适应了地狱，甚至还觉得地狱的剩饭有点淡。",
+    "roast": "地狱的HR给你发了offer：终身职位，无福利，无晋升，无退出机制。",
+    "priority": 2,
+    "type": "SURVIVAL",
+    "category": "CLASSIC",
+    "conditions": { "requiredClass": "HOMELESS" }
+  },
+  {
+    "id": "ED-08",
+    "title": "中产噩梦",
+    "description": "你有房子，但房贷要还30年；你有医保，但不敢叫救护车。你就像个走钢丝的小丑，唯一的观众是你的信贷经理。",
+    "roast": "中产的定义：有足够的东西可以失去，但没有足够的钱保护它们。",
+    "priority": 2,
+    "type": "SURVIVAL",
+    "category": "CLASSIC",
+    "conditions": { "requiredClass": "MIDDLE" }
+  },
+  {
+    "id": "ED-09",
+    "title": "猪的快乐",
+    "description": "你赢了！虽然你不知道那些穷人在吵什么，但你的游艇隔音效果真不错。只要不看窗外，这世界简直完美。",
+    "roast": "1%的人拥有99%的快乐，剩下的99%负责提供娱乐——通过他们的痛苦。",
+    "priority": 2,
+    "type": "SURVIVAL",
+    "category": "CLASSIC",
+    "conditions": { "requiredClass": "CAPITALIST" }
+  },
+  {
+    "id": "ED-10",
+    "title": "阿卡姆病栋",
+    "description": "你看透了一切，但无力改变。你跑到街上大喊大叫华尔街的阴谋，被强制送入精神病院。医生说你疯了，因为只有疯子才会说世界是个模拟器。",
+    "roast": "在这个世界，说真话是精神病的主要症状。好消息是：治疗免费——只要你放弃真相。",
+    "priority": 3,
+    "type": "ALIENATION",
+    "category": "CLASSIC",
+    "conditions": { "minInsight": 95 }
+  },
+  {
+    "id": "ED-11",
+    "title": "末日鼠王",
+    "description": "你不相信任何人。你把钱都换成了罐头和子弹，躲进了地下掩体。如果核弹不来，你可能会有点失望。",
+    "roast": "他为末日准备了十年，却在第十年死于罐头中毒。讽刺的是，标签上写着'保质期至核冬天'。",
+    "priority": 3,
+    "type": "ALIENATION",
+    "category": "CLASSIC",
+    "conditions": { "minInsight": 70, "hasItem": "SURVIVAL_KIT" }
+  },
+  {
+    "id": "ED-12",
+    "title": "键盘政治",
+    "description": "你沉迷于网络阴谋论，天天在推特上发长文抨击深层政府。现实中你连房租都交不起，但你的追随者称你为真理战士。",
+    "roast": "他的推文获得了10万转发，他的房租逾期了10周。在虚拟世界他是英雄，在现实世界他即将无家可归。",
+    "priority": 3,
+    "type": "ALIENATION",
+    "category": "CLASSIC"
+  },
+  {
+    "id": "ED-13",
+    "title": "赤色幽灵",
+    "description": "你不再是一个人。你在铁锈带搞起了罢工，在贫民窟建起了互助会。FBI把你的照片挂在最显眼的位置——这可是最高荣誉勋章。",
+    "roast": "FBI花了500万美元监控他，他每周收入500美元。至少他的生命终于有了市场价值。",
+    "priority": 4,
+    "type": "STANCE",
+    "category": "CLASSIC",
+    "conditions": { "requiredPoints": { "red": 100 }, "requiredClass": "WORKER" }
+  },
+  {
+    "id": "ED-14",
+    "title": "华尔街之狼",
+    "description": "你凝视深渊，发现深渊里全是商机。你把反抗做成了生意，把自由印在T恤上卖给穷人。恭喜，你成为了那个拿鞭子的人。",
+    "roast": "他曾经是被剥削的人，现在他是剥削者。这是美国梦的真正版本：不是爬上去，是爬上去然后踩下去。",
+    "priority": 4,
+    "type": "STANCE",
+    "category": "CLASSIC",
+    "conditions": { "requiredPoints": { "wolf": 100 }, "minGold": 500000 }
+  },
+  {
+    "id": "ED-15",
+    "title": "守旧者的挽歌",
+    "description": "你沉迷于网络阴谋论，天天在推特上发长文抨击深层政府。现实中你连房租都交不起，但你的追随者称你为真理战士。",
+    "roast": "他相信回到过去会更好，尽管过去他也一无所有。怀旧是一种昂贵的爱好，尤其是当你付不起现在的房租。",
+    "priority": 4,
+    "type": "STANCE",
+    "category": "CLASSIC",
+    "conditions": { "requiredPoints": { "old": 100 }, "maxGold": 5000 }
+  },
+  {
+    "id": "ED-16",
+    "title": "灯塔",
+    "description": "为了抗议暴行，你点燃了自己。那团火很小，但全世界的直播信号都无法切断它。有些人死了，但他比活着的时候更吵。",
+    "roast": "他的死亡直播获得了1000万观看，比他的抗议演讲多1000倍。在这个世界，只有燃烧的人才能被看见。",
+    "priority": 4,
+    "type": "STANCE",
+    "category": "CLASSIC",
+    "conditions": { "minTurn": 40 }
+  },
+  {
+    "id": "ED-17",
+    "title": "润 (Run)",
+    "description": "你上了去东方的飞机。虽然那里也没多好，但至少不用担心阑尾炎手术会让你破产。再见，美利坚。",
+    "roast": "他用1万美元和假护照买了一次重新开始的机会。这比在美国治疗一次阑尾炎便宜。",
+    "priority": 5,
+    "type": "UR",
+    "category": "CLASSIC",
+    "conditions": { "minGold": 10000, "minInsight": 80, "hasItem": "FAKE_PASSPORT" }
+  },
+  {
+    "id": "ED-18",
+    "title": "佛罗里达人",
+    "description": "你骑着鳄鱼闯进了沃尔玛，用微波炉炸了加油站。法律已经无法定义你，你就是混乱本身。",
+    "roast": "在佛罗里达，他不是最疯狂的，只是最上镜的。这里是美国的精神病院后花园。",
+    "priority": 5,
+    "type": "UR",
+    "category": "CLASSIC"
+  },
+  {
+    "id": "ED-19",
+    "title": "第四面墙",
+    "description": "你突然抬头看向屏幕外：喂，玩游戏那个。如果这也是个模拟经营游戏，你的存款够花吗？你笑了笑，化作一团像素消失在空气中。",
+    "roast": "他发现了真相：我们都是数据。好消息是，数据不会饿死——只会被删除。",
+    "priority": 5,
+    "type": "UR",
+    "category": "CLASSIC",
+    "conditions": { "minTurn": 10, "maxTurn": 20, "maxHp": 10, "minInsight": 90 }
+  },
+  {
+    "id": "ED-20",
+    "title": "美式灵视",
+    "description": "视角拉远，地球变成了一个贴着条形码的商品。屏幕弹出系统框：Simulation Failed. Reset? [Y/N] 你看清了：这不是游戏，这是你的生活。",
+    "roast": "系统提示：是否重置？他选择了是。下一秒，他变成了一个新生儿，出生在另一个贫困家庭。",
+    "priority": 5,
+    "type": "UR",
+    "category": "CLASSIC",
+    "conditions": { "minInsight": 85 }
+  },
+  {
+    "id": "ED-21",
+    "title": "蒙昧的幸福",
+    "description": "你每天工作12个小时，周末准时去大型教会捐献十分之一的工资。你从不看负面新闻，坚信每一次涨价都是因为经济繁荣。五十二周过去了，你依然是个穷人，但你的笑容比那些看透一切的疯子灿烂得多。",
+    "roast": "无知是一种福气，福气是一种奢侈品。他买得起无知，因为真相太贵了。",
+    "priority": 3,
+    "type": "ALIENATION",
+    "category": "CLASSIC",
+    "conditions": { "maxInsight": 10 }
+  },
+  {
+    "id": "ED-22",
+    "title": "觉醒者：系统重置",
+    "description": "你带着上百次轮回的记忆，掌握了这个吃人系统所有的运行代码。你没有选择在街头抗议，而是悄悄黑入了美联储的清算系统。随着你按下回车键，全美两亿人的医疗债务和学生贷款瞬间清零。外面的警笛声正在逼近，但你看着屏幕上崩塌的华尔街指数，点燃了一根烟。",
+    "roast": "他花了35条命学习系统，用第36条命摧毁它。这是唯一的真结局——也是唯一的非法结局。",
+    "priority": 5,
+    "type": "STANCE",
+    "category": "TRUE_ENDING",
+    "conditions": { "minInsight": 100, "requiredPoints": { "red": 50 }, "hasArchive": "ARCHIVE_COUNT_35" }
+  }
+,

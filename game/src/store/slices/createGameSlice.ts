@@ -36,6 +36,7 @@ export interface GameSlice {
   activeBill: Bill | null;  // ✅ 修复：与 UISlice 和 schema.ts 保持一致
   currentCryptoNews: NewsItem | null;  // 🔴 新增：当前显示的加密新闻
   isPaused: boolean;  // 🔴 新增：游戏暂停状态
+  hasHandledEventThisTurn: boolean;  // [NEW] 本周事件是否已处理
 
   // --- Actions ---
   triggerEvent: (event: GameEvent) => void;
@@ -72,6 +73,7 @@ export interface GameSlice {
 export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set, get) => ({
   isEventOpen: false,
   currentEvent: null,
+  hasHandledEventThisTurn: false,  // [NEW] 初始状态：本周事件未处理
   weeklyReport: null,
   activeBill: null,  // 初始状态
   currentCryptoNews: null,  // 🔴 初始状态
@@ -270,12 +272,18 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
   },
 
   closeEvent: () => {
-    set({ isEventOpen: false, currentEvent: null, isPaused: false }); // 🔴 关闭事件时恢复游戏
+    // [MODIFIED] 关闭事件时标记本周事件已处理，但保持当前回合
+    set({ 
+      isEventOpen: false, 
+      currentEvent: null, 
+      isPaused: false,
+      hasHandledEventThisTurn: true  // [NEW] 标记事件已处理，允许进入自由操作阶段
+    });
     
     // 重置事件连锁深度
     eventChainDepth = 0;
     
-    // 🔴 事件关闭后，随机延迟触发加密新闻（如果已开户）
+    // 事件关闭后，随机延迟触发加密新闻（如果已开户）
     get().scheduleCryptoNewsAfterEvent();
   },
   
@@ -332,64 +340,75 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
   },
 
   // ============================================================
-  // 回合推进主流程 (已重构为子方法) - 支持异步事件加载
+  // 回合推进主流程 - 【修改】先事件 → 后操作 → 结算
   // ============================================================
   nextTurn: async () => {
     if (get().isMenuOpen) return;
-    if (get().isPaused) return; // 🔴 暂停状态下不执行回合
-    if (get().prison?.inJail) return; // 监狱状态下不执行普通回合结算（由 serveTime 处理）
+    if (get().isPaused) return; // 暂停状态下不执行回合
+    if (get().prison?.inJail) return; // 监狱状态下不执行普通回合结算
 
     const state = get() as GameState;
     const store = get() as StoreState;
 
-    // ✅ 0. 回合开始时触发事件（在结算之前）- 异步加载
-    try {
-      const eventResult = await processEventTurnAsync(state);
-      if (eventResult.updates.currentEvent) {
-        // 如果有事件触发，更新状态并暂停结算
-        set((prev) => ({
-          currentEvent: eventResult.updates.currentEvent as GameEvent,
-          isEventOpen: true,
-          vitality: {
-            ...prev.vitality,
-            flags: {
-              ...prev.vitality.flags,
-              triggeredEvents: eventResult.updates.vitality?.flags?.triggeredEvents || 
-                prev.vitality.flags.triggeredEvents
+    // [NEW] 阶段1：本周事件是否已处理？
+    if (!get().hasHandledEventThisTurn) {
+      // 还未处理事件，先触发事件
+      try {
+        const eventResult = await processEventTurnAsync(state);
+        const eventData = eventResult.updates.currentEvent as GameEvent | undefined;
+        
+        // [FIX] 验证事件数据完整性
+        if (eventData && eventData.id && eventData.title && eventData.text && eventData.options) {
+          // 有事件触发，显示事件弹窗
+          set((prev) => ({
+            currentEvent: eventData,
+            isEventOpen: true,
+            vitality: {
+              ...prev.vitality,
+              flags: {
+                ...prev.vitality.flags,
+                triggeredEvents: eventResult.updates.vitality?.flags?.triggeredEvents || 
+                  prev.vitality.flags.triggeredEvents
+              }
             }
+          }));
+          
+          eventResult.logs.forEach(log => store.addNotification?.(log, 'info'));
+          return; // 暂停，等待玩家处理事件
+        } else {
+          // 没有事件触发或事件数据不完整，直接标记为已处理，继续到结算
+          if (eventData && !eventData.title) {
+            console.warn('[GameSlice] 事件数据不完整:', eventData);
           }
-        }));
-        
-        // 添加事件日志
-        eventResult.logs.forEach(log => store.addNotification?.(log, 'info'));
-        
-        // 事件触发后暂停，等待玩家处理
-        return;
+          set({ hasHandledEventThisTurn: true });
+        }
+      } catch (error) {
+        console.error('[GameSlice] 事件触发失败:', error);
+        store.addNotification?.('事件系统错误，继续回合', 'warning');
+        set({ hasHandledEventThisTurn: true });
       }
-    } catch (error) {
-      console.error('[GameSlice] 事件触发失败:', error);
-      store.addNotification?.('事件系统错误，跳过本回合事件', 'warning');
     }
 
-    // 1. 回合上限检查
+    // [NEW] 阶段2：事件已处理，执行回合结算
+    // 回合上限检查
     if (get().checkTurnLimit(state, store)) return;
 
-    // 2. 运行核心系统结算（异步）
+    // 运行核心系统结算（异步）
     const settlementResult = await get().runCoreSettlement(state);
 
-    // 3. 处理加密市场
+    // 处理加密市场
     const cryptoResult = get().processCryptoMarket(state, store);
 
-    // 4. 应用结算更新
+    // 应用结算更新
     get().applySettlementUpdates(settlementResult.updates, settlementResult.report);
 
-    // 5. 检查死亡条件
+    // 检查死亡条件
     if (get().checkDeathCondition(store)) return;
 
-    // 6. 更新玩家阶级
+    // 更新玩家阶级
     get().updatePlayerClass(store);
 
-    // 7. 完成回合
+    // 完成回合（会重置 hasHandledEventThisTurn）
     get().finalizeTurn(state, store, settlementResult.notes, cryptoResult.notes);
   },
 
@@ -549,8 +568,11 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
       }
     });
     
-    // 推进回合后再清空 UI 状态和账本
-    set({ weeklyReport: null });
+    // [NEW] 推进到下一回合，重置事件处理状态
+    set({ 
+      weeklyReport: null,
+      hasHandledEventThisTurn: false  // [NEW] 新回合开始，需要重新处理事件
+    });
     if (store.clearWeeklyLedger) store.clearWeeklyLedger();
     // 注意: tickFaithDebuffs 已在 FaithSystem.processTurn 中调用，无需重复
   },
@@ -633,6 +655,7 @@ export const createGameSlice: StateCreator<StoreState, [], [], GameSlice> = (set
         currentEvent: null,
         weeklyReport: null,
         currentCryptoNews: null,  // 🔴 重置加密新闻
+        hasHandledEventThisTurn: false,  // [NEW] 重置事件处理状态
         
         // 5. 恢复 Meta 数据
         unlockedArchives,

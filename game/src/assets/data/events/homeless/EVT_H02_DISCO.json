@@ -20,7 +20,7 @@
   },
   "text": "帐篷区散发着咸腥味。隔壁的流浪汉三天没动弹了。你看到蛆虫在尸体上跳动，像在跳迪斯科。系统不需要救助他，他正以这种方式被高效“出清”。",
   "historicalNote": "西雅图太平间爆仓，底层尸体比活人更具商业价值，沦为遗体交易的资源。",
-  "image": "/assets/events/evt_maggots.png",
+  "image": "/assets/events/homeless/evt_maggots.png",
   "options": {
     "A": {
       "label": "这只是个意外，我绝不会变成这样",

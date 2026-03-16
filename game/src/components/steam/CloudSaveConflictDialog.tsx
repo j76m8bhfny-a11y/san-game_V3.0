@@ -6,7 +6,7 @@
  */
 
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Cloud, HardDrive, GitMerge, Clock, AlertTriangle } from 'lucide-react';
 import { FocusTrap } from '@/components/ui/FocusTrap';
 

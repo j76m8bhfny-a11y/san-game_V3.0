@@ -51,8 +51,8 @@ export const DangerHints: React.FC<DangerHintsProps> = ({
       };
     }
     
-    // 2. 饥饿危险
-    if (hungerPercent >= 0.75) {
+    // 2. 饥饿危险 (hunger是饱腹感，越低越饿)
+    if (hungerPercent <= 0.25) {
       return {
         id: 'hunger_critical',
         title: '极度饥饿',

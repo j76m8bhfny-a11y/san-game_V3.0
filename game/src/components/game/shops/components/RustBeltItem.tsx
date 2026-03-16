@@ -15,7 +15,8 @@ export const RustBeltItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
   const [throttledBuy, isPending] = useThrottle(onBuy, { delay: 300 });
 
   // 简单的图标映射
-  const getIcon = (tags: string[]) => {
+  const getIcon = (tags?: string[]) => {
+    if (!tags) return '🥫';
     if (tags.includes('FOOD')) return '🍺';
     if (tags.includes('WEAPON')) return '🔧';
     if (tags.includes('DRUG')) return '🚬';

@@ -23,7 +23,8 @@ export const SlumsItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
   }), []);
 
   // 2. 简单的图标映射 (实际项目中应使用 item.iconPath)
-  const getIcon = (tags: string[]) => {
+  const getIcon = (tags?: string[]) => {
+    if (!tags) return '📦';
     if (tags.includes('FOOD')) return '🥫';
     if (tags.includes('WEAPON')) return '🔪';
     if (tags.includes('DRUG')) return '💊';

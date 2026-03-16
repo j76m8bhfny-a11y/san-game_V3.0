@@ -162,6 +162,7 @@ export const GuardianHints: React.FC = () => {
   
   // 检测触发条件
   useEffect(() => {
+    console.log('[GuardianHints] 检测触发:', { currentEvent: !!currentEvent, currentTurn, hasShownWelcome: settings.shownHints.includes('welcome_first_event') });
     if (!settings.enabled || !settings.isFirstPlay || isOpen) return;
     
     let triggeredHint: GuardianMessage | null = null;
@@ -184,9 +185,16 @@ export const GuardianHints: React.FC = () => {
     else if (hungerPercent > 0.75 && currentTurn > 1) {
       triggeredHint = GUARDIAN_MESSAGES.find(h => h.trigger === 'highHunger') || null;
     }
-    // 5. 第一次事件 (仅在第1-2周触发)
+    // 5. 第一次事件 (仅在第1-2周触发) - [MODIFIED] 不通过队列显示，直接在事件窗口内显示
+    // 注意：firstEvent 的提示已移至 MessageWindow 内嵌显示，这里跳过
     else if (currentEvent && currentTurn <= 2 && !settings.shownHints.includes('welcome_first_event')) {
-      triggeredHint = GUARDIAN_MESSAGES.find(h => h.trigger === 'firstEvent') || null;
+      console.log('[GuardianHints] 第一次事件，跳过队列显示，由MessageWindow内嵌显示');
+      // 标记为已显示，但不触发队列弹窗
+      saveSettings({
+        ...settings,
+        shownHints: [...settings.shownHints, 'welcome_first_event'],
+      });
+      return;
     }
     // 6. 第一次看到D选项
     else if (currentInsight >= 70 && !settings.shownHints.includes('first_d_option')) {

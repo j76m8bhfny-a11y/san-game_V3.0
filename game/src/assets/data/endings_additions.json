@@ -1,0 +1,404 @@
+[
+  {
+    "id": "ED-23",
+    "title": "开局即终局",
+    "description": "你连第一周都没撑过去。也许是运气不好，也许是你根本没看教程。在这个游戏里，死亡不需要理由，只需要运气差到极点。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "maxTurn": 3
+    }
+  },
+  {
+    "id": "ED-24",
+    "title": "账单恐惧症",
+    "description": "第一张账单就把你吓死了。你发誓如果有来生，一定先去学会计。在美国，数学不好是致命的。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "maxTurn": 5,
+      "maxHp": 5
+    }
+  },
+  {
+    "id": "ED-25",
+    "title": "瘾君子入门",
+    "description": "你还没搞懂这游戏怎么玩，就已经对止痛药上瘾了。效率，我的朋友。有些人要花十年才能走完的路，你十周就走完了。",
+    "priority": 3,
+    "type": "ALIENATION",
+    "conditions": {
+      "maxTurn": 8
+    }
+  },
+  {
+    "id": "ED-31",
+    "title": "阶级跃迁幻梦",
+    "description": "你终于不再是流浪汉了！你骄傲地穿上工装，却没发现那只是一条更舒适的锁链。恭喜你，你从地狱的底层爬到了中层——还是地狱。",
+    "priority": 3,
+    "type": "ALIENATION",
+    "conditions": {
+      "minTurn": 10,
+      "maxTurn": 25,
+      "requiredClass": "WORKER",
+      "maxInsight": 20
+    }
+  },
+  {
+    "id": "ED-32",
+    "title": "银行傀儡",
+    "description": "你有了房子，也有了30年的房贷。你不再是人，你是一个行走的还款计划表。你的墓志铭将写着：此处长眠一位按时还款的公民。",
+    "priority": 2,
+    "type": "SURVIVAL",
+    "conditions": {
+      "minTurn": 15,
+      "maxTurn": 35
+    }
+  },
+  {
+    "id": "ED-33",
+    "title": "医保囚徒",
+    "description": "你不敢辞职，因为你需要那份烂医保。病治好了你的发烧，却治不好你的恐惧。你被困在一份你讨厌的工作里，只为了一张塑料保险卡。",
+    "priority": 2,
+    "type": "SURVIVAL",
+    "conditions": {
+      "minTurn": 20,
+      "maxTurn": 35
+    }
+  },
+  {
+    "id": "ED-34",
+    "title": "加密难民",
+    "description": "你把全部积蓄押在加密货币上。100倍杠杆爆仓的声音，比教堂的钟声还清脆。那些币圈大V不会告诉你，99%的人最终都变成了你。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "minTurn": 15,
+      "maxTurn": 30,
+      "maxGold": -10000
+    }
+  },
+  {
+    "id": "ED-35",
+    "title": "革命火种",
+    "description": "你在铁锈带找到了同类。你们在一个废弃工厂里开会，窗外是锈迹斑斑的美国梦。FBI的探子可能就在其中，但你们已经没有什么可以失去的了。",
+    "priority": 4,
+    "type": "STANCE",
+    "conditions": {
+      "minTurn": 20,
+      "maxTurn": 40,
+      "requiredPoints": {
+        "red": 50
+      },
+      "requiredClass": "WORKER"
+    }
+  },
+  {
+    "id": "ED-36",
+    "title": "教会的羔羊",
+    "description": "你把工资的十分之一捐给了教会。牧师说你将在天堂富足——在你死后。你在这个世界贫穷，换取下一个世界的空头支票。",
+    "priority": 3,
+    "type": "ALIENATION",
+    "conditions": {
+      "minTurn": 15,
+      "maxTurn": 30,
+      "minInsight": 10,
+      "maxInsight": 40
+    }
+  },
+  {
+    "id": "ED-37",
+    "title": "地下经济",
+    "description": "你不再相信正式工作。今天洗盘子，明天搬家具——自由职业者不自由。你没有401K，没有医保，只有一份永远打不完的零工。",
+    "priority": 2,
+    "type": "SURVIVAL",
+    "conditions": {
+      "minTurn": 10,
+      "maxTurn": 30,
+      "requiredClass": "WORKER"
+    }
+  },
+  {
+    "id": "ED-38",
+    "title": "监狱预科生",
+    "description": "你游走在法律边缘。FBI的文件里已经有你的照片了，只是还没盖上红色的章。你告诉自己这是生存，但检察官会称之为犯罪。",
+    "priority": 3,
+    "type": "ALIENATION",
+    "conditions": {
+      "minTurn": 10,
+      "maxTurn": 25
+    }
+  },
+  {
+    "id": "ED-39",
+    "title": "医疗债务深渊",
+    "description": "一场阑尾炎手术让你负债累累。在美国，生病是一种特权，而你已经透支了。你的余生将用于偿还那几小时的手术费。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "minTurn": 20,
+      "maxTurn": 35,
+      "maxGold": -20000
+    }
+  },
+  {
+    "id": "ED-41",
+    "title": "完美信用",
+    "description": "你从未逾期还款。银行爱你，你的信用评分像你的血压一样健康。完美得像一场表演——而你是那个唯一的观众。",
+    "priority": 2,
+    "type": "SURVIVAL",
+    "conditions": {
+      "minTurn": 40,
+      "minGold": 5000
+    }
+  },
+  {
+    "id": "ED-42",
+    "title": "赤脚医生",
+    "description": "你在贫民窟用偷来的药品帮助邻居。你没有执照，但有良心——这在现在的美国是稀缺品。当系统放弃他们时，你没有。",
+    "priority": 4,
+    "type": "STANCE",
+    "conditions": {
+      "minTurn": 35,
+      "requiredPoints": {
+        "red": 30
+      },
+      "requiredClass": "HOMELESS"
+    }
+  },
+  {
+    "id": "ED-43",
+    "title": "社区互助网",
+    "description": "你和邻居们建立了地下互助网络。当系统抛弃你们时，你们选择互相拥抱。这不是共产主义，这是人类最基本的生存本能。",
+    "priority": 4,
+    "type": "STANCE",
+    "conditions": {
+      "minTurn": 30,
+      "requiredPoints": {
+        "red": 40
+      }
+    }
+  },
+  {
+    "id": "ED-44",
+    "title": "黑市大亨",
+    "description": "你发现了系统的漏洞——法律就是用来绕过的。你的生意在法律照不到的地方蓬勃发展。你是一个罪犯，也是这个非法经济体的企业家。",
+    "priority": 5,
+    "type": "UR",
+    "conditions": {
+      "minTurn": 40,
+      "minGold": 50000,
+      "minInsight": 60
+    }
+  },
+  {
+    "id": "ED-45",
+    "title": "隐士模式",
+    "description": "你几乎不再与人交流。窗外的世界太吵了，而你的大脑里有整个宇宙在运转。孤独不是惩罚，是你选择的道路。",
+    "priority": 3,
+    "type": "ALIENATION",
+    "conditions": {
+      "minTurn": 35,
+      "minInsight": 80
+    }
+  },
+  {
+    "id": "ED-46",
+    "title": "家庭破碎者",
+    "description": "贫穷是最好的离婚律师。你的配偶带走了孩子，留下你一个人面对账单。你输掉的不仅是婚姻，还有作为父母的资格。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "minTurn": 30,
+      "maxGold": -5000
+    }
+  },
+  {
+    "id": "ED-48",
+    "title": "知识就是力量",
+    "description": "你读了很多书，知道了很多不该知道的事。现在的问题是：你要用这些知识做什么？觉醒如果没有行动，只是另一种形式的逃避。",
+    "priority": 4,
+    "type": "STANCE",
+    "conditions": {
+      "minTurn": 30,
+      "minInsight": 70
+    }
+  },
+  {
+    "id": "ED-50",
+    "title": "债务奴隶制",
+    "description": "你的债务已经超越了你的寿命。恭喜你，你现在是银行的永久资产——即使在你死后。他们会向你的继承人追讨，直到最后一分钱。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "minTurn": 40,
+      "maxGold": -100000
+    }
+  },
+  {
+    "id": "ED-51",
+    "title": "零消费主义者",
+    "description": "你几乎不花钱。在这个消费主义宗教里，你是个异教徒——也是最自由的人。你证明了人不需要很多东西也能生存，虽然没人会为此感谢你。",
+    "priority": 4,
+    "type": "STANCE",
+    "conditions": {
+      "minTurn": 50,
+      "maxGold": 10000
+    }
+  },
+  {
+    "id": "ED-52",
+    "title": "囤积狂",
+    "description": "你的房间堆满了罐头、药品和末日装备。如果核战真的爆发，你至少可以安心地发疯。恐惧是最好的储物系统。",
+    "priority": 3,
+    "type": "ALIENATION",
+    "conditions": {
+      "minTurn": 50,
+      "minInsight": 60
+    }
+  },
+  {
+    "id": "ED-53",
+    "title": "永不为奴",
+    "description": "你拒绝了所有全职工作的offer。不稳定，但自由——这是你唯一拥有的奢侈品。你没有老板，也没有保障——两者其实是同一个东西。",
+    "priority": 4,
+    "type": "STANCE",
+    "conditions": {
+      "minTurn": 50,
+      "requiredPoints": {
+        "red": 30
+      },
+      "requiredClass": "WORKER"
+    }
+  },
+  {
+    "id": "ED-54",
+    "title": "医疗旅游",
+    "description": "你发现了终极hack——去墨西哥看病。那里的医生不讲英语，但账单不会让你心脏病发。边境墙挡不住美国人求医的脚步。",
+    "priority": 5,
+    "type": "UR",
+    "conditions": {
+      "minTurn": 40,
+      "minGold": 5000,
+      "minInsight": 50
+    }
+  },
+  {
+    "id": "ED-55",
+    "title": "数字游民",
+    "description": "你在五个城市都有"临时住所"。没有根，也就没有束缚——也没有归属。你是自由的，自由得像一片随风飘荡的塑料垃圾。",
+    "priority": 2,
+    "type": "SURVIVAL",
+    "conditions": {
+      "minTurn": 35
+    }
+  },
+  {
+    "id": "ED-56",
+    "title": "信仰流浪者",
+    "description": "你在教会、兄弟会、邪教之间游走。你在寻找答案，但问题本身在变化。也许答案就是：没有答案。",
+    "priority": 4,
+    "type": "STANCE",
+    "conditions": {
+      "minTurn": 30,
+      "minInsight": 60
+    }
+  },
+  {
+    "id": "ED-57",
+    "title": "房东之路",
+    "description": "你终于也成了那个收租的人。看着租客的挣扎，你想起曾经的自己——然后调高了一点租金。这就是美国梦：当你终于爬到梯子上方，你会踢掉下面的人。",
+    "priority": 2,
+    "type": "SURVIVAL",
+    "conditions": {
+      "minTurn": 40,
+      "requiredClass": "MIDDLE",
+      "minGold": 100000
+    }
+  },
+  {
+    "id": "ED-58",
+    "title": "破产重生",
+    "description": "你破产过一次，又爬了起来。信用评分可以修复，但有些伤疤会一直作痛。你学会了在金融废墟中重建，这是美国人最古老的传统。",
+    "priority": 2,
+    "type": "SURVIVAL",
+    "conditions": {
+      "minTurn": 35,
+      "minGold": 5000
+    }
+  },
+  {
+    "id": "ED-59",
+    "title": "地下记者",
+    "description": "你用匿名账号在暗网发布调查报道。你的读者不知道你是谁，但他们知道你说的是真话。在这个后真相时代，真相本身就是一种革命。",
+    "priority": 4,
+    "type": "STANCE",
+    "conditions": {
+      "minTurn": 30,
+      "minInsight": 80
+    }
+  },
+  {
+    "id": "ED-61",
+    "title": "阿片危机幸存者",
+    "description": "你差点成为统计数字——那个每年70000阿片类死亡中的一个。现在你清醒着，看着其他人沉沦。生存不是胜利，只是延迟的失败。",
+    "priority": 3,
+    "type": "ALIENATION",
+    "conditions": {
+      "minTurn": 40
+    }
+  },
+  {
+    "id": "ED-62",
+    "title": "学生贷款终身制",
+    "description": "毕业十年，你的学生贷款一分没少。他们说教育是投资，但你的回报在哪里？你只是证明了在这个国家，知识确实是有价格的——而且利息很高。",
+    "priority": 2,
+    "type": "SURVIVAL",
+    "conditions": {
+      "minTurn": 35,
+      "maxGold": 20000
+    }
+  },
+  {
+    "id": "ED-64",
+    "title": "气候难民",
+    "description": "飓风不查信用评分。当你的房子被洪水冲走时，保险公司说这是"天灾"——不在理赔范围内。气候变化没有保险，就像贫穷没有疫苗。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "minTurn": 40
+    }
+  },
+  {
+    "id": "ED-65",
+    "title": "AI替代者",
+    "description": "你做了二十年的工作，现在一台机器做得更好。你在简历上写下"适应性强"——但你能适应饥饿吗？技术不会为你流泪，它甚至不会注意到你。",
+    "priority": 3,
+    "type": "ALIENATION",
+    "conditions": {
+      "minTurn": 35
+    }
+  },
+  {
+    "id": "ED-66",
+    "title": "零工经济祭品",
+    "description": "你是Uber司机、DoorDash送餐员、TaskRabbit杂工。科技承诺了自由，交付了不稳定。你是平台经济的人肉电池——用完即弃，随时可替换。",
+    "priority": 2,
+    "type": "SURVIVAL",
+    "conditions": {
+      "minTurn": 30,
+      "requiredClass": "WORKER",
+      "maxGold": 15000
+    }
+  },
+  {
+    "id": "ED-67",
+    "title": "精神健康危机",
+    "description": "你知道自己需要帮助，但一次心理咨询要200美元。你的大脑在尖叫，钱包在沉默。在这个国家，连崩溃都是奢侈品。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "minTurn": 30,
+      "maxHp": 10
+    }
+  }
+]

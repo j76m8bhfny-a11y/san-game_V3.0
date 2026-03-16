@@ -1,0 +1,503 @@
+[
+  {
+    "id": "ED-23",
+    "title": "有机瑜伽垫上的圆寂",
+    "description": "你死时身边散落着褪黑素空瓶和Lululemon瑜伽垫。最后一笔支出是45美元的'抗焦虑复合提取物'——它有效压制了你对破产的焦虑，但没告诉你这其实是一种昂贵的安慰剂。你的灵魂升天时，手里拿着的不是圣经，是一张Whole Foods的会员卡。",
+    "roast": "她为了买有机羽衣甘蓝负债累累，但死后尸体分解的速度确实比吃麦当劳的人慢了15%。这是中产阶级的胜利。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasItem": "ITEM_YOGA_MAT",
+      "maxGold": 1000
+    }
+  },
+  {
+    "id": "ED-24",
+    "title": "Dollar Menu的献祭",
+    "description": "验尸官在你的血管里发现了高果糖玉米糖浆的沉积物——足以装满三个可乐瓶。你这辈子省下的饭钱，刚好够支付火化费。麦当劳的99美分菜单上不会告诉你：那是按克计价的人肉价格。",
+    "roast": "他一辈子吃了价值5000美元的Dollar Menu，省下的钱刚好够支付因吃Dollar Menu导致的心脏病手术费——手术他最终没做，因为医保不报销。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasDisease": "TYPE_2_DIABETES",
+      "maxGold": 500
+    }
+  },
+  {
+    "id": "ED-25",
+    "title": "年轻血液的反向输血",
+    "description": "你花15000美元注射了'硅谷精英特供年轻血液'，希望能活到奇点降临。讽刺的是，杀死你的不是衰老，而是那笔贷款的催收电话。你的血液里流淌着别人的青春，你的账户里流淌着负数的未来。",
+    "roast": "富人花钱买穷人血续命，穷人卖血换钱续命。这是一场公平的交易——双方都在缓慢失血，直到一方倒下。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasItem": "MEDICAL_YOUNG_BLOOD",
+      "maxGold": -5000
+    }
+  },
+  {
+    "id": "ED-26",
+    "title": "免赔额地狱",
+    "description": "你明明有保险卡，却死在了急诊室门口——因为今年的免赔额还差2000美元。保险公司的人会参加你的葬礼，他们会说：'根据条款第47条，灵魂出窍不属于网络内服务。'",
+    "roast": "他有保险，他有能力支付2000美元免赔额，他只是选择不支付——因为在他饿死之前，那个可治愈的病已经变成了致命的。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasInsurance": "HDHP",
+      "hasUntreatedDisease": true,
+      "minGold": 1000
+    }
+  },
+  {
+    "id": "ED-27",
+    "title": "网络外惊喜",
+    "description": "那趟3英里的救护车旅程救了你的命，但随后的'惊喜账单'要了你的命。15000美元的账单附言写着：'虽然你失去了意识，但你在服务协议上按了手印——我们假设你同意了。'",
+    "roast": "救护车是网络外的，你的死亡却是网络内的——你的尸体可以被算作医院内的死亡统计数据，用于申请更多政府拨款。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "usedService": "SUBURBS_AMBULANCE",
+      "maxGold": -10000
+    }
+  },
+  {
+    "id": "ED-28",
+    "title": "止痛药轮盘赌",
+    "description": "你的肝脏变成了布洛芬结晶的博物馆。你一辈子没看过专科医生，因为'太贵'——现在火化费比那笔专科诊费贵三倍。你死前最后的念头是：'再吞两粒应该能挺过去。'",
+    "roast": "他用$12的家庭装布洛芬治疗了需要$5000手术的病，节省了$4988——直到死亡证明上写着肝衰竭。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasItem": "MEDICAL_BULK_IBUPROFEN",
+      "itemPurchaseCount": 5,
+      "maxGold": 200
+    }
+  },
+  {
+    "id": "ED-29",
+    "title": "卖血者的贫血",
+    "description": "你卖掉了身体里最后一点可以卖的东西——血浆。CVS药房的抗anemia药要80美元，而你卖一次血只能赚30美元。数学告诉你：这是一个必输的游戏。你死时比出生时轻了5磅。",
+    "roast": "美国是全球最大血浆出口国，占了70%的市场份额。感谢每一位像这样自愿贡献的供应商。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "usedService": "SLUM_PLASMA_DONATION",
+      "serviceUseCount": 8,
+      "maxHp": 70
+    }
+  },
+  {
+    "id": "ED-30",
+    "title": "亚马逊算法的裁员令",
+    "description": "你在亚马逊仓库的第36周倒下了。AI算法记录了你上厕所的每一次——共14分钟，超过了允许的10分钟。你的死亡被系统标记为'自愿离职'。贝佐斯会收到通知：'一个效率低于平均值的单元已被移除。'",
+    "roast": "他在仓库里走了相当于穿越美国的距离，为prime会员配送了他们一天后就扔掉的东西。他的每小时工资买不起他搬运的任何一个包裹。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasJob": "JOB_AMAZON_PICKER",
+      "jobDuration": 30
+    }
+  },
+  {
+    "id": "ED-31",
+    "title": "零工经济的最后一单",
+    "description": "你是一位'独立承包人'——这意味着你用自己付油钱的车、自己买的保险、自己承担的风险，为Uber赚了5万美元。你的最后一条评价是：'司机态度很好，但车里有股奇怪的味道。'",
+    "roast": "平台感谢他的服务，并附上一张1099表格。他是独立承包人，所以平台不需要支付社保、医保、最低工资——只需要抽成30%。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "onlyGigWork": true,
+      "hasItem": "VEHICLE",
+      "maxGold": 0
+    }
+  },
+  {
+    "id": "ED-32",
+    "title": "双开轮班的猝死",
+    "description": "你打了两份全职工，因为这样'刚好能付得起房租和胰岛素'。你死时，第一份工作的经理在找替补，第二份工作的经理在计算加班费节省了多少。两份工作的401K加起来还不够葬礼费用。",
+    "roast": "打两份工不是因为贪婪，是因为贪婪的系统。他一周工作80小时，刚好够支付一周80小时的工作带来的医疗费用。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "activeJobsCount": 2,
+      "consecutiveLowHp": 10
+    }
+  },
+  {
+    "id": "ED-33",
+    "title": "试药员的白老鼠结局",
+    "description": "你把身体租给药厂测试新药。第三期的副作用包括：幻觉、器官衰竭和'意外死亡'——你中了头奖。药厂会给你家人一笔封口费，附带NDA条款：禁止他们提及'该受试者曾服用我司产品'。",
+    "roast": "他用身体帮药厂排除了一个失败配方，这是他对医学的最后一次贡献——虽然这个贡献不会出现在任何医学期刊上。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasItem": "D03",
+      "itemUseCount": 3,
+      "hasDisease": "VOID_PSYCHOSIS"
+    }
+  },
+  {
+    "id": "ED-34",
+    "title": "教会的十一税",
+    "description": "你把工资的十分之一给了上帝，甚至借钱也要完成十一税。牧师说你会在天堂富足——他是对的，因为天堂的入场券是免费的。你死前的最后一笔支出是50美元的'紧急祷告服务费'。",
+    "roast": "上帝收到了他的祷告，但快递公司搞错了地址——它送到了牧师的银行账户，附言写着'感谢你的信仰投资'。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "requiredFaith": "CHURCH",
+      "faithLevel": 2,
+      "maxGold": 0
+    }
+  },
+  {
+    "id": "ED-35",
+    "title": "邪教的Kool-Aid",
+    "description": "你献祭了金钱、理智和尊严。教主说最后的仪式需要'终极奉献'——你没有犹豫。当你喝下那杯Kool-Aid时，你看见教主在开上你的车离开。你在集体坟墓里找到了'归属'。",
+    "roast": "他寻找了一生的答案，最后发现答案是：他是一个可以被剥削的资源。好消息是，他不需要再付房租了——坏消息是，他付的是生命。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "requiredFaith": "CULT",
+      "faithLevel": 3,
+      "hasPerformedRite": true
+    }
+  },
+  {
+    "id": "ED-36",
+    "title": "革命的误伤",
+    "description": "你在监狱里读完了《资本论》，出狱后组织罢工。FBI把你列为'国内恐怖分子'，而你的同志们把你列为'可被牺牲的棋子'。你的死亡被两边利用：政府用它来证明革命者的危险性，革命者用它来激发同情。",
+    "roast": "他死前最后的念头是'至少我上了新闻'。他没看到新闻标题里的'疑似精神病患者'前缀。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "requiredFaith": "REVOLUTION",
+      "requiredPoints": { "red": 60 },
+      "hasFlag": "hasFelonyRecord"
+    }
+  },
+  {
+    "id": "ED-37",
+    "title": "发薪日贷款的绞索",
+    "description": "你借了500美元应急，六周后欠款变成3500美元——年化利率780%。催收员的电话比心跳还规律。你死时，债务被'慷慨地'转让给了你的继承人。在美国，你可以带着债务去坟墓，但坟墓也有月租。",
+    "roast": "他用500美元救了一周，用一生偿还——虽然这个'一生'比预期短了一些。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "paydayLoanCount": 3,
+      "maxGold": -5000
+    }
+  },
+  {
+    "id": "ED-38",
+    "title": "学生贷款的永恒诅咒",
+    "description": "你拥有文学学士学位和12万美元债务。死前你终于算清楚了：你这辈子为教育支付的钱，足够买一辆特斯拉——虽然你从未拥有过车。联邦政府会追缴你的学生贷款直到你腐烂。",
+    "roast": "学位可以用来当墓碑，反正它也值不了别的用处。至少债主会在他的坟前献花——以确保他还在还款。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasItem": "DEGREE",
+      "studentLoanBalance": 120000,
+      "minTurn": 50
+    }
+  },
+  {
+    "id": "ED-39",
+    "title": "401K的幻觉",
+    "description": "你勤勤恳恳交了30年401K，账户里有8万美元——那是你59.5岁后才能碰的钱。你死在58岁生日后两周，早了一年。你的401K受益人是你从未见过的侄子，他用这笔钱买了辆游艇。",
+    "roast": "资本主义的最佳设计是让你为退休存钱，然后确保你在退休前死掉。他死在了终点线前一步，完美。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasJobType": "FULL_TIME",
+      "jobDuration": 40,
+      "maxGold": 1000
+    }
+  },
+  {
+    "id": "ED-40",
+    "title": "房产税的驱逐",
+    "description": "你花了30年还清房贷，以为房子终于属于你了。然后你发现房子永远属于政府——你只是租地的佃农。欠了2000美元房产税后，县治安官把你扔到了街上。你在自己曾经的前廊上冻死了。",
+    "roast": "在美国，你可以拥有房子，直到你不能。他拥有房子的方式是：先欠银行30年，再欠政府一辈子，最后欠殡仪馆一次。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hadHousing": "OWN",
+      "lostHousing": true,
+      "requiredClass": "HOMELESS"
+    }
+  },
+  {
+    "id": "ED-41",
+    "title": "房东的涨租通知",
+    "description": "你死前的最后一个月住了三个地方。第一个房东涨了30%租金，第二个进行了'装修驱逐'，第三个在Airbnb上发现了更高的利润。你的墓碑上会写着租金：$0/月，终于稳定了。",
+    "roast": "地下的landlord是蚯蚓，它们至少不查信用评分，也不因为你要死而涨租。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "evictionCount": 2,
+      "requiredClass": "HOMELESS"
+    }
+  },
+  {
+    "id": "ED-42",
+    "title": "HOA的暴君",
+    "description": "你因草坪高度超标2英寸被HOA罚款。然后因未付罚款被起诉。然后因诉讼费失去房子。Karen邻居拍了拍你的棺材说：'至少现在草坪不会长高了。'你的鬼魂可以在HOA会议上永远投反对票，虽然他们听不见。",
+    "roast": "HOA的存在证明：中产阶级的最大敌人不是资本家，而是隔壁的Karen。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "requiredClass": "MIDDLE",
+      "lostHousingToHOA": true
+    }
+  },
+  {
+    "id": "ED-43",
+    "title": "帐篷城的甲烷爆炸",
+    "description": "你住在帐篷城第47周。市政府说他们在'研究长期解决方案'，而你的短期解决方案是一个漏气的丙烷罐。爆炸发生时，Cleanup Crew的效率比社工高多了——他们15分钟就到了，主要是为了清理现场以免影响房价。",
+    "roast": "他的帐篷被没收并作为'危险物品'销毁，他的存在被从城市统计数据中删除。终于，他不再拉低这个城市的平均收入了。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "homelessWeeks": 30,
+      "currentRegion": "SLUMS"
+    }
+  },
+  {
+    "id": "ED-44",
+    "title": "算法的美颜",
+    "description": "算法判定你是'高风险个体'，虽然你从未逾期还款——你只是搬家太频繁。你的信用评分低于400后，连高利贷都不借给你。AI没有杀你，它只是切断了你生存所需的所有资源。",
+    "roast": "算法没有偏见，它只是学会了人类的偏见，然后把它们放大了一百万倍。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "maxCreditScore": 400,
+      "creditScoreDropCount": 2
+    }
+  },
+  {
+    "id": "ED-45",
+    "title": "社交媒体的最后直播",
+    "description": "你死前最后一次被拍进TikTok。网红需要一段'帮助流浪汉'的内容来获得品牌赞助。视频里你感激涕零地接过200美元，获得了50万点赞。网红赚了5000美元广告费，你买了止痛药和一顿热饭。这场交易的ROI是：网红2500%，你0%。",
+    "roast": "他死后的第三天，视频还在产生收益。这就是被动收入的力量——即使你已经不能再被动了。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "triggeredEvent": "B_HOMELESS_TIKTOK",
+      "maxGold": 0
+    }
+  },
+  {
+    "id": "ED-46",
+    "title": "保险的完美客户",
+    "description": "你这辈子买了医疗险、车险、房屋险、人寿险。保险公司爱你——你从未索赔过。当你终于需要那笔人寿保险时，受益人发现条款第847条排除了你的死因。保险公司发来慰问信：'感谢您30年的忠诚，您的死亡帮助我们保持了低赔付率。'",
+    "roast": "他是保险公司梦里的客户：按时交钱，从不找麻烦，死得干净利落，死因不在赔付条款里。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "totalInsurancePaid": 50000,
+      "insuranceClaims": 0
+    }
+  },
+  {
+    "id": "ED-47",
+    "title": "信用评分的奴隶",
+    "description": "你从未逾期还款，信用评分高达780。为了实现这一点，你借了更多钱来还旧账，像一个走钢丝的小丑。你死时信用卡全部清零——因为你不能再欠债了。银行会给你发一张'完美客户'证书，裱框费用79.99美元。",
+    "roast": "他活着是为了维持一个数字，死时那个数字依然完美。唯一不完美的是他的生命——但信用评分不衡量那个。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "minCreditScore": 750,
+      "maxGold": 0
+    }
+  },
+  {
+    "id": "ED-48",
+    "title": "美国梦的自动续订",
+    "description": "你每个月自动续订的服务包括：健身会员（从未去过）、流媒体（只看广告 tier）、保险（从不理赔）、以及一个每月19.99美元的'成功学播客'。你死时银行账户被自动扣款到负数。好消息是：死亡取消了所有订阅，除了那个播客——它还在你的棺材里播放'如何成为百万富翁'。",
+    "roast": "他订阅了成为百万富翁的课程，却忘记取消订阅——这让他变成了一个负百万富翁。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "monthlySubscriptionCost": 200,
+      "maxGold": 0
+    }
+  },
+  {
+    "id": "ED-49",
+    "title": "防弹咖啡的骗局",
+    "description": "你坚信生酮饮食能让你变成生物黑客。你的肝脏在你死后被解剖研究——它看起来像是被黄油浸泡过的一战战壕标本。那本《防弹饮食法》的作者是亿万富翁，你不是。",
+    "roast": "他花140美元买了一份没有碳水的晚餐，却在一个月后需要花费50000美元修复被脂肪包裹的心脏。低碳，高成本。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasItem": "FOOD_KETO_MEAL",
+      "itemPurchaseCount": 5,
+      "neverHadItem": "FOOD_KALE_SALAD"
+    }
+  },
+  {
+    "id": "ED-50",
+    "title": "星巴克的阶级幻觉",
+    "description": "你死时手里还攥着一张星巴克的收据——那是你最后的6美元。为了一杯带有你名字的拼写错误的手写杯，你放弃了两天份的蛋白质。caffeinated的血液无法支付你的房租，但咖啡因确实让你在死前保持清醒。",
+    "roast": "她在星巴克花了2000美元买拿铁，如果这笔钱买了股票，现在值3000美元——但那样的话她就没办法在Instagram上展示中产阶级的早晨了。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasItem": "FOOD_STARBUCKS",
+      "itemPurchaseCount": 15,
+      "maxGold": 500
+    }
+  },
+  {
+    "id": "ED-51",
+    "title": "印度仿制药的轮盘",
+    "description": "你信任了那包装简陋的印度仿制药，因为它们只要原研药的1/10价格。当你发现血压失控时，已经太晚了。FDA不会为假药道歉，制药公司不会降价，只有你倒在了两者的夹缝中。",
+    "roast": "原研药$800，仿制药$80，你的命$0——这就是市场效率的最优解。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasItem": "RUST_GENERIC_MEDS",
+      "itemPurchaseCount": 10,
+      "hasDisease": "TYPE_2_DIABETES"
+    }
+  },
+  {
+    "id": "ED-52",
+    "title": "急诊室的折叠椅",
+    "description": "你在急诊室走廊的折叠椅上等待了14个小时。法律说你不能被拒绝治疗，但没说你不能被无限期延迟治疗。当你终于见到医生时，你的心跳已经停止——但至少你没有占用ICU床位，医院对此表示感谢。",
+    "roast": "公立医院不能拒绝任何人，所以他们学会了用等待室作为缓冲区——不是筛选病人，而是自然淘汰。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "usedService": "SLUM_PUBLIC_ER",
+      "waitTime": 8
+    }
+  },
+  {
+    "id": "ED-53",
+    "title": "矿工的三重诅咒",
+    "description": "你在铁锈带工作了二十年，呼吸着工业废气，搬运着有毒废料。当火车脱轨时，他们告诉你空气是安全的。当你咳血时，他们告诉你这是自然老化。当你死后，他们把你的肺捐给医学院研究——免费。",
+    "roast": "铁路公司节省了安装安全设备的费用，制药公司卖出了更多哮喘药，医学院获得了免费标本。只有他，获得了提前退休——到坟墓里。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasJob": "JOB_DAY_LABORER",
+      "hasDisease": "WORKER_LUNG",
+      "maxGold": 0
+    }
+  },
+  {
+    "id": "ED-54",
+    "title": "快递员的保温箱",
+    "description": "你的送货卡车没有空调，车厢温度达50度。你中暑昏倒在客户门口，而客户抱怨的是'外卖凉掉了'。你的保温箱保持食物温度的能力，比医院保持你生命的能力更强。",
+    "roast": "UPS和亚马逊都在争论谁应该为司机安装空调，争论持续了十年。在这期间，只有司机在死去——悄无声息，不影响股价。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasJob": "JOB_FOOD_DELIVERY",
+      "jobDuration": 20,
+      "triggeredEvent": "B_WORKER_HEATSTROKE"
+    }
+  },
+  {
+    "id": "ED-55",
+    "title": "兄弟会的背叛",
+    "description": "你在贫民窟建立了互助网络，把你的最后一罐罐头给了邻居。当你生病时，那个邻居卖掉了你的信息给催收公司。地下经济的规则是：没有规则，除了'在崩溃前先崩溃别人'。",
+    "roast": "他相信人民会互相帮助，忘记了人民也是这个系统的一部分——被设计成互相吞噬。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "requiredFaith": "BROTHERHOOD",
+      "betrayedByAlly": true
+    }
+  },
+  {
+    "id": "ED-56",
+    "title": "加密货币的爆仓",
+    "description": "你把全部积蓄押在加密货币上，相信'HODL'和'去中心化'的神话。100倍杠杆爆仓的声音，比教堂的钟声还清脆。你的钱包地址还在区块链上，只是余额变成了零——和你的生命一样，不可篡改，不可逆转。",
+    "roast": "他相信去中心化能解放穷人，忘记了去中心化的意思是：当你被骗时，没有一个电话可以打。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasCryptoAccount": true,
+      "cryptoLossPercent": 80,
+      "maxGold": -20000
+    }
+  },
+  {
+    "id": "ED-57",
+    "title": "保释金的高利贷",
+    "description": "你签下了保释金贷款合同——首付10%，周利率15%，年化780%。这比你的犯罪还像犯罪。当你终于还清时，你已经卖掉了肾脏（只剩一个）、血浆（卖无可卖）和尊严（早就没有了）。",
+    "roast": "监狱外的高利贷，比监狱内的铁窗更坚固。至少监狱管饭，而保释金贷款只管用你的血支付利息。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "usedBailBond": true,
+      "bailInterestRate": 0.15,
+      "hasActiveLoan": "BAIL_BOND"
+    }
+  },
+  {
+    "id": "ED-58",
+    "title": "租房保险的完美客户",
+    "description": "你每个月都按时交租房保险，相信它会保护你。当你被驱逐时，保险公司说：'驱逐不在承保范围内。'当你失去家具时，他们说：'那是房东的责任。'当你死去时，他们说：'感谢您的忠诚，我们将退还剩余保费——扣除手续费后余额为负。'",
+    "roast": "保险的本质是：你支付的是'如果出事'的安慰，而公司确保'如果'永远不会赔付。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasRentalInsurance": true,
+      "insuranceDuration": 24,
+      "insuranceClaims": 0,
+      "wasEvicted": true
+    }
+  },
+  {
+    "id": "ED-59",
+    "title": "智能推荐的安乐死",
+    "description": "算法知道你想要什么，在你想要之前。它推荐了你买不起的保健品、用不上的订阅服务、治愈不了的焦虑。你死前的最后一笔支出是'为你推荐'的——funeral plan，分期付款，零利率。",
+    "roast": "算法比你自己更了解你——包括你愿意为逃避现实支付多少钱。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "recommendedPurchases": 20,
+      "maxGold": 0
+    }
+  },
+  {
+    "id": "ED-60",
+    "title": "档案的完美收集者",
+    "description": "你收集了30个档案，拼凑出系统的真相——但这个真相没有给你带来任何收入。你比任何人都更了解这个国家的运作方式，但了解不等于生存。你的档案被拍卖给了学术机构，他们会在论文中引用你的发现，而你的名字只会出现在脚注里。",
+    "roast": "他知道系统如何运作，知道不等于改变，改变不等于生存。知识就是力量，但力量在这里是一种负债。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "unlockedArchives": 30,
+      "maxGold": 0
+    }
+  },
+  {
+    "id": "ED-61",
+    "title": "彩票的数学幻觉",
+    "description": "你花了500美元买强力球彩票，那是你一个月的胰岛素钱。概率告诉你这是愚蠢的，但希望告诉你这是唯一的出路。当你死去时，口袋里还有一张未刮开的彩票——它中了5美元，刚好够支付火化费的0.01%。",
+    "roast": "穷人彩票是数学史上最成功的营销。它把绝望重新包装成希望，把税收重新包装成梦想。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "lotteryPurchases": 50,
+      "lotteryWins": 0,
+      "maxGold": 0
+    }
+  },
+  {
+    "id": "ED-62",
+    "title": "延保服务的最后保修",
+    "description": "你为你买不起的东西买了延保——电视、冰箱、甚至沙发。当你死去时，这些延保还在生效，但它们不覆盖'自然死亡'。你的家人试图申请理赔，被告知：'延保只覆盖产品故障，不覆盖生命故障。'",
+    "roast": "他为他的冰箱买了3年延保，但只给自己的生命买了0天延保。至少冰箱还能被修理。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "extendedWarrantyPurchases": 3,
+      "warrantyClaims": 0
+    }
+  }
+]

@@ -61,19 +61,28 @@ export const ScreenReaderAnnouncer: React.FC = () => {
       announce(`触发事件：${currentEvent.title}`, 'assertive');
     }
 
-    setPrevState({
-      gold: currentGold,
-      hp: currentHp,
-      turn: currentTurn,
-      eventTitle: currentEvent?.title || '',
+    // 使用函数式更新，避免依赖 prevState
+    setPrevState(prev => {
+      // 只有实际变化时才更新
+      if (prev.gold === currentGold && prev.hp === currentHp && 
+          prev.turn === currentTurn && prev.eventTitle === (currentEvent?.title || '')) {
+        return prev; // 返回相同引用，避免重渲染
+      }
+      return {
+        gold: currentGold,
+        hp: currentHp,
+        turn: currentTurn,
+        eventTitle: currentEvent?.title || '',
+      };
     });
-  }, [currentGold, currentHp, currentTurn, currentEvent?.title, announce, prevState]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentGold, currentHp, currentTurn, currentEvent?.title, announce]); // 移除 prevState 依赖
 
   // 监听周结算
   useEffect(() => {
     if (weeklyReport) {
       announce(
-        `第 ${weeklyReport.turn} 周结算完成，当前余额 ${weeklyReport.balance} 金币`,
+        `第 ${weeklyReport.turn} 周结算完成，净变化 ${weeklyReport.netChange} 金币`,
         'polite'
       );
     }

@@ -46,11 +46,12 @@ const INSIGHT_MILESTONES: Milestone[] = [
 const MILESTONE_STORAGE_KEY = 'insight_milestones_shown';
 
 export const InsightMilestones: React.FC = () => {
-  const { vitality } = useGameStore();
+  const { vitality, currentEvent } = useGameStore();
   const { show, close, isOpen } = useQueuedModal('insightMilestone');
   const [shownMilestones, setShownMilestones] = useState<number[]>([]);
   
   const currentInsight = vitality.metrics.insight;
+  const currentTurn = vitality.time.currentTurn;
   
   useEffect(() => {
     const stored = sessionStorage.getItem(MILESTONE_STORAGE_KEY);
@@ -61,6 +62,9 @@ export const InsightMilestones: React.FC = () => {
   
   useEffect(() => {
     if (isOpen) return; // 如果已经有弹窗打开，不触发新的
+    
+    // [NEW] 第一次事件之前不显示里程碑提示，避免与守护灵提示冲突
+    if (currentTurn <= 2 && !currentEvent) return;
     
     const reachedMilestone = INSIGHT_MILESTONES.find(
       m => currentInsight >= m.threshold && !shownMilestones.includes(m.threshold)
@@ -82,7 +86,7 @@ export const InsightMilestones: React.FC = () => {
       
       return () => clearTimeout(timer);
     }
-  }, [currentInsight, shownMilestones, isOpen, show, close]);
+  }, [currentInsight, shownMilestones, isOpen, show, close, currentTurn, currentEvent]);
   
   return null;
 };

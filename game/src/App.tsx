@@ -31,6 +31,11 @@ import { NewsTicker } from './components/game/Crypto/NewsTicker';
 import { CryptoNewsPopup } from './components/game/Crypto/CryptoNewsPopup';
 import JailOverlay from './components/game/JailOverlay';
 import { InsuranceModal } from './components/game/InsuranceModal'; // [NEW] 引入组件
+import { SlumsBank } from './components/game/bank/SlumsBank'; // [NEW] 银行组件
+import { DowntownBank } from './components/game/bank/DowntownBank'; // [NEW] 银行组件
+import { RustBeltBank } from './components/game/bank/RustBeltBank'; // [NEW] 银行组件
+import { SuburbsBank } from './components/game/bank/SuburbsBank'; // [NEW] 银行组件
+import { RegionID } from './types/schema'; // [NEW] 区域类型
 import { SystemGazeOverlay } from './components/SystemGazeOverlay'; // [NEW] 系统凝视
 import { ArchiveMilestoneModal } from './components/ArchiveMilestoneModal'; // [NEW] 里程碑弹窗
 import { DeathSummary } from './components/game/DeathSummary'; // [NEW] 死亡结算
@@ -157,8 +162,13 @@ const App: React.FC = () => {
     restartGame,
     showDeathSummary,  // [NEW] 死亡结算显示状态
     showDeathSummaryView, // [NEW] 手动显示死亡结算
-    activeHousing // [NEW] 用于DangerHints
+    activeHousing, // [NEW] 用于DangerHints
+    isBankOpen,    // [NEW] 银行弹窗状态
+    setBankOpen,   // [NEW] 银行弹窗控制
+    currentRegion  // [NEW] 当前区域
   } = useGameStore();
+
+  const [viewState, setViewState] = useState<'TITLE' | 'SELECT_CLASS' | 'GAME'>('TITLE');
 
   // [NEW] 全局键盘事件（完整功能）
   useGlobalKeyboard({
@@ -195,8 +205,6 @@ const App: React.FC = () => {
       console.log('[Save] 游戏状态已自动保存');
     },
   });
-
-  const [viewState, setViewState] = useState<'TITLE' | 'SELECT_CLASS' | 'GAME'>('TITLE');
   const [loading, setLoading] = useState(false);
   const [initError, setInitError] = useState<string | null>(null);
   
@@ -231,6 +239,19 @@ const App: React.FC = () => {
     };
     init();
   }, []);
+
+  // [NEW] 自动触发第一周事件（游戏开始时）- 必须在 loading 声明之后
+  useEffect(() => {
+    console.log('[App] 自动触发检查:', { viewState, ending: !!ending, currentEvent: !!currentEvent, loading, _hasHydrated });
+    if (viewState === 'GAME' && !ending && !currentEvent && !loading && _hasHydrated) {
+      // 延迟一点时间确保UI已渲染
+      const timer = setTimeout(() => {
+        console.log('[App] 自动开始第一周，触发事件...');
+        nextTurn();
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [viewState, ending, currentEvent, loading, _hasHydrated, nextTurn]);
 
   const handleRestart = () => {
     restartGame();       
@@ -358,7 +379,24 @@ const App: React.FC = () => {
           )}
 
           <MiniHUD />
-          {currentEvent && <MessageWindow event={currentEvent} />}
+          {/* [FIX] 添加事件数据完整性检查 - 使用 try-catch 包装 */}
+          {(() => {
+            try {
+              if (currentEvent && 
+                  typeof currentEvent === 'object' &&
+                  currentEvent.id && 
+                  currentEvent.title && 
+                  currentEvent.text && 
+                  currentEvent.options &&
+                  typeof currentEvent.title === 'string' &&
+                  typeof currentEvent.text === 'string') {
+                return <MessageWindow event={currentEvent} />;
+              }
+            } catch (e) {
+              console.error('[App] 事件渲染错误:', e, currentEvent);
+            }
+            return null;
+          })()}
           {activeBill && <BillOverlay bill={activeBill} />}
           <JailOverlay />
           <WeeklySettlement isOpen={!!weeklyReport} />
@@ -409,6 +447,20 @@ const App: React.FC = () => {
       )}
       {isHousingOpen && <HousingModal isOpen={isHousingOpen} onClose={() => setHousingOpen(false)} />}
       {isHospitalOpen && <HospitalModal isOpen={isHospitalOpen} onClose={() => setHospitalOpen(false)} />}
+      
+      {/* [NEW] 银行弹窗 - 根据当前区域渲染不同的银行界面 */}
+      {isBankOpen && currentRegion === RegionID.Slums && (
+        <SlumsBank onClose={() => setBankOpen(false)} />
+      )}
+      {isBankOpen && currentRegion === RegionID.Downtown && (
+        <DowntownBank onClose={() => setBankOpen(false)} />
+      )}
+      {isBankOpen && currentRegion === RegionID.RustBelt && (
+        <RustBeltBank onClose={() => setBankOpen(false)} />
+      )}
+      {isBankOpen && currentRegion === RegionID.Suburbs && (
+        <SuburbsBank onClose={() => setBankOpen(false)} />
+      )}
       
       {isArchiveOpen && <BlackBox onClose={() => setArchiveOpen(false)} />}
       {isMenuOpen && <PauseMenu isOpen={isMenuOpen} onResume={() => setMenuOpen(false)} onRestart={handleRestart} />}

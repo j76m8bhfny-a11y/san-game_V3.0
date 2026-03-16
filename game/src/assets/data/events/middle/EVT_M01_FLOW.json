@@ -20,7 +20,7 @@
   },
   "text": "账户余额五位数，但房租、医保和助学贷已排队等候。你没有储蓄，只有现金流。今天公司传闻裁员，你手里的拿铁瞬间有了破产的味道。",
   "historicalNote": "美国中产本质是现金流奴隶，固定支出占大头，一旦断供即坠入底层。",
-  "image": "/assets/events/evt_starbucks.png",
+  "image": "/assets/events/middle/evt_starbucks.png",
   "options": {
     "A": {
       "label": "再投两份简历，只要更努力就不会被裁",

@@ -9,6 +9,7 @@ import NARRATIVE_RULES from '@/assets/data/rules/narrative_rules.json';
 import { getCurrentGazeEffects, getGazeNarrative } from '@/logic/gazeEventSystem';
 import { calculateDOptionReduction } from '@/logic/archiveModifier';
 import { DOptionConfirm, isHighRiskOption } from '@/components/ui/DOptionConfirm';
+import { EventGuardianHint } from './EventGuardianHint';
 import type { PlayerSpritesConfig } from '@/types/narrative';
 
 const { pacing, ui } = NARRATIVE_RULES;
@@ -53,10 +54,13 @@ const TypewriterText: React.FC<{
   const { playSfx } = useAudioStore();
   const prefersReducedMotion = usePrefersReducedMotion();
 
+  // [FIX] 防御性处理：确保 text 是字符串
+  const safeText = typeof text === 'string' ? text : String(text || '');
+
   useEffect(() => {
     // 如果用户偏好减少动画，立即显示全文
     if (prefersReducedMotion) {
-      setDisplay(text);
+      setDisplay(safeText);
       onComplete && onComplete();
       return;
     }
@@ -64,13 +68,13 @@ const TypewriterText: React.FC<{
     let i = 0;
     setDisplay('');
     const timer = setInterval(() => {
-      if (i < text.length) {
+      if (i < safeText.length) {
         // Glitch效果：随机字符替换
         if (glitch && Math.random() < 0.1) {
           const glitchChars = '!@#$%^&*()_+-=[]{}|;:,.<>?';
-          setDisplay(text.substring(0, i) + glitchChars[Math.floor(Math.random() * glitchChars.length)]);
+          setDisplay(safeText.substring(0, i) + glitchChars[Math.floor(Math.random() * glitchChars.length)]);
         } else {
-          setDisplay(text.substring(0, i + 1));
+          setDisplay(safeText.substring(0, i + 1));
         }
         
         if (i % ui.animationTimings.typingSoundFrequency === 0) playSfx('sfx_typing');
@@ -81,7 +85,7 @@ const TypewriterText: React.FC<{
       }
     }, pacing.typewriterSpeedMs);
     return () => clearInterval(timer);
-  }, [text, playSfx, onComplete, glitch, prefersReducedMotion]);
+  }, [safeText, playSfx, onComplete, glitch, prefersReducedMotion]);
 
   return (
     <span 
@@ -496,13 +500,17 @@ const PixelPhone: React.FC<{
 
 // 主组件
 export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }) => {
-  if (!event || !event.options) return null;
+  // [FIX] 增强事件数据完整性检查
+  if (!event || !event.id || !event.title || !event.text || !event.options) {
+    console.warn('[MessageWindow] 事件数据不完整，无法渲染:', event);
+    return null;
+  }
   
   const { resolveEventOption, vitality, unlockedArchives } = useGameStore();
   const { playSfx } = useAudioStore();
   const currentInsight = vitality.metrics.insight;
   
-  const [isFocusMode, setIsFocusMode] = useState(false);
+  const [isFocusMode] = useState(false);
   const [stage, setStage] = useState<'INIT' | 'TYPING_TITLE' | 'TYPING_BODY' | 'INTERACTIVE'>('INIT');
   const [selectedOptId, setSelectedOptId] = useState<string | null>(null);
   const [modifiers, setModifiers] = useState<string[]>([]);
@@ -520,12 +528,20 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
   });
   
   const bodyCompleteTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const optionClickTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // 获取System Gaze状态
-  const gazeEffects = getCurrentGazeEffects({ unlockedArchives: unlockedArchives || [] } as any);
-  const gazeNarrative = getGazeNarrative(gazeEffects.intensity);
-  const isGazeEvent = event.id?.startsWith('GAZE_');
+  let gazeEffects: { intensity: number; effects: any } = { intensity: 0, effects: {} };
+  let gazeNarrative = '';
+  try {
+    gazeEffects = getCurrentGazeEffects({ unlockedArchives: unlockedArchives || [] } as any) || { intensity: 0, effects: {} };
+    gazeNarrative = getGazeNarrative(gazeEffects?.intensity || 0) || '';
+  } catch (e) {
+    console.error('[MessageWindow] GazeEffects 计算错误:', e);
+  }
+  // [FIX] 确保 isGazeEvent 始终是布尔值
+  const isGazeEvent = !!(event?.id && String(event.id).startsWith('GAZE_'));
 
   useEffect(() => {
     setStage('INIT');
@@ -578,6 +594,14 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
   };
   
   const handleOptionClick = (id: string) => {
+    // [FIX] 检查选项是否存在
+    const optionKey = id as 'A' | 'B' | 'C' | 'D';
+    const option = event.options?.[optionKey];
+    if (!option || !option.label) {
+      console.warn(`[MessageWindow] 选项 ${id} 不存在或无效`);
+      return;
+    }
+    
     // [NEW] D选项高风险确认流程
     if (id === 'D') {
       const impact = {
@@ -604,37 +628,13 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
     executeOptionSelect('D');
   };
 
-  // [NEW] 监听键盘快捷键选择事件选项（Q/W/E/R）
-  useEffect(() => {
-    const handleKeyboardOption = (e: CustomEvent<{ option: string }>) => {
-      const optionId = e.detail.option;
-      
-      // 只有在交互阶段才响应
-      if (stage !== 'INTERACTIVE') return;
-      
-      // 检查选项是否存在
-      const optionMap: Record<string, string> = { 'A': 'A', 'B': 'B', 'C': 'C', 'D': 'D' };
-      if (!optionMap[optionId]) return;
-      
-      // D选项特殊处理
-      if (optionId === 'D' && !canSeeDOption) return;
-      
-      // 执行选择
-      handleOptionClick(optionId);
-    };
-
-    window.addEventListener('select-event-option', handleKeyboardOption as EventListener);
-    return () => {
-      window.removeEventListener('select-event-option', handleKeyboardOption as EventListener);
-    };
-  }, [stage, canSeeDOption]);
-  
   // 检查D选项是否可用 (支持 insightLock 或 sanLock)
   const dOptionInsightLock = (event.options.D as any)?.insightLock 
     || (event.options.D as any)?.sanLock 
     || 70;
   const canSeeDOption = currentInsight >= dOptionInsightLock;
-  const dOptionGlitch = event.options.D?.isGlitched || isGazeEvent;
+  // [FIX] 安全访问 D 选项
+  const dOptionGlitch = !!(event.options?.D?.isGlitched || isGazeEvent);
   
   // 计算D选项减免信息
   const totalArchives = unlockedArchives?.length || 0;
@@ -662,32 +662,134 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
     }] : []),
   ].filter(opt => opt.label);
 
-  const descriptionText = event.text;
-  // 使用单张事件图（完整场景）
-  const eventImg = (event as any).image || event.eventImage || event.bgImage || '/assets/events/default_event.png';
+  // [NEW] 监听键盘快捷键选择事件选项（Q/W/E/R）- 移动到 canSeeDOption 声明之后
+  useEffect(() => {
+    const handleKeyboardOption = (e: CustomEvent<{ option: string }>) => {
+      const optionId = e.detail.option;
+      
+      // 只有在交互阶段才响应
+      if (stage !== 'INTERACTIVE') return;
+      
+      // [FIX] 检查选项是否存在且有label
+      const option = event.options?.[optionId as 'A' | 'B' | 'C' | 'D'];
+      if (!option?.label) {
+        console.log(`[MessageWindow] 选项 ${optionId} 不存在，忽略键盘输入`);
+        return;
+      }
+      
+      // D选项特殊处理（需要满足灵视条件）
+      if (optionId === 'D' && !canSeeDOption) return;
+      
+      // 执行选择
+      handleOptionClick(optionId);
+    };
+
+    window.addEventListener('select-event-option', handleKeyboardOption as EventListener);
+    return () => {
+      window.removeEventListener('select-event-option', handleKeyboardOption as EventListener);
+    };
+  }, [stage, canSeeDOption, event.options, handleOptionClick]);
+
+  // [FIX] 确保文本是字符串
+  const descriptionText = typeof event.text === 'string' ? event.text : String(event.text || '');
+  const eventTitle = typeof event.title === 'string' ? event.title : String(event.title || '未知事件');
+  
+  // [MODIFIED] 事件图只占画面1/2，不显示场景背景
+  const eventData = event as any;
+  // 优先使用 layer.foreground，其次是旧格式的 image/eventImage
+  const eventImg = eventData.layer?.foreground 
+    || eventData.image 
+    || eventData.eventImage 
+    || '/assets/events/default_event.png';
 
   const shouldHideTitle = isFocusMode || stage === 'INIT' || !!selectedOptId;
 
+  // [FIX] 最终防御性检查：如果关键数据缺失，不渲染
+  if (!eventTitle || !descriptionText) {
+    console.error('[MessageWindow] 渲染前检查失败，关键文本缺失');
+    return null;
+  }
+
+  // [DEBUG] 记录事件数据变化
+  useEffect(() => {
+    console.log('[MessageWindow] 事件数据:', {
+      id: event?.id,
+      title: eventTitle?.slice(0, 20),
+      textLength: descriptionText?.length,
+      hasOptions: !!event?.options,
+      stage,
+      isFocusMode,
+      isGazeEvent,
+      eventImg,
+      rawLayer: (event as any).layer,
+      rawImage: (event as any).image,
+      rawEventImage: event.eventImage,
+      rawBgImage: event.bgImage
+    });
+  }, [event, eventTitle, descriptionText, stage, isFocusMode, isGazeEvent, eventImg]);
+
   return (
     <div 
-      className="fixed inset-0 z-30 pointer-events-none"
+      className="fixed inset-0 z-[60] pointer-events-none"
       role="dialog"
       aria-modal="true"
       aria-labelledby="event-title"
       aria-describedby="event-description"
     >
       {/* Glitch覆盖层 */}
-      {(dOptionGlitch || isGazeEvent) && <GlitchOverlay intensity={gazeEffects.intensity} />}
+      {(dOptionGlitch || isGazeEvent) && <GlitchOverlay intensity={gazeEffects?.intensity || 0} />}
       
-      {/* 背景 - 使用事件图（完整场景）作为全屏背景 */}
+      {/* 背景 - 纯色深色背景 */}
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 2 }}
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-0 bg-gray-900" 
+      />
+
+      {/* 事件插图 - 显示在题干下方 */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.5, delay: 0.3 }}
+        className="absolute z-10"
+        style={{ 
+          top: '35%',  // 在标题框(15%)下方
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '45vw',
+          height: '35vh',
+          maxWidth: '550px',
+          maxHeight: '350px'
+        }}
       >
-        <img src={eventImg} alt="Event Scene" className="w-full h-full object-cover render-pixelated" />
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="relative w-full h-full flex items-center justify-center">
+          <img 
+            src={eventImg} 
+            alt="Event Scene" 
+            className="max-w-full max-h-full object-contain render-pixelated"
+            onLoad={() => {
+              console.log('[MessageWindow] 事件图片加载成功:', eventImg);
+            }}
+            onError={(e) => {
+              const currentSrc = e.currentTarget.src;
+              const fallback1 = '/assets/events/default_event.png';
+              const fallback2 = '/assets/scenes/event_placeholder.png';
+              
+              // 防止无限重试：检查是否已经尝试过所有回退
+              if (!currentSrc.includes(fallback1) && !currentSrc.includes(fallback2)) {
+                console.warn('[MessageWindow] 事件图片加载失败，尝试默认图:', eventImg);
+                e.currentTarget.src = fallback1;
+              } else if (currentSrc.includes(fallback1) && !currentSrc.includes(fallback2)) {
+                console.warn('[MessageWindow] 默认图也失败，尝试占位图');
+                e.currentTarget.src = fallback2;
+              } else {
+                // 所有回退都失败，显示 alt 文本
+                console.error('[MessageWindow] 所有图片都加载失败');
+              }
+            }}
+          />
+        </div>
       </motion.div>
 
       {/* 开眼动画 */}
@@ -726,24 +828,17 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
 
       {/* 事件插图 - 已合并到背景，此处不再需要单独显示前景图 */}
 
-      {/* 专注模式点击层 */}
-      {stage === 'INTERACTIVE' && (
-        <div 
-          className="absolute inset-0 z-35 cursor-pointer pointer-events-auto"
-          onClick={() => setIsFocusMode(!isFocusMode)}
-          title="点击切换专注模式"
-        />
-      )}
+      {/* [REMOVED] 专注模式点击层 - 该层会挡住所有点击，已移除 */}
 
       {/* 顶部标题框 */}
       <motion.div 
         initial={{ y: -100, x: "-50%", opacity: 0 }}
-        animate={shouldHideTitle ? { y: -200, x: "-50%", opacity: 0 } : { y: 0, x: "-50%", opacity: 1 }}
+        animate={shouldHideTitle === true ? { y: -200, x: "-50%", opacity: 0 } : { y: 0, x: "-50%", opacity: 1 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
         className="absolute top-[15%] left-1/2 w-[90%] md:w-[80%] z-40 pointer-events-none" 
       >
         <div 
-          className={`backdrop-solid-dark border-2 border-white p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.5)] transition-all ${isFocusMode ? 'pointer-events-none' : 'pointer-events-auto'}`}
+          className={`bg-black/90 border-2 border-white p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.5)] transition-all ${isFocusMode === true ? 'pointer-events-none' : 'pointer-events-auto'}`}
           role="document"
         >
           <h2 
@@ -751,9 +846,9 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
             className={`font-pixel font-bold text-xl mb-4 tracking-widest uppercase border-b-2 border-white/20 pb-2 ${isGazeEvent ? 'text-red-400' : 'text-cyan-400'}`}
           >
             {stage === 'TYPING_TITLE' && (
-              <TypewriterText text={event.title} onComplete={handleTitleComplete} glitch={isGazeEvent} />
+              <TypewriterText text={eventTitle} onComplete={handleTitleComplete} glitch={isGazeEvent} />
             )}
-            {(stage === 'TYPING_BODY' || stage === 'INTERACTIVE') && event.title}
+            {(stage === 'TYPING_BODY' || stage === 'INTERACTIVE') && eventTitle}
           </h2>
           <div id="event-description" className="text-gray-200 text-sm md:text-lg min-h-[60px] font-pixel">
             {stage === 'TYPING_BODY' && (
@@ -913,7 +1008,7 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
               aria-hidden="true"
             >
               <div className="flex gap-2">
-                {['Q','W','E','R'].map((key, i) => (
+                {['Q','W','E','R'].map((key) => (
                   <span key={key} className="px-1.5 py-0.5 bg-gray-800 rounded border border-gray-600">
                     {key}
                   </span>
@@ -981,7 +1076,7 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
         </div>
         
         {/* System Gaze强度（如果>0） */}
-        {gazeEffects.intensity > 0 && (
+        {(gazeEffects?.intensity || 0) > 0 && (
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-2 text-red-400">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -990,16 +1085,22 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} 
                       d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg>
-              <span className="font-pixel">系统关注: {Math.round(gazeEffects.intensity * 100)}%</span>
+              <span className="font-pixel">系统关注: {Math.round((gazeEffects?.intensity || 0) * 100)}%</span>
             </div>
             
             {/* 🌟 Gaze低语提示（高Gaze时显示） */}
-            {gazeEffects.intensity >= 0.3 && (
-              <GazeWhisper intensity={gazeEffects.intensity} />
+            {(gazeEffects?.intensity || 0) >= 0.3 && (
+              <GazeWhisper intensity={gazeEffects?.intensity || 0} />
             )}
           </div>
         )}
       </motion.div>
+
+      {/* [NEW] 第一次事件时显示内嵌守护灵提示 - 等待事件完全显示后 */}
+      <EventGuardianHint 
+        isFirstEvent={vitality.time.currentTurn <= 2}
+        stage={stage}
+      />
     </div>
   );
 });

@@ -42,14 +42,13 @@ export const RegionView: React.FC = () => {
       )}
 
       {/* 3. 事件遮罩层 */}
-      {/* 当触发剧情事件时，让街景变暗模糊，突显 App.tsx 里的 MessageWindow */}
+      {/* 当触发剧情事件时，轻微变暗，但不要完全盖住 */}
       {currentEvent && (
-        <div className="absolute inset-0 z-40 backdrop-solid-dark transition-opacity duration-500" />
+        <div className="absolute inset-0 z-40 bg-black/30 transition-opacity duration-500" />
       )}
 
-      {/* 4. 氛围层：全局暗角 (Vignette) */}
-      {/* 给整个屏幕加一个电影感的暗角，增强沉浸感 */}
-      <div className="absolute inset-0 z-30 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_50%,rgba(0,0,0,0.4)_100%)]" />
+      {/* 4. 氛围层：全局暗角 (Vignette) - [MODIFIED] 降低暗角强度 */}
+      <div className="absolute inset-0 z-30 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_60%,rgba(0,0,0,0.2)_100%)]" />
 
     </div>
   );

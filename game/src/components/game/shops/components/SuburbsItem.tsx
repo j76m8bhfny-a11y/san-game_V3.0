@@ -15,7 +15,8 @@ export const SuburbsItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
   const [throttledBuy, isPending] = useThrottle(onBuy, { delay: 300 });
 
   // 图标映射：使用更干净的 Emoji 或图片
-  const getIcon = (tags: string[]) => {
+  const getIcon = (tags?: string[]) => {
+    if (!tags) return '🎁';
     if (tags.includes('FOOD')) return '🥗'; // 沙拉
     if (tags.includes('WEAPON')) return '🏏'; // 运动器材(伪装)
     if (tags.includes('DRUG')) return '💊'; // 处方药
@@ -39,7 +40,7 @@ export const SuburbsItem: React.FC<Props> = ({ item, canAfford, onBuy }) => {
         {getIcon(item.tags)}
         
         {/* 有机认证标签 (装饰) */}
-        {item.tags.includes('FOOD') && (
+        {item.tags?.includes('FOOD') && (
           <div className="absolute -top-2 -right-2 w-6 h-6 bg-green-600 rounded-sm flex items-center justify-center border border-white shadow-sm">
             <span className="text-[8px] text-white font-bold">BIO</span>
           </div>

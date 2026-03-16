@@ -317,6 +317,10 @@ export const EndingSchema = z.object({
     hasItem: z.string().optional(),
     hasArchive: z.string().optional(),
   }).optional(),
+  // ✅ V4新增：系统吐槽语（可选，用于死亡结局）
+  roast: z.string().optional(),
+  // ✅ V4新增：结局分类（可选，如 'TRUE_ENDING'）
+  category: z.string().optional(),
 });
 
 // ==========================================
@@ -328,6 +332,7 @@ export type Bill = z.infer<typeof BillSchema>;
 export type GameEvent = z.infer<typeof EventSchema>;
 export type EventOption = z.infer<typeof EventOptionSchema>;
 export type Ending = z.infer<typeof EndingSchema>;
+export type EndingType = Ending['type'];  // 'DEATH' | 'SURVIVAL' | 'ALIENATION' | 'STANCE' | 'UR'
 export type Housing = z.infer<typeof HousingSchema>;
 export type HousingCostItem = z.infer<typeof HousingCostItemSchema>;
 export type CryptoPosition = z.infer<typeof CryptoPositionSchema>;

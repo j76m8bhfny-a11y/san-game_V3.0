@@ -20,7 +20,7 @@
   },
   "text": "黑人舍友呼吸衰竭，你刚掏出手机，他却用尽最后力气扇了你一巴掌。他眼里满是恐惧：“叫了救护车，我就要永远失去美国人身份了。”",
   "historicalNote": "美国天价救护车账单足以让底层家庭彻底破产，身份与债务深度绑定。",
-  "image": "/assets/events/evt_ambulance_light.png",
+  "image": "/assets/events/worker/evt_ambulance_light.png",
   "options": {
     "A": {
       "label": "他只是还没理解保险的必要性",

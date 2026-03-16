@@ -1,0 +1,102 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_H15_LOCKED_TRASH",
+  "title": "锁上的垃圾桶",
+  "category": "HOMELESS",
+  "series": "食物分配",
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "面包店打烊了，店员把没卖完的面包扔进后巷的垃圾桶。紧接着，他掏出一把巨大的铁锁，把垃圾桶锁死了，防止有人翻找。",
+  "historicalNote": "好撒玛利亚人法案(Good Samaritan Act)保护食物捐赠者免受诉讼，但仍有许多商家选择销毁而非捐赠剩余食物。",
+  "options": {
+    "A": {
+      "label": "私有财产神圣不可侵犯",
+      "roast": "垃圾也是老板的神圣垃圾。你偷垃圾就是侵犯人权。",
+      "flavorText": "你告诉自己这是正确的。私有财产必须得到保护。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "将垃圾视为财产，是为了防止穷人获得任何'免费'资源。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 8,
+        "points": {
+          "old": 3
+        }
+      }
+    },
+    "B": {
+      "label": "换一家吧，别撬锁",
+      "roast": "别费劲了。全城的垃圾桶都联网了，你信不信？",
+      "flavorText": "你知道反抗没用。只能去找下一个垃圾桶。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "当所有垃圾桶都被锁上，穷人的生存策略被系统性阻断。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "怕吃坏肚子承担责任",
+      "roast": "老板为了保护你的胃，决定让你饿死。多贴心啊。",
+      "flavorText": "你开始为这个做法辩护。毕竟食品安全很重要。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "用'责任'作为借口，掩盖对饥饿者的残忍。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": {
+          "wolf": 3
+        }
+      }
+    },
+    "D": {
+      "label": "宁可腐烂也不给你",
+      "roast": "看透了。让你吃饱了，谁还花钱买面包？饥饿是营销手段。",
+      "flavorText": "你明白了：这不是为了安全，这是为了维持饥饿。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "销毁食物而非捐赠，是为了维持稀缺性和消费需求。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.15_GOOD_SAMARITAN_LAW",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": {
+          "red": 15
+        }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_15_LOCKED_TRASH",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [
+      "https://www.fda.gov/food/food-donations-and-food-recovery"
+    ],
+    "relatedEvents": [
+      "EVT_H03_MILK",
+      "EVT_H21_FEEDING_BAN"
+    ]
+  },
+  "image": "/assets/events/homeless/evt_locked_dumpster.png"
+}

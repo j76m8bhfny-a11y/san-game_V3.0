@@ -1,0 +1,1891 @@
+[
+  {
+    "id": "B_HOMELESS_ARSON",
+    "name": "人体火炬",
+    "amount": -50,
+    "weight": 2,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/tent_fire.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": -35
+    },
+    "flavorText": "凌晨，你在帐篷里睡觉时闻到了汽油味。紧接着是一声巨响。你带着满身的火苗滚了出来，背部皮肤被烧焦。",
+    "news": {
+      "source": "New York Times",
+      "content": "Attacks on the Homeless Rise: Random arson attacks on sleepers report sharp increase in major cities."
+    },
+    "roast": "他们觉得你碍眼，所以决定帮你“火化”，虽然你还没死。"
+  },
+  {
+    "id": "B_HOMELESS_SPRINKLER",
+    "name": "自动喷淋伏击",
+    "amount": 0,
+    "weight": 15,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/church_sprinkler.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": -10
+    },
+    "flavorText": "半夜2点，教堂天花板上的防流浪汉喷淋系统突然启动。冰冷的工业高压水柱把你淋成了落汤鸡。",
+    "news": {
+      "source": "BBC",
+      "content": "Catholic church installs water system to drench homeless, sparking ethics debate."
+    },
+    "roast": "这就是所谓的“洗礼”，只不过目的是为了让你滚蛋。"
+  },
+  {
+    "id": "B_HOMELESS_TIKTOK",
+    "name": "病毒式慈善",
+    "amount": 200,
+    "weight": 5,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/camera_flash.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "insightGain": 20
+    },
+    "flavorText": "网红为了流量给了你$200，强迫你对着镜头痛哭感谢上帝。视频获得了100万点赞，你被拍得像个滑稽的乞丐。",
+    "news": {
+      "source": "Insider",
+      "content": "Exploitative homelessness videos on TikTok generate millions in ad revenue for creators."
+    },
+    "roast": "你的尊严售价$200，这是你这辈子卖过最贵的东西。"
+  },
+  {
+    "id": "B_HOMELESS_NO_SHOES",
+    "name": "鞋子消失术",
+    "amount": -20,
+    "weight": 12,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/bare_feet.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": -5
+    },
+    "flavorText": "昨晚忘了把鞋压在头底下。醒来时脚下空空如也，你只能光着脚走在满是碎玻璃和针头的柏油马路上。",
+    "news": {
+      "source": "The Guardian",
+      "content": "Life on the streets: Shoeless. Infection rates soar among the barefoot population."
+    },
+    "roast": "在这个城市，连你也算是“有产阶级”，因为你原本还有双鞋。"
+  },
+  {
+    "id": "B_HOMELESS_RAT_BITE",
+    "name": "鼠群之吻",
+    "amount": 0,
+    "weight": 10,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/rat_bite.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": -15
+    },
+    "flavorText": "半夜脸上一阵刺痛，一只硕大的挪威褐鼠咬破了你的鼻子。它大概把你当成了炸鸡。",
+    "news": {
+      "source": "NBC Los Angeles",
+      "content": "Typhus outbreak in downtown LA linked to rat infestations in encampments."
+    },
+    "roast": "你是食物链的最底层，现在连老鼠都想尝尝你的味道。"
+  },
+  {
+    "id": "B_HOMELESS_JAYWALK",
+    "name": "乱穿马路税",
+    "amount": -150,
+    "weight": 15,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/police_ticket.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"],
+      "minGold": 0
+    },
+    "effects": {
+      "insightGain": 5
+    },
+    "flavorText": "因为推着购物车走得慢，红灯亮时你还在路中间。警察立刻开了一张罚单，因为你没钱交，这很快会变成逮捕令。",
+    "news": {
+      "source": "ProPublica",
+      "content": "Walking While Poor: 50% of jaywalking tickets are issued to the homeless."
+    },
+    "roast": "如果你开着宝马闯红灯，大概率没人管；但你推着破车走路，就是破坏交通。"
+  },
+  {
+    "id": "B_HOMELESS_BOTULISM",
+    "name": "肉毒杆菌罐头",
+    "amount": 0,
+    "weight": 3,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/rotten_can.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": -40
+    },
+    "flavorText": "你吃了捡来的变形罐头。两小时后，视力模糊、吞咽困难。你瘫痪在路边，只能等待毒素代谢或者死亡。",
+    "news": {
+      "source": "Food Safety News",
+      "content": "Botulism risk in scavenged food remains a critical threat to street populations."
+    },
+    "roast": "这罐牛肉的味道，是你这辈子吃过最“难忘”的。"
+  },
+  {
+    "id": "B_HOMELESS_AIRPODS",
+    "name": "意外的宝藏",
+    "amount": 60,
+    "weight": 5,
+    "type": "SURPRISE",
+    "image": "/assets/bills/broken_airpods.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "flavorText": "在高档店垃圾箱里，你发现了一副仅有一只耳机坏掉的AirPods。你把它卖给了当铺。",
+    "news": {
+      "source": "Vice",
+      "content": "Dumpster Diving for Apple Products: The staggering waste of the tech elite."
+    },
+    "roast": "富人的垃圾，真的是穷人的宝藏。"
+  },
+  {
+    "id": "B_HOMELESS_INDECENT",
+    "name": "公厕逮捕令",
+    "amount": -50,
+    "weight": 10,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/police_arrest.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "flavorText": "实在找不到厕所，你在巷子里解决时被捕。你因“公共猥亵罪”被登记为性犯罪者。",
+    "news": {
+      "source": "The Guardian",
+      "content": "The Criminalization of Biology: Lack of public restrooms creates legal trap for homeless."
+    },
+    "roast": "因为没有厕所而撒尿，现在你和强奸犯在同一个名单上了。"
+  },
+  {
+    "id": "B_HOMELESS_STREET_DOC",
+    "name": "街头医生",
+    "amount": 0,
+    "weight": 5,
+    "type": "SURPRISE",
+    "image": "/assets/bills/medical_backpack.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": 30
+    },
+    "flavorText": "“街头医疗队”的志愿者没有嫌弃你的恶臭，帮你清洗了化脓的伤口并给了抗生素。",
+    "news": {
+      "source": "CNN Heroes",
+      "content": "Jim Withers and Street Medicine: Bringing healthcare to the bridges and alleyways."
+    },
+    "roast": "这大概是你这几个月来，第一次被当作“人”对待。"
+  },
+  {
+    "id": "B_HOMELESS_LOST_ID",
+    "name": "身份清零",
+    "amount": -50,
+    "weight": 10,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/trash_compactor.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "flavorText": "警察把你装有身份证和社保卡的背包扔进了垃圾压缩车。没有ID，你无法申请任何福利，彻底变成了幽灵。",
+    "news": {
+      "source": "NPR",
+      "content": "For The Homeless, Losing ID Is An Easy Way To Lose A Future."
+    },
+    "roast": "恭喜，你现在连证明“你是你”的资格都没有了。"
+  },
+  {
+    "id": "B_HOMELESS_SCABIES",
+    "name": "疥疮地狱",
+    "amount": 0,
+    "weight": 8,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/skin_rash.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": -15
+    },
+    "flavorText": "疥螨在你的皮下挖掘隧道产卵。因为没钱买药，你只能疯狂抓挠，直到全身溃烂流血。",
+    "news": {
+      "source": "NIH",
+      "content": "Scabies outbreaks in homeless shelters highlight lack of basic hygiene facilities."
+    },
+    "roast": "这种痒是你不想活下去的主要原因之一，比饿肚子难受十倍。"
+  },
+  {
+    "id": "B_HOMELESS_PEPPER_SPRAY",
+    "name": "辣椒水闹钟",
+    "amount": 0,
+    "weight": 5,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/pepper_spray.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": -25
+    },
+    "flavorText": "私人保安直接对着你的脸喷了一罐辣椒水叫你起床。你的眼睛和呼吸道像着了火一样。",
+    "news": {
+      "source": "Vice",
+      "content": "Security guards pepper spraying homeless people: Private enforcement lacks regulation."
+    },
+    "roast": "这是这座城市最辣的叫醒服务，不含咖啡因。"
+  },
+  {
+    "id": "B_HOMELESS_WET_QUILT",
+    "name": "湿透的棉被",
+    "amount": 0,
+    "weight": 15,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/wet_blanket.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": -20
+    },
+    "flavorText": "半夜暴雨，你唯一的棉被吸饱了水，变得冰冷刺骨。你不得不把它扔掉，否则会死于失温。",
+    "news": {
+      "source": "Seattle Times",
+      "content": "Wet weather brings hypothermia risk: Staying dry is a matter of life and death."
+    },
+    "roast": "你不得不扔掉你唯一的床，因为它正试图冻死你。"
+  },
+  {
+    "id": "B_HOMELESS_E_COLI",
+    "name": "毒汉堡",
+    "amount": 0,
+    "weight": 8,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/rotten_burger.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": -20
+    },
+    "flavorText": "吃了垃圾桶里的墨西哥卷饼后，大肠杆菌让你剧烈腹痛。你拉到脱水，感觉肠子都要吐出来了。",
+    "news": {
+      "source": "Food Safety News",
+      "content": "Foodborne illness in homeless populations: The hidden danger of dumpster diving."
+    },
+    "roast": "垃圾桶美食就像俄罗斯轮盘赌，今天你中弹了。"
+  },
+  {
+    "id": "B_HOMELESS_FREE_MEAL",
+    "name": "错误的订单",
+    "amount": 0,
+    "weight": 8,
+    "type": "SURPRISE",
+    "image": "/assets/bills/fast_food_bag.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": 20
+    },
+    "flavorText": "快餐店员塞给你一个“做错”的纸袋，里面有热乎的双层芝士汉堡。这是你这周吃的第一顿热饭。",
+    "news": {
+      "source": "Reddit",
+      "content": "Do baristas give free food to homeless? Employees reveal acts of quiet kindness."
+    },
+    "roast": "感谢那位点错单的不知名顾客，他是你的衣食父母。"
+  },
+  {
+    "id": "B_HOMELESS_CANS",
+    "name": "兄弟会派对",
+    "amount": 30,
+    "weight": 6,
+    "type": "SURPRISE",
+    "image": "/assets/bills/crushed_cans.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "flavorText": "兄弟会昨晚开了派对，草坪上满是空啤酒罐。你花了半小时回收它们，这让你赚翻了。",
+    "news": {
+      "source": "The Daily Californian",
+      "content": "Canning after game day: How student partying supports the local recycling economy."
+    },
+    "roast": "大学生们的狂欢宿醉，就是你的年终奖。"
+  },
+  {
+    "id": "B_HOMELESS_MOTEL",
+    "name": "汽车旅馆券",
+    "amount": 0,
+    "weight": 2,
+    "type": "SURPRISE",
+    "image": "/assets/bills/motel_key.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": 50
+    },
+    "flavorText": "因即将到来的暴风雪，社工给了你一张紧急旅馆券。今晚你有热水澡和暖气，像在天堂一样。",
+    "news": {
+      "source": "Denver Post",
+      "content": "Motel vouchers for homeless during cold snap: A temporary respite from the freezing streets."
+    },
+    "roast": "睡在床上的感觉太不真实了，你甚至有点失眠。"
+  },
+  {
+    "id": "B_HOMELESS_NORTH_FACE",
+    "name": "被遗忘的外套",
+    "amount": 0,
+    "weight": 5,
+    "type": "SURPRISE",
+    "image": "/assets/bills/winter_jacket.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS"]
+    },
+    "effects": {
+      "hp": 10
+    },
+    "flavorText": "你在长椅上发现了一件醉汉遗落的全新North Face羽绒服。它在店里卖$300，现在它是你的护甲。",
+    "news": {
+      "source": "New York Post",
+      "content": "Lost and Found on the streets: Where lost luxury items end up."
+    },
+    "roast": "那个丢衣服的人现在肯定在骂街，但他还是温暖了你。"
+  },
+  {
+    "id": "B_WORKER_TORNADO",
+    "name": "龙卷风禁足令",
+    "amount": -1500,
+    "weight": 3,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/tornado_ruins.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "effects": {
+      "hp": -35
+    },
+    "flavorText": "工厂警报响起，但主管为了产量禁止工人离开。几分钟后屋顶坍塌，你被埋在废墟下6小时，腿被钢梁压断。",
+    "news": {
+      "source": "NBC News",
+      "content": "Mayfield Candle Factory Collapse: Workers threatened with termination if they fled the approaching tornado."
+    },
+    "roast": "主管是对的，你确实没失业，你只是差点变成烈士。"
+  },
+  {
+    "id": "B_WORKER_ALGO_FIRE",
+    "name": "算法裁员",
+    "amount": -800,
+    "weight": 15,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/phone_locked.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "flavorText": "没有任何人类经手，AI算法判定你的效率低于地区平均值，瞬间停用了你的账户并锁死了你的送货车。",
+    "news": {
+      "source": "Bloomberg",
+      "content": "Fired by Bot at Amazon: Delivery drivers lose jobs to algorithmic glitches with no human appeal process."
+    },
+    "roast": "在算法眼里，你只是一个损坏的齿轮，换一个新的只需0.01秒。"
+  },
+  {
+    "id": "B_WORKER_MANGLE",
+    "name": "断指事故",
+    "amount": 200,
+    "weight": 8,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/severed_finger_glove.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "effects": {
+      "hp": -25
+    },
+    "flavorText": "为了赶工期，你被迫绕过安全锁清理机器，结果失去了两根手指。工厂给了你一点封口费，并威胁查你的身份。",
+    "news": {
+      "source": "The New York Times",
+      "content": "Alone and Exploited: Migrant children and workers suffer gruesome injuries in sanitation shifts."
+    },
+    "roast": "你的两根手指在市场上大概就值这几百块，比猪肉贵不了多少。"
+  },
+  {
+    "id": "B_WORKER_INSULIN",
+    "name": "胰岛素配给",
+    "amount": -1200,
+    "weight": 10,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/insulin_vial.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "effects": {
+      "hp": -20
+    },
+    "flavorText": "因为没钱买足量的药，你决定“省着点用”。三天后你因酮症酸中毒进了ICU，命保住了，但背上了巨债。",
+    "news": {
+      "source": "NPR",
+      "content": "The high cost of insulin: 1 in 4 diabetics ration life-saving medication due to soaring prices."
+    },
+    "roast": "这药的专利原本是免费的，但现在它是你脖子上的绞索。"
+  },
+  {
+    "id": "B_WORKER_CAR_FAIL",
+    "name": "变速箱报废",
+    "amount": -1200,
+    "weight": 15,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/broken_engine.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "flavorText": "你那辆开了15年的车变速箱爆了。没车就没法上班，你被迫借了利率400%的高利贷来修车。",
+    "news": {
+      "source": "The Atlantic",
+      "content": "The High Cost of Being Poor: How a single car breakdown can lead to unemployment and homelessness."
+    },
+    "roast": "欢迎进入“贫穷引力场”，越挣扎陷得越深。"
+  },
+  {
+    "id": "B_WORKER_WAGE_THEFT",
+    "name": "时间盗窃",
+    "amount": -400,
+    "weight": 20,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/time_card.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "flavorText": "经理手动改了你的打卡记录，删除了加班时间。去劳动局投诉需要几个月，而你下周就要交房租，只能忍气吞声。",
+    "news": {
+      "source": "EPI",
+      "content": "Wage theft vs. Robbery: Employers steal more from workers' paychecks than all bank robberies combined."
+    },
+    "roast": "如果是你偷了收银机$600，你会坐牢；如果是老板偷了你$600，那叫“行政失误”。"
+  },
+  {
+    "id": "B_WORKER_TOXIC_TRAIN",
+    "name": "毒火车脱轨",
+    "amount": -2500,
+    "weight": 2,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/toxic_cloud.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "effects": {
+      "hp": -15
+    },
+    "flavorText": "运载氯乙烯的火车在你家旁脱轨爆炸。虽然官方说空气安全，但你的皮肤开始起疹子，家里的鸡全死了。",
+    "news": {
+      "source": "CNN",
+      "content": "East Palestine Train Derailment: Residents fear long-term health effects as chemical plume lingers."
+    },
+    "roast": "你吸入的每一口致癌空气，都为铁路公司的股东节省了0.5美分。"
+  },
+  {
+    "id": "B_WORKER_OPIOID",
+    "name": "止痛药上瘾",
+    "amount": -300,
+    "weight": 12,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/pills_bottle.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "effects": {
+      "hp": -10
+    },
+    "flavorText": "医生只开止痛药不给做手术。药吃完后，为了能继续干活，你被迫去街头买黑市药片。你成了瘾君子。",
+    "news": {
+      "source": "The Guardian",
+      "content": "America's Opioid Epidemic: How pharma companies marketed addictive painkillers to the working class."
+    },
+    "roast": "这是一种“良性循环”：药厂赚钱，毒贩赚钱，老板得到了不知疲倦的劳动力，只有你输了。"
+  },
+  {
+    "id": "B_WORKER_AMBULANCE",
+    "name": "1000美元的救护车",
+    "amount": -1200,
+    "weight": 8,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/ambulance_bill.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "flavorText": "你在工地晕倒被送上救护车。醒来后发现这趟3公里的路程收费$1,200，且不在医保网络内。",
+    "news": {
+      "source": "KFF Health News",
+      "content": "Surprise Ambulance Bills: Why taking an ambulance can be a financial disaster even with insurance."
+    },
+    "roast": "下次晕倒前，记得在胸口挂个牌子：“别叫救护车，叫Uber。”"
+  },
+  {
+    "id": "B_WORKER_HEATSTROKE",
+    "name": "货车变烤箱",
+    "amount": 0,
+    "weight": 15,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/hot_truck.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "effects": {
+      "hp": -20
+    },
+    "flavorText": "送货卡车为了省钱没装空调，车厢温度达50度。你中暑昏倒，主管在耳机里问的却是：“那箱货没事吧？”",
+    "news": {
+      "source": "NBC News",
+      "content": "UPS drivers collapse in extreme heat: Union fights for air conditioning in delivery trucks."
+    },
+    "roast": "你的体温比这箱加急快递重要吗？显然不。"
+  },
+  {
+    "id": "B_WORKER_TIP_BAIT",
+    "name": "小费诱饵",
+    "amount": -50,
+    "weight": 15,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/delivery_app_0.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "flavorText": "顾客用$50高额预付小费诱骗你冒雨送货，送达后立刻改为$0。你白忙活一场，还得自己贴油费。",
+    "news": {
+      "source": "CNN",
+      "content": "The Bait-and-Switch of Gig Tipping: Customers use high tips to secure fast delivery, then rescind them."
+    },
+    "roast": "这叫“契约精神”——当然，是单方面约束你的。"
+  },
+  {
+    "id": "B_WORKER_TOOL_THEFT",
+    "name": "工具车被撬",
+    "amount": -800,
+    "weight": 8,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/broken_van_window.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "flavorText": "你的面包车被撬，价值$5000的工具被洗劫一空。没有工具就没法干活，你必须借高利贷买二手工具复工。",
+    "news": {
+      "source": "Fox News",
+      "content": "Tradies targeted by tool thieves: Stolen livelihood sold for pennies at pawn shops."
+    },
+    "roast": "对于小偷来说那是几百块毒资，对于你来说那是全家人的饭碗。"
+  },
+  {
+    "id": "B_WORKER_BEDBUGS",
+    "name": "带回家的“礼物”",
+    "amount": -1000,
+    "weight": 15,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/bedbug.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "flavorText": "你在通勤时沾上了臭虫，家里很快泛滥成灾。房东要求你支付$1,500的专业除虫费，否则就驱逐你。",
+    "news": {
+      "source": "City Lab",
+      "content": "The high cost of bedbugs for the poor: Pest infestations lead to evictions and bankruptcy."
+    },
+    "roast": "它们在吸你的血，除虫公司在吸你的钱，大家都有光明的未来。"
+  },
+  {
+    "id": "B_WORKER_CLOPENING",
+    "name": "极限轮班",
+    "amount": -400,
+    "weight": 15,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/alarm_clock_early.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "effects": {
+      "hp": -10,
+      "insightGain": 5
+    },
+    "flavorText": "你凌晨1点下班，早上5点又要上班。在极度疲劳驾驶中，你撞上了路边护栏。",
+    "news": {
+      "source": "The Atlantic",
+      "content": "The Abomination of the Clopening Shift: How erratic scheduling harms low-wage workers' health."
+    },
+    "roast": "你的睡眠时间属于公司资产，现在被征用了。"
+  },
+  {
+    "id": "B_WORKER_RETALIATION",
+    "name": "工伤报复",
+    "amount": -1200,
+    "weight": 8,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/pink_slip.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "effects": {
+      "hp": -10
+    },
+    "flavorText": "你申请了工伤赔偿，三天后被以“早退”为借口解雇。你不仅没拿到赔偿，还丢了工作和医保。",
+    "news": {
+      "source": "NPR",
+      "content": "Injured workers fired for reporting accidents: Companies retaliate to keep insurance premiums low."
+    },
+    "roast": "在美国，受伤是违反公司规定的行为。"
+  },
+  {
+    "id": "B_WORKER_SETTLEMENT",
+    "name": "迟到的正义",
+    "amount": 1200,
+    "weight": 10,
+    "type": "SURPRISE",
+    "image": "/assets/bills/settlement_check.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "flavorText": "你收到了5年前工作的快餐店集体诉讼赔偿金。虽然律师拿走了大头，但这仍是一笔意外之财。",
+    "news": {
+      "source": "LA Times",
+      "content": "Chipotle agrees to pay $20 million to workers for wage theft violations."
+    },
+    "roast": "这就是他们当初偷你的钱，现在扣除通货膨胀后还给你了。"
+  },
+  {
+    "id": "B_WORKER_COPPER",
+    "name": "铜线就是比特币",
+    "amount": 600,
+    "weight": 15,
+    "type": "SURPRISE",
+    "image": "/assets/bills/copper_wire.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "effects": {
+      "hp": -5
+    },
+    "flavorText": "在翻修废楼时，你发现了被遗忘的旧铜电缆。你和工友连夜将其剥皮卖给废品站，赚了笔外快。",
+    "news": {
+      "source": "CNBC",
+      "content": "Copper theft and scrapping on the rise: The 'blue-collar bitcoin' boom."
+    },
+    "roast": "这是这栋烂尾楼里唯一值钱的东西，现在它是你的啤酒钱了。"
+  },
+  {
+    "id": "B_WORKER_VIRAL_TIP",
+    "name": "网红的作秀",
+    "amount": 1000,
+    "weight": 3,
+    "type": "SURPRISE",
+    "image": "/assets/bills/influencer_cash.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "flavorText": "送披萨时遇到网红为了拍视频，塞给你$1,000现金。虽然像猴子一样被围观很尴尬，但钱是真的。",
+    "news": {
+      "source": "Insider",
+      "content": "TikTokers tipping delivery drivers $1,000: The rise of performative philanthropy."
+    },
+    "roast": "记得露出感激涕零的表情，这能帮他多骗几万个点赞。"
+  },
+  {
+    "id": "B_WORKER_NDA",
+    "name": "封口费",
+    "amount": 2000,
+    "weight": 8,
+    "type": "SURPRISE",
+    "image": "/assets/bills/nda_envelope.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "flavorText": "你撞破了经理的丑闻。他没有解雇你，而是让你签了保密协议，并给了一大笔现金作为“忠诚奖金”。",
+    "news": {
+      "source": "The New Yorker",
+      "content": "The Age of the NDA: How silence is bought and sold in the American workplace."
+    },
+    "roast": "你现在的职业不仅仅是清洁工，还是“秘密守门人”。"
+  },
+  {
+    "id": "B_WORKER_CURBSIDE",
+    "name": "富人的垃圾",
+    "amount": 500,
+    "weight": 10,
+    "type": "SURPRISE",
+    "image": "/assets/bills/luxury_sofa.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "flavorText": "在富人区收垃圾时，你捡回了客户扔掉的全新真皮沙发和大电视，转手卖了个好价钱。",
+    "news": {
+      "source": "The New York Times",
+      "content": "Rich people's trash is a gold mine: The lucrative business of curbside scavenging."
+    },
+    "roast": "贫穷限制了你的想象力，富人扔掉的东西比你家里的任何家具都贵。"
+  },
+  {
+    "id": "B_MIDDLE_AIR_AMBULANCE",
+    "name": "空中救护车",
+    "amount": -40000,
+    "weight": 3,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/helicopter_bill.png",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE"]
+    },
+    "flavorText": "滑雪摔断腿后，救援直升机救了你的命，但账单显示它不属于你的医保网络。这笔钱必须立即全额自费。",
+    "news": {
+      "source": "NPR",
+      "content": "Bill of the Month: Air ambulance charges bankrupt middle-class families despite having insurance."
+    },
+    "roast": "那趟飞行的每公里单价，比把这架直升机买下来还贵。"
+  },
+  {
+    "id": "B_MIDDLE_SQUATTER",
+    "name": "鸠占鹊巢",
+    "amount": -12000,
+    "weight": 8,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/changed_lock.png",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE"]
+    },
+    "flavorText": "度假回家发现锁被换了，陌生人拿着伪造租约住在你家。警察说是民事纠纷管不了，你得花半年打官司赶人。",
+    "news": {
+      "source": "Fox News",
+      "content": "Squatter takes over home, owner arrested: Legal loopholes allow strangers to occupy vacation homes for months."
+    },
+    "roast": "在法律眼里，他们是“居住者”，而你是“骚扰者”。欢迎回家。"
+  },
+  {
+    "id": "B_MIDDLE_ZOOM_FIRE",
+    "name": "变焦断头台",
+    "amount": -12000,
+    "weight": 15,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/zoom_disconnect.png",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE"]
+    },
+    "flavorText": "没有任何预兆，屏幕变黑，Slack登出。你在年薪15万的岗位奋斗了5年，从“被解雇”到“变成局外人”只用了3分钟。",
+    "news": {
+      "source": "CNN",
+      "content": "Better.com CEO fires 900 employees over Zoom: The cold efficiency of digital layoffs."
+    },
+    "roast": "你以为你是公司不可或缺的一员？不，你只是一个可以被远程注销的账号。"
+  },
+  {
+    "id": "B_MIDDLE_HOA_FORECLOSURE",
+    "name": "夺命草坪",
+    "amount": -8000,
+    "weight": 10,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/hoa_letter.png",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE"]
+    },
+    "flavorText": "因为草坪长高了2英寸且错过了$50罚单邮件，HOA启动了丧失抵押品赎回权程序。你被迫支付巨额律师费保住房子。",
+    "news": {
+      "source": "The Kansas City Star",
+      "content": "HOA forecloses on home over small debts: Homeowners lose equity over trivial violations."
+    },
+    "roast": "你以为你买了房子？不，你只是买了一个被邻居大妈监视的资格。"
+  },
+  {
+    "id": "B_MIDDLE_VET_BILL",
+    "name": "宠物勒索",
+    "amount": -300,
+    "weight": 15,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/vet_cone.png",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE"]
+    },
+    "flavorText": "金毛吞了袜子，手术费$8,000，安乐死$200。没有宠物保险且信用爆表的你，必须在10分钟内决定家人的命运。",
+    "news": {
+      "source": "The Atlantic",
+      "content": "The High Cost of Vet Care: Economic euthanasia becomes a heartbreaking reality for pet owners."
+    },
+    "roast": "爱的价格是明码标价的，不含税。"
+  },
+  {
+    "id": "B_MIDDLE_SLIP_FALL",
+    "name": "冰面滑倒案",
+    "amount": -20000,
+    "weight": 8,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/icy_driveway.png",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE"]
+    },
+    "flavorText": "快递员在你家车道滑倒摔断腿，起诉你索赔$150,000。房屋保险额度不够，你必须自掏腰包。",
+    "news": {
+      "source": "Forbes",
+      "content": "Homeowner Liability for Delivery Drivers: Slips and falls can lead to financial ruin."
+    },
+    "roast": "那个$10的包裹，现在成了你这辈子买过最贵的东西。"
+  },
+  {
+    "id": "B_MIDDLE_IDENTITY_THEFT",
+    "name": "身份窃贼",
+    "amount": -5000,
+    "weight": 12,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/credit_score_low.png",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE"]
+    },
+    "flavorText": "有人用你的社保号买游艇弃贷，导致你房贷被拒。虽然不是你干的，但在证明清白前，你是个信用麻风病人。",
+    "news": {
+      "source": "FTC Report",
+      "content": "Identity Theft Statistics: Victims spend years and thousands of dollars restoring their credit."
+    },
+    "roast": "那个贼现在正开着游艇喝香槟，而你连张信用卡都办不下来。"
+  },
+  {
+    "id": "B_MIDDLE_ACT_OF_GOD",
+    "name": "上帝的拒绝信",
+    "amount": -60000,
+    "weight": 2,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/flooded_house.png",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE"]
+    },
+    "flavorText": "飓风过后，保险公司玩弄文字游戏，称水造成的破坏属于“洪水”拒赔。修房费用耗尽了你的积蓄。",
+    "news": {
+      "source": "CBS News",
+      "content": "Florida homeowners insurance crisis: Insurers use 'Act of God' clauses to deny massive claims."
+    },
+    "roast": "原来你每个月交的保费，买的是一张“拒赔通知书”的优先排队权。"
+  },
+  {
+    "id": "B_MIDDLE_DIVORCE",
+    "name": "离婚律师函",
+    "amount": -40000,
+    "weight": 10,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/divorce_papers.png",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE"]
+    },
+    "flavorText": "由于财务压力，配偶摊牌并雇了凶狠的律师。资产冻结、赡养费、强制分割房产——你瞬间破产。",
+    "news": {
+      "source": "CNBC",
+      "content": "Why divorce destroys finances: The quickest way for two middle-class people to become poor."
+    },
+    "roast": "爱情是无价的，但结束爱情的价格大约是每小时400美元（律师费）。"
+  },
+  {
+    "id": "B_MIDDLE_COLLEGE_FAIL",
+    "name": "孩子没考上",
+    "amount": -25000,
+    "weight": 15,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/rejection_letter.png",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE"]
+    },
+    "flavorText": "花了巨资推娃爬藤，结果只有拒信。孩子去了学费昂贵但排名一般的私立大学，你只能掏空养老金付学费。",
+    "news": {
+      "source": "The New York Times",
+      "content": "The cost of the college admissions rat race: High investment often yields debt rather than prestige."
+    },
+    "roast": "你以为你在投资未来？不，你只是在给大学校董会成员买游艇。"
+  },
+  {
+    "id": "B_MIDDLE_IRS_AUDIT",
+    "name": "国税局查税",
+    "amount": -3500,
+    "weight": 8,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/irs_letter.png",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE"]
+    },
+    "flavorText": "IRS盯着你那$500的家庭办公抵扣不放。为了证明清白，你必须请会计师并补交罚款。",
+    "news": {
+      "source": "ProPublica",
+      "content": "IRS audits the poor and middle class more than the rich: It's cheaper to audit you than a billionaire."
+    },
+    "roast": "你没钱请顶尖律师以此逃税，所以你必须一分不少地交税。"
+  },
+  {
+    "id": "B_MIDDLE_INSURANCE_DROP",
+    "name": "保险拒保",
+    "amount": -6000,
+    "weight": 12,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/policy_cancelled.png",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE"]
+    },
+    "flavorText": "因为气候风险，大保险公司退出了你的州。你被迫购买昂贵的政府兜底保险，保费翻三倍，保额减半。",
+    "news": {
+      "source": "CBS News",
+      "content": "State Farm, Allstate stop selling new home insurance: Climate change hits homeowner wallets."
+    },
+    "roast": "气候变化是真的，因为它已经开始抢你的钱了。"
+  },
+  {
+    "id": "B_MIDDLE_LEMON_CAR",
+    "name": "柠檬车",
+    "amount": -8000,
+    "weight": 10,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/check_engine.png",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE"]
+    },
+    "flavorText": "刚出保修期，你那辆为了体面买的二手德系豪车变速箱报废。修车费比车残值还高，你陷入负资产陷阱。",
+    "news": {
+      "source": "Consumer Reports",
+      "content": "The hidden costs of used luxury cars: Maintenance nightmares for second-hand owners."
+    },
+    "roast": "你买的是个标，附赠了一个定时炸弹。"
+  },
+  {
+    "id": "B_MIDDLE_TIMESHARE",
+    "name": "时光共享度假房",
+    "amount": -12000,
+    "weight": 10,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/tropical_brochure.png",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE"]
+    },
+    "flavorText": "被洗脑签下的分时度假房成了噩梦。管理费暴涨，二手价仅$1还卖不掉。你被彻底套牢了。",
+    "news": {
+      "source": "Last Week Tonight",
+      "content": "Timeshares: A legal scam industry targeting middle-class tourists with disposable income."
+    },
+    "roast": "这东西像疱疹一样，一旦沾上，终身甩不掉。"
+  },
+  {
+    "id": "B_MIDDLE_PRIVATE_SCHOOL",
+    "name": "私校募捐压力",
+    "amount": -5000,
+    "weight": 20,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/gala_invite.png",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE"]
+    },
+    "flavorText": "为了不让孩子被隐形排挤，你被迫刷爆信用卡参加学校的慈善晚宴，花$5,000买一张桌子。",
+    "news": {
+      "source": "The Atlantic",
+      "content": "Private Schools Are Indefensible: The hidden costs of social compliance in elite education."
+    },
+    "roast": "你买的不是晚餐，是你孩子不被霸凌的“保护费”。"
+  },
+  {
+    "id": "B_MIDDLE_OVEREMPLOYED",
+    "name": "远程双开",
+    "amount": 8000,
+    "weight": 10,
+    "type": "SURPRISE",
+    "image": "/assets/bills/two_laptops.png",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE"]
+    },
+    "flavorText": "你偷偷接了第二份远程全职工作，学会在两个会议间切换。虽然提心吊胆，但你领了两份薪水！",
+    "news": {
+      "source": "Business Insider",
+      "content": "The Overemployed Community: White-collar workers fighting inflation with secret second jobs."
+    },
+    "roast": "只要不被发现，这就是你对资本家的反向剥削。"
+  },
+  {
+    "id": "B_MIDDLE_ZESTIMATE",
+    "name": "疯狂的估值",
+    "amount": 150000,
+    "weight": 3,
+    "type": "SURPRISE",
+    "image": "/assets/bills/sold_sign.png",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE"]
+    },
+    "flavorText": "大厂在附近建总部，你房子的估值暴涨40%。你趁泡沫破裂前卖掉或套现，赚到了工作十年都存不下的钱。",
+    "news": {
+      "source": "Zillow Reports",
+      "content": "Zestimate Spike: Real estate bubbles remain the primary wealth generator for the middle class."
+    },
+    "roast": "你努力工作毫无意义，你买对了一堆砖头才是真理。"
+  },
+  {
+    "id": "B_MIDDLE_CREDIT_CHURN",
+    "name": "信用卡羊毛",
+    "amount": 500,
+    "weight": 15,
+    "type": "SURPRISE",
+    "image": "/assets/bills/platinum_card.png",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE"]
+    },
+    "flavorText": "你精准完成了高端卡的开卡任务，用15万积分兑换了价值$8,000的商务舱机票。你赢了银行一次。",
+    "news": {
+      "source": "The Points Guy",
+      "content": "The Churning Win: How savvy consumers extract value from complex credit card rewards."
+    },
+    "roast": "你在头等舱里喝着香槟，暂时忘记了你其实是个负债累累的打工人。"
+  },
+  {
+    "id": "B_MIDDLE_INHERITANCE",
+    "name": "阶级跃升的遗产",
+    "amount": 300000,
+    "weight": 3,
+    "type": "SURPRISE",
+    "image": "/assets/bills/will_scroll.png",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE"]
+    },
+    "flavorText": "住在湾区的远房姑妈去世了，你分到的遗产足够还清房贷。这是这一代中产翻身的唯一机会。",
+    "news": {
+      "source": "Forbes",
+      "content": "The Great Wealth Transfer is here: Inheritance becomes the deciding factor in class mobility."
+    },
+    "roast": "你的成功不靠奋斗，靠的是你的DNA和姑妈的房产证。"
+  },
+  {
+    "id": "B_MIDDLE_CLASS_ACTION",
+    "name": "集体诉讼支票",
+    "amount": 400,
+    "weight": 10,
+    "type": "SURPRISE",
+    "image": "/assets/bills/check_envelope.png",
+    "triggerCondition": {
+      "requiredClass": ["MIDDLE"]
+    },
+    "flavorText": "因为隐私泄露诉讼受害者较少，你竟然收到了一张$400的巨额赔偿支票。意外之财！",
+    "news": {
+      "source": "ClassAction.org",
+      "content": "Tech giant privacy settlements result in unexpected payouts for users."
+    },
+    "roast": "你的隐私被卖了无数次，这是你唯一一次拿到的分红。"
+  },
+  {
+    "id": "B_CAPITALIST_TOO_BIG_TO_FAIL",
+    "name": "大而不倒",
+    "amount": 500000,
+    "weight": 10,
+    "type": "SURPRISE",
+    "image": "/assets/bills/bailout_news.png",
+    "triggerCondition": {
+      "requiredClass": ["CAPITALIST"]
+    },
+    "flavorText": "你的金融衍生品暴雷留下百亿烂账，但财政部长老友打来电话。国会通过紧急救助，债务转移给纳税人，你还拿到了注资。",
+    "news": {
+      "source": "Rolling Stone",
+      "content": "Secrets and Lies of the Bailout: How Wall Street gambled with the economy and got paid for losing."
+    },
+    "roast": "你搞砸了一切，却因此变得更富有了。这就是资本主义的魔法。"
+  },
+  {
+    "id": "B_CAPITALIST_FLIGHT_LOG",
+    "name": "飞行日志曝光",
+    "amount": -300000,
+    "weight": 5,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/flight_log.png",
+    "triggerCondition": {
+      "requiredClass": ["CAPITALIST"]
+    },
+    "flavorText": "皮条客富豪狱中“自杀”，飞行日志解密，你的名字赫然在列。你必须立刻启动核弹级公关：否认、律师函、慈善洗白。",
+    "news": {
+      "source": "The Miami Herald",
+      "content": "Perversion of Justice: The billionaires and politicians named in the Epstein flight logs."
+    },
+    "roast": "你只是去那座岛上“度假”的，对吧？对吧？"
+  },
+  {
+    "id": "B_CAPITALIST_TITANIC",
+    "name": "深海泰坦",
+    "amount": -250000,
+    "weight": 5,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/submersible.png",
+    "triggerCondition": {
+      "requiredClass": ["CAPITALIST"]
+    },
+    "flavorText": "你花$250,000坐碳纤维潜水艇看泰坦尼克号。深海3000米处通讯中断，这是一次傲慢的自杀式旅游。",
+    "news": {
+      "source": "BBC",
+      "content": "Titan submersible implosion: Questions raised about safety certifications of extreme tourism."
+    },
+    "roast": "在300个大气压面前，你的银行账户余额没有任何防御力。"
+  },
+  {
+    "id": "B_CAPITALIST_BLOOD_BOY",
+    "name": "换血回春",
+    "amount": -20000,
+    "weight": 10,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/blood_bag.png",
+    "triggerCondition": {
+      "requiredClass": ["CAPITALIST"]
+    },
+    "effects": {
+      "hp": 20
+    },
+    "flavorText": "为了抗衰老，你输入了来自18岁运动员的血浆。虽然FDA警告没用，但你感觉浑身充满了力量。",
+    "news": {
+      "source": "Vanity Fair",
+      "content": "Peter Thiel's interest in young blood: Inside Silicon Valley's quest for immortality."
+    },
+    "roast": "字面意义上的“吸干年轻一代”。"
+  },
+  {
+    "id": "B_CAPITALIST_PANDEMIC_SHORT",
+    "name": "做空国难",
+    "amount": 800000,
+    "weight": 5,
+    "type": "SURPRISE",
+    "image": "/assets/bills/stock_chart_crash.png",
+    "triggerCondition": {
+      "requiredClass": ["CAPITALIST"]
+    },
+    "flavorText": "利用内幕消息，你在疫情爆发前清空旅游股，全仓买入疫苗股。股市崩盘，无数人失业，而你的资产翻倍了。",
+    "news": {
+      "source": "The New York Times",
+      "content": "Senators sold stock before market crash: Ethics watchdog calls for investigation into insider trading."
+    },
+    "roast": "灾难对穷人是灾难，对你来说是财富转移的机遇。"
+  },
+  {
+    "id": "B_CAPITALIST_FINE",
+    "name": "只要罚款",
+    "amount": -200000,
+    "weight": 15,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/epa_fine.png",
+    "triggerCondition": {
+      "requiredClass": ["CAPITALIST"]
+    },
+    "flavorText": "化工厂违规排放被罚200万。CFO告诉你合规处理要花5000万，所以你们刚省了4800万。你欣然支付罚款。",
+    "news": {
+      "source": "The Guardian",
+      "content": "Corporate fines are just a business cost: Why big polluters prefer paying penalties over fixing problems."
+    },
+    "roast": "只要惩罚是罚款，那这法律就是专门限制穷人的。"
+  },
+  {
+    "id": "B_CAPITALIST_BUNKER",
+    "name": "地堡综合症",
+    "amount": -500000,
+    "weight": 10,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/doomsday_bunker.png",
+    "triggerCondition": {
+      "requiredClass": ["CAPITALIST"]
+    },
+    "flavorText": "出于对末日的恐慌，你连夜升级了新西兰的地堡，加装了自动机枪塔和护城河。你不再相信社会，只相信混凝土。",
+    "news": {
+      "source": "The Guardian",
+      "content": "The super-rich preppers planning to save themselves: Luxury bunkers boom amid global instability."
+    },
+    "roast": "你唯一担心的是，末日来了，你脖子上的爆炸项圈能不能控制住你的保镖。"
+  },
+  {
+    "id": "B_CAPITALIST_PHILANTHROPY",
+    "name": "慈善避税",
+    "amount": 50000,
+    "weight": 20,
+    "type": "SURPRISE",
+    "image": "/assets/bills/charity_gala.png",
+    "triggerCondition": {
+      "requiredClass": ["CAPITALIST"]
+    },
+    "flavorText": "为了避税，你把10亿股票捐给自己控制的基金会。不用交税，钱还在手里，你还登上了“年度慈善家”封面。",
+    "news": {
+      "source": "The Nation",
+      "content": "The Givers: Money, Power, and Philanthropy. How the elite use charity to maintain dominance."
+    },
+    "roast": "这招叫“左手倒右手”，中间还赚了个光环。"
+  },
+  {
+    "id": "B_CAPITALIST_ALGO_DEATH",
+    "name": "算法杀人",
+    "amount": 300000,
+    "weight": 8,
+    "type": "SURPRISE",
+    "image": "/assets/bills/congress_hearing.png",
+    "triggerCondition": {
+      "requiredClass": ["CAPITALIST"]
+    },
+    "flavorText": "为了点击率，你的算法向抑郁症青少年推送有害视频。你在国会听证会上装傻，随后股价大涨。",
+    "news": {
+      "source": "The Wall Street Journal",
+      "content": "The Facebook Files: Company knew Instagram was toxic for teen girls but downplayed the issue."
+    },
+    "roast": "愤怒也是一种流量，而流量就是金钱。"
+  },
+  {
+    "id": "B_CAPITALIST_BUY_MEDIA",
+    "name": "买了你的报社",
+    "amount": -1000000,
+    "weight": 5,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/newspaper_stack.png",
+    "triggerCondition": {
+      "requiredClass": ["CAPITALIST"]
+    },
+    "flavorText": "某家报纸一直调查你的污染问题。你烦了，直接出资买下报社。第二天，所有负面新闻消失，变成了赞颂你的特稿。",
+    "news": {
+      "source": "Washington Post",
+      "content": "Billionaire purchase of media giant raises concerns about editorial independence."
+    },
+    "roast": "如果有人批评你，那就把他买下来，让他闭嘴。"
+  },
+  {
+    "id": "B_CAPITALIST_EPSTEIN_LIST",
+    "name": "解封的名单",
+    "amount": -400000,
+    "weight": 5,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/redacted_document.png",
+    "triggerCondition": {
+      "requiredClass": ["CAPITALIST"]
+    },
+    "flavorText": "爱泼斯坦客户名单解封，你是第134号访客。虽然你坚称只是去吃龙虾，但股价暴跌，董事会要求你辞职。",
+    "news": {
+      "source": "The Guardian",
+      "content": "Epstein court documents unsealed: New names revealed in sex trafficking ring scandal."
+    },
+    "roast": "那架飞机叫“洛丽塔快线”，你上去的时候可没觉得这名字有问题。"
+  },
+  {
+    "id": "B_CAPITALIST_FREAK_OFF",
+    "name": "婴儿油突袭",
+    "amount": -150000,
+    "weight": 8,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/baby_oil.png",
+    "triggerCondition": {
+      "requiredClass": ["CAPITALIST"]
+    },
+    "flavorText": "FBI突袭嘻哈大亨的“白色派对”，搜出1000瓶婴儿油。作为嘉宾你被带走协助调查，大头照满世界飞。",
+    "news": {
+      "source": "NBC News",
+      "content": "Sean 'Diddy' Combs raids uncover 1,000 bottles of baby oil and illegal weapons."
+    },
+    "roast": "1000瓶婴儿油？你当时真的相信那是用来“护肤”的吗？"
+  },
+  {
+    "id": "B_CAPITALIST_APE_REBELLION",
+    "name": "散户的复仇",
+    "amount": -600000,
+    "weight": 8,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/gamestop_chart.png",
+    "triggerCondition": {
+      "requiredClass": ["CAPITALIST"]
+    },
+    "flavorText": "Reddit网民集结逼空你做空的游戏驿站股票。股价三天暴涨5000%，你的对冲基金爆仓，不得不卖房追加保证金。",
+    "news": {
+      "source": "Reuters",
+      "content": "GameStop short squeeze: Retail traders inflict billions in losses on hedge funds."
+    },
+    "roast": "你懂金融模型，但你不懂互联网疯狗。"
+  },
+  {
+    "id": "B_CAPITALIST_CRYPTO_SCAM",
+    "name": "天才的庞氏骗局",
+    "amount": -300000,
+    "weight": 10,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/crypto_arrest.png",
+    "triggerCondition": {
+      "requiredClass": ["CAPITALIST"]
+    },
+    "flavorText": "你投资的“天才”SBF被捕，交易所倒闭。你的3亿美元被他挪用买豪宅和贿赂政客，血本无归。",
+    "news": {
+      "source": "The New York Times",
+      "content": "The Collapse of FTX: How a crypto wunderkind fooled the world's smartest investors."
+    },
+    "roast": "他穿短裤上台演讲时，你以为那是极客精神，其实那只是因为他不尊重你。"
+  },
+  {
+    "id": "B_CAPITALIST_WOKE_BACKLASH",
+    "name": "觉醒的抵制",
+    "amount": -200000,
+    "weight": 12,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/beer_can_shoot.png",
+    "triggerCondition": {
+      "requiredClass": ["CAPITALIST"]
+    },
+    "flavorText": "跨性别推广激怒了红脖子客户，销量暴跌，市值蒸发50亿。你试图道歉又激怒了左派，两头不是人。",
+    "news": {
+      "source": "Fox Business",
+      "content": "Bud Light boycott cost Anheuser-Busch billions: When corporate marketing meets culture wars."
+    },
+    "roast": "在撕裂的美国，卖啤酒比造原子弹还危险。"
+  },
+  {
+    "id": "B_CAPITALIST_SUPREME_FRIEND",
+    "name": "拥有大法官",
+    "amount": 800000,
+    "weight": 5,
+    "type": "SURPRISE",
+    "image": "/assets/bills/gavel_gold.png",
+    "triggerCondition": {
+      "requiredClass": ["CAPITALIST"]
+    },
+    "flavorText": "你资助大法官度假的回报来了：最高法院削弱了对你公司的监管权力。这笔投资的回报率是无限大。",
+    "news": {
+      "source": "ProPublica",
+      "content": "Clarence Thomas and the Billionaire: Undisclosed luxury trips raise ethical questions for SCOTUS."
+    },
+    "roast": "你不能买卖法律，但你可以“资助”写法律的人。"
+  },
+  {
+    "id": "B_CAPITALIST_ART_WASH",
+    "name": "艺术品洗白",
+    "amount": 200000,
+    "weight": 10,
+    "type": "SURPRISE",
+    "image": "/assets/bills/banana_duct_tape.png",
+    "triggerCondition": {
+      "requiredClass": ["CAPITALIST"]
+    },
+    "flavorText": "花600万买了根粘在墙上的香蕉，捐给博物馆抵税1000万。黑钱洗白了，还省了税，成了收藏家。",
+    "news": {
+      "source": "The New York Times",
+      "content": "Comedian (artwork) by Maurizio Cattelan: The absurdity of the high-end art market explained."
+    },
+    "roast": "那根香蕉烂了也没关系，因为它本来就是一张昂贵的发票。"
+  },
+  {
+    "id": "B_CAPITALIST_CHIPS_SUBSIDY",
+    "name": "芯片法案补贴",
+    "amount": 400000,
+    "weight": 10,
+    "type": "SURPRISE",
+    "image": "/assets/bills/gov_check.png",
+    "triggerCondition": {
+      "requiredClass": ["CAPITALIST"]
+    },
+    "flavorText": "借着《芯片法案》，你拿到了20亿补贴和税收抵免。你没建厂，而是回购了股票推高股价，大赚一笔。",
+    "news": {
+      "source": "Bloomberg",
+      "content": "Stock buybacks concerns in CHIPS Act: Taxpayer money fueling shareholder profits instead of innovation."
+    },
+    "roast": "这是“企业社会主义”：利润归你，成本归纳税人。"
+  },
+  {
+    "id": "B_CAPITALIST_CARBON_CREDIT",
+    "name": "碳信用骗局",
+    "amount": 150000,
+    "weight": 15,
+    "type": "SURPRISE",
+    "image": "/assets/bills/forest_fire.png",
+    "triggerCondition": {
+      "requiredClass": ["CAPITALIST"]
+    },
+    "flavorText": "为了碳中和，你买了廉价的“幻影碳信用”。虽然那片森林早烧光了，但证书是真的，你是环保先锋了。",
+    "news": {
+      "source": "The Guardian",
+      "content": "Carbon credit fraud: More than 90% of rainforest carbon offsets by biggest certifier are worthless."
+    },
+    "roast": "你成功地把“空气”卖出了黄金的价格，还顺便毁灭了地球。"
+  },
+  {
+    "id": "B_GENERAL_POWERBALL_WIN",
+    "name": "强力球狂热 (中奖)",
+    "amount": 50000,
+    "weight": 2,
+    "type": "SURPRISE",
+    "image": "/assets/bills/powerball_ticket.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS", "WORKER", "MIDDLE", "CAPITALIST"]
+    },
+    "effects": {
+      "insightClear": 50
+    },
+    "flavorText": "全美疯抢15亿奖池。你花$20买的彩票竟然中了三等奖！看来上帝今天确实看了你一眼。",
+    "news": {
+      "source": "AP News",
+      "content": "Powerball jackpot hits $2.04 billion: Americans frenzy over the chance to dream big."
+    },
+    "roast": "你购买的是“两天的白日梦”，这$20花得值。"
+  },
+  {
+    "id": "B_GENERAL_POWERBALL_LOSS",
+    "name": "强力球狂热 (落空)",
+    "amount": -20,
+    "weight": 10,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/losing_ticket.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS", "WORKER", "MIDDLE", "CAPITALIST"]
+    },
+    "flavorText": "你盯着电视开奖，一个号都没对上。那张$20的彩票现在只是一张废纸。",
+    "news": {
+      "source": "AP News",
+      "content": "Powerball jackpot hits $2.04 billion: Odds of winning are 1 in 292 million."
+    },
+    "roast": "你购买的是“两天的白日梦”，这$20花得值。"
+  },
+  {
+    "id": "B_GENERAL_SCRATCH_WIN",
+    "name": "加油站刮刮乐 (小奖)",
+    "amount": 200,
+    "weight": 8,
+    "type": "SURPRISE",
+    "image": "/assets/bills/scratch_off_win.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS", "WORKER", "MIDDLE", "CAPITALIST"]
+    },
+    "flavorText": "没忍住买了张“终极百万富翁”。虽然没中百万，但刮出了$200的小奖，够吃顿好的了。",
+    "news": {
+      "source": "CNBC",
+      "content": "Americans spend $100 billion on lottery tickets: The most regressive tax in the country."
+    },
+    "roast": "手指甲里全是银粉，口袋里多了点零钱。"
+  },
+  {
+    "id": "B_GENERAL_SCRATCH_LOSS",
+    "name": "加油站刮刮乐 (谢谢惠顾)",
+    "amount": -50,
+    "weight": 15,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/scratch_off_lose.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS", "WORKER", "MIDDLE", "CAPITALIST"]
+    },
+    "flavorText": "据说这款中奖率很高，你买了张$50的。刮开涂层，全是“再接再厉”。",
+    "news": {
+      "source": "CNBC",
+      "content": "Lottery scratch-offs: A tax on people who are bad at math."
+    },
+    "roast": "手指甲里全是银粉，口袋里全是空气。"
+  },
+  {
+    "id": "B_GENERAL_SPORTS_BET",
+    "name": "体育博彩陷阱",
+    "amount": -1000,
+    "weight": 12,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/betting_app.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER", "MIDDLE", "CAPITALIST"]
+    },
+    "flavorText": "信了“输了包赔”的广告，你充值$1,000押注超级碗冠军。结果你的球队输了，赔付的只是不可提现的“红利点数”。",
+    "news": {
+      "source": "The New York Times",
+      "content": "The spread of legalized sports betting: How 'Risk-Free' bets hook a new generation of gamblers."
+    },
+    "roast": "庄家从不输钱。你以为你在薅羊毛，其实你就是那只羊。"
+  },
+  {
+    "id": "B_GENERAL_STORAGE_WARS",
+    "name": "仓储挖宝",
+    "amount": 2000,
+    "weight": 3,
+    "type": "SURPRISE",
+    "image": "/assets/bills/storage_locker.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER", "MIDDLE", "CAPITALIST"]
+    },
+    "flavorText": "你花$300盲拍下一个被弃置的仓库单元。清理时在旧家具后面发现了一个保险箱！",
+    "news": {
+      "source": "A&E Network",
+      "content": "Storage Wars: The treasure hunt economy of abandoned possessions."
+    },
+    "roast": "恭喜你，现在你拥有了别人不要的半吨垃圾...和一点惊喜。"
+  },
+  {
+    "id": "B_GENERAL_GARAGE_SALE",
+    "name": "车库售卖捡漏",
+    "amount": 300,
+    "weight": 10,
+    "type": "SURPRISE",
+    "image": "/assets/bills/retro_cartridge.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS", "WORKER", "MIDDLE"]
+    },
+    "flavorText": "在邻居的车库售卖中，你从破纸箱里花$5买到了一盘稀有的未拆封任天堂游戏卡带。",
+    "news": {
+      "source": "CNN",
+      "content": "Super Mario 64 game sells for $1.56 million: Garage sale finds can be gold mines."
+    },
+    "roast": "那个大妈不知道她刚刚把儿子的童年回忆当垃圾卖了。"
+  },
+  {
+    "id": "B_GENERAL_MARCH_MADNESS",
+    "name": "疯狂三月",
+    "amount": 800,
+    "weight": 5,
+    "type": "SURPRISE",
+    "image": "/assets/bills/bracket_pool.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER", "MIDDLE", "CAPITALIST"]
+    },
+    "flavorText": "全公司都在玩NCAA竞猜。你完全不懂球，全靠“看谁吉祥物可爱”瞎猜，结果奇迹般地赢走了奖池。",
+    "news": {
+      "source": "ESPN",
+      "content": "March Madness Office Pools: Billions wagered in illegal but socially accepted workplace gambling."
+    },
+    "roast": "那个整天分析数据的会计输给了你，因为你选了“颜色好看的那队”。"
+  },
+  {
+    "id": "B_GENERAL_CASINO_COMP",
+    "name": "赌场“免费”房",
+    "amount": -500,
+    "weight": 5,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/casino_room_key.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER", "MIDDLE", "CAPITALIST"]
+    },
+    "flavorText": "你在老虎机上输掉了$500。赌场经理为了留住你，大方地送了你一间“免费”豪华套房和自助餐券。",
+    "news": {
+      "source": "Forbes",
+      "content": "How Casino Comps Work: The psychology of keeping losers in the building."
+    },
+    "roast": "这房间其实是你花$500买的，这大概是全世界最贵的“免费”。"
+  },
+  {
+    "id": "B_GENERAL_TV_SHOW_WIN",
+    "name": "电视节目中奖",
+    "amount": 60000,
+    "weight": 1,
+    "type": "SURPRISE",
+    "image": "/assets/bills/game_show_car.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER", "MIDDLE"]
+    },
+    "flavorText": "你在《The Price is Right》中赢得了总价值$60,000的奖品包（含跑车）。但后台制片人提醒你必须立刻缴纳巨额税款。",
+    "news": {
+      "source": "ABC News",
+      "content": "The tax reality of winning game shows: Why many winners are forced to forfeit their prizes."
+    },
+    "roast": "国税局才是这个节目最大的赢家。"
+  },
+  {
+    "id": "B_GENERAL_CRYPTO_DROP",
+    "name": "加密货币空投",
+    "amount": 5000,
+    "weight": 5,
+    "type": "SURPRISE",
+    "image": "/assets/bills/crypto_wallet.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER", "MIDDLE", "CAPITALIST"]
+    },
+    "flavorText": "你很久前注册的钱包收到了5000个代币空投，现价$1一个。你决定在它归零前立刻卖掉。",
+    "news": {
+      "source": "CoinDesk",
+      "content": "Uniswap Airdrop created instant millionaires: The lottery ticket of the Web3 era."
+    },
+    "roast": "它是电子黄金，还是电子垃圾，往往只在一念之间。"
+  },
+  {
+    "id": "B_GENERAL_INHERITANCE",
+    "name": "继承远亲遗产",
+    "amount": 3000,
+    "weight": 2,
+    "type": "SURPRISE",
+    "image": "/assets/bills/lawyer_letter.png",
+    "triggerCondition": {
+      "requiredClass": ["HOMELESS", "WORKER", "MIDDLE", "CAPITALIST"]
+    },
+    "flavorText": "你回了那封像诈骗邮件的信，结果是真的。一位远房表亲去世了，你是继承人。虽然钱不多，但确实是天上掉馅饼。",
+    "news": {
+      "source": "BBC",
+      "content": "Heir Hunters: Billions in unclaimed inheritance waiting for distant relatives."
+    },
+    "roast": "有时候，奇迹就藏在你的“垃圾邮件”文件夹里。"
+  },
+  {
+    "id": "B_SLUMS_CAR_BREAKDOWN",
+    "name": "破车抛锚",
+    "type": "JUMP_SCARE",
+    "amount": -300,
+    "weight": 25,
+    "triggerCondition": {
+      "hasItem": "VEH_JUNK"
+    },
+    "effects": {
+      "hp": -10
+    },
+    "image": "/assets/bills/broken_engine.png",
+    "flavorText": "你的破皮卡在路上彻底罢工了，修理厂狮子大开口。",
+    "news": {
+      "source": "Consumer Reports",
+      "content": "The hidden costs of cheap used cars: Breakdowns cost more than the purchase price."
+    },
+    "roast": "便宜没好货，现在你知道了。"
+  },
+  {
+    "id": "B_POLICE_NO_LICENSE",
+    "name": "无照驾驶",
+    "type": "LEGAL",
+    "amount": -500,
+    "weight": 15,
+    "triggerCondition": {
+      "hasItemTag": "VEHICLE",
+      "noItemTag": "LICENSE"
+    },
+    "effects": {
+      "hp": -5,
+      "insightGain": 10
+    },
+    "image": "/assets/bills/police_ticket.png",
+    "flavorText": "警察拦下你，发现你没有驾照。",
+    "news": {
+      "source": "NPR",
+      "content": "Driving without a license: penalties and consequences vary by state."
+    },
+    "roast": "开车需要驾照，这是常识。"
+  },
+  {
+    "id": "B_POLICE_FAKE_LICENSE",
+    "name": "假证被识破",
+    "type": "LEGAL",
+    "amount": -1000,
+    "weight": 30,
+    "triggerCondition": {
+      "hasItemTag": "VEHICLE",
+      "hasItem": "LICENSE_FAKE"
+    },
+    "effects": {
+      "hp": -10,
+      "insightGain": 20
+    },
+    "image": "/assets/bills/police_arrest.png",
+    "flavorText": "警察一眼识破了你的假驾照。",
+    "news": {
+      "source": "Local News",
+      "content": "Fake ID crackdown results in multiple arrests."
+    },
+    "roast": "骗子的手艺不太行。"
+  },
+  {
+    "id": "B_POLICE_NO_INSURANCE",
+    "name": "无保险驾驶",
+    "type": "LEGAL",
+    "amount": -800,
+    "weight": 20,
+    "triggerCondition": {
+      "hasItemTag": "VEHICLE",
+      "noInsuranceType": "AUTO"
+    },
+    "effects": {
+      "insightGain": 10
+    },
+    "image": "/assets/bills/insurance_ticket.png",
+    "flavorText": "你有车有驾照，但没有保险。",
+    "news": {
+      "source": "Insurance Journal",
+      "content": "Uninsured drivers cost the system billions annually."
+    },
+    "roast": "裸奔开车，胆子真大。"
+  },
+  {
+    "id": "B_CAR_ACCIDENT_NO_INSURANCE",
+    "name": "车祸无保险",
+    "type": "DISASTER",
+    "amount": -5000,
+    "weight": 5,
+    "triggerCondition": {
+      "hasItemTag": "VEHICLE",
+      "noInsuranceType": "AUTO"
+    },
+    "effects": {
+      "hp": -30,
+      "insightGain": 15
+    },
+    "image": "/assets/bills/car_crash.png",
+    "flavorText": "你撞上了护栏，没有保险意味着全额自费。",
+    "news": {
+      "source": "Auto Safety Report",
+      "content": "Uninsured accidents lead to financial ruin for low-income drivers."
+    },
+    "roast": "这一撞，撞没了你半年的工资。"
+  },
+  {
+    "id": "B_CAR_REPO",
+    "name": "车辆被拖走",
+    "type": "LEGAL",
+    "amount": -500,
+    "weight": 10,
+    "triggerCondition": {
+      "hasOverdueLoan": "LOAN_CAR_SUBPRIME",
+      "overdueWeeks": 2
+    },
+    "effects": {
+      "insightGain": 20
+    },
+    "image": "/assets/bills/tow_truck.png",
+    "flavorText": "因为你拖欠车贷，催收公司半夜拖走了你的车。",
+    "news": {
+      "source": "ProPublica",
+      "content": "Predatory auto lending: repossession rates soar in low-income communities."
+    },
+    "roast": "车没了，贷款还在，欢迎来到美国梦。"
+  },
+  {
+    "id": "B_CRYPTO_TAX_AUDIT",
+    "name": "IRS加密税务审计",
+    "amount": -0.4,
+    "scaling": "INCOME",
+    "type": "LEGAL",
+    "weight": 200,
+    "triggerCondition": {
+      "minGold": 10000,
+      "hasCrypto": true
+    },
+    "flavorText": "你以为去中心化就能逃税？国税局(IRS)花了三千万美元购买了区块链追踪软件，精确地计算出你欠他们40%的资本利得税，外加滞纳金。",
+    "roast": "在收税这件事上，美国政府比任何智能合约都高效。",
+    "effects": {
+      "insightGain": 10
+    }
+  },
+  {
+    "id": "B_CRYPTO_EXCHANGE_HACK",
+    "name": "FTX 2.0破产重组",
+    "amount": -1.0,
+    "scaling": "INCOME",
+    "type": "JUMP_SCARE",
+    "weight": 15,
+    "triggerCondition": {
+      "hasCryptoPosition": true
+    },
+    "flavorText": "你使用的加密交易所昨晚宣布暂停提币。今早，年仅26岁的CEO在巴哈马被捕，而你的资产已经被挪用去填补他旗下对冲基金的窟窿。",
+    "roast": "Not your keys, not your coins。但就算是你自己的钱包，也防不住创始人直接拔网线。",
+    "effects": {
+      "insightGain": 40,
+      "hp": -20
+    }
+  },
+  {
+    "id": "B_WORKER_CAR_BREAKDOWN",
+    "name": "变速箱报废",
+    "amount": -800,
+    "weight": 12,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/broken_engine.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"],
+      "minGold": -1000
+    },
+    "effects": {
+      "hp": -10
+    },
+    "flavorText": "你那辆开了15年的老车终于罢工了。没车就没法上班，你必须立刻借钱修车。",
+    "news": {
+      "source": "The Atlantic",
+      "content": "The High Cost of Being Poor: How a single car breakdown can lead to unemployment."
+    },
+    "roast": "欢迎进入'贫穷引力场'，越挣扎陷得越深。"
+  },
+  {
+    "id": "B_WORKER_EMERGENCY_ROOM",
+    "name": "急诊室账单",
+    "amount": -1200,
+    "weight": 8,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/ambulance_bill.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "effects": {
+      "insightGain": 5
+    },
+    "flavorText": "你在工作中晕倒被送进急诊。尽管有保险，但免赔额还没满，这$1200必须自付。",
+    "news": {
+      "source": "KFF Health News",
+      "content": "High Deductible Health Plans leave workers vulnerable to surprise medical bills."
+    },
+    "roast": "这就是你每月交$120保险费买来的'保障'。"
+  },
+  {
+    "id": "B_WORKER_WAGE_THEFT",
+    "name": "工资盗窃",
+    "amount": -200,
+    "weight": 10,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/time_card.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "effects": {
+      "insightGain": 8
+    },
+    "flavorText": "经理手动改了你的打卡记录，删除了2.5小时加班。去劳动局投诉需要几个月，而你下周就要交房租。",
+    "news": {
+      "source": "EPI",
+      "content": "Wage theft vs. Robbery: Employers steal more from workers than all burglaries combined."
+    },
+    "roast": "如果是你偷了收银机$200，你会坐牢；如果是老板偷了你$200，那叫'行政调整'。"
+  },
+  {
+    "id": "B_WORKER_HOA_FINE",
+    "name": "夺命草坪",
+    "amount": -800,
+    "weight": 8,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/hoa_letter.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"],
+      "minTurn": 15
+    },
+    "effects": {
+      "hp": -5,
+      "insightGain": 10
+    },
+    "flavorText": "HOA发来信件：你的草坪高度为3.5英寸，超过规定的3英寸。罚款$500，外加$300'行政处理费'。",
+    "news": {
+      "source": "The Kansas City Star",
+      "content": "HOA forecloses on home over lawn height: Homeowner faces $800 in fines for grass 0.5 inches too tall."
+    },
+    "roast": "你以为买了房子？不，你只是买了被邻居大妈监视的资格。"
+  },
+  {
+    "id": "B_WORKER_UTILITY_SHOCK",
+    "name": "天价电费",
+    "amount": -350,
+    "weight": 8,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/electric_bill.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "flavorText": "极端天气导致空调/暖气疯狂运转。收到账单时你以为是印刷错误——但这确实是你的用电量。",
+    "news": {
+      "source": "NPR",
+      "content": "Energy costs soar: Low-income families face impossible choices between heat and food."
+    },
+    "roast": "在这个国家，保持室温72度是一种奢侈。"
+  },
+  {
+    "id": "B_WORKER_OVERDRAFT_FEE",
+    "name": "透支罚款",
+    "amount": -35,
+    "weight": 15,
+    "type": "JUMP_SCARE",
+    "image": "/assets/bills/overdraft_notice.png",
+    "triggerCondition": {
+      "requiredClass": ["WORKER"]
+    },
+    "flavorText": "你的账户余额不足，但自动扣款还是进行了。银行'贴心'地帮你垫付了，并收取$35'服务费'。",
+    "news": {
+      "source": "Consumer Financial Protection Bureau",
+      "content": "Overdraft fees disproportionately impact low-income consumers."
+    },
+    "roast": "这就是银行为你提供的'服务'——让你在更穷的时候变得更穷。"
+  }
+]

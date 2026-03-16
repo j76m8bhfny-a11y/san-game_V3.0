@@ -13,62 +13,38 @@ import {
 } from '../types/schema';
 
 // ------------------------------------------------------------------
-// 基础工具：加载 JSON
+// 静态导入 JSON 数据（Vite 会自动处理，无需 fetch）
 // ------------------------------------------------------------------
-const loadJsonData = async <T>(path: string): Promise<T> => {
-  try {
-    const response = await fetch(path);
-    // 检查 HTTP 状态码
-    if (!response.ok) {
-      throw new Error(`HTTP ${response.status} - ${response.statusText}`);
-    }
-    // 检查 JSON 语法错误
-    try {
-      return await response.json();
-    } catch (parseError) {
-      throw new Error(`JSON Syntax Error (格式错误)`);
-    }
-  } catch (error: any) {
-    // 🔥 这里会抛出具体是哪个文件挂了
-    throw new Error(`加载文件失败 [${path}]: ${error.message}`);
-  }
-};
-
-
+import itemsData from '@/assets/data/items.json';
+import billsData from '@/assets/data/bills.json';
+import archivesData from '@/assets/data/archives.json';
+import endingsData from '@/assets/data/endings.json';
+import classesData from '@/assets/data/classes.json';
+import globalData from '@/assets/data/global.json';
+import jobsData from '@/assets/data/jobs.json';
+import housingData from '@/assets/data/housing.json';
+import insuranceData from '@/assets/data/insurance.json';
+import loansData from '@/assets/data/loans.json';
+import newsData from '@/assets/data/news.json';
+import diseasesData from '@/assets/data/diseases.json';
 
 // ------------------------------------------------------------------
 // 核心：加载所有游戏数据
 // ------------------------------------------------------------------
 export const loadAllGameData = async () => {
-  const [
-    items,
-    bills,
-    archives,
-    endings,
-    classes,
-    global,
-    // 👇 新增加载项
-    jobs,
-    housing,
-    insurance,
-    loans,
-    news,
-    diseases
-  ] = await Promise.all([
-    loadJsonData<Item[]>('/src/assets/data/items.json'),
-    loadJsonData<Bill[]>('/src/assets/data/bills.json'),
-    loadJsonData<Archive[]>('/src/assets/data/archives.json'),
-    loadJsonData<Ending[]>('/src/assets/data/endings.json'),
-    loadJsonData<any[]>('/src/assets/data/classes.json'),
-    loadJsonData<any>('/src/assets/data/global.json'),
-    // 👇 新增路径
-    loadJsonData<Job[]>('/src/assets/data/jobs.json'),
-    loadJsonData<Housing[]>('/src/assets/data/housing.json'),
-    loadJsonData<Insurance[]>('/src/assets/data/insurance.json'),
-    loadJsonData<LoanProduct[]>('/src/assets/data/loans.json'),
-    loadJsonData<NewsItem[]>('/src/assets/data/news.json'),
-    loadJsonData<Disease[]>('/src/assets/data/diseases.json'),
-  ]);
+  // 静态导入的数据直接使用，无需 await
+  const items = itemsData as unknown as Item[];
+  const bills = billsData as unknown as Bill[];
+  const archives = archivesData as unknown as Archive[];
+  const endings = endingsData as unknown as Ending[];
+  const classes = classesData as unknown as any[];
+  const global = globalData as unknown as any;
+  const jobs = jobsData as unknown as Job[];
+  const housing = housingData as unknown as Housing[];
+  const insurance = insuranceData as unknown as Insurance[];
+  const loans = loansData as unknown as LoanProduct[];
+  const news = newsData as unknown as NewsItem[];
+  const diseases = diseasesData as unknown as Disease[];
 
   // 返回扩展后的数据包（events 已由 EventSystem 单独加载，这里返回空数组占位）
   return { items, bills, archives, endings, classes, global, jobs, housing, insurance, loans, news, diseases, events: [] };

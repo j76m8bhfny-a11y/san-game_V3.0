@@ -1,0 +1,102 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C18_DIVORCE",
+  "title": "婚姻破裂",
+  "category": "COMMON",
+  "series": "人际关系",
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS",
+      "WORKER",
+      "MIDDLE",
+      "CAPITALIST"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 8,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "你们决定分开了。离婚费用平均15000美元，还要分割财产、债务、抚养权。爱情死了，但账单还活着。",
+  "historicalNote": "美国离婚率接近50%，离婚过程往往使双方陷入经济困境。",
+  "options": {
+    "A": {
+      "label": "聘请好律师保护自己",
+      "roast": "爱的战争，律师是唯一的赢家。",
+      "flavorText": "你不信任对方，所以选择武装自己。",
+      "ideology": "新自由主义/对抗性法律",
+      "archiveCommentary": "将情感冲突转化为法律对抗，专业人士获利。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": {
+          "old": 3
+        }
+      }
+    },
+    "B": {
+      "label": "和平分手",
+      "roast": "理想主义，祝你好运。",
+      "flavorText": "你希望避免更多伤害，即使这意味着让步。",
+      "ideology": "犬儒主义/理想主义残余",
+      "archiveCommentary": "在对抗性系统中寻求合作，是一种脆弱的尝试。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "买情感咨询服务",
+      "roast": "用消费治愈情感创伤，资本主义的心灵鸡汤。",
+      "flavorText": "你希望专业帮助能让你走出来。",
+      "ideology": "消费主义/治疗文化",
+      "archiveCommentary": "将情感问题转化为消费，是 therapy culture 的核心。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": {
+          "wolf": 3
+        }
+      }
+    },
+    "D": {
+      "label": "婚姻制度本身就是经济契约",
+      "roast": "说得对，但你现在需要签离婚协议。",
+      "flavorText": "你明白这是制度，但情感 still 在痛。",
+      "ideology": "激进左翼/婚姻批判",
+      "archiveCommentary": "婚姻制度 historically 是财产转移机制，而非纯粹情感联结。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C18_MARRIAGE_AS_CONTRACT",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": {
+          "red": 15
+        }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": [
+      "EVT_C16_FUNERAL",
+      "EVT_C17_INHERITANCE"
+    ]
+  },
+  "image": "/assets/events/common/evt_divorce_papers.png"
+}

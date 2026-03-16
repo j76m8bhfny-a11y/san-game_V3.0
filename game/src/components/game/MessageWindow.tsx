@@ -747,49 +747,47 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
         className="absolute inset-0 z-0 bg-gray-900" 
       />
 
-      {/* 事件插图 - 显示在题干下方 */}
+      {/* 事件插图 - 占画面2/3宽度，居中偏下 */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.9 }}
+        initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.5, delay: 0.3 }}
-        className="absolute z-10"
+        transition={{ duration: 1.2, delay: 0.3 }}
+        className="absolute z-10 flex items-center justify-center"
         style={{ 
-          top: '35%',  // 在标题框(15%)下方
+          top: '45%',           // 居中偏下
           left: '50%',
-          transform: 'translateX(-50%)',
-          width: '45vw',
-          height: '35vh',
-          maxWidth: '550px',
-          maxHeight: '350px'
+          transform: 'translate(-50%, -50%)',
+          width: '66.67vw',     // 占画面2/3宽度
+          maxWidth: '900px',    // 最大宽度限制
+          height: 'auto'
         }}
       >
-        <div className="relative w-full h-full flex items-center justify-center">
-          <img 
-            src={eventImg} 
-            alt="Event Scene" 
-            className="max-w-full max-h-full object-contain render-pixelated"
-            onLoad={() => {
-              console.log('[MessageWindow] 事件图片加载成功:', eventImg);
-            }}
-            onError={(e) => {
-              const currentSrc = e.currentTarget.src;
-              const fallback1 = '/assets/events/default_event.png';
-              const fallback2 = '/assets/scenes/event_placeholder.png';
-              
-              // 防止无限重试：检查是否已经尝试过所有回退
-              if (!currentSrc.includes(fallback1) && !currentSrc.includes(fallback2)) {
-                console.warn('[MessageWindow] 事件图片加载失败，尝试默认图:', eventImg);
-                e.currentTarget.src = fallback1;
-              } else if (currentSrc.includes(fallback1) && !currentSrc.includes(fallback2)) {
-                console.warn('[MessageWindow] 默认图也失败，尝试占位图');
-                e.currentTarget.src = fallback2;
-              } else {
-                // 所有回退都失败，显示 alt 文本
-                console.error('[MessageWindow] 所有图片都加载失败');
-              }
-            }}
-          />
-        </div>
+        <img 
+          src={eventImg} 
+          alt="Event Scene" 
+          className="w-full h-auto object-contain render-pixelated"
+          style={{ maxHeight: '50vh' }}  // 限制最大高度，避免过高
+          onLoad={() => {
+            console.log('[MessageWindow] 事件图片加载成功:', eventImg);
+          }}
+          onError={(e) => {
+            const currentSrc = e.currentTarget.src;
+            const fallback1 = '/assets/events/default_event.png';
+            const fallback2 = '/assets/scenes/event_placeholder.png';
+            
+            // 防止无限重试：检查是否已经尝试过所有回退
+            if (!currentSrc.includes(fallback1) && !currentSrc.includes(fallback2)) {
+              console.warn('[MessageWindow] 事件图片加载失败，尝试默认图:', eventImg);
+              e.currentTarget.src = fallback1;
+            } else if (currentSrc.includes(fallback1) && !currentSrc.includes(fallback2)) {
+              console.warn('[MessageWindow] 默认图也失败，尝试占位图');
+              e.currentTarget.src = fallback2;
+            } else {
+              // 所有回退都失败，显示 alt 文本
+              console.error('[MessageWindow] 所有图片都加载失败');
+            }
+          }}
+        />
       </motion.div>
 
       {/* 开眼动画 */}

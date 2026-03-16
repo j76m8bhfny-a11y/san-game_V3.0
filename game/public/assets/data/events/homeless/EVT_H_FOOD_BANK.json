@@ -1,0 +1,20 @@
+{
+  "id": "EVT_H_FOOD_BANK",
+  "title": "食物银行救济",
+  "description": "慈善组织正在分发救济包。你排队一小时，得到了临期面包和罐头。",
+  "conditions": {
+    "requiredClass": ["HOMELESS"],
+    "weight": 20
+  },
+  "options": {
+    "A": {
+      "text": "接受救济",
+      "effects": {
+        "hp": 15,
+        "insightGain": 3
+      },
+      "flavorText": "尊严不能当饭吃。你接过食物，低声道谢。"
+    }
+  },
+  "flavorText": "在这个国家，连吃饱饭都需要慈善。"
+}

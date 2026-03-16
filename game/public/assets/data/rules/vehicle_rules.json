@@ -1,0 +1,52 @@
+{
+  "$schema": "vehicle-rules-config",
+  "description": "车辆系统核心规则配置，被VehicleSystem使用",
+  "version": "1.0.0",
+  
+  "tradeIn": {
+    "description": "车辆置换规则",
+    "enabled": true,
+    "rateModifier": 0.05,
+    "descriptionKey": "vehicle.tradeIn.description",
+    "formula": "置换价值 = 车辆价格 × (0.6 + 区域系数) × 车况系数"
+  },
+  
+  "lease": {
+    "description": "租赁通用规则",
+    "enabled": true,
+    "downPaymentRate": 0.15,
+    "weeklyRate": 0.02,
+    "mileageLimit": 1000,
+    "overageChargePerUnit": 5,
+    "wearAndTearThreshold": 0.7,
+    "wearAndTearPenaltyRate": 0.1,
+    "descriptionKey": "vehicle.lease.description"
+  },
+  
+  "creditCheck": {
+    "description": "信用检查规则",
+    "enabled": true,
+    "rejectThreshold": 500,
+    "highRateThreshold": 600,
+    "standardRateThreshold": 700,
+    "rateModifiers": {
+      "subprime": 0.05,
+      "high": 0.02,
+      "standard": 0,
+      "low": -0.01
+    }
+  },
+  
+  "vehicleEffects": {
+    "description": "车辆效果处理配置",
+    "processingOrder": ["SAN", "HP", "ADDICTION"],
+    "applyFrequency": "TURN_START"
+  },
+  
+  "insuranceCheck": {
+    "description": "保险检查规则",
+    "billTypesRequiringAuto": ["DISASTER", "LEGAL"],
+    "noInsuranceBillId": "B_POLICE_NO_INSURANCE",
+    "accidentNoInsuranceBillId": "B_CAR_ACCIDENT_NO_INSURANCE"
+  }
+}

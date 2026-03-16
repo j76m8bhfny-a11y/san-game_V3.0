@@ -1,0 +1,30 @@
+{
+  "id": "EVT_H_PLASMA_DAMAGE",
+  "title": "血管塌陷",
+  "description": "你卖血太频繁了。护士在你的手臂上找不到完好的血管，针头在里面戳了五次才出血。你的手臂肿得像茄子。",
+  "conditions": {
+    "requiredClass": ["HOMELESS"],
+    "minTurn": 10,
+    "weight": 5
+  },
+  "options": {
+    "A": {
+      "text": "继续卖血",
+      "effects": {
+        "hp": -25,
+        "gold": 30,
+        "insightGain": 10
+      },
+      "flavorText": "你咬着牙要求继续。护士看着你，眼神像是在看一具尸体。"
+    },
+    "B": {
+      "text": "放弃今天的捐献",
+      "effects": {
+        "hp": -5,
+        "insightClear": 2
+      },
+      "flavorText": "你捂着胳膊离开了。今晚没有热饭，但至少你还有胳膊。"
+    }
+  },
+  "flavorText": "在美国，穷人的血是最后的货币。而银行正在破产。"
+}

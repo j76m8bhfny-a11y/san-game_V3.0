@@ -1,0 +1,77 @@
+{
+  "$schema": "bank-rules-config",
+  "description": "金融系统风控与借贷规则配置表，被BankSystem使用",
+  "version": "1.0.0",
+  
+  "meta": {
+    "version": "1.0",
+    "description": "金融系统风控与借贷规则配置表"
+  },
+  
+  "creditScore": {
+    "description": "信用评分系统配置",
+    "minScore": 300,
+    "maxScore": 850,
+    "ratings": [
+      { "threshold": 800, "label": "PRIME (至尊)", "color": "text-yellow-400" },
+      { "threshold": 740, "label": "EXCELLENT (卓越)", "color": "text-green-400" },
+      { "threshold": 670, "label": "GOOD (良好)", "color": "text-green-600" },
+      { "threshold": 580, "label": "FAIR (一般)", "color": "text-yellow-600" },
+      { "threshold": 300, "label": "POOR (差劲)", "color": "text-red-500" }
+    ],
+    "borrowLimit": {
+      "baseRate": 0.2,
+      "growthDivisor": 200,
+      "description": "额度计算公式: MaxAmount * (baseRate + (CurrentScore - MinScore)/growthDivisor)"
+    },
+    "actions": {
+      "hardInquiry": -5,
+      "installmentPaid": 1,
+      "loanCleared": 5
+    }
+  },
+  
+  "mortgage": {
+    "description": "房贷相关配置",
+    "foreclosureTurns": 4,
+    "warningPenalty": 10,
+    "foreclosurePenalty": 100,
+    "weeklyPrincipalRate": 0.01,
+    "weeklyServiceFee": 10,
+    "description": "房贷断供相关的触发周数与惩罚"
+  },
+  
+  "collection": {
+    "description": "债务催收阶段配置",
+    "warning": {
+      "turn": 1,
+      "scorePenalty": 30,
+      "description": "逾期第1周：仅警告"
+    },
+    "violence": {
+      "maxTurn": 3,
+      "hpDamage": 20,
+      "insightGain": 15,
+      "scorePenalty": 50,
+      "description": "逾期第2-3周：暴力催收，债务压力让人痛苦却更清醒（+Insight）"
+    },
+    "seizure": {
+      "maxTurn": 8,
+      "limit": 5000,
+      "scorePenalty": 80,
+      "description": "逾期第4-8周：强制划扣资产"
+    },
+    "jail": {
+      "sentenceTurns": 8,
+      "scorePenalty": 100,
+      "description": "逾期8周以上：入狱刑期",
+      "bailBondRate": 0.1
+    }
+  },
+  
+  "insurance": {
+    "description": "保险系统配置",
+    "contractDuration": 12,
+    "description": "保险签约时长（周）"
+  }
+}

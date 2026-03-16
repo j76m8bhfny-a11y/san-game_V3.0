@@ -1,0 +1,50 @@
+[
+  {
+    "id": "VEH_JUNK",
+    "nameKey": "vehicle.junk.name",
+    "price": 500,
+    "sellPriceRate": { "slums": 0.1, "default": 0.6 },
+    "regions": ["SLUMS"],
+    "requiredClass": "HOMELESS",
+    "effects": { "insight": -2 },
+    "tags": ["VEHICLE", "TIER_1", "ILLEGAL"],
+    "restrictions": {
+      "blockedRegions": ["SUBURBS", "DOWNTOWN"],
+      "warningKey": "vehicle.junk.regionWarning"
+    },
+    "billTriggers": {
+      "breakdownChance": 0.25,
+      "breakdownBillId": "B_SLUMS_CAR_BREAKDOWN"
+    }
+  },
+  {
+    "id": "VEH_PICKUP",
+    "nameKey": "vehicle.pickup.name",
+    "price": 2000,
+    "sellPriceRate": { "default": 0.6 },
+    "regions": ["RUST_BELT"],
+    "requiredClass": "WORKER",
+    "loanProductId": "LOAN_CAR_SUBPRIME",
+    "tags": ["VEHICLE", "TIER_1"]
+  },
+  {
+    "id": "VEH_SEDAN",
+    "nameKey": "vehicle.sedan.name",
+    "price": 8000,
+    "sellPriceRate": { "default": 0.65 },
+    "regions": ["SUBURBS", "RUST_BELT"],
+    "requiredClass": "MIDDLE",
+    "creditScoreRequired": 600,
+    "loanProductId": "LOAN_CAR_STANDARD",
+    "tags": ["VEHICLE", "TIER_2"]
+  },
+  {
+    "id": "VEH_LIMO",
+    "nameKey": "vehicle.limo.name",
+    "price": 150000,
+    "sellPriceRate": { "default": 0.7 },
+    "regions": ["DOWNTOWN"],
+    "requiredClass": "CAPITALIST",
+    "tags": ["VEHICLE", "TIER_4", "POLICE_IMMUNE"]
+  }
+]

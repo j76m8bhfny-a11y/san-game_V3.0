@@ -1,0 +1,102 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C13_CREDIT_SCORE_DROP",
+  "title": "信用评分下降",
+  "category": "COMMON",
+  "series": "金融系统",
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS",
+      "WORKER",
+      "MIDDLE",
+      "CAPITALIST"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "你收到信用报告通知：评分下降了50分。原因是一笔你根本不记得的查询记录。修复需要数月，影响贷款、租房、甚至工作。",
+  "historicalNote": "美国信用评分系统不透明且容易出错，影响数亿人的生活机会。",
+  "options": {
+    "A": {
+      "label": "聘请信用修复公司",
+      "roast": "花钱修复你被系统弄错的数据，完美的资本主义闭环。",
+      "flavorText": "你相信专业服务能解决问题，尽管这不是你的错。",
+      "ideology": "新自由主义/服务外包",
+      "archiveCommentary": "将系统性错误转嫁给个人，然后卖出解决方案。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": {
+          "old": 3
+        }
+      }
+    },
+    "B": {
+      "label": "自己慢慢申诉",
+      "roast": "和官僚主义搏斗，祝你有足够的耐心和时间。",
+      "flavorText": "你知道这会很难，但你买不起帮助。",
+      "ideology": "犬儒主义/自助",
+      "archiveCommentary": "制度故意设置障碍，让穷人无法维护权益。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "买信用监控服务",
+      "roast": "被监视一次不够，还要付费被持续监视。",
+      "flavorText": "你为安全感付费，即使这是系统制造的恐惧。",
+      "ideology": "消费主义/恐惧营销",
+      "archiveCommentary": "创造恐惧然后卖出解决方案，是金融服务的经典套路。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": {
+          "wolf": 3
+        }
+      }
+    },
+    "D": {
+      "label": "这是金融化的社会控制",
+      "roast": "说得对，但你现在需要那笔贷款。",
+      "flavorText": "你明白这是控制机制，但你被困在其中。",
+      "ideology": "激进左翼/金融批判",
+      "archiveCommentary": "信用评分是一种社会控制技术，将阶级固化数据化。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C13_CREDIT_APARTHEID",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": {
+          "red": 15
+        }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": [
+      "EVT_C14_OVERDRAFT",
+      "EVT_C15_DEBT_COLLECTION"
+    ]
+  },
+  "image": "/assets/events/common/evt_credit_report.png"
+}

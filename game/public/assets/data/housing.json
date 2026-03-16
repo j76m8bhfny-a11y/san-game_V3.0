@@ -1,0 +1,75 @@
+[
+  {
+    "id": "TENT_UNDER_BRIDGE",
+    "name": "桥下帐篷营位",
+    "region": "SLUMS",
+    "requiredClass": "HOMELESS",
+    "value": 0,
+    "regenHp": 10,
+    "defenseLevel": 2,
+    "rentConfig": {
+      "deposit": 0,
+      "weeklyCosts": [
+        { "key": "RENT", "label": "营地保护费", "baseAmount": 35 }
+      ]
+    },
+    "description": "你付的不是房租，而是确保证府铲车来清理市容时，有人能提前五分钟叫醒你的信息费。"
+  },
+  {
+    "id": "MOTEL_EXTENDED_STAY",
+    "name": "汽车旅馆长租客房",
+    "region": "RUST_BELT",
+    "requiredClass": "WORKER",
+    "value": 5000,
+    "regenHp": 25,
+    "defenseLevel": 5,
+    "rentConfig": {
+      "deposit": 300,
+      "weeklyCosts": [
+        { "key": "RENT", "label": "周租金", "baseAmount": 200 }
+      ]
+    },
+    "description": "典型的穷人税。因为付不出正式公寓的'押一付三'和信用检查，你只能按周付高昂的旅馆费，永远攒不下首付。地毯吸满了前任房客的绝望。"
+  },
+  {
+    "id": "HOUSE_SUBURBAN",
+    "name": "郊区独栋别墅",
+    "region": "SUBURBS",
+    "requiredClass": "MIDDLE",
+    "value": 400000,
+    "regenHp": 45,
+    "defenseLevel": 12,
+    "buyConfig": {
+      "price": 400000,
+      "downPaymentRate": 0.2,
+      "mortgageTermTurns": 520,
+      "interestRate": 0.002,
+      "weeklyCosts": [
+        { "key": "TAX", "label": "房产税", "baseAmount": 150 },
+        { "key": "HOA", "label": "HOA管委会费", "baseAmount": 100 }
+      ]
+    },
+    "description": "三十年固定利率贷款让你拥有了这堆木头和石膏板。但只要你的草坪比邻居高出两英寸，社区管委会依然能让你体会到无产阶级的无力感。"
+  },
+  {
+    "id": "PENTHOUSE_DOWNTOWN",
+    "name": "市中心顶层公寓",
+    "region": "DOWNTOWN",
+    "requiredClass": "CAPITALIST",
+    "value": 3000000,
+    "regenHp": 80,
+    "defenseLevel": 25,
+    "buyConfig": {
+      "price": 3000000,
+      "downPaymentRate": 0.3,
+      "mortgageTermTurns": 520,
+      "interestRate": 0.001,
+      "weeklyCosts": [
+        { "key": "TAX", "label": "豪宅税", "baseAmount": 800 },
+        { "key": "CONCIERGE", "label": "礼宾服务费", "baseAmount": 400 },
+        { "key": "SECURITY", "label": "私人安保费", "baseAmount": 300 }
+      ]
+    },
+    "description": "真正的富人从不全款买房，而是用极低的利率套取银行的钱。防弹玻璃外是随地大小便的无家可归者，玻璃内是恒温72华氏度的酒窖。这就是美国梦的最顶层。"
+  }
+]

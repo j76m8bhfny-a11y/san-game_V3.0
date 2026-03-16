@@ -1,0 +1,81 @@
+{
+  "$schema": "medical-rules-config",
+  "description": "医疗系统配置，被MedicalSystem使用",
+  "version": "1.0.0",
+  
+  "settings": {
+    "description": "基础设置",
+    "baseRiskMultiplier": 1.0,
+    "maxAddictionLevel": 100
+  },
+  
+  "messages": {
+    "description": "系统消息",
+    "noInsurance": "无保险覆盖",
+    "notInCatalog": "此服务不在医保目录内",
+    "planNotCover": "您的保险计划不包含此类服务",
+    "cashTransaction": "现金交易",
+    "invalidService": "无效服务",
+    "invalidCost": "无效费用"
+  },
+  
+  "uiText": {
+    "description": "UI文本",
+    "confirmSurgery": "签署免责协议并手术",
+    "payAndTreat": "支付并治疗",
+    "insufficientFunds": "余额不足"
+  },
+  
+  "policies": {
+    "description": "特殊医疗政策",
+    "specialAid": [
+      {
+        "id": "HOMELESS_EMERGENCY_ACT",
+        "match": {
+          "class": "HOMELESS",
+          "serviceType": "EMERGENCY"
+        },
+        "effect": {
+          "copayRate": 0,
+          "reason": "紧急医疗救助法案 (白卡)"
+        }
+      }
+    ]
+  },
+  
+  "hospitalThemes": {
+    "description": "医院主题配置（按区域）",
+    "SLUMS": {
+      "name": "地下诊所",
+      "desc": "只收现金和器官。",
+      "bg": "bg-stone-950",
+      "accent": "text-red-600",
+      "border": "border-red-900/30",
+      "icon": "🩸"
+    },
+    "RUST_BELT": {
+      "name": "工业医院",
+      "desc": "排队、冷漠、高效。",
+      "bg": "bg-slate-900",
+      "accent": "text-orange-500",
+      "border": "border-orange-500/30",
+      "icon": "🏥"
+    },
+    "DOWNTOWN": {
+      "name": "医疗中心",
+      "desc": "格式化你的破碎灵魂。",
+      "bg": "bg-indigo-950",
+      "accent": "text-cyan-400",
+      "border": "border-cyan-500/30",
+      "icon": "🧬"
+    },
+    "DEFAULT": {
+      "name": "社区诊所",
+      "desc": "基础医疗服务。",
+      "bg": "bg-gray-900",
+      "accent": "text-white",
+      "border": "border-white/10",
+      "icon": "✚"
+    }
+  }
+}

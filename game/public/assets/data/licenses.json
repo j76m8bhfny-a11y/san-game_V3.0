@@ -1,0 +1,31 @@
+[
+  {
+    "id": "LICENSE_FAKE",
+    "nameKey": "license.fake.name",
+    "type": "FAKE",
+    "price": 500,
+    "regions": ["SLUMS"],
+    "tags": ["LICENSE", "ILLEGAL"],
+    "policeCheck": {
+      "detectChance": 0.3,
+      "failureBillId": "B_POLICE_FAKE_LICENSE"
+    }
+  },
+  {
+    "id": "LICENSE_VALID",
+    "nameKey": "license.valid.name",
+    "type": "VALID",
+    "price": 50,
+    "regions": ["RUST_BELT", "SUBURBS"],
+    "waitTurns": 1,
+    "tags": ["LICENSE"]
+  },
+  {
+    "id": "LICENSE_ELITE",
+    "nameKey": "license.elite.name",
+    "type": "ELITE",
+    "price": 5000,
+    "regions": ["DOWNTOWN"],
+    "tags": ["LICENSE", "POLICE_IMMUNE"]
+  }
+]

@@ -1,0 +1,102 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C15_DEBT_COLLECTION",
+  "title": "催债电话",
+  "category": "COMMON",
+  "series": "金融系统",
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS",
+      "WORKER",
+      "MIDDLE",
+      "CAPITALIST"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "电话响了。一个机械的声音通知你：债务已转让给收债公司。从此，你的噩梦开始——每天十几个电话，威胁，骚扰，直到你付清。",
+  "historicalNote": "美国收债行业规模庞大，经常使用非法手段骚扰债务人。",
+  "options": {
+    "A": {
+      "label": "协商还款计划",
+      "roast": "协商？他们只是想要你的钱，不是谈判。",
+      "flavorText": "你相信沟通能解决问题，尽管对方不这么想。",
+      "ideology": "新自由主义/个人责任",
+      "archiveCommentary": "将债务问题个人化，忽视系统性原因。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": {
+          "old": 3
+        }
+      }
+    },
+    "B": {
+      "label": "换号码，躲起来",
+      "roast": "现代版的躲债，但债务不会消失。",
+      "flavorText": "你选择逃避，这是你能想到的唯一办法。",
+      "ideology": "犬儒主义/逃避",
+      "archiveCommentary": "面对压倒性力量时的逃避策略。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "买债务咨询服务",
+      "roast": "用更多债务解决债务，金融炼金术。",
+      "flavorText": "你希望专业帮助能让你喘口气。",
+      "ideology": "消费主义/服务依赖",
+      "archiveCommentary": "将金融问题转化为服务需求，创造寄生性产业。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": {
+          "wolf": 3
+        }
+      }
+    },
+    "D": {
+      "label": "这是债务奴隶制的现代形式",
+      "roast": "说得对，但你 still 要接那些电话。",
+      "flavorText": "你明白这是系统性的压迫，但无处可逃。",
+      "ideology": "激进左翼/债务批判",
+      "archiveCommentary": "债务是一种社会控制机制，将人绑定在劳动中。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C15_DEBT_PEONAGE",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": {
+          "red": 15
+        }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": [
+      "EVT_C13_CREDIT_SCORE_DROP",
+      "EVT_C14_OVERDRAFT"
+    ]
+  },
+  "image": "/assets/events/common/evt_debt_collector.png"
+}

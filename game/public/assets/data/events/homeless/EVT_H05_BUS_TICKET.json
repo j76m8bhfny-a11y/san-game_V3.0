@@ -1,0 +1,101 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_H05_BUS_TICKET",
+  "title": "单程车票",
+  "category": "HOMELESS",
+  "series": "社会排斥",
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "警察把你叫醒，递给你一张去往几百公里外城市的长途大巴票：“去那边吧，那边福利好。”",
+  "historicalNote": "美国多个州实行'灰狗疗法'(Greyhound Therapy)，将流浪者用大巴送往其他城市，而非提供实际帮助。",
+  "options": {
+    "A": {
+      "label": "温暖的人道主义关怀！",
+      "roast": "你感动得痛哭流涕，谢谢警察叔叔把你扔进了垃圾堆。",
+      "flavorText": "你相信他们是真心想帮你。也许那个城市真的有更好的机会。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "将驱逐包装成帮助，这是系统最擅长的叙事技巧。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 8,
+        "points": {
+          "old": 3
+        }
+      }
+    },
+    "B": {
+      "label": "拿着吧，比坐牢强",
+      "roast": "认命吧。你就是一袋被踢来踢去的垃圾。",
+      "flavorText": "你知道这不是真正的帮助，但至少比被关起来好。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "接受次优选择是长期贫困者的生存策略。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "优化人口资源配置",
+      "roast": "说得好听。翻译过来就是：只要不烂在我家门口就行。",
+      "flavorText": "你开始用政策语言思考这件事。也许这确实是更有效率的安排。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "将人视为可调配的'资源'是技术官僚的核心思维。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": {
+          "wolf": 3
+        }
+      }
+    },
+    "D": {
+      "label": "这就是“灰狗疗法”",
+      "roast": "看穿了把戏。恭喜你，即将开始一段通往地狱的旅行。",
+      "flavorText": "你明白了：这不是帮助，这是流放。把你像垃圾一样扔得远远的。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "灰狗疗法将无家可归从一个社会问题转化为一个地理问题。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.05_BUSSED_OUT",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": {
+          "red": 15
+        }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_05_BUS_TICKET",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [
+      "https://www.theguardian.com/us-news/2017/aug/25/greyhound-therapy-america-mental-health-homeless"
+    ],
+    "relatedEvents": [
+      "EVT_H35_STAY_AWAY"
+    ]
+  },
+  "image": "/assets/events/homeless/evt_one_way_ticket.png"
+}

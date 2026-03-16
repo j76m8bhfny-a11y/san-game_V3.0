@@ -1,0 +1,498 @@
+{
+  "$schema": "narrative-rules-config",
+  "description": "叙事/故事系统配置 - 定义节奏、UI样式、档案分类等，被NarrativeSystem使用",
+  "version": "1.0.0",
+  
+  "system": {
+    "description": "系统基础配置",
+    "priority": 10,
+    "defaults": {
+      "optionSanLock": 70,
+      "eventWeight": 10
+    }
+  },
+  
+  "pacing": {
+    "description": "叙事节奏配置",
+    "typewriterSpeedMs": 30,
+    "delayTitleToBodyMs": 3500,
+    "delayBodyToInteractionMs": 1500,
+    "delayPhoneSlideInMs": 1200,
+    "autoResolveDelayMs": 500
+  },
+  
+  "ui": {
+    "description": "UI样式配置",
+    "bubbleColors": {
+      "safe": "#007AFF",
+      "risk": "#FF3B30",
+      "special": "#FFCC00",
+      "awakening": "#AF52DE",
+      "default": "#E9E9EB"
+    },
+    "bubbleStyles": {
+      "#007AFF": { "bg": "bg-blue-500", "text": "text-white", "shadow": "shadow-blue-500/50" },
+      "#FF3B30": { "bg": "bg-red-500", "text": "text-white", "shadow": "shadow-red-500/50" },
+      "#FFCC00": { "bg": "bg-yellow-500", "text": "text-black", "shadow": "shadow-yellow-500/50" },
+      "#AF52DE": { "bg": "bg-purple-500", "text": "text-white", "shadow": "shadow-purple-500/50" },
+      "#E9E9EB": { "bg": "bg-gray-200", "text": "text-black", "shadow": "shadow-gray-200/50" }
+    },
+    "impactAnimation": {
+      "initialScale": 3,
+      "stiffness": 300,
+      "damping": 15,
+      "randomRotationRange": [-5, 5],
+      "settleRotationRange": [-2, 2]
+    },
+    "animationTimings": {
+      "optionRevealDelay": 500,
+      "stageTransitionDelay": 400,
+      "typingSoundFrequency": 2
+    },
+    "toastStyles": {
+      "success": "bg-green-900/80 border-green-500 text-green-100",
+      "warning": "bg-yellow-900/80 border-yellow-500 text-yellow-100",
+      "error": "bg-red-900/80 border-red-500 text-red-100",
+      "info": "bg-blue-900/80 border-blue-500 text-blue-100",
+      "GOLD": "bg-yellow-600/90 border-yellow-300 text-yellow-50 font-bold",
+      "HP": "bg-red-600/90 border-red-300 text-red-50 font-bold",
+      "SAN": "bg-purple-600/90 border-purple-300 text-purple-50 font-bold"
+    }
+  },
+  
+  "archives": {
+    "description": "档案系统配置",
+    "categories": [
+      { "id": "HOMELESS", "label": "流浪汉", "prefix": null },
+      { "id": "WORKER", "label": "工人", "prefix": "No.W" },
+      { "id": "MIDDLE", "label": "中产", "prefix": "No.M" },
+      { "id": "CAPITALIST", "label": "资本家", "prefix": "No.C" },
+      { "id": "ENDING", "label": "结局", "prefix": null }
+    ]
+  },
+  
+  "classChange": {
+    "description": "阶级变化文案配置",
+    "descriptions": {
+      "HOMELESS->WORKER": "你终于有了固定住所，不再是流浪者了。",
+      "WORKER->HOMELESS": "你失去了住所，重回街头。",
+      "WORKER->MIDDLE": "恭喜进入中产，但房贷才刚刚开始。",
+      "MIDDLE->WORKER": "资产缩水，中产梦碎。",
+      "MIDDLE->CAPITALIST": "欢迎来到顶层，这里的空气都弥漫着金钱的味道。",
+      "CAPITALIST->MIDDLE": "从云端跌落，但至少还有房子住。",
+      "CAPITALIST->WORKER": "一夜回到解放前。",
+      "CAPITALIST->HOMELESS": "真正的从零开始。"
+    },
+    "defaultTemplate": "阶级变化: {oldClass} -> {newClass}",
+    
+    "visual": {
+      "upgrade": {
+        "bgGradient": "from-yellow-900/80 via-amber-900/60 to-black",
+        "accentColor": "#fbbf24",
+        "icon": "↗️",
+        "animation": "rise",
+        "sound": "/assets/audio/sfx_class_upgrade.mp3"
+      },
+      "downgrade": {
+        "bgGradient": "from-gray-900 via-slate-800 to-black",
+        "accentColor": "#6b7280",
+        "icon": "↘️",
+        "animation": "fall",
+        "sound": "/assets/audio/sfx_class_downgrade.mp3"
+      }
+    },
+    "titles": {
+      "upgrade": "阶级跃升",
+      "downgrade": "阶级滑落"
+    },
+    "descriptions": {
+      "HOMELESS->WORKER": {
+        "title": "摆脱流浪",
+        "desc": "你终于有了固定住所，不再是流浪者了。",
+        "flavor": "从街头到屋檐，这一步走了太久。"
+      },
+      "WORKER->HOMELESS": {
+        "title": "重回街头",
+        "desc": "你失去了住所，重回街头。",
+        "flavor": "资本的容错率很低，你成了被淘汰的数字。"
+      },
+      "WORKER->MIDDLE": {
+        "title": "进入中产",
+        "desc": "恭喜进入中产，但房贷才刚刚开始。",
+        "flavor": "你拥有了资产，同时也拥有了焦虑。"
+      },
+      "MIDDLE->WORKER": {
+        "title": "中产梦碎",
+        "desc": "资产缩水，中产梦碎。",
+        "flavor": "一次意外，多年的积累化为泡影。"
+      },
+      "MIDDLE->CAPITALIST": {
+        "title": "资本阶级",
+        "desc": "欢迎来到顶层，这里的空气都弥漫着金钱的味道。",
+        "flavor": "你已经从棋子变成了棋手。"
+      },
+      "CAPITALIST->MIDDLE": {
+        "title": "跌落云端",
+        "desc": "从云端跌落，但至少还有房子住。",
+        "flavor": "市场是无情的，即使对赢家也是如此。"
+      },
+      "CAPITALIST->WORKER": {
+        "title": "一夜归零",
+        "desc": "一夜回到解放前。",
+        "flavor": "杠杆是双刃剑，你这次割伤了自己。"
+      },
+      "CAPITALIST->HOMELESS": {
+        "title": "彻底破产",
+        "desc": "真正的从零开始。",
+        "flavor": "从摩天大楼到 cardboard box，美利坚梦的两极。"
+      }
+    },
+    "mechanicsHint": {
+      "HOMELESS": "街头生存：更多自由，更少保护",
+      "WORKER": "蓝领生活：稳定收入，持续消耗",
+      "MIDDLE": "中产陷阱：高支出，高风险",
+      "CAPITALIST": "资本运作：钱生钱，或钱吃人"
+    }
+  },
+  
+  "burningEffect": {
+    "description": "未选择选项的燃烧效果配置 - 制造错失感(FOMO)",
+    "enabled": true,
+    "animationDuration": 0.8,
+    "ashOpacity": 0.4,
+    "grayscaleIntensity": 100,
+    "scaleReduction": 0.95,
+    "whisperDuration": 2,
+    "whisperDelay": 0.3,
+    "ghostWhispers": {
+      "A": "你选择了安全",
+      "B": "你选择了麻木",
+      "C": "你选择了妥协",
+      "D": "你回避了真相"
+    }
+  },
+  
+  "turnTransition": {
+    "description": "回合结束过渡动画配置 - 闭眼、吐槽、翻日历、睁眼",
+    "timings": {
+      "eyeCloseDuration": 0.6,
+      "darkScreenDuration": 1500,
+      "calendarFlipDuration": 0.3,
+      "eyeOpenDuration": 0.6,
+      "totalDuration": 3000
+    },
+    "sounds": {
+      "eyeClose": "/assets/audio/sfx/eye_close.mp3",
+      "eyeOpen": "/assets/audio/sfx/eye_open.mp3",
+      "calendarFlip": "/assets/audio/sfx/paper_flip.mp3",
+      "typewriter": "/assets/audio/sfx/typewriter_click.mp3"
+    },
+    "visual": {
+      "darkScreenBg": "#000000",
+      "textColor": "#E0E0E0",
+      "textSize": "1.25rem",
+      "typewriterSpeed": 40,
+      "glitchIntensity": 0.15
+    }
+  },
+  
+  "darkHumorLines": {
+    "description": "回合结束黑屏吐槽文案 - 多维度属性匹配",
+    "matchingPriority": ["critical", "classSpecific", "hp", "insight", "gold", "hunger", "disease", "debt", "survival"],
+    
+    "critical": [
+      {
+        "id": "nearDeath",
+        "conditions": { "hp": { "max": 15 } },
+        "lines": [
+          "你的HP已经比美国的医保覆盖范围还窄了",
+          "再掉一点血你就可以申请成为器官捐献者了——当然，是接收方",
+          "你已经半透明了，建议直接办理幽灵签证，那个不要钱"
+        ]
+      },
+      {
+        "id": "deadBroke",
+        "conditions": { "gold": { "max": 0 }, "hp": { "max": 25 } },
+        "lines": [
+          "身无分文且濒死，你已经集齐了美利坚生存的地狱难度全成就",
+          "恭喜！你的生存状态比 startup 的 burn rate 还快",
+          "你现在的处境连AI都预测不到——因为你已经被归类为'统计误差'了"
+        ]
+      }
+    ],
+    
+    "classSpecific": {
+      "HOMELESS": [
+        "本周街头生存成就：没被警察赶走，没被抢劫，没冻死。下周继续努力",
+        "你的体味已经和这座城市的垃圾桶达成了微妙的生态系统平衡",
+        "收容所又没位置了，但别担心，长椅第3排视野开阔，通风良好",
+        "你已经掌握了在咖啡店假装等人来取暖的高级生存技巧，这是技能树点满",
+        "星巴克店员看到你的眼神，就像看到会走路的负债表"
+      ],
+      "WORKER": [
+        "本周剩余价值贡献度：优秀。资本家给你点了个赞然后换了辆新车",
+        "你的工时比墨西哥非法移民还长，工资却比他们少——这就是所谓的'合法优势'",
+        "恭喜！你的老板因为你的努力工作而获得了年度企业家奖，你在台下鼓掌",
+        "你的身体正在以比996还快的速度走向报废，但医保不覆盖'过劳'",
+        "你的养老金计划：祈祷在退休前别死。成功率：未知"
+      ],
+      "MIDDLE": [
+        "房贷进度：2.7%。按照当前速度，你将在退休后第3年还清，前提是你能活到那时候",
+        "你的焦虑水平已经超过了全国中产平均值的150%，但这很正常，不正常才不正常",
+        "私立学校账单又来了，你的精子/卵子正在以复利速度消耗你的养老金",
+        "HOA警告：你的草坪长度超标了0.3英寸，罚款$50。自由美利坚，草坪最优先",
+        "你的401k正在以比全球变暖还慢的速度增长，但至少它在增长...吧？"
+      ],
+      "CAPITALIST": [
+        "你的游艇隔音效果真好，完全听不到穷人的哀嚎。建议加装防弹玻璃，以防万一",
+        "本周避税金额：$XXX,XXX。IRS正在羡慕你的会计师，同时审计你的司机",
+        "恭喜！你通过做空某家公司让500个工人失业，股价涨了2%。这是效率",
+        "你的血浆投资回报率比房租还高，建议多开几家血浆中心，穷人可再生资源",
+        "你已经实现了'财务自由'——现在你有足够的钱买更多使你焦虑的东西了"
+      ]
+    },
+    
+    "hp": {
+      "0-20": [
+        "你的生命值正在以比美利坚基础设施还快的速度崩溃",
+        "建议开始写遗书，但墨水可能会比你活得久",
+        "你的身体正在发出最后通牒，但房东不接收这个作为房租"
+      ],
+      "21-40": [
+        "你的HP状态：可以用，但不建议。就像这个国家的公共交通",
+        "你现在的身体状况，保险公司会把你归类为'既往症'——如果你买得起保险的话",
+        "建议购买棺材，批量购买有折扣"
+      ],
+      "41-60": [
+        "半血状态，就像你的美国梦——还活着，但不知道为什么",
+        "你的身体正在和美国医疗体系进行拉锯战，目前比分：0:0，但你快没钱了",
+        "建议放慢脚步，但账单不会让你这么做"
+      ],
+      "61-80": [
+        "健康状况良好，以美利坚标准来说。在这个国家，'没死'就是'健康'",
+        "你的HP足够支撑到下一次意外，或者下一次账单",
+        "身体状态稳定，但别问心理状态的 opinions"
+      ],
+      "81-100": [
+        "满血状态！建议尽快受伤，不然医保白买了",
+        "你的健康程度让保险公司感到不安，他们正在研究如何定义'过度健康'为既往症",
+        "完美的身体状态，完美的目标。建议低调，这里嫉妒是 taxable income"
+      ]
+    },
+    
+    "insight": {
+      "0-20": [
+        "灵视：0。你看着新闻里的贫困数据，觉得'至少不是我'",
+        "你的觉醒度约等于一块披萨的营养价值——有，但不多",
+        " blissful ignorance（幸福的无知）是你的默认状态，恭喜，这是免费的"
+      ],
+      "21-40": [
+        "你开始注意到一些事情不对劲，但就像注意到邻居家着火了——只要不看就行",
+        "你的灵视让你看到了系统的裂缝，但你还以为那是特色设计",
+        "半觉醒状态：你知道有问题，但还没意识到这个问题有多大"
+      ],
+      "41-60": [
+        "中等的觉醒度，就像中等的收入——不够高以逃脱，不够低以麻木",
+        "你看到了足够多的真相，开始失眠，但还没看到足够多以放弃",
+        "你的灵视正在以比通胀还快的速度增长，这不是好事"
+      ],
+      "61-80": [
+        "高灵视警告：你看到了系统的代码，但无法退出。这不是游戏，但你希望它是",
+        "你的san值正在以比比特币还快的速度波动，建议停止思考，但已经太晚了",
+        "你知道得太多，以至于无法享受任何娱乐。'清醒的诅咒'已激活"
+      ],
+      "81-100": [
+        "灵视MAX：你已经看到了矩阵的源代码，发现它是一坨屎山。恭喜你，你无法 unsee",
+        "你的觉醒度让你成为了系统的威胁，FBI 正在计算你的威胁/逮捕成本比",
+        "你已经看透了资本主义的本质，现在你有两个选择：发疯，或者成为革命者。或者两者"
+      ]
+    },
+    
+    "gold": {
+      "negative": [
+        "负资产状态，你已经比 startup 的估值还虚高了",
+        "你的银行账户正在以黑洞模式运行，光都逃不出去",
+        "债务人的最高境界：债主开始怀疑追债的成本是否值得"
+      ],
+      "0-100": [
+        "你的钱只够买一杯咖啡——不加奶，不加糖，不加杯子",
+        "濒临破产，但别担心，在美国破产是公民的基本权利，和投票权一样",
+        "你的财富水平让你成为了经济学教科书的活例子：如何不活着"
+      ],
+      "101-500": [
+        "刚好够活，不够死。美国中产的标准配置",
+        "你的存款可以支撑一场小病，或者半场大病，或者零场大病加救护车",
+        "小资状态：比穷人有钱，比富人焦虑，这是美国梦的核心"
+      ],
+      "501-2000": [
+        "中等资产，就像中等的美利坚梦——有，但正在缩水",
+        "你的钱足够让你产生'也许能买房'的幻觉，恭喜，这是设计好的",
+        "财务状态稳定，稳定地向被通胀吃掉的方向发展"
+      ],
+      "2001+": [
+        "资金充裕！建议尽快花掉，不然税务局的算法会注意到你",
+        "你的财富让你成为了顶层X%，但这个X正在以比你存钱还快的速度增长",
+        "有钱人的烦恼：如何在不被抢劫的情况下展示财富。答案：你已经在被抢劫了，叫税收"
+      ]
+    },
+    
+    "hunger": {
+      "high": [
+        "你的饥饿程度已经超过了索马里难民，但这里是美利坚，'食物充足'的国度",
+        "建议把KFC的免费番茄酱当汤喝，这是穷人的法式浓汤",
+        "别看电视上的美食广告，那会让你的胃更痛——但你又停不下来"
+      ],
+      "medium": [
+        "有点饿，但还没饿到可以吃下 anything 的程度。这就是自律",
+        "你的饥饿水平刚好让你保持清醒，也刚好让你保持暴躁",
+        "建议吃泡面，这是穷人的 universal basic income"
+      ],
+      "low": [
+        "饱食状态！建议尽快饿回去，不然你会忘记饥饿是什么感觉",
+        "你的胃是满的，但你的灵魂可能不是。不过在这里，胃比较重要",
+        "食物充足，这是美利坚梦的第一阶段。第二阶段是：别生病"
+      ]
+    },
+    
+    "disease": {
+      "has": [
+        "你的免疫系统正在经历比美国医疗体系还严重的危机",
+        "建议把抗生素当维生素吃，反正医保不报销 preventive care",
+        "生病？在这个国家，生病是一种奢侈，就像游艇一样"
+      ],
+      "none": [
+        "健康状态，建议尽快生病以验证医保是否真的有用",
+        "没病没痛，这在美利坚是一种临时的异常状态，建议享受",
+        "你的身体运转正常，这在统计学上是不正常的"
+      ]
+    },
+    
+    "debt": {
+      "has": [
+        "你的债务增长速度已经超过了美国的国债，恭喜成为国家经济的一部分",
+        "银行爱你的程度，就像你爱呼吸一样不可或缺——而且你无法停止",
+        "你的信用评分正在以自由落体的速度下降，但没关系，反正你也借不到钱了"
+      ],
+      "none": [
+        "无债一身轻，建议尽快负债以融入美利坚文化",
+        "零债务状态，这在美利坚就像独角兽一样稀有。你被盯上了",
+        "没有债务？那你一定有什么别的隐藏问题，建议检查"
+      ]
+    },
+    
+    "survival": [
+      "又活了一周，这已经超越了47%的润人。但他们大多死在了第一周，所以...",
+      "系统正在记录你的数据，就像记录实验室的小白鼠。第{turn}周，状态：还活着",
+      "你的生存轨迹已经被算法预测，下一步推荐：继续挣扎，别问为什么",
+      "如果这是一个游戏，你已经玩了{turn}周。如果是人生，你无法存档。如果是地狱，欢迎来到第{turn}层"
+    ]
+  },
+  
+  "playerSprites": {
+    "description": "各阶级人物图配置 - 事件窗口左下角显示",
+    "enabled": true,
+    "default": "/assets/scenes/player_back.png",
+    "transitionDuration": 0.5,
+    "byClass": {
+      "HOMELESS": {
+        "normal": "/assets/characters/homeless_back.png",
+        "highInsight": "/assets/characters/homeless_silhouette.png",
+        "altText": "衣衫褴褛的背影"
+      },
+      "WORKER": {
+        "normal": "/assets/characters/worker_back.png",
+        "highInsight": "/assets/characters/worker_silhouette.png",
+        "altText": "穿着工装的背影"
+      },
+      "MIDDLE": {
+        "normal": "/assets/characters/middle_back.png",
+        "highInsight": "/assets/characters/middle_silhouette.png",
+        "altText": "西装革履的背影"
+      },
+      "CAPITALIST": {
+        "normal": "/assets/characters/capitalist_back.png",
+        "highInsight": "/assets/characters/capitalist_silhouette.png",
+        "altText": "定制西装的背影"
+      }
+    },
+    "highInsightThreshold": 70
+  },
+  
+  "introComic": {
+    "description": "开场美漫漫画配置",
+    "enabled": true,
+    "style": {
+      "fontFamily": "Bangers, Impact, sans-serif",
+      "borderStyle": "jagged",
+      "colorScheme": "noir",
+      "panelTransition": "slide",
+      "transitionDuration": 0.6
+    },
+    "sounds": {
+      "pageTurn": "/assets/audio/sfx_comic_page.mp3",
+      "bubblePop": "/assets/audio/sfx_bubble_pop.mp3"
+    },
+    "panels": [
+      {
+        "id": "panel_1",
+        "background": "/assets/comic/panel1_arrival.png",
+        "caption": "你终于踏上了美利坚的土地...",
+        "bubbles": [
+          {
+            "type": "narration",
+            "text": "XXXX年X月X日",
+            "position": "top"
+          },
+          {
+            "type": "thought",
+            "text": "自由女神...我来了！",
+            "position": "center",
+            "delay": 600
+          }
+        ],
+        "duration": 3000
+      },
+      {
+        "id": "panel_2",
+        "background": "/assets/comic/panel2_reality.png",
+        "caption": "但现实给你上了第一课",
+        "bubbles": [
+          {
+            "type": "dialogue",
+            "text": "租房押金要三个月？！",
+            "position": "left"
+          },
+          {
+            "type": "dialogue",
+            "text": "那是你的问题。",
+            "position": "right",
+            "speaker": "房东",
+            "delay": 800
+          }
+        ],
+        "duration": 4000
+      },
+      {
+        "id": "panel_3",
+        "background": "/assets/comic/panel3_survival.png",
+        "caption": "欢迎来到地狱难度的生存游戏",
+        "bubbles": [
+          {
+            "type": "narration",
+            "text": "没有医保。没有存款。没有退路。",
+            "position": "top"
+          },
+          {
+            "type": "thought",
+            "text": "至少...我还活着？",
+            "position": "bottom",
+            "delay": 1000
+          }
+        ],
+        "duration": 3500
+      }
+    ],
+    "finalText": "你能在这个吃人的系统里活多久？",
+    "startButton": "开始求生"
+  }
+}

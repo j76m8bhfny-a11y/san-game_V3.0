@@ -1,0 +1,47 @@
+{
+  "$schema": "dmv-rules-config",
+  "description": "DMV驾照办理系统配置，被VehicleSystem使用",
+  "version": "1.0.0",
+  
+  "baseWaitTurns": 1,
+  
+  "queueNumberRange": {
+    "description": "排队号码生成范围",
+    "min": 50,
+    "max": 150
+  },
+  
+  "progressPerTurn": {
+    "description": "每回合叫号进度范围",
+    "min": 8,
+    "max": 15
+  },
+  
+  "regionalModifiers": {
+    "description": "区域特殊规则",
+    "RUST_BELT": {
+      "waitTurns": 1,
+      "descriptionKey": "dmv.rules.rustbelt.desc"
+    }
+  },
+  
+  "licenseTypes": {
+    "description": "驾照类型配置",
+    "VALID": {
+      "waitTurns": 1,
+      "requiresDMV": true,
+      "description": "普通有效驾照，需要排队办理"
+    },
+    "ELITE": {
+      "waitTurns": 0,
+      "requiresDMV": false,
+      "descriptionKey": "dmv.rules.elite.bypass",
+      "description": "精英驾照，免排队"
+    },
+    "FAKE": {
+      "waitTurns": 0,
+      "requiresDMV": false,
+      "description": "假驾照，无需办理但有风险"
+    }
+  }
+}

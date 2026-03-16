@@ -1,0 +1,102 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C19_LOTTERY",
+  "title": "彩票诱惑",
+  "category": "COMMON",
+  "series": "经济幻觉",
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS",
+      "WORKER",
+      "MIDDLE",
+      "CAPITALIST"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "头奖累积到5亿美元。加油站排起长队，每个人都做着同样的梦：一张小纸片改变人生。",
+  "historicalNote": "彩票被称为'穷人税'，低收入人群购买比例远高于富人。",
+  "options": {
+    "A": {
+      "label": "买！这是改变命运的机会",
+      "roast": "数学不好是一种阶级特征。",
+      "flavorText": "你相信运气，即使概率比被雷劈还低。",
+      "ideology": "新自由主义/机会平等幻觉",
+      "archiveCommentary": "彩票是向上流动性的虚假承诺，让穷人接受现状。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": {
+          "old": 3
+        }
+      }
+    },
+    "B": {
+      "label": "买一张意思意思",
+      "roast": "买个梦，两美元不贵。",
+      "flavorText": "你知道不会中，但做梦的感觉很好。",
+      "ideology": "犬儒主义/自我欺骗",
+      "archiveCommentary": "明知是骗局但仍参与，是绝望的表现。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "买十张提高中奖率",
+      "roast": "从不可能变成几乎不可能，多么划算！",
+      "flavorText": "你相信数量能带来改变，这是消费者的逻辑。",
+      "ideology": "消费主义/数量迷信",
+      "archiveCommentary": "用消费来制造控制幻觉，是赌博业的核心机制。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": {
+          "wolf": 3
+        }
+      }
+    },
+    "D": {
+      "label": "这是针对穷人的认知税",
+      "roast": "说得对，但你 still 想买一张。",
+      "flavorText": "你明白这是剥削，但希望太诱人了。",
+      "ideology": "激进左翼/赌博批判",
+      "archiveCommentary": "彩票是国家的合法赌博，从绝望的人身上榨取最后一分钱。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C19_LOTTERY_AS_TAX",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": {
+          "red": 15
+        }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": [
+      "EVT_C20_CASINO",
+      "EVT_C19_LOTTERY"
+    ]
+  },
+  "image": "/assets/events/common/evt_lottery_ticket.png"
+}

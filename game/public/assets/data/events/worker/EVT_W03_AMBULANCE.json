@@ -1,0 +1,100 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_W03_AMBULANCE",
+  "title": "夺命救护车",
+  "category": "WORKER",
+  "series": "医疗陷阱",
+  "layer": {
+    "background": "/assets/scenes/bg_street_rain.png",
+    "foreground": "/assets/events/evt_ambulance_light.png"
+  },
+  "conditions": {
+    "requiredClass": [
+      "WORKER"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "minTurn": 1,
+    "maxTurn": 52,
+    "weight": 10
+  },
+  "text": "黑人舍友呼吸衰竭，你刚掏出手机，他却用尽最后力气扇了你一巴掌。他眼里满是恐惧：“叫了救护车，我就要永远失去美国人身份了。”",
+  "historicalNote": "美国天价救护车账单足以让底层家庭彻底破产，身份与债务深度绑定。",
+  "image": "/assets/events/worker/evt_ambulance_light.png",
+  "options": {
+    "A": {
+      "label": "他只是还没理解保险的必要性",
+      "roast": "或者他根本付不起那份保命的保险费。",
+      "flavorText": "你默默收起手机。你觉得他需要的是更合理的财务规划，而不是同情。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "将贫困归结为个人选择，从而消解系统性的剥削。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "points": {
+          "old": 3
+        },
+        "insightGain": 8
+      }
+    },
+    "B": {
+      "label": "让他喝点热水，听天由命吧",
+      "roast": "不作为是底层唯一的成本控制手段。",
+      "flavorText": "你看着他痛苦地喘息。你已经习惯了这种无力的沉默，毕竟你也没有钱。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "给他的最后一张照片加个滤镜发到朋友圈",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "points": {},
+        "insightGain": 1
+      }
+    },
+    "C": {
+      "label": "把苦难转化成一种流量社交的素材。",
+      "roast": "你感叹着生命的脆弱，并为自己的“感性”感到一丝优越。",
+      "flavorText": "消费主义/岁静",
+      "ideology": "利用他人的苦难进行自我的道德修养，是最高级的伪善。",
+      "archiveCommentary": "⚠️ 意识到这是一场“空转医疗”的生存勒索",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "points": {
+          "wolf": 3
+        },
+        "insight": -10
+      }
+    },
+    "D": {
+      "label": "救命的鸣笛声其实是资产收割的冲锋号。",
+      "roast": "你意识到那辆白色的车不是来救人的，而是来开出那张通往债务地狱的罚单。",
+      "flavorText": "激进左翼/觉醒",
+      "ideology": "No.05_DEBT_AMBULANCE",
+      "archiveCommentary": "50",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "points": {
+          "red": 15
+        },
+        "insight": -10
+      },
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "scan_lines"
+    }
+  },
+  "metadata": {
+    "author": "Anonymous",
+    "version": "3.0",
+    "createdAt": "2026-03-04",
+    "updatedAt": "2026-03-04",
+    "references": [],
+    "relatedEvents": []
+  }
+}

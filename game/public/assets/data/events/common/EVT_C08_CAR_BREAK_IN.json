@@ -1,0 +1,102 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C08_CAR_BREAK_IN",
+  "title": "车窗被砸",
+  "category": "COMMON",
+  "series": "犯罪与安全",
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS",
+      "WORKER",
+      "MIDDLE",
+      "CAPITALIST"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "你回到停车场，发现车窗被砸碎，车内被翻得乱七八糟。音响和零钱都不见了。",
+  "historicalNote": "财产犯罪在美国大城市普遍，保险往往不覆盖小额损失。",
+  "options": {
+    "A": {
+      "label": "报警并索赔",
+      "roast": "警察会做个笔录，然后无事发生。",
+      "flavorText": "你相信程序正义，尽管你知道没用。",
+      "ideology": "新自由主义/程序信任",
+      "archiveCommentary": "将犯罪问题托付给效率低下的制度，是中产阶级的幻觉。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": {
+          "old": 3
+        }
+      }
+    },
+    "B": {
+      "label": "自认倒霉",
+      "roast": "报警也没用，谁让你停在那里。",
+      "flavorText": "你学会了接受损失，这是常态。",
+      "ideology": "犬儒主义/放弃",
+      "archiveCommentary": "对制度失望后的习得性无助。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "安装高级防盗系统",
+      "roast": "军备升级，但小偷也在进步。",
+      "flavorText": "你用技术来对抗技术，这是一场竞赛。",
+      "ideology": "消费主义/技术解决方案",
+      "archiveCommentary": "安全军备竞赛让消费者不断购买新产品，制造商获利。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": {
+          "wolf": 3
+        }
+      }
+    },
+    "D": {
+      "label": "这是财产犯罪的去罪化结果",
+      "roast": "说得对，但你现在需要修车。",
+      "flavorText": "你看到了司法系统的失败，但无处申诉。",
+      "ideology": "激进左翼/司法批判",
+      "archiveCommentary": "资源匮乏的司法系统选择性地忽视财产犯罪。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C08_JUSTICE_GAP",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": {
+          "red": 15
+        }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": [
+      "EVT_C07_MUGGING",
+      "EVT_C09_IDENTITY_THEFT"
+    ]
+  },
+  "image": "/assets/events/common/evt_broken_window.png"
+}

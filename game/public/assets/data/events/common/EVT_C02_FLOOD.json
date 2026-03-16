@@ -1,0 +1,102 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C02_FLOOD",
+  "title": "暴雨成灾",
+  "category": "COMMON",
+  "series": "气候变化",
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS",
+      "WORKER",
+      "MIDDLE",
+      "CAPITALIST"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 8,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "百年一遇的暴雨袭来，街道变成河流，地铁进水，整个城市的排水系统彻底崩溃。",
+  "historicalNote": "全球变暖导致极端降雨事件增加，许多城市的排水系统是为20世纪的气候设计的。",
+  "options": {
+    "A": {
+      "label": "保险会赔的",
+      "roast": "希望你的保单里写了'气候变化'这一条。",
+      "flavorText": "你相信保险就是安全感，直到你读小字条款。",
+      "ideology": "新自由主义/风险管理",
+      "archiveCommentary": "将系统性风险私有化，让个人承担气候崩溃的成本。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": {
+          "old": 3
+        }
+      }
+    },
+    "B": {
+      "label": "往高处爬",
+      "roast": "原始本能，和老鼠没什么区别。",
+      "flavorText": "你跟着本能行动，这是生存的第一法则。",
+      "ideology": "犬儒主义/生存主义",
+      "archiveCommentary": "当系统失效时，只剩下原始生存本能。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "叫拖车来救车",
+      "roast": "车重要还是命重要？对中产来说这是个问题。",
+      "flavorText": "你担心你的车，这是中产阶级的条件反射。",
+      "ideology": "消费主义/财产崇拜",
+      "archiveCommentary": "财产异化：人将物品看得比自己的命还重。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": {
+          "wolf": 3
+        }
+      }
+    },
+    "D": {
+      "label": "基建私有化就是这样的下场",
+      "roast": "对，但你现在需要一艘船，不是一份报告。",
+      "flavorText": "你早就警告过这种事会发生，但没人听。",
+      "ideology": "激进左翼/公共品理论",
+      "archiveCommentary": "新自由主义削减公共基建投资，让社会在面对灾难时脆弱不堪。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C02_INFRASTRUCTURE_FAILURE",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": {
+          "red": 15
+        }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": [
+      "EVT_C01_HEAT_WAVE",
+      "EVT_C03_WILD_FIRE"
+    ]
+  },
+  "image": "/assets/events/common/evt_flood.png"
+}

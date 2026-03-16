@@ -1,0 +1,101 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_H10_SELLING_PLASMA",
+  "title": "卖血换钱",
+  "category": "HOMELESS",
+  "series": "生存策略",
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "实在没钱了，你走进\"血浆中心\"。排队的人像牲口一样，抽一次血浆，给一张30美元预付卡。",
+  "historicalNote": "美国是世界上少数几个允许有偿献血的国家。血浆产业年产值超过250亿美元，是全球最大的血浆供应国。",
+  "options": {
+    "A": {
+      "label": "爱心奉献，双赢慈善",
+      "roast": "大善人啊！你卖命，药企数钱，确实是\"双赢\"。",
+      "flavorText": "你告诉自己这是在救人。那些需要血浆的病人会感谢你的。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "将剥削包装成慈善，让穷人相信出卖身体部件是'贡献'。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 8,
+        "points": {
+          "old": 3
+        }
+      }
+    },
+    "B": {
+      "label": "好歹是条活路",
+      "roast": "一周卖两次，够吃汉堡了。努力活下去，下次再来卖。",
+      "flavorText": "你知道这不健康，但至少能撑过这周。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "当身体成为最后的资产，穷人被迫进入生物经济市场。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "合法的生物制品交易",
+      "roast": "把你当原材料采购，还说得这么清新脱俗。",
+      "flavorText": "你开始用经济学视角看待这件事。这是一个供需市场。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "将人体商品化是晚期资本主义的终极形态。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": {
+          "wolf": 3
+        }
+      }
+    },
+    "D": {
+      "label": "你是药厂的人肉培养皿",
+      "roast": "真相了。既然没劳动力价值，就把你榨干做成药。",
+      "flavorText": "你看到了那个残酷的真相：你的血液比你的劳动更有价值。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "当劳动力不再盈利，人体本身成为最后的可剥削资源。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.10_PLASMA_ECONOMY",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": {
+          "red": 15
+        }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_10_SELLING_PLASMA",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [
+      "https://www.theguardian.com/lifeandstyle/2019/nov/05/blood-plasma-industry-america"
+    ],
+    "relatedEvents": [
+      "EVT_H38_BODY_BROKER"
+    ]
+  },
+  "image": "/assets/events/homeless/evt_blood_bag.png"
+}

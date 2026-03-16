@@ -1,0 +1,100 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_H02_DISCO",
+  "title": "迪斯科米粒",
+  "category": "HOMELESS",
+  "series": "社会出清",
+  "layer": {
+    "background": "/assets/scenes/bg_shelter.png",
+    "foreground": "/assets/events/evt_maggots.png"
+  },
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "minTurn": 1,
+    "maxTurn": 52,
+    "weight": 10
+  },
+  "text": "帐篷区散发着咸腥味。隔壁的流浪汉三天没动弹了。你看到蛆虫在尸体上跳动，像在跳迪斯科。系统不需要救助他，他正以这种方式被高效“出清”。",
+  "historicalNote": "西雅图太平间爆仓，底层尸体比活人更具商业价值，沦为遗体交易的资源。",
+  "image": "/assets/events/homeless/evt_maggots.png",
+  "options": {
+    "A": {
+      "label": "这只是个意外，我绝不会变成这样",
+      "roast": "自欺欺人是穷人最后的防弹衣。",
+      "flavorText": "你加快脚步走开。你坚信只要自己足够清醒，就不会沦为这堆“米粒”的宿主。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "拒绝同情同类是社会原子化的结果，这让系统收割时毫无阻力。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "points": {
+          "old": 3
+        },
+        "insightGain": 8
+      }
+    },
+    "B": {
+      "label": "帮他盖上毯子，然后拿走他的鞋",
+      "roast": "在这个地狱里，死人不需要鞋子。",
+      "flavorText": "你麻木地收集遗物。在斩杀线以下，道德比蛆虫还要廉价。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "去社会化后的生存策略：物竞天择，适者生存。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "points": {},
+        "insightGain": 1
+      }
+    },
+    "C": {
+      "label": "买份报纸垫在身下，假装在野餐",
+      "roast": "用一点仪式感来掩盖眼前的血淋淋。",
+      "flavorText": "你坐在不远处的台阶上，试图想象自己只是一个观察生活的艺术家。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "通过微小的符号消费来构建心理屏障，将地狱景观景观化。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "points": {
+          "wolf": 3
+        },
+        "insight": -10
+      }
+    },
+    "D": {
+      "label": "⚠️ 意识到死去的他比活着的他更有价值",
+      "roast": "死后的遗体交易是系统最后的剩余价值榨取。",
+      "flavorText": "你明白了他的消失并非疏忽，而是系统“排毒”的必然。在上帝视角里，他只是个归零的数字。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "No.03_DISCO_RICE",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "points": {
+          "red": 15
+        },
+        "insight": -10
+      },
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "60"
+    }
+  },
+  "metadata": {
+    "author": "Anonymous",
+    "version": "3.0",
+    "createdAt": "2026-03-04",
+    "updatedAt": "2026-03-04",
+    "references": [],
+    "relatedEvents": []
+  }
+}

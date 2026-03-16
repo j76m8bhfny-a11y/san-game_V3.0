@@ -1,0 +1,1092 @@
+[
+  {
+    "_comment": "========== 四阶级食物系统 v2.0 - 美国资本主义地狱映射 =========="
+  },
+
+  {
+    "_comment": "========== 阶级1: HOMELESS (SLUMS) - 后备箱黑市 =========="
+  },
+  {
+    "id": "FOOD_EXPIRED_DORITOS",
+    "name": "临期多力多滋碎渣",
+    "type": "CONSUMABLE",
+    "price": 1,
+    "regions": ["SLUMS"],
+    "effects": {
+      "hunger": 15,
+      "hp": -2,
+      "insightClear": 2
+    },
+    "tags": ["FOOD", "JUNK_FOOD", "EXPIRED", "TIER_1"],
+    "flavorText": "包装袋上说它已经过期半年了，但里面的防腐剂能确保它比你活得更久。"
+  },
+  {
+    "id": "FOOD_BLEACHED_MCNUGGETS",
+    "name": "泛白的麦当劳炸鸡块",
+    "type": "CONSUMABLE",
+    "price": 0,
+    "regions": ["SLUMS"],
+    "effects": {
+      "hunger": 25
+    },
+    "activeEffect": {
+      "type": "TRIGGER_EVENT",
+      "params": {
+        "eventId": "EVT_FOODPOISONING_MCNUGGET",
+        "probability": 0.4,
+        "trigger": "onConsume"
+      }
+    },
+    "tags": ["FOOD", "RISKY", "FREE", "DUMPSTER", "TIER_1"],
+    "flavorText": "在得来速车道旁的垃圾桶里找到的。形状是全球统一的星形，但肉的来源是最高机密。"
+  },
+  {
+    "id": "FOOD_DILUTED_TEQUILA",
+    "name": "稀释三次的龙舌兰",
+    "type": "CONSUMABLE",
+    "price": 3,
+    "regions": ["SLUMS"],
+    "effects": {
+      "hunger": 5,
+      "hp": -3,
+      "insightClear": 8
+    },
+    "activeEffect": {
+      "type": "APPLY_BUFF",
+      "params": {
+        "buffId": "buff_addiction_alcohol",
+        "probability": 1.0,
+        "duration": 10
+      }
+    },
+    "tags": ["FOOD", "ALCOHOL", "ADDICTIVE", "TIER_1"],
+    "flavorText": "工业酒精兑下水道的水。喝下去烧穿胃粘膜的瞬间，你能清晰地感知到华尔街运转的齿轮。"
+  },
+  {
+    "id": "MEDICAL_DUCT_TAPE",
+    "name": "强力工业防水胶带",
+    "type": "CONSUMABLE",
+    "price": 2,
+    "regions": ["SLUMS"],
+    "effects": {
+      "hp": 5
+    },
+    "activeEffect": {
+      "type": "APPLY_BUFF",
+      "params": {
+        "buffId": "buff_bleeding_stop",
+        "duration": 1
+      }
+    },
+    "tags": ["MEDICAL", "CHEAP", "TIER_1"],
+    "flavorText": "真正的美国底层医保。它能止住伤口的血，修补漏风的帐篷，以及堵住你在深夜绝望的哭声。"
+  },
+  {
+    "id": "ITEM_FOIL_BLANKET",
+    "name": "破洞的应急锡纸毯",
+    "type": "PASSIVE",
+    "price": 5,
+    "regions": ["SLUMS"],
+    "effects": {
+      "insightClear": 5
+    },
+    "tags": ["GEAR", "SHELTER", "TIER_1"],
+    "flavorText": "一面反射你仅存的体温，另一面反射这个社会对你绝对的冷漠。"
+  },
+
+  {
+    "_comment": "========== 阶级2: WORKER (RUST_BELT) - 工业便利店 =========="
+  },
+  {
+    "id": "FOOD_MONSTER_XXL",
+    "name": "XXL号怪物能量饮料",
+    "type": "CONSUMABLE",
+    "price": 4,
+    "regions": ["RUST_BELT"],
+    "effects": {
+      "hunger": 5,
+      "hp": -2,
+      "insightGain": 3
+    },
+    "activeEffect": {
+      "type": "APPLY_BUFF",
+      "params": {
+        "buffId": "buff_fatigue_suppress",
+        "duration": 3
+      }
+    },
+    "tags": ["FOOD", "STIMULANT", "WORKER_FUEL", "TIER_2"],
+    "flavorText": "液态的无偿加班。通过透支你五年后的肾脏功能，换取今晚不被工头开除的体力。"
+  },
+  {
+    "id": "FOOD_ROLLER_HOTDOG",
+    "name": "玻璃柜里的微波热狗",
+    "type": "CONSUMABLE",
+    "price": 3,
+    "regions": ["RUST_BELT"],
+    "effects": {
+      "hunger": 30,
+      "hp": -1
+    },
+    "activeEffect": {
+      "type": "APPLY_BUFF",
+      "params": {
+        "buffId": "buff_toxic_buildup",
+        "probability": 0.2,
+        "duration": 5
+      }
+    },
+    "tags": ["FOOD", "PROCESSED", "RISKY", "TIER_2"],
+    "flavorText": "自小布什政府时期就在那根金属杆上滚动了。它不是食物，它是加油站的常驻员工。"
+  },
+  {
+    "id": "FOOD_FROZEN_MAC_CHEESE",
+    "name": "冻结的微波干酪通心粉",
+    "type": "CONSUMABLE",
+    "price": 6,
+    "regions": ["RUST_BELT"],
+    "effects": {
+      "hunger": 35,
+      "insightGain": 2
+    },
+    "tags": ["FOOD", "PROCESSED", "TIER_2"],
+    "flavorText": "里面的5号黄色素，是你这周在暗无天日的流水线上能看到的唯一一抹阳光。"
+  },
+  {
+    "id": "MEDICAL_BULK_IBUPROFEN",
+    "name": "家庭装散装布洛芬",
+    "type": "CONSUMABLE",
+    "price": 12,
+    "regions": ["RUST_BELT"],
+    "effects": {
+      "hp": 15,
+      "insightGain": 5
+    },
+    "activeEffect": {
+      "type": "APPLY_BUFF",
+      "params": {
+        "buffId": "buff_painkiller",
+        "duration": 5
+      }
+    },
+    "tags": ["MEDICAL", "PAINKILLER", "TIER_2"],
+    "flavorText": "美国蓝领阶级的真正脊梁。吞下两粒，把腰间盘突出的剧痛压下去，然后滚回你的叉车驾驶座上。"
+  },
+  {
+    "id": "ITEM_LOTTERY_TICKET",
+    "name": "刮刮乐彩票",
+    "type": "CONSUMABLE",
+    "price": 5,
+    "regions": ["RUST_BELT", "SLUMS"],
+    "effects": {
+      "insightGain": 10
+    },
+    "activeEffect": {
+      "type": "LOTTERY",
+      "params": {
+        "winRate": 0.02,
+        "winPrize": 50,
+        "winMessage": "你赢了50美元！穷人的纳斯达克终于向你微笑了一次。",
+        "loseMessage": "谢谢惠顾。希望的标价是5美元，但认命是免费的。"
+      }
+    },
+    "tags": ["GAMBLING", "HOPE", "TIER_2"],
+    "flavorText": "穷人的纳斯达克。希望的标价是5美元，但认命是免费的。"
+  },
+
+  {
+    "_comment": "========== 阶级3: MIDDLE (SUBURBS) - 有机超市 =========="
+  },
+  {
+    "id": "FOOD_KALE_SALAD",
+    "name": "纯素无麸质有机羽衣甘蓝沙拉",
+    "type": "CONSUMABLE",
+    "price": 22,
+    "regions": ["SUBURBS"],
+    "effects": {
+      "hunger": 20,
+      "hp": 2,
+      "insightGain": 15
+    },
+    "tags": ["FOOD", "ORGANIC", "VEGAN", "SANITY_DAMAGE", "TIER_3"],
+    "flavorText": "标价相当于收银员三个小时的时薪。吃起来有一股浓烈的中产阶级道德优越感。"
+  },
+  {
+    "id": "FOOD_GRASS_FED_BEEF",
+    "name": "散养草饲牛肉泥",
+    "type": "CONSUMABLE",
+    "price": 35,
+    "regions": ["SUBURBS"],
+    "effects": {
+      "hunger": 40,
+      "hp": 5,
+      "insightGain": 5
+    },
+    "tags": ["FOOD", "ORGANIC", "PREMIUM", "TIER_3"],
+    "flavorText": "这头牛生前享受的医疗保健水平，甚至比正在购买它的你还要好。"
+  },
+  {
+    "id": "MEDICAL_ANTIANXIETY_GUMMIES",
+    "name": "褪黑素软糖与抗焦虑复合提取物",
+    "type": "CONSUMABLE",
+    "price": 45,
+    "regions": ["SUBURBS"],
+    "effects": {
+      "hp": 5,
+      "insightGain": 20
+    },
+    "activeEffect": {
+      "type": "APPLY_BUFF",
+      "params": {
+        "buffId": "buff_anxiety_block",
+        "duration": 3
+      }
+    },
+    "tags": ["MEDICAL", "MENTAL", "SANITY_DAMAGE", "TIER_3"],
+    "flavorText": "有效压制你在半夜惊醒时，意识到自己离破产沦为流浪汉其实只差一次急诊的恐怖真相。"
+  },
+  {
+    "id": "ITEM_YOGA_MAT",
+    "name": "Lululemon平替瑜伽垫",
+    "type": "CONSUMABLE",
+    "price": 80,
+    "regions": ["SUBURBS"],
+    "effects": {
+      "insightGain": 25
+    },
+    "activeEffect": {
+      "type": "APPLY_BUFF",
+      "params": {
+        "buffId": "buff_class_illusion",
+        "duration": 5
+      }
+    },
+    "tags": ["LUXURY", "MENTAL", "SANITY_DAMAGE", "TIER_3"],
+    "flavorText": "吸气，吸入虚幻的阶级跃升梦；呼气，呼出你本该有的阶级意识。Namaste。"
+  },
+
+  {
+    "_comment": "========== 阶级4: CAPITALIST (DOWNTOWN) - 私人会所 =========="
+  },
+  {
+    "id": "FOOD_GOLD_CAVIAR",
+    "name": "金箔点缀的白松露鱼子酱",
+    "type": "CONSUMABLE",
+    "price": 2500,
+    "regions": ["DOWNTOWN"],
+    "effects": {
+      "hunger": 5,
+      "insightClear": 30
+    },
+    "tags": ["FOOD", "LUXURY", "ELITE", "INSIGHT", "TIER_4"],
+    "flavorText": "金箔没有任何营养价值，食用它仅仅是为了向消化系统证明你的购买力。排泄也成了一种身份象征。"
+  },
+  {
+    "id": "FOOD_BLUEFIN_OTORO",
+    "name": "濒危蓝鳍金枪鱼大腹",
+    "type": "CONSUMABLE",
+    "price": 1800,
+    "regions": ["DOWNTOWN"],
+    "effects": {
+      "hunger": 20,
+      "hp": 15,
+      "insightClear": 10
+    },
+    "tags": ["FOOD", "LUXURY", "ELITE", "ENDANGERED", "TIER_4"],
+    "flavorText": "当你咽下这口肉的时候，一个物种离灭绝又近了一步。权力的味道惊人的丰腴。"
+  },
+  {
+    "id": "MEDICAL_YOUNG_BLOOD",
+    "name": "硅谷精英特供年轻血液静脉注射",
+    "type": "CONSUMABLE",
+    "price": 15000,
+    "regions": ["DOWNTOWN"],
+    "effects": {
+      "hp": 100,
+      "insightClear": 40
+    },
+    "activeEffect": {
+      "type": "APPLY_BUFF",
+      "params": {
+        "buffId": "buff_synthetic_youth",
+        "duration": 10
+      }
+    },
+    "tags": ["MEDICAL", "ELITE", "BIOHACK", "INSIGHT", "TIER_4"],
+    "flavorText": "血源来自背负高额学贷的健康大学生。只要你付得起钱，吸血鬼行为就可以被重新包装为'抗衰老健康管理'。"
+  },
+  {
+    "id": "MEDICAL_GENOMIC_NUTRIENTS",
+    "name": "定制基因靶向营养素",
+    "type": "CONSUMABLE",
+    "price": 8000,
+    "regions": ["DOWNTOWN"],
+    "effects": {
+      "hp": 20
+    },
+    "activeEffect": {
+      "type": "APPLY_BUFF",
+      "params": {
+        "buffId": "buff_immune_disease",
+        "duration": 15
+      }
+    },
+    "tags": ["MEDICAL", "ELITE", "BIOHACK", "TIER_4"],
+    "flavorText": "既然你可以花钱重写自己的生物学代码，为什么还要去关心摇摇欲坠的公共医疗体系？"
+  },
+
+  {
+    "_comment": "========== 原遗留物品（兼容保留） =========="
+  },
+  {
+    "id": "FOOD_DOLLAR_MENU",
+    "name": "Dollar Menu汉堡",
+    "type": "CONSUMABLE",
+    "price": 2,
+    "regions": ["SLUMS"],
+    "effects": {
+      "hunger": 20,
+      "hp": -2,
+      "addiction": 8
+    },
+    "activeEffect": {
+      "type": "DIET_TRACKER",
+      "params": {
+        "junkFoodPoints": 2,
+        "sugarIntake": 5
+      }
+    },
+    "tags": ["FOOD", "JUNK_FOOD", "SNAP_ELIGIBLE", "TIER_1"],
+    "flavorText": "99美分就能买到饱腹感。这就是美国的'食物民主'。"
+  },
+  {
+    "id": "FOOD_CORNER_STORE_CHIPS",
+    "name": "便利店薯片",
+    "type": "CONSUMABLE",
+    "price": 3,
+    "regions": ["SLUMS"],
+    "effects": {
+      "hunger": 10,
+      "addiction": 12
+    },
+    "activeEffect": {
+      "type": "DIET_TRACKER",
+      "params": {
+        "junkFoodPoints": 2,
+        "sodiumIntake": 8
+      }
+    },
+    "tags": ["FOOD", "JUNK_FOOD", "SNAP_ELIGIBLE", "TIER_1"],
+    "flavorText": "一袋空气配几片土豆，加盐和化学调味剂。最近的'杂货店'在三个街区外。"
+  },
+  {
+    "id": "FOOD_CORNER_STORE_BREAD",
+    "name": "便利店白面包",
+    "type": "CONSUMABLE",
+    "price": 4,
+    "regions": ["SLUMS"],
+    "effects": {
+      "hunger": 18,
+      "hp": -3
+    },
+    "activeEffect": {
+      "type": "DIET_TRACKER",
+      "params": {
+        "junkFoodPoints": 1,
+        "sugarIntake": 3
+      }
+    },
+    "tags": ["FOOD", "PROCESSED", "SNAP_ELIGIBLE", "TIER_1"],
+    "flavorText": "高果糖玉米糖浆是第二种成分。在食物荒漠里，这是唯一能找到的'淀粉'。"
+  },
+  {
+    "id": "FOOD_CHEAP_SODA",
+    "name": "大瓶汽水",
+    "type": "CONSUMABLE",
+    "price": 2,
+    "regions": ["SLUMS"],
+    "effects": {
+      "hunger": 8,
+      "addiction": 15
+    },
+    "activeEffect": {
+      "type": "DIET_TRACKER",
+      "params": {
+        "junkFoodPoints": 3,
+        "sugarIntake": 15
+      }
+    },
+    "tags": ["FOOD", "JUNK_FOOD", "SUGAR", "SNAP_ELIGIBLE", "TIER_1"],
+    "flavorText": "比水还便宜。糖尿病是穷人的流行病。"
+  },
+  {
+    "id": "FOOD_INSTANT_RAMEN",
+    "name": "杯面",
+    "type": "CONSUMABLE",
+    "price": 1,
+    "regions": ["SLUMS", "RUST_BELT"],
+    "effects": {
+      "hunger": 15,
+      "hp": -5,
+      "addiction": 3
+    },
+    "activeEffect": {
+      "type": "DIET_TRACKER",
+      "params": {
+        "junkFoodPoints": 1,
+        "sodiumIntake": 20
+      }
+    },
+    "tags": ["FOOD", "PROCESSED", "SNAP_ELIGIBLE", "TIER_1"],
+    "flavorText": "每天两包，sodium摄入量超标三倍。穷人的生存智慧。"
+  },
+  {
+    "id": "FOOD_FOOD_BANK",
+    "name": "食品银行救济包",
+    "type": "CONSUMABLE",
+    "price": 0,
+    "regions": ["SLUMS", "RUST_BELT"],
+    "effects": {
+      "hunger": 25
+    },
+    "activeEffect": {
+      "type": "RANDOM_QUALITY",
+      "params": {
+        "qualityTable": {
+          "poor": { "chance": 0.30, "hp": -5, "diseaseRisk": 0.15 },
+          "standard": { "chance": 0.50, "hp": 0 },
+          "good": { "chance": 0.15, "hp": 5 },
+          "excellent": { "chance": 0.05, "hp": 10 }
+        }
+      }
+    },
+    "tags": ["FOOD", "CHARITY", "FOOD_BANK", "TIER_1"],
+    "flavorText": "罐装豆类、过期面包、有时候有捐赠的有机蔬菜。取决于你今天运气如何。",
+    "unlockCondition": "Class == HOMELESS || Gold < 100"
+  },
+  {
+    "id": "FOOD_DUMPSTER",
+    "name": "餐厅泔水",
+    "type": "CONSUMABLE",
+    "price": 0,
+    "regions": ["SLUMS"],
+    "effects": {
+      "hunger": 15,
+      "hp": -8
+    },
+    "activeEffect": {
+      "type": "DISEASE_RISK",
+      "params": {
+        "riskRate": 0.30,
+        "diseaseId": "FOOD_POISONING"
+      }
+    },
+    "tags": ["FOOD", "RISKY", "FREE", "TIER_1"],
+    "flavorText": "从垃圾桶里翻出来的'大餐'。也许今天运气不错，不会拉肚子。"
+  },
+  {
+    "id": "FOOD_FACTORY_CAFE",
+    "name": "工厂食堂套餐",
+    "type": "CONSUMABLE",
+    "price": 8,
+    "regions": ["RUST_BELT"],
+    "effects": {
+      "hunger": 35,
+      "hp": 5
+    },
+    "activeEffect": {
+      "type": "DIET_TRACKER",
+      "params": {
+        "junkFoodPoints": 1,
+        "sodiumIntake": 10
+      }
+    },
+    "tags": ["FOOD", "WORKER_MEAL", "TIER_2"],
+    "flavorText": "肉汁浇在一切上。热量足够支撑12小时轮班。"
+  },
+  {
+    "id": "FOOD_GAS_STATION_HOTDOG",
+    "name": "加油站热狗",
+    "type": "CONSUMABLE",
+    "price": 3,
+    "regions": ["RUST_BELT", "SLUMS"],
+    "effects": {
+      "hunger": 22,
+      "hp": -3,
+      "addiction": 5
+    },
+    "activeEffect": {
+      "type": "DISEASE_RISK",
+      "params": {
+        "riskRate": 0.12,
+        "diseaseId": "FOOD_POISONING"
+      }
+    },
+    "tags": ["FOOD", "RISKY", "SNAP_ELIGIBLE", "TIER_2"],
+    "flavorText": "神秘肉在加热灯下转了八小时。工人们称之为'午餐'。"
+  },
+  {
+    "id": "FOOD_MONSTER_ENERGY",
+    "name": "能量饮料",
+    "type": "CONSUMABLE",
+    "price": 4,
+    "regions": ["RUST_BELT"],
+    "effects": {
+      "hunger": 5,
+      "hp": 5,
+      "addiction": 18
+    },
+    "activeEffect": {
+      "type": "DIET_TRACKER",
+      "params": {
+        "caffeineIntake": 20
+      }
+    },
+    "tags": ["FOOD", "STIMULANT", "DRUG", "TIER_2"],
+    "flavorText": "相当于十杯咖啡的咖啡因。夜班工人的合法兴奋剂。"
+  },
+  {
+    "id": "FOOD_BEER",
+    "name": "工厂啤酒",
+    "type": "CONSUMABLE",
+    "price": 6,
+    "regions": ["RUST_BELT", "SLUMS"],
+    "effects": {
+      "hunger": 12,
+      "hp": -2,
+      "addiction": 12
+    },
+    "tags": ["FOOD", "ALCOHOL", "TIER_2"],
+    "flavorText": "下班后的麻醉剂。便宜、有效、合法。"
+  },
+  {
+    "id": "FOOD_PIZZA_HUT",
+    "name": "披萨自助",
+    "type": "CONSUMABLE",
+    "price": 12,
+    "regions": ["RUST_BELT", "SUBURBS"],
+    "effects": {
+      "hunger": 45,
+      "hp": -5,
+      "addiction": 10
+    },
+    "activeEffect": {
+      "type": "DIET_TRACKER",
+      "params": {
+        "junkFoodPoints": 4,
+        "sugarIntake": 10
+      }
+    },
+    "tags": ["FOOD", "JUNK_FOOD", "TIER_2"],
+    "flavorText": "吃到饱。然后吃到撑。然后吃到后悔。"
+  },
+  {
+    "id": "FOOD_MCDONALDS",
+    "name": "麦当劳套餐",
+    "type": "CONSUMABLE",
+    "price": 10,
+    "regions": ["SLUMS", "RUST_BELT", "SUBURBS"],
+    "effects": {
+      "hunger": 38,
+      "hp": -3,
+      "addiction": 10
+    },
+    "activeEffect": {
+      "type": "DIET_TRACKER",
+      "params": {
+        "junkFoodPoints": 3,
+        "sugarIntake": 8,
+        "sodiumIntake": 12
+      }
+    },
+    "tags": ["FOOD", "JUNK_FOOD", "FAST_FOOD", "TIER_2"],
+    "flavorText": "全球标准化的高糖高脂。美国输出的'文化'。"
+  },
+  {
+    "id": "FOOD_CHIPOTLE",
+    "name": "Chipotle墨西哥碗",
+    "type": "CONSUMABLE",
+    "price": 15,
+    "regions": ["SUBURBS"],
+    "effects": {
+      "hunger": 38,
+      "hp": 12
+    },
+    "activeEffect": {
+      "type": "DIET_TRACKER",
+      "params": {
+        "healthyPoints": 2,
+        "sodiumIntake": 5
+      }
+    },
+    "tags": ["FOOD", "FAST_CASUAL", "TIER_3"],
+    "flavorText": "可以选'有机'和'无抗生素'。多付三美元，买中产阶级的安心。"
+  },
+  {
+    "id": "FOOD_TRADER_JOES",
+    "name": "有机冷冻餐",
+    "type": "CONSUMABLE",
+    "price": 12,
+    "regions": ["SUBURBS"],
+    "effects": {
+      "hunger": 30,
+      "hp": 15
+    },
+    "activeEffect": {
+      "type": "DIET_TRACKER",
+      "params": {
+        "healthyPoints": 2
+      }
+    },
+    "tags": ["FOOD", "ORGANIC", "TIER_3"],
+    "flavorText": "包装上有小企鹅。这意味着它是'有道德的'选择。"
+  },
+  {
+    "id": "FOOD_WHOLE_FOODS_HOTBAR",
+    "name": "Whole Foods热食",
+    "type": "CONSUMABLE",
+    "price": 18,
+    "regions": ["SUBURBS", "DOWNTOWN"],
+    "effects": {
+      "hunger": 35,
+      "hp": 18
+    },
+    "activeEffect": {
+      "type": "DIET_TRACKER",
+      "params": {
+        "healthyPoints": 3
+      }
+    },
+    "tags": ["FOOD", "ORGANIC", "PREMIUM", "TIER_3"],
+    "flavorText": "按磅称重。你小心翼翼地避开贵的蛋白质，假装在挑选蔬菜。"
+  },
+  {
+    "id": "FOOD_MEAL_KIT",
+    "name": "Blue Apron食材包",
+    "type": "CONSUMABLE",
+    "price": 25,
+    "regions": ["SUBURBS"],
+    "effects": {
+      "hunger": 32,
+      "hp": 20
+    },
+    "activeEffect": {
+      "type": "DIET_TRACKER",
+      "params": {
+        "healthyPoints": 3,
+        "cookingSkill": 1
+      }
+    },
+    "tags": ["FOOD", "ORGANIC", "SUBSCRIPTION", "TIER_3"],
+    "flavorText": "预分配的食材和食谱卡片。中产阶级的烹饪表演。"
+  },
+  {
+    "id": "FOOD_STARBUCKS",
+    "name": "星巴克拿铁套餐",
+    "type": "CONSUMABLE",
+    "price": 12,
+    "regions": ["SUBURBS", "DOWNTOWN"],
+    "effects": {
+      "hunger": 22,
+      "hp": 5,
+      "addiction": 8
+    },
+    "activeEffect": {
+      "type": "DIET_TRACKER",
+      "params": {
+        "caffeineIntake": 10,
+        "sugarIntake": 8
+      }
+    },
+    "tags": ["FOOD", "CAFFEINE", "TIER_3"],
+    "flavorText": "六美元的咖啡。办公室奴隶的燃料。"
+  },
+  {
+    "id": "FOOD_COSTCO",
+    "name": "Costco批量采购",
+    "type": "CONSUMABLE",
+    "price": 45,
+    "regions": ["SUBURBS"],
+    "effects": {
+      "hunger": 55,
+      "hp": 22
+    },
+    "activeEffect": {
+      "type": "DIET_TRACKER",
+      "params": {
+        "healthyPoints": 2,
+        "bulkDiscount": true
+      }
+    },
+    "tags": ["FOOD", "BULK", "ORGANIC", "TIER_3"],
+    "flavorText": "大包装、大分量、大冰箱。中产阶级的囤积安全感。"
+  },
+  {
+    "id": "FOOD_FARM_TO_TABLE",
+    "name": "农场直供套餐",
+    "type": "CONSUMABLE",
+    "price": 95,
+    "regions": ["DOWNTOWN"],
+    "effects": {
+      "hunger": 40,
+      "hp": 25
+    },
+    "activeEffect": {
+      "type": "DIET_TRACKER",
+      "params": {
+        "healthyPoints": 5,
+        "clearJunk": 5
+      }
+    },
+    "tags": ["FOOD", "ORGANIC", "ELITE", "TIER_4"],
+    "flavorText": "厨师能告诉你每道菜的农场坐标。不包括农场工人的时薪。"
+  },
+  {
+    "id": "FOOD_KETO_MEAL",
+    "name": "生酮私厨餐",
+    "type": "CONSUMABLE",
+    "price": 140,
+    "regions": ["DOWNTOWN"],
+    "effects": {
+      "hunger": 35,
+      "hp": 30
+    },
+    "activeEffect": {
+      "type": "METABOLIC_OPTIMIZATION",
+      "params": {
+        "duration": 5,
+        "maxHpBonus": 15,
+        "clearJunk": 10
+      }
+    },
+    "tags": ["FOOD", "ELITE", "BIOHACK", "TIER_4"],
+    "flavorText": "没有碳水，没有糖，没有乐趣。只有优化。"
+  },
+  {
+    "id": "FOOD_PERSONAL_CHEF",
+    "name": "私厨定制餐",
+    "type": "CONSUMABLE",
+    "price": 350,
+    "regions": ["DOWNTOWN"],
+    "effects": {
+      "hunger": 45,
+      "hp": 35
+    },
+    "activeEffect": {
+      "type": "DIET_TRACKER",
+      "params": {
+        "healthyPoints": 8,
+        "clearJunk": 10,
+        "clearAddiction": 5
+      }
+    },
+    "tags": ["FOOD", "ELITE", "LUXURY", "TIER_4"],
+    "flavorText": "有人专门研究你的基因和肠道菌群。这是阶级能买到的健康。"
+  },
+  {
+    "id": "FOOD_SUPPLEMENT_STACK",
+    "name": "NAD+补充剂套餐",
+    "type": "CONSUMABLE",
+    "price": 250,
+    "regions": ["DOWNTOWN"],
+    "effects": {
+      "hunger": 5,
+      "hp": 25
+    },
+    "activeEffect": {
+      "type": "LONGEVITY_BOOST",
+      "params": {
+        "maxHp": 10,
+        "agingResistance": 1
+      }
+    },
+    "tags": ["FOOD", "ELITE", "BIOHACK", "SUPPLEMENT", "TIER_4"],
+    "flavorText": "药丸比食物还贵。为了活到看到奇点降临。"
+  },
+  {
+    "id": "FOOD_WAGYU",
+    "name": "A5和牛套餐",
+    "type": "CONSUMABLE",
+    "price": 600,
+    "regions": ["DOWNTOWN"],
+    "effects": {
+      "hunger": 50,
+      "hp": 40
+    },
+    "activeEffect": {
+      "type": "DIET_TRACKER",
+      "params": {
+        "healthyPoints": 3,
+        "redMeatPoints": 5
+      }
+    },
+    "tags": ["FOOD", "ELITE", "LUXURY", "RED_MEAT", "TIER_4"],
+    "flavorText": "入口即化的不是脂肪，是穷人的税收。"
+  },
+  {
+    "id": "I01",
+    "name": "临期罐头",
+    "price": 10,
+    "effects": { "hp": 10, "insightGain": 5 },
+    "tags": ["CONSUMER"],
+    "flavorText": "流浪汉的神器。"
+  },
+  {
+    "id": "I02",
+    "name": "廉价酒精",
+    "price": 40,
+    "effects": { "hp": 5, "insightGain": 15 },
+    "tags": ["CONSUMER"],
+    "flavorText": "工人的止痛药。"
+  },
+  {
+    "id": "I03",
+    "name": "处方镇静剂",
+    "price": 150,
+    "effects": { "hp": 5, "insightGain": 40 },
+    "tags": ["CONSUMER"],
+    "flavorText": "中产阶级重置药。"
+  },
+  {
+    "id": "I04",
+    "name": "强效抗生素",
+    "price": 400,
+    "effects": { "hp": 40, "insightClear": 0 },
+    "tags": ["CONSUMER"],
+    "flavorText": "阶级过滤器。"
+  },
+  {
+    "id": "I05",
+    "name": "全效维生舱",
+    "price": 3000,
+    "effects": { "hp": 100, "insightClear": 0 },
+    "tags": ["CONSUMER"],
+    "flavorText": "富人特权。"
+  },
+  {
+    "id": "I06",
+    "name": "地下出版物",
+    "price": 120,
+    "effects": { "hp": -10, "insightClear": 15 },
+    "tags": ["AWAKENING"],
+    "flavorText": "危险的知识。"
+  },
+  {
+    "id": "I07",
+    "name": "赎罪券NFT",
+    "price": 1000,
+    "effects": { "hp": 0, "insightClear": 5 },
+    "tags": ["AWAKENING"],
+    "flavorText": "优雅的觉醒。"
+  },
+  {
+    "id": "I13",
+    "name": "强力球彩票",
+    "price": 10,
+    "effects": { "hp": 0, "insightClear": 1 },
+    "tags": ["TICKET"],
+    "activeEffect": {
+      "type": "LOTTERY",
+      "params": {
+        "winRate": 0.05,
+        "winPrize": 5000,
+        "winMessage": "中奖了！！不可思议！",
+        "loseMessage": "谢谢惠顾。"
+      }
+    },
+    "flavorText": "绝望者的税。"
+  },
+  {
+    "id": "D01",
+    "name": "出售血浆",
+    "price": 0,
+    "tags": ["DARK_WEB"],
+    "activeEffect": {
+      "type": "BLOOD_DONATION",
+      "params": {
+        "gold": 40,
+        "hpCost": 15,
+        "message": "你出卖了热血，换来了冰冷的现金。"
+      }
+    },
+    "unlockCondition": "Gold < 0",
+    "flavorText": "最体面的卖命方式。"
+  },
+  {
+    "id": "D03",
+    "name": "一期临床试药",
+    "price": -500,
+    "effects": { "hp": 0, "insightClear": 0, "maxHp": -10 },
+    "tags": ["DARK_WEB"],
+    "flavorText": "透支未来。"
+  },
+  {
+    "id": "D05",
+    "name": "出售左肾",
+    "price": 0,
+    "tags": ["DARK_WEB"],
+    "activeEffect": {
+      "type": "SURGERY",
+      "params": {
+        "damage": 30,
+        "message": "负债已清空，但你不再完整。"
+      }
+    },
+    "unlockCondition": "Gold < -2000",
+    "flavorText": "重启人生。"
+  },
+  {
+    "id": "BOOK_RED",
+    "name": "赤色宣言",
+    "type": "CONSUMABLE",
+    "price": 50,
+    "regions": ["SLUMS"],
+    "effects": { "hp": 0, "points": { "red": 5, "old": -2 } },
+    "tags": ["POLITICAL"],
+    "flavorText": "阅读它需要勇气。"
+  },
+  {
+    "id": "SUIT_01",
+    "name": "二手西装",
+    "type": "PASSIVE",
+    "price": 300,
+    "regions": ["DOWNTOWN", "SUBURBS"],
+    "effects": {},
+    "tags": ["JOB"],
+    "flavorText": "哪怕有破洞，也是文明世界的入场券。"
+  },
+  {
+    "id": "KEY_CAR",
+    "name": "车钥匙",
+    "type": "PASSIVE",
+    "price": 2000,
+    "regions": ["SUBURBS"],
+    "tags": ["VEHICLE", "VEHICLE_T2"],
+    "flavorText": "自由的象征。"
+  },
+  {
+    "id": "CAR_JUNK",
+    "name": "破皮卡",
+    "type": "PASSIVE",
+    "price": 800,
+    "regions": ["RUST_BELT", "SLUMS"],
+    "effects": { "hp": 0, "insightGain": 2 },
+    "tags": ["VEHICLE", "VEHICLE_T1"],
+    "flavorText": "锈迹斑斑，但至少四个轮子还能转。"
+  },
+  {
+    "id": "CAR_USED",
+    "name": "二手轿车",
+    "type": "PASSIVE",
+    "price": 3500,
+    "regions": ["RUST_BELT", "SUBURBS"],
+    "effects": { "hp": 0, "insightClear": 3 },
+    "tags": ["VEHICLE", "VEHICLE_T2"],
+    "flavorText": "前任车主可能死在里面了。"
+  },
+  {
+    "id": "CAR_SUV",
+    "name": "家用SUV",
+    "type": "PASSIVE",
+    "price": 8000,
+    "regions": ["SUBURBS"],
+    "effects": { "hp": 0, "insightClear": 8 },
+    "tags": ["VEHICLE", "VEHICLE_T2"],
+    "flavorText": "中产阶级的标准配置。"
+  },
+  {
+    "id": "CAR_SPORTS",
+    "name": "跑车",
+    "type": "PASSIVE",
+    "price": 25000,
+    "regions": ["DOWNTOWN"],
+    "effects": { "hp": 0, "insightClear": 15 },
+    "tags": ["VEHICLE", "VEHICLE_T3"],
+    "flavorText": "速度可以杀死烦恼。"
+  },
+  {
+    "id": "CAR_LUXURY",
+    "name": "豪华轿车",
+    "type": "PASSIVE",
+    "price": 50000,
+    "regions": ["DOWNTOWN"],
+    "effects": { "hp": 0, "insightClear": 25 },
+    "tags": ["VEHICLE", "VEHICLE_T4"],
+    "flavorText": "真皮座椅，车载香槟。"
+  },
+  {
+    "id": "DRUG_PAINKILLER",
+    "name": "强力止痛片",
+    "type": "CONSUMABLE",
+    "price": 80,
+    "effects": { "hp": 30, "addiction": 15, "resistance": 5 },
+    "tags": ["DRUG", "MEDICAL"],
+    "flavorText": "它可以让你忘记疼痛。"
+  },
+  {
+    "id": "DRUG_STIMULANT",
+    "name": "军用兴奋剂",
+    "type": "CONSUMABLE",
+    "price": 200,
+    "effects": { "hp": 50, "addiction": 25, "resistance": 10 },
+    "tags": ["DRUG", "ILLEGAL"],
+    "flavorText": "透支明天的精力。"
+  },
+  {
+    "id": "LICENSE_FAKE",
+    "name": "假驾照",
+    "type": "KEY",
+    "price": 500,
+    "regions": ["SLUMS"],
+    "tags": ["LICENSE", "ILLEGAL"],
+    "flavorText": "看起来挺像那么回事。"
+  },
+  {
+    "id": "LICENSE_VALID",
+    "name": "正式驾照",
+    "type": "KEY",
+    "price": 50,
+    "regions": ["RUST_BELT", "SUBURBS"],
+    "tags": ["LICENSE"],
+    "flavorText": "经过DMV地狱般的排队后。"
+  },
+  {
+    "id": "LICENSE_ELITE",
+    "name": "豁免驾照",
+    "type": "KEY",
+    "price": 5000,
+    "regions": ["DOWNTOWN"],
+    "tags": ["LICENSE", "ELITE"],
+    "flavorText": "你的律师团确保这张驾照上没有任何违规记录。"
+  },
+  {
+    "id": "DEGREE",
+    "name": "私立大学学士文凭",
+    "type": "PASSIVE",
+    "price": 160000,
+    "regions": ["SUBURBS", "DOWNTOWN"],
+    "tags": ["EDUCATION"],
+    "flavorText": "印着几行你看不懂的拉丁文的昂贵羊皮纸。它不能保证你找到工作，但能保证借贷公司在未来三十年里合法地从你的工资里吸血，而且即使你流落街头宣告破产，这笔债务也绝对不会被豁免。"
+  },
+  {
+    "_comment": "========== 结局道具 - 用于触发特定结局 =========="
+  },
+  {
+    "id": "SURVIVAL_KIT",
+    "name": "末日生存包",
+    "type": "KEY",
+    "price": 500,
+    "regions": ["RUST_BELT", "SUBURBS"],
+    "tags": ["ENDING", "PREPPER", "KEY"],
+    "flavorText": "包含罐头、净水片和一本《如何在你的地下室度过核冬天》。你相信末日将至，而你会是幸存者。"
+  },
+  {
+    "id": "FAKE_PASSPORT",
+    "name": "哥斯达黎加假护照",
+    "type": "KEY",
+    "price": 10000,
+    "regions": ["DOWNTOWN"],
+    "tags": ["ENDING", "ILLEGAL", "KEY"],
+    "flavorText": "制作精良，但UV灯下会看到水印是米老鼠。这是离开美利坚的船票，但你真的确定外面的世界更好吗？"
+  }
+]

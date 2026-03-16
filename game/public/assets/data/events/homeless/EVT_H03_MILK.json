@@ -1,0 +1,103 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_H03_MILK",
+  "title": "倒掉牛奶",
+  "category": "HOMELESS",
+  "series": "食物分配",
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "饿得头昏眼花，你看见店员把成箱的牛奶倒进下水道，还往里面喷漂白水。",
+  "historicalNote": "美国每年浪费30-40%的食物，同时有数千万人面临食物不安全。销毁食物而非分发给需要的人是行业惯例。",
+  "options": {
+    "A": {
+      "label": "严谨的工匠精神！",
+      "roast": "感人。你的死因是“信仰充足，热量不足”。",
+      "flavorText": "你告诉自己这是必要的浪费。至少没有人因为吃了过期食物而生病。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "将市场效率置于人的生存之上，这是资本主义的终极逻辑。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 8,
+        "points": {
+          "old": 3
+        }
+      }
+    },
+    "B": {
+      "label": "怪可惜的，看一眼得了",
+      "roast": "叹口气就走？多温顺的韭菜啊，镰刀都不忍心割你了。",
+      "flavorText": "你知道什么都改变不了。看着食物被毁掉，你选择了沉默。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "习得性无助是长期贫困的心理后果之一。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "销毁比捐赠更省钱",
+      "roast": "精神资本家你好！身无分文却在帮老板算账，老板很感动。",
+      "flavorText": "你开始为超市算起了账。也许这确实是更有效率的选择。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "穷人被规训到会为剥削者的利益辩护，这是最深刻的异化。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": {
+          "wolf": 3
+        }
+      }
+    },
+    "D": {
+      "label": "向“价格之神”献祭",
+      "roast": "真相帝。宁可毒死也不给你喝，你的贱命没牛奶值钱。",
+      "flavorText": "你看到了那个可怕的真相：在这个系统中，你的价值低于一盒牛奶。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "维持稀缺性是利润的前提。过剩的食物必须销毁，否则穷人就不会工作。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.03_DUMPSTER_GUARD",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": {
+          "red": 15
+        }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_03_MILK",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [
+      "https://www.usda.gov/foodwaste/faqs",
+      "https://www.feedingamerica.org/our-work/reduce-food-waste"
+    ],
+    "relatedEvents": [
+      "EVT_H15_LOCKED_TRASH",
+      "EVT_H37_TRASH_PROPERTY"
+    ]
+  },
+  "image": "/assets/events/homeless/evt_bleach_milk.png"
+}

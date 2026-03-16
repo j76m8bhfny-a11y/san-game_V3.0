@@ -1,0 +1,101 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C20_CASINO",
+  "title": "赌场诱惑",
+  "category": "COMMON",
+  "series": "经济幻觉",
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS",
+      "WORKER",
+      "MIDDLE",
+      "CAPITALIST"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 8,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "朋友拉你去赌场\"放松一下\"。老虎机闪烁，轮盘转动，肾上腺素飙升。赢一把就走？",
+  "historicalNote": "美国赌博成瘾问题日益严重，在线赌博让问题更加恶化。",
+  "options": {
+    "A": {
+      "label": "小赌怡情",
+      "roast": "每个赌徒都这么说，直到输光。",
+      "flavorText": "你相信自己能控制，这是危险的自信。",
+      "ideology": "新自由主义/个人控制幻觉",
+      "archiveCommentary": "将赌博成瘾个人化，忽视行业的心理操控。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": {
+          "old": 3
+        }
+      }
+    },
+    "B": {
+      "label": "看看就好",
+      "roast": "赌场不喜欢观光客，但你安全。",
+      "flavorText": "你有足够的警觉，这次避开了陷阱。",
+      "ideology": "犬儒主义/自我保护",
+      "archiveCommentary": "对诱惑的清醒认识，是生存的智慧。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "办会员卡享受优惠",
+      "roast": "赌场感谢你：数据+忠诚=完美猎物。",
+      "flavorText": "你被 VIP 待遇迷惑，这是设计好的。",
+      "ideology": "消费主义/忠诚计划",
+      "archiveCommentary": "赌场用消费心理学精准收割客户。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": {
+          "wolf": 3
+        }
+      }
+    },
+    "D": {
+      "label": "这是合法化的掠夺",
+      "roast": "说得对，但 people still 在输钱。",
+      "flavorText": "你明白这是剥削产业，但娱乐荒漠里别无选择。",
+      "ideology": "激进左翼/赌博工业批判",
+      "archiveCommentary": "赌博工业故意制造成瘾，从绝望中榨取利润。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C20_GAMBLING_INDUSTRIAL_COMPLEX",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": {
+          "red": 15
+        }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": [
+      "EVT_C19_LOTTERY"
+    ]
+  },
+  "image": "/assets/events/common/evt_slot_machine.png"
+}

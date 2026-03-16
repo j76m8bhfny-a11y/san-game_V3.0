@@ -1,0 +1,99 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C21_TAX_AUDIT",
+  "title": "税务审计",
+  "category": "COMMON",
+  "series": "国家机器",
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS",
+      "WORKER",
+      "MIDDLE",
+      "CAPITALIST"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 6,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "IRS来信：你被选中审计。需要提交过去三年的所有收据。请会计师？5000美元。自己弄？可能坐牢。",
+  "historicalNote": "美国税务系统复杂到普通人难以应对，IRS预算削减后主要审计中产阶级而非富人。",
+  "options": {
+    "A": {
+      "label": "聘请税务律师",
+      "roast": "用更多钱解决钱的问题，美国税务系统完美闭环。",
+      "flavorText": "你相信专业服务能保护你，尽管价格高昂。",
+      "ideology": "新自由主义/专业服务依赖",
+      "archiveCommentary": "将税务合规外包给专业人士，制造寄生性产业。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": {
+          "old": 3
+        }
+      }
+    },
+    "B": {
+      "label": "自己硬着头皮上",
+      "roast": "祝你好运，IRS的表格比你的命还复杂。",
+      "flavorText": "你买不起帮助，只能自己面对。",
+      "ideology": "犬儒主义/自助",
+      "archiveCommentary": "制度故意复杂化，让穷人更容易犯错。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "买税务软件",
+      "roast": "用消费解决系统制造的 complexity，完美。",
+      "flavorText": "你希望技术能简化这一切。",
+      "ideology": "消费主义/技术解决",
+      "archiveCommentary": "将系统性问题转化为软件销售机会。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": {
+          "wolf": 3
+        }
+      }
+    },
+    "D": {
+      "label": "这是中产阶级陷阱",
+      "roast": "说得对，但你 still 要交税。",
+      "flavorText": "你明白富人用不同规则，但你被困在这个游戏里。",
+      "ideology": "激进左翼/税制批判",
+      "archiveCommentary": "税务系统的复杂性是有意设计，让富人能避税而中产被收割。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C21_TAX_COMPLEXITY_WEAPON",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": {
+          "red": 15
+        }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": []
+  },
+  "image": "/assets/events/common/evt_tax_form.png"
+}

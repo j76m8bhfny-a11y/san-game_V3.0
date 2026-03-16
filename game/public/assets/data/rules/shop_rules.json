@@ -1,0 +1,67 @@
+{
+  "$schema": "shop-rules-config",
+  "description": "商店/背包系统配置，被ShopSystem使用",
+  "version": "1.0.0",
+  
+  "inventory": {
+    "description": "背包系统配置",
+    "maxSize": 12,
+    "fullMessage": "背包已满 ({current}/{max})"
+  },
+  
+  "drugResistance": {
+    "description": "药物抗性系统配置",
+    "enable": true,
+    "divisor": 100,
+    "minEffectiveness": 0.1,
+    "thresholds": {
+      "warning": 0.8,
+      "critical": 0.3
+    },
+    "messages": {
+      "warning": " (耐药性导致效果衰减)",
+      "critical": " (几近失效)"
+    }
+  },
+  
+  "ledgerMapping": {
+    "description": "消费分类映射",
+    "mappings": [
+      { "tag": "FOOD", "category": "FOOD" },
+      { "tag": "MEDICAL", "category": "MEDICAL" },
+      { "tag": "WEAPON", "category": "MISC" }
+    ]
+  },
+  
+  "audio": {
+    "description": "音效配置",
+    "buySuccess": "sfx_cash",
+    "buyFail": "sfx_deny",
+    "useItem": "sfx_use_item",
+    "click": "sfx_click"
+  },
+  
+  "themes": {
+    "description": "区域主题配置",
+    "SLUMS": {
+      "bg": "from-gray-900 to-black",
+      "title": "贫民窟黑市",
+      "subtitle": "这里卖的东西大多是过期的，或者是偷来的。"
+    },
+    "RUST_BELT": {
+      "bg": "from-orange-900/50 to-black",
+      "title": "工团补给站",
+      "subtitle": "为了明天的劳作，补充燃料。"
+    },
+    "SUBURBS": {
+      "bg": "from-blue-900/30 to-gray-900",
+      "title": "社区便利店",
+      "subtitle": "中产阶级的避风港，干净、昂贵、无聊。"
+    },
+    "DOWNTOWN": {
+      "bg": "from-purple-900/50 to-black",
+      "title": "VIP 尊享会所",
+      "subtitle": "只要付得起钱，我们可以出售「快乐」"
+    }
+  }
+}

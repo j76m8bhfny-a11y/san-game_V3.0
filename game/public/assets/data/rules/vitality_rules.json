@@ -1,0 +1,97 @@
+{
+  "$schema": "vitality-rules-config",
+  "description": "生命/活力系统配置 - 定义阶级基础属性、代谢、疾病等规则，被VitalitySystem使用",
+  "version": "1.0.0",
+  
+  "classes": {
+    "description": "各阶级基础属性配置",
+    "HOMELESS": {
+      "gold": 50, "hp": 60, "san": 40, "maxHp": 60, "maxSan": 100,
+      "desc": "地狱开局。除了活着，你一无所有。"
+    },
+    "WORKER": {
+      "gold": 200, "hp": 100, "san": 60, "maxHp": 100, "maxSan": 100,
+      "desc": "标准开局。用健康换取金钱的西西弗斯。"
+    },
+    "MIDDLE": {
+      "gold": 2000, "hp": 90, "san": 70, "maxHp": 90, "maxSan": 100,
+      "desc": "安逸的陷阱。看似拥有选择权，实则更怕失去。"
+    },
+    "CAPITALIST": {
+      "gold": 10000, "hp": 80, "san": 50, "maxHp": 80, "maxSan": 100,
+      "desc": "顶层掠食者。金钱是数字，人性是筹码。"
+    }
+  },
+  
+  "defaults": {
+    "description": "默认属性值",
+    "maxHunger": 100,
+    "maxSan": 100,
+    "creditScore": {
+      "homeless": 500,
+      "standard": 650
+    }
+  },
+  
+  "metabolism": {
+    "description": "代谢系统配置",
+    "baseCost": 5,
+    "hungerDecayPerTurn": 20,
+    "starvationDamage": 15
+  },
+  
+  "medical": {
+    "description": "医疗相关配置",
+    "failurePenalty": { "hp": -10, "insight": -5 }
+  },
+  
+  "disease": {
+    "description": "疾病系统配置",
+    "infectionRates": {
+      "SLUMS": 0.15,
+      "RUST_BELT": 0.10,
+      "SUBURBS": 0.05,
+      "DOWNTOWN": 0.02
+    },
+    "distribution": {
+      "SLUMS": ["FLU_LOW", "SEPSIS", "ACUTE_GASTRITIS"],
+      "RUST_BELT": ["WORKER_LUNG", "FRACTURE", "TETANUS"],
+      "SUBURBS": ["INSOMNIA", "ALLERGY"],
+      "DOWNTOWN": ["VOID_PSYCHOSIS", "GOUT"]
+    },
+    "modifiers": {
+      "housingBonus": 0.6,
+      "homelessPenalty": 1.5,
+      "jobRiskAdd": 0.05,
+      "resistanceDivisor": 200,
+      "weakBodyThresholdPct": 0.3,
+      "weakSanThresholdPct": 0.2,
+      "weakBodyMultiplier": 1.5,
+      "weakSanMultiplier": 1.2
+    },
+    "highRiskJobs": ["MINER", "TEST_SUBJECT"]
+  },
+  
+  "insight": {
+    "description": "灵视/觉醒系统配置",
+    "lowThreshold": 30,
+    "awakenThreshold": 70,
+    "transcendThreshold": 85
+  },
+  
+  "visuals": {
+    "description": "视觉效果阈值配置",
+    "thresholds": {
+      "hpLow": 30,
+      "insightLow": 30,
+      "insightMedium": 50,
+      "insightHigh": 70,
+      "insightAwaken": 85,
+      "addictionHigh": 50
+    },
+    "phases": {
+      "mundaneMax": 30,
+      "awakenMin": 71
+    }
+  }
+}

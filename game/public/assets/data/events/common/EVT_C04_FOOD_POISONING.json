@@ -1,0 +1,102 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C04_FOOD_POISONING",
+  "title": "食物中毒",
+  "category": "COMMON",
+  "series": "健康危机",
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS",
+      "WORKER",
+      "MIDDLE",
+      "CAPITALIST"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "昨晚那顿打折外卖出了问题。你现在在厕所和床之间来回奔波，怀疑人生。",
+  "historicalNote": "美国每年有约4800万人因食源性疾病生病，食品安全监管持续被削减。",
+  "options": {
+    "A": {
+      "label": "去医院急诊",
+      "roast": "急诊账单会让你比食物中毒更想吐。",
+      "flavorText": "你相信专业医疗，尽管它贵得离谱。",
+      "ideology": "新自由主义/专业信任",
+      "archiveCommentary": "将健康商品化，让人们在生病时还要计算成本。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": {
+          "old": 3
+        }
+      }
+    },
+    "B": {
+      "label": "硬扛过去",
+      "roast": "你的身体会记住这次教训，直到下次再犯。",
+      "flavorText": "你习惯了忍耐，这是生存的成本。",
+      "ideology": "犬儒主义/自我忽视",
+      "archiveCommentary": "无力承担医疗费用的人群学会了自我治疗。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "买进口益生菌",
+      "roast": "用消费解决问题，哪怕问题本身就是消费导致的。",
+      "flavorText": "你相信有更贵、更好的解决方案。",
+      "ideology": "消费主义/健康商品",
+      "archiveCommentary": "将健康问题转化为消费机会，是健康产业的盈利逻辑。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": {
+          "wolf": 3
+        }
+      }
+    },
+    "D": {
+      "label": "这是食品工业的常态",
+      "roast": "对，但你现在需要的是止泻药，不是意识形态。",
+      "flavorText": "你明白这是系统性问题，但你 still 要拉。",
+      "ideology": "激进左翼/食品政治",
+      "archiveCommentary": "食品工业的逐利逻辑将成本外部化到消费者健康上。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C04_FOOD_SYSTEM",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": {
+          "red": 15
+        }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": [
+      "EVT_C05_FLU",
+      "EVT_C06_BEDBUGS"
+    ]
+  },
+  "image": "/assets/events/common/evt_vomit.png"
+}

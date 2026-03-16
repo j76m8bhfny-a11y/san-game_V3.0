@@ -1,0 +1,123 @@
+[
+  {
+    "id": "INS_SLUMS_SCAM",
+    "name": "快速救急金 & 创伤险",
+    "fullName": "Short-Term Limited Duration Insurance (STLDI) - Emergency Medical Bridge Plan",
+    "type": "MEDICAL",
+    "allowedClasses": ["HOMELESS"],
+    "weeklyCost": 45,
+    "coverage": {
+      "copayModifier": 0.6,
+      "emergencyCovered": true,
+      "mentalCovered": false,
+      "addictionCovered": false
+    },
+    "uiTheme": "SLUMS",
+    "flavorText": "不查征信！不问来源！只要签字，救护车马上到！(大概率)",
+    "legalDisclaimer": "本计划符合《平价医疗法案》(ACA)豁免条款，非全面医疗保障。不满足最低基本覆盖(MEC)标准，您可能仍需支付联邦税费罚款。本计划不保证续保，保险公司有权基于理赔历史拒绝续保。既有疾病等待期12个月。",
+    "coverageDetails": "急诊室就诊适用In-Network共付额。预防性服务不适用(依据ACA最低基本覆盖要求豁免)。年度免赔额$7,500，共付比例40%，年度自付上限$20,000。",
+    "signMethod": "BLOOD_PRINT"
+  },
+  {
+    "id": "INS_WORKER_UNION",
+    "name": "工团互助险 (HMO)",
+    "fullName": "High Deductible Health Plan (HDHP) - HSA Compatible Employer Sponsored Plan",
+    "type": "MEDICAL",
+    "allowedClasses": ["WORKER"],
+    "weeklyCost": 120,
+    "coverage": {
+      "copayModifier": 0.3,
+      "deductible": 7000,
+      "emergencyCovered": true,
+      "mentalCovered": false,
+      "addictionCovered": false
+    },
+    "uiTheme": "RUST_BELT",
+    "flavorText": "团结就是力量。仅限工会指定诊所，排队时间可能较长。",
+    "legalDisclaimer": "本计划为HSA合格高免赔额健康计划。在达到$7,000年度免赔额之前，您需全额自付所有医疗费用。网络外急诊免赔额单独计算为$10,000。精神健康服务及成瘾治疗不在本计划覆盖范围内，由雇主单独选购EAP。",
+    "coverageDetails": "网络内急诊免赔额满足后80%报销。网络外急诊免赔额满足后50%报销。HSA账户可存入税前收入，雇主匹配供款年度$500。",
+    "signMethod": "STAMP"
+  },
+  {
+    "id": "INS_CORP_GOLD",
+    "name": "LifeShield™ 黄金计划",
+    "fullName": "Preferred Provider Organization (PPO) Gold Tier - Comprehensive Medical Coverage",
+    "type": "MEDICAL",
+    "allowedClasses": ["MIDDLE", "CAPITALIST"],
+    "weeklyCost": 550,
+    "coverage": {
+      "copayModifier": 0.1,
+      "deductible": 1500,
+      "emergencyCovered": true,
+      "mentalCovered": true,
+      "addictionCovered": true
+    },
+    "uiTheme": "DOWNTOWN",
+    "flavorText": "全美顶级医疗网络覆盖。您的健康，我们的承诺。",
+    "legalDisclaimer": "金属等级：Gold（保险承担约80%医疗费用）。网络外服务您可选择但需支付更高费用。以下服务需事先授权否则可能拒赔：住院手术、MRI/CT扫描、精神健康住院治疗。门诊精神健康共付额$40，住院精神健康免赔额后10%共付。",
+    "coverageDetails": "年度免赔额$1,500。门诊共付额$40(专科$60)。住院共付免赔额后10%。网络外免赔额$3,000(单独计算)，网络外共付40%。处方药覆盖Tier 1-3。",
+    "signMethod": "DIGITAL"
+  },
+  {
+    "id": "INS_GLOBAL_VIP",
+    "name": "Apex 生物安全协议",
+    "fullName": "Executive Medical Concierge Program (EMCP) - Platinum Plus Global Coverage",
+    "type": "MEDICAL",
+    "allowedClasses": ["CAPITALIST"],
+    "weeklyCost": 3500,
+    "coverage": {
+      "copayModifier": 0.0,
+      "deductible": 0,
+      "emergencyCovered": true,
+      "mentalCovered": true,
+      "addictionCovered": true,
+      "organTransplant": true,
+      "experimentalCovered": true
+    },
+    "uiTheme": "GLOBAL",
+    "flavorText": "这不仅仅是保险，这是永生的入场券。优先器官移植权。",
+    "legalDisclaimer": "本计划涉及的部分服务(如海外器官获取、实验性治疗)可能违反部分司法管辖区法律。保险公司提供协调服务但不承担法律风险。全球医疗网络覆盖无限额度。器官移植协调包含UNOS等待列表优先排序及'移植旅游'服务。",
+    "coverageDetails": "所有医疗服务100%报销无免赔额。精神健康与成瘾治疗全额覆盖包括海外静修中心。实验性治疗(FDA一期临床试验)准入。抗衰老干预(NAD+疗法、Senolytics)覆盖。空中医疗转运全球范围。终身最高限额：无限制。",
+    "signMethod": "SIGNATURE"
+  },
+  {
+    "id": "INS_AUTO_FAKE",
+    "name": "非标车险",
+    "fullName": "Non-Standard Auto Liability Coverage - Unlicensed Driver Endorsement",
+    "type": "AUTO",
+    "allowedClasses": ["HOMELESS", "WORKER"],
+    "weeklyCost": 200,
+    "coverage": {
+      "copayModifier": 0.5,
+      "emergencyCovered": false,
+      "mentalCovered": false,
+      "addictionCovered": false,
+      "autoCovered": false
+    },
+    "uiTheme": "SLUMS",
+    "flavorText": "没有正式驾照也能买，但别指望能赔多少。",
+    "legalDisclaimer": "本保单包含未持证驾驶人附加条款。在事故理赔时，保险公司有权以'驾驶人未取得有效驾照'为由拒绝赔付。本保单仅满足州政府最低责任险要求，不包含碰撞险(Collision)或综合险(Comprehensive)。",
+    "coverageDetails": "第三方责任险最低限额。无驾照事故拒赔风险。不包含车辆损失赔付。不包含医疗费用赔付。",
+    "signMethod": "CASH"
+  },
+  {
+    "id": "INS_AUTO_STANDARD",
+    "name": "标准车险",
+    "fullName": "Standard Auto Insurance Policy - Full Coverage with Uninsured Motorist Protection",
+    "type": "AUTO",
+    "allowedClasses": ["WORKER", "MIDDLE", "CAPITALIST"],
+    "weeklyCost": 50,
+    "coverage": {
+      "copayModifier": 0.2,
+      "emergencyCovered": true,
+      "mentalCovered": false,
+      "addictionCovered": false,
+      "autoCovered": true
+    },
+    "uiTheme": "RUST_BELT",
+    "flavorText": "正常人的选择。",
+    "legalDisclaimer": "包含碰撞险(Collision)、综合险(Comprehensive)及未投保驾驶人保护(Uninsured Motorist Protection)。免赔额$500。保费基于驾驶记录、车辆价值及信用评分计算。事故后保费上调风险。",
+    "coverageDetails": "碰撞险免赔额后80%赔付。综合险(盗窃、自然灾害)免赔额后80%赔付。未投保驾驶人保护全额赔付。道路救援服务包含。",
+    "signMethod": "STAMP"
+  }
+]

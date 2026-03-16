@@ -1,0 +1,19 @@
+{
+  "id": "EVT_H_FIND_CANS",
+  "title": "丰收日",
+  "description": "兄弟会昨晚开了派对，草坪上满是空啤酒罐和铝罐。",
+  "conditions": {
+    "requiredClass": ["HOMELESS"],
+    "weight": 25
+  },
+  "options": {
+    "A": {
+      "text": "回收废品",
+      "effects": {
+        "gold": 10,
+        "hp": -3
+      },
+      "flavorText": "你花了一小时收集，换了$10。弯腰捡罐子的背痛了三天。"
+    }
+  }
+}

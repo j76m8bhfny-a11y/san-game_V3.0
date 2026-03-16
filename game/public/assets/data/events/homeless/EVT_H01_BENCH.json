@@ -1,0 +1,104 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_H01_BENCH",
+  "title": "公园长椅",
+  "category": "HOMELESS",
+  "series": "基础生存",
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "暴雪夜，你冻得全身僵硬，想在公园长椅上躺会儿。走近一看，椅子中间焊死了几个金属扶手，根本躺不进去。",
+  "historicalNote": "源自英国'卡姆登长椅'(Camden Bench)，专门设计来防止流浪者躺卧。这种'敌意建筑'在全球城市广泛存在。",
+  "options": {
+    "A": {
+      "label": "拒绝葛优瘫，保持体面",
+      "roast": "冻死事小，失节事大。你死得很有线条感。",
+      "flavorText": "你告诉自己要保持体面，这是作为人的最后尊严。但尊严不能当被子盖。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "这种选择代表了系统最希望穷人持有的心态：自责、内卷、永不质疑结构。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 8,
+        "points": {
+          "old": 3
+        }
+      }
+    },
+    "B": {
+      "label": "凑合坐会儿，别惹事",
+      "roast": "真乖。你像条特别懂事的流浪狗，富人看了都说好。",
+      "flavorText": "你选择了最安全、最不需要思考的路径。这让你感觉掌控了局面，尽管什么都没有改变。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "麻木不是愚蠢，而是生存策略。在一个无法胜利的系统中，不抱希望就不会失望。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "防止霸座，公平共享",
+      "roast": "饭都没得吃，还在替纳税人操心？顶级耗材。",
+      "flavorText": "你决定用钱来应对这个问题。虽然这会让你更穷，但至少你符合了社会的期待。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "消费主义提供了一个完美的出口：把系统性问题转化为个人问题，然后用钱解决。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": {
+          "wolf": 3
+        }
+      }
+    },
+    "D": {
+      "label": "混凝土做的驱逐武器",
+      "roast": "人间清醒。可惜看穿了恶意也不能当被子盖，接着冻着吧。",
+      "flavorText": "你看到了设计背后的恶意，那种将人视为垃圾的系统思维。这种认知是沉重的。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "真相的代价总是高昂的，但沉默的代价更高。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.01_CAMDEN_BENCH",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": {
+          "red": 15
+        }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_01_BENCH",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [
+      "https://en.wikipedia.org/wiki/Camden_bench",
+      "https://www.theguardian.com/artanddesign/2014/jun/13/camden-bench-design-award-public-seating"
+    ],
+    "relatedEvents": [
+      "EVT_H04_SPIKES",
+      "EVT_H24_LEAN_BARS",
+      "EVT_H48_SPIKED_ROCKS"
+    ]
+  },
+  "image": "/assets/events/homeless/evt_bench_spikes.png"
+}

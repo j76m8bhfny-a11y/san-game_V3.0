@@ -1,0 +1,300 @@
+[
+  {
+    "id": "ED-23",
+    "title": "有机瑜伽垫上的圆寂",
+    "description": "你死时身边散落着褪黑素空瓶和Lululemon瑜伽垫。最后一笔支出是45美元的'抗焦虑复合提取物'——它有效压制了你对破产的焦虑，但没告诉你这其实是一种昂贵的安慰剂。你的灵魂升天时，手里拿着的不是圣经，是一张Whole Foods的会员卡。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasItem": "ITEM_YOGA_MAT",
+      "maxGold": 1000
+    }
+  },
+  {
+    "id": "ED-24",
+    "title": "Dollar Menu的献祭",
+    "description": "验尸官在你的血管里发现了高果糖玉米糖浆的沉积物——足以装满三个可乐瓶。你这辈子省下的饭钱，刚好够支付火化费。麦当劳的99美分菜单上不会告诉你：那是按克计价的人肉价格。你的墓碑上刻着：'这里长眠一位精明的消费者。'",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasDisease": "TYPE_2_DIABETES",
+      "hasDisease": "HEART_DISEASE",
+      "maxGold": 500
+    }
+  },
+  {
+    "id": "ED-25",
+    "title": "年轻血液的反向输血",
+    "description": "你花15000美元注射了'硅谷精英特供年轻血液'，希望能活到奇点降临。讽刺的是，杀死你的不是衰老，而是那笔贷款的催收电话。你的血液里流淌着别人的青春，你的账户里流淌着负数的未来。吸血鬼至少只吸血，硅谷还吸走了你的信用评分。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasItem": "MEDICAL_YOUNG_BLOOD",
+      "maxGold": -5000
+    }
+  },
+  {
+    "id": "ED-26",
+    "title": "免赔额地狱",
+    "description": "你明明有保险卡，却死在了急诊室门口——因为今年的免赔额还差2000美元。保险公司的人会参加你的葬礼，他们会说：'根据条款第47条，灵魂出窍不属于网络内服务。'你的墓碑将收到一张账单：使用墓地空间产生的网络外费用。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasInsurance": "HDHP",
+      "hasUntreatedDisease": true,
+      "minGold": 1000
+    }
+  },
+  {
+    "id": "ED-27",
+    "title": "网络外惊喜",
+    "description": "那趟3英里的救护车旅程救了你的命，但随后的'惊喜账单'要了你的命。15000美元的账单附言写着：'虽然你失去了意识，但你在服务协议上按了手印——我们假设你同意了。'美国医疗系统的奇迹是：他们能在你死前让你破产两次。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "usedService": "SUBURBS_AMBULANCE",
+      "maxGold": -10000
+    }
+  },
+  {
+    "id": "ED-28",
+    "title": "止痛药轮盘赌",
+    "description": "你的肝脏变成了布洛芬结晶的博物馆。你一辈子没看过专科医生，因为'太贵'——现在火化费比那笔专科诊费贵三倍。你死前最后的念头是：'再吞两粒应该能挺过去。'这一次，你没有挺过去。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasItem": "MEDICAL_BULK_IBUPROFEN",
+      "itemPurchaseCount": 5,
+      "maxGold": 200
+    }
+  },
+  {
+    "id": "ED-29",
+    "title": "卖血者的贫血",
+    "description": "你卖掉了身体里最后一点可以卖的东西——血浆。CVS药房的抗anemia药要80美元，而你卖一次血只能赚30美元。数学告诉你：这是一个必输的游戏。你死时比出生时轻了5磅，那是你卖给系统的生命质量。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "usedService": "SLUM_PLASMA_DONATION",
+      "maxHp": 70
+    }
+  },
+  {
+    "id": "ED-30",
+    "title": "亚马逊算法的裁员令",
+    "description": "你在亚马逊仓库的第36周倒下了。AI算法记录了你上厕所的每一次——共14分钟，超过了允许的10分钟。你的死亡被系统标记为'自愿离职'。贝佐斯会收到通知：'一个效率低于平均值的单元已被移除。'你的骨灰盒将由Prime会员免费配送。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasJob": "JOB_AMAZON_PICKER",
+      "jobDuration": 30
+    }
+  },
+  {
+    "id": "ED-31",
+    "title": "零工经济的最后一单",
+    "description": "你是一位'独立承包人'——这意味着你用自己付油钱的车、自己买的保险、自己承担的风险，为Uber赚了5万美元。你的最后一条评价是：'司机态度很好，但车里有股奇怪的味道。'那股味道是破产和绝望。平台会给你一张1099税表，标记为'已故承包商收入'。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "requiredClass": "WORKER",
+      "onlyGigWork": true,
+      "hasItem": "VEHICLE",
+      "maxGold": 0
+    }
+  },
+  {
+    "id": "ED-32",
+    "title": "双开轮班的猝死",
+    "description": "你打了两份全职工，因为这样'刚好能付得起房租和胰岛素'。你死时，第一份工作的经理在找替补，第二份工作的经理在计算加班费节省了多少。两份工作的401K加起来还不够葬礼费用。你的墓志铭：'他从未请过病假——直到死亡。'",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "activeJobsCount": 2,
+      "consecutiveLowHp": 10
+    }
+  },
+  {
+    "id": "ED-33",
+    "title": "试药员的白老鼠结局",
+    "description": "你把身体租给药厂测试新药。第三期的副作用包括：幻觉、器官衰竭和'意外死亡'——你中了头奖。药厂会给你家人一笔封口费，附带NDA条款：禁止他们在社交媒体上提及'该受试者曾服用我司产品'。你用自己的身体帮他们排除了一个失败配方，这是你对医学的最后一次贡献。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasItem": "D03",
+      "hasDisease": "VOID_PSYCHOSIS"
+    }
+  },
+  {
+    "id": "ED-34",
+    "title": "教会的十一税",
+    "description": "你把工资的十分之一给了上帝，甚至借钱也要完成十一税。牧师说你会在天堂富足——他是对的，因为天堂的入场券是免费的。你死前的最后一笔支出是50美元的'紧急祷告服务费'。上帝收到了你的祷告，但快递公司搞错了地址——它送到了牧师的银行账户。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "requiredFaith": "CHURCH",
+      "faithLevel": 2,
+      "maxGold": 0
+    }
+  },
+  {
+    "id": "ED-35",
+    "title": "邪教的Kool-Aid",
+    "description": "你献祭了金钱、理智和尊严。教主说最后的仪式需要'终极奉献'——你没有犹豫。当你喝下那杯Kool-Aid时，你看见教主在开上你的车离开。你在集体坟墓里找到了'归属'，和另外12个寻找答案的人一起。好消息是：你终于不需要再付房租了。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "requiredFaith": "CULT",
+      "faithLevel": 3,
+      "hasPerformedRite": true
+    }
+  },
+  {
+    "id": "ED-36",
+    "title": "革命的误伤",
+    "description": "你在监狱里读完了《资本论》，出狱后组织罢工。FBI把你列为'国内恐怖分子'，而你的同志们把你列为'可被牺牲的棋子'。你的死亡被两边利用：政府用它来证明革命者的危险性，革命者用它来激发同情。你死前最后的念头是：'至少我上了新闻。'",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "requiredFaith": "REVOLUTION",
+      "requiredPoints": { "red": 60 },
+      "hasFlag": "hasFelonyRecord"
+    }
+  },
+  {
+    "id": "ED-37",
+    "title": "发薪日贷款的绞索",
+    "description": "你借了500美元应急，六周后欠款变成3500美元——年化利率780%。催收员的电话比心跳还规律。你死时，债务被'慷慨地'转让给了你的继承人。在美国，你可以带着债务去坟墓，但坟墓也有月租，而且你的信用评分不够资格预订。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "paydayLoanCount": 3,
+      "maxGold": -5000
+    }
+  },
+  {
+    "id": "ED-38",
+    "title": "学生贷款的永恒诅咒",
+    "description": "你拥有文学学士学位和12万美元债务。死前你终于算清楚了：你这辈子为教育支付的钱，足够买一辆特斯拉——虽然你从未拥有过车。联邦政府会追缴你的学生贷款直到你腐烂，之后他们会查封你的骨灰盒作为'可变现资产'。你的学位证书可以用来当墓碑，反正它也值不了别的用处。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasItem": "DEGREE",
+      "studentLoanBalance": 100000,
+      "minTurn": 50
+    }
+  },
+  {
+    "id": "ED-39",
+    "title": "401K的幻觉",
+    "description": "你勤勤恳恳交了30年401K，账户里有8万美元——那是你59.5岁后才能碰的钱。你死在58岁生日后两周，早了一年。你的401K受益人是你从未见过的侄子，他用这笔钱买了辆游艇。你在坟墓里终于明白了：资本主义的最佳设计是让你为退休存钱，然后确保你在退休前死掉。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasJob": "FULL_TIME",
+      "jobDuration": 40,
+      "maxGold": 1000
+    }
+  },
+  {
+    "id": "ED-40",
+    "title": "房产税的驱逐",
+    "description": "你花了30年还清房贷，以为房子终于属于你了。然后你发现房子永远属于政府——你只是租地的佃农。欠了2000美元房产税后，县治安官把你扔到了街上。你在自己曾经的前廊上冻死了，手里攥着一张写着'全额拥有'的房产证。在美国，你可以拥有房子，直到你不能。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "hasHousing": "OWN",
+      "lostHousing": true,
+      "requiredClass": "HOMELESS"
+    }
+  },
+  {
+    "id": "ED-41",
+    "title": "房东的涨租通知",
+    "description": "你死前的最后一个月住了三个地方。第一个房东涨了30%租金，第二个进行了'装修驱逐'，第三个在Airbnb上发现了更高的利润。你的墓碑上会写着租金：$0/月，终于稳定了。地下的landlord是蚯蚓，它们至少不查信用评分。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "rentalEvictionCount": 2,
+      "requiredClass": "HOMELESS"
+    }
+  },
+  {
+    "id": "ED-42",
+    "title": "HOA的暴君",
+    "description": "你因草坪高度超标2英寸被HOA罚款。然后因未付罚款被起诉。然后因诉讼费失去房子。Karen邻居拍了拍你的棺材说：'至少现在草坪不会长高了。'你的鬼魂可以在HOA会议上永远投反对票，虽然他们听不见。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "requiredClass": "MIDDLE",
+      "lostHousingToHOA": true
+    }
+  },
+  {
+    "id": "ED-43",
+    "title": "帐篷城的甲烷爆炸",
+    "description": "你住在帐篷城第47周。市政府说他们在'研究长期解决方案'，而你的短期解决方案是一个漏气的丙烷罐。爆炸发生时，Cleanup Crew的效率比社工高多了——他们15分钟就到了，主要是为了清理现场以免影响房价。你的帐篷被没收并作为'危险物品'销毁，你的存在被从城市统计数据中删除。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "requiredClass": "HOMELESS",
+      "homelessWeeks": 30,
+      "currentRegion": "SLUMS"
+    }
+  },
+  {
+    "id": "ED-44",
+    "title": "算法的美颜",
+    "description": "算法判定你是'高风险个体'，虽然你从未逾期还款——你只是搬家太频繁。你的信用评分低于400后，连高利贷都不借给你。AI没有杀你，它只是切断了你生存所需的所有资源。你的死亡被记录为'自然原因'：自然地被系统淘汰。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "maxCreditScore": 400,
+      "creditDeniedCount": 2
+    }
+  },
+  {
+    "id": "ED-45",
+    "title": "社交媒体的最后直播",
+    "description": "你死前最后一次被拍进TikTok。网红需要一段'帮助流浪汉'的内容来获得品牌赞助。视频里你感激涕零地接过200美元，获得了50万点赞。网红赚了5000美元广告费，你买了止痛药和一顿热饭。这场交易的ROI（投资回报率）是：网红2500%，你0%。你死后的第三天，视频还在产生收益。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "triggeredEvent": "B_HOMELESS_TIKTOK",
+      "maxGold": 0
+    }
+  },
+  {
+    "id": "ED-46",
+    "title": "保险的完美客户",
+    "description": "你这辈子买了医疗险、车险、房屋险、人寿险。保险公司爱你——你从未索赔过。当你终于需要那笔人寿保险时，受益人发现条款第847条排除了你的死因。保险公司发来慰问信：'感谢您30年的忠诚，您的死亡帮助我们保持了低赔付率。'",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "totalInsurancePaid": 50000,
+      "insuranceClaims": 0
+    }
+  },
+  {
+    "id": "ED-47",
+    "title": "信用评分的奴隶",
+    "description": "你从未逾期还款，信用评分高达780。为了实现这一点，你借了更多钱来还旧账，像一个走钢丝的小丑。你死时信用卡全部清零——因为你不能再欠债了。银行会给你发一张'完美客户'证书，裱框费用79.99美元，邮寄给你唯一的继承人：催收公司。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "minCreditScore": 750,
+      "maxGold": 0
+    }
+  },
+  {
+    "id": "ED-48",
+    "title": "美国梦的自动续订",
+    "description": "你每个月自动续订的服务包括：健身会员（从未去过）、流媒体（只看广告 tier）、保险（从不理赔）、以及一个每月19.99美元的'成功学播客'。你死时银行账户被自动扣款到负数。好消息是：死亡取消了所有订阅，除了那个播客——它还在你的棺材里播放'如何成为百万富翁'。",
+    "priority": 1,
+    "type": "DEATH",
+    "conditions": {
+      "monthlySubscriptionCost": 200,
+      "maxGold": 0
+    }
+  }
+]

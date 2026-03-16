@@ -1,0 +1,60 @@
+{
+  "settings": {
+    "description": "就业系统配置：辞退与职场黑名单机制",
+    "blacklistDuration": 4,
+    "blacklistMessage": "你被列入了本区域的职场黑名单"
+  },
+  "layoffs": [
+    {
+      "id": "LAYOFF_WORKER_RANDOM",
+      "name": "结构性优化",
+      "description": "公司决定'精简人力'，你的岗位被外包给了一家越南公司。",
+      "targetClass": "WORKER",
+      "baseChance": 0.08,
+      "minTurnsEmployed": 4,
+      "effects": {
+        "insight": -10
+      },
+      "flavorText": "HR用充满同情的语气告诉你这是'艰难的决定'，然后让你在一小时内收拾东西离开。",
+      "roast": "你的岗位被外包给了一个月薪300美元的越南人。这就是全球化。"
+    },
+    {
+      "id": "LAYOFF_MIDDLE_REORG",
+      "name": "组织架构调整",
+      "description": "季度财报不好看，中层管理成了替罪羊。",
+      "targetClass": "MIDDLE",
+      "baseChance": 0.12,
+      "minTurnsEmployed": 6,
+      "effects": {
+        "insight": -15
+      },
+      "flavorText": "你在全体会议上被告知公司要'扁平化管理'。会后，你的直属上司把你叫进办公室。",
+      "roast": "公司需要有人为CEO的奖金买单，而你就是那个'成本优化'的数字。"
+    },
+    {
+      "id": "LAYOFF_MIDDLE_MERGER",
+      "name": "并购裁员",
+      "description": "公司被收购，新东家带来了自己的团队。",
+      "targetClass": "MIDDLE",
+      "baseChance": 0.15,
+      "minTurnsEmployed": 4,
+      "effects": {
+        "insight": -20
+      },
+      "flavorText": "尽职调查完成后的第30天，你收到了'职位冗余'的通知信。遣散费刚好够付一个月的房贷。",
+      "roast": "资本的游戏规则：吃掉公司，吐出员工。"
+    }
+  ],
+  "blacklistBuff": {
+    "id": "buff_job_blacklist",
+    "name": "职场黑名单",
+    "description": "被辞退后的冷却期，无法申请同阶级工作",
+    "duration": 4,
+    "effects": {
+      "perTurn": {
+        "insight": -1
+      }
+    },
+    "blockSameClassJobs": true
+  }
+}

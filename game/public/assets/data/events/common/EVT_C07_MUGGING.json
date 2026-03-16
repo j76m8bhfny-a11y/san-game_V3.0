@@ -1,0 +1,102 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C07_MUGGING",
+  "title": "街头抢劫",
+  "category": "COMMON",
+  "series": "犯罪与安全",
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS",
+      "WORKER",
+      "MIDDLE",
+      "CAPITALIST"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 8,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "深夜回家的路上，一个人影从暗处闪出。\"把钱和手机交出来，快点！\"",
+  "historicalNote": "财产犯罪与贫困率正相关，警力分配往往偏向富人区。",
+  "options": {
+    "A": {
+      "label": "反抗",
+      "roast": "英雄主义？不，这是危险的电影看多了。",
+      "flavorText": "你拒绝屈服，即使这可能让你送命。",
+      "ideology": "新自由主义/个人英雄主义",
+      "archiveCommentary": "将安全问题个人化，鼓励个体冒险而非寻求系统性解决方案。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": {
+          "old": 3
+        }
+      }
+    },
+    "B": {
+      "label": "乖乖交出钱包",
+      "roast": "聪明的选择，命比钱重要——虽然你两样都快没了。",
+      "flavorText": "你学会了顺从，这是生存的智慧。",
+      "ideology": "犬儒主义/生存优先",
+      "archiveCommentary": "底层人群的生存策略：避免冲突，接受损失。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "事后买防狼喷雾",
+      "roast": "亡羊补牢，但下次可能遇到枪。",
+      "flavorText": "你用消费来恢复安全感，这是一种仪式。",
+      "ideology": "消费主义/安全商品化",
+      "archiveCommentary": "安全被商品化，人们被迫购买保护自己的产品。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": {
+          "wolf": 3
+        }
+      }
+    },
+    "D": {
+      "label": "这是贫困的产物",
+      "roast": "对，但他 still 抢了你。",
+      "flavorText": "你看到了结构性暴力，但此刻你只感到愤怒。",
+      "ideology": "激进左翼/结构性暴力",
+      "archiveCommentary": "犯罪是经济暴力的 symptom，贫困本身就是犯罪根源。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C07_CRIME_AND_POVERTY",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": {
+          "red": 15
+        }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": [
+      "EVT_C08_CAR_BREAK_IN",
+      "EVT_C09_IDENTITY_THEFT"
+    ]
+  },
+  "image": "/assets/events/common/evt_knife.png"
+}

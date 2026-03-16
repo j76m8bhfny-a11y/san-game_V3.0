@@ -1,0 +1,78 @@
+[
+  {
+    "id": "HOMELESS",
+    "name": "流浪汉",
+    "thresholdMin": -999999999,
+    "thresholdMax": 499,
+    "baseSalary": 50,
+    "monthlyCost": 0,
+    "leverage": 0.1,
+    "initialStats": {
+      "gold": 150,
+      "hp": 60,
+      "insight": 40
+    },
+    "description": "【严寒】每月被动 HP-10。依靠 A 选项施舍和 I01 罐头苟活。",
+    "visualTheme": {
+      "filter": "grayscale(0.8) contrast(1.2) brightness(0.8)",
+      "fallbackGradient": "linear-gradient(to bottom, #1e130c, #000000)"
+    }
+  },
+  {
+    "id": "WORKER",
+    "name": "底层工人",
+    "thresholdMin": 500,
+    "thresholdMax": 24999,
+    "baseSalary": 3200,
+    "monthlyCost": 2400,
+    "leverage": 1.0,
+    "initialStats": {
+      "gold": 600,
+      "hp": 100,
+      "insight": 60
+    },
+    "description": "【月光】存款在贫困线上震荡。一旦失业或生病将立即破产。",
+    "visualTheme": {
+      "filter": "sepia(0.5) hue-rotate(60deg)",
+      "fallbackGradient": "linear-gradient(to bottom, #2C3E50, #000000)"
+    }
+  },
+  {
+    "id": "MIDDLE",
+    "name": "中产阶级",
+    "thresholdMin": 25000,
+    "thresholdMax": 499999,
+    "baseSalary": 12000,
+    "monthlyCost": 7500,
+    "leverage": 5.0,
+    "initialStats": {
+      "gold": 30000,
+      "hp": 90,
+      "insight": 70
+    },
+    "description": "【泡沫】看似体面。C 选项价格翻倍。极易因股市熔断跌落。",
+    "visualTheme": {
+      "filter": "contrast(1.1) brightness(1.1) saturate(1.2)",
+      "fallbackGradient": "linear-gradient(to bottom, #FFEEEE, #DDEFBB)"
+    }
+  },
+  {
+    "id": "CAPITALIST",
+    "name": "资本家",
+    "thresholdMin": 500000,
+    "thresholdMax": 999999999,
+    "baseSalary": 80000,
+    "monthlyCost": 16000,
+    "leverage": 200.0,
+    "initialStats": {
+      "gold": 10000,
+      "hp": 80,
+      "insight": 50
+    },
+    "description": "【虚无】D 选项 SAN 加倍。只要不作死选 D，想死都难。",
+    "visualTheme": {
+      "filter": "contrast(1.2) hue-rotate(180deg) invert(0.1)",
+      "fallbackGradient": "linear-gradient(to bottom, #141E30, #243B55)"
+    }
+  }
+]

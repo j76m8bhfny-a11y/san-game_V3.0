@@ -1,0 +1,102 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C17_INHERITANCE",
+  "title": "意外遗产",
+  "category": "COMMON",
+  "series": "生命终结",
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS",
+      "WORKER",
+      "MIDDLE",
+      "CAPITALIST"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 5,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "律师通知你：一个远房亲戚去世，留下一笔遗产。但要先付遗产税、律师费、清算费...最后可能所剩无几。",
+  "historicalNote": "美国遗产税复杂且充满陷阱，中产阶级往往是最大的受害者。",
+  "options": {
+    "A": {
+      "label": "雇佣顶级律师",
+      "roast": "花大价钱保住遗产， lawyers always win。",
+      "flavorText": "你相信专业服务能最大化收益。",
+      "ideology": "新自由主义/专业服务",
+      "archiveCommentary": "将遗产保护外包给法律系统，专业人士永远是赢家。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": {
+          "old": 3
+        }
+      }
+    },
+    "B": {
+      "label": "接受现实",
+      "roast": "能拿多少拿多少，总比没有强。",
+      "flavorText": "你不抱太大期望，这是务实的态度。",
+      "ideology": "犬儒主义/低期望",
+      "archiveCommentary": "对制度掠夺的无奈接受。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "买遗产规划服务",
+      "roast": "为了 inheritance 买 insurance，金融套娃。",
+      "flavorText": "你为未来的不确定性付费，这是一种规划。",
+      "ideology": "消费主义/规划痴迷",
+      "archiveCommentary": "将不确定性商品化，创造新的焦虑和市场。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": {
+          "wolf": 3
+        }
+      }
+    },
+    "D": {
+      "label": "这是财富再分配的反向操作",
+      "roast": "说得对，但律师 still 在数你的钱。",
+      "flavorText": "你明白这是制度设计，但无力改变。",
+      "ideology": "激进左翼/财富不平等",
+      "archiveCommentary": "遗产制度巩固了代际不平等，让富人永远富下去。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C17_INTERGENERATIONAL_WEALTH",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": {
+          "red": 15
+        }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": [
+      "EVT_C16_FUNERAL",
+      "EVT_C18_DIVORCE"
+    ]
+  },
+  "image": "/assets/events/common/evt_will.png"
+}

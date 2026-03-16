@@ -1,0 +1,102 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C16_FUNERAL",
+  "title": "葬礼账单",
+  "category": "COMMON",
+  "series": "生命终结",
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS",
+      "WORKER",
+      "MIDDLE",
+      "CAPITALIST"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 6,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "一个不太熟的亲戚去世了。葬礼最低消费8000美元，火葬也要3000。死都死不起，这是美国。",
+  "historicalNote": "美国葬礼费用全球最高，许多家庭因葬礼陷入债务。",
+  "options": {
+    "A": {
+      "label": "办个体面的葬礼",
+      "roast": "为了面子负债，死者要是知道会气得复活。",
+      "flavorText": "你相信尊重需要花钱，即使这会让你吃土。",
+      "ideology": "新自由主义/仪式消费",
+      "archiveCommentary": "将哀悼商品化，让人们在悲伤时还要计算成本。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": {
+          "old": 3
+        }
+      }
+    },
+    "B": {
+      "label": "最便宜的火化",
+      "roast": "骨灰盒比人还贵，也许用咖啡罐更实际。",
+      "flavorText": "你选择了最经济的方式，这是无奈的现实。",
+      "ideology": "犬儒主义/务实",
+      "archiveCommentary": "贫困者在死亡面前也要精打细算。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "办葬礼保险",
+      "roast": "为死亡买保险，资本主义让你连死都要提前消费。",
+      "flavorText": "你为未来的死亡付费，这是一种奇怪的规划。",
+      "ideology": "消费主义/恐惧营销",
+      "archiveCommentary": "将死亡焦虑转化为保险销售，是金融业的经典套路。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": {
+          "wolf": 3
+        }
+      }
+    },
+    "D": {
+      "label": "死亡不应该是一门生意",
+      "roast": "说得对，但殡仪馆 still 在开账单。",
+      "flavorText": "你明白这是暴利行业，但死者需要一个归宿。",
+      "ideology": "激进左翼/死亡商品化批判",
+      "archiveCommentary": "殡葬业的垄断定价是死亡商品化的极端体现。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C16_DEATH_INDUSTRIAL_COMPLEX",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": {
+          "red": 15
+        }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": [
+      "EVT_C17_INHERITANCE",
+      "EVT_C18_DIVORCE"
+    ]
+  },
+  "image": "/assets/events/common/evt_coffin.png"
+}

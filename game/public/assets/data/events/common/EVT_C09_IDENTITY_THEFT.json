@@ -1,0 +1,102 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_C09_IDENTITY_THEFT",
+  "title": "身份被盗",
+  "category": "COMMON",
+  "series": "犯罪与安全",
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS",
+      "WORKER",
+      "MIDDLE",
+      "CAPITALIST"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 6,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "你的信用卡被拒绝了。银行告诉你，有人用你的身份开了十几个账户，欠了数万美金。恢复信用可能需要数年。",
+  "historicalNote": "身份盗窃在美国快速增长，受害者平均需要200小时来恢复信用。",
+  "options": {
+    "A": {
+      "label": "雇律师打官司",
+      "roast": "用更多钱来追回钱，这就是法律体系。",
+      "flavorText": "你相信法律能还你公正，尽管它昂贵且缓慢。",
+      "ideology": "新自由主义/法律信任",
+      "archiveCommentary": "法律体系将正义商品化，让受害者承担追索成本。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 5,
+        "points": {
+          "old": 3
+        }
+      }
+    },
+    "B": {
+      "label": "慢慢和银行扯皮",
+      "roast": "祝你好运，他们的客服比你的时间更值钱。",
+      "flavorText": "你知道这是一场消耗战，但你别无选择。",
+      "ideology": "犬儒主义/耐心",
+      "archiveCommentary": "制度故意设置障碍，让受害者放弃追索。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "买身份保护服务",
+      "roast": "用消费解决消费社会的问题，完美闭环。",
+      "flavorText": "你相信预防胜于治疗，即使这意味着更多支出。",
+      "ideology": "消费主义/预防商品",
+      "archiveCommentary": "将数据安全责任转嫁给个人，创造新的市场。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": {
+          "wolf": 3
+        }
+      }
+    },
+    "D": {
+      "label": "这是数据资本主义的代价",
+      "roast": "说得对，但你现在欠的是真钱。",
+      "flavorText": "你明白你的数据是如何被交易的，但太晚了。",
+      "ideology": "激进左翼/数据正义",
+      "archiveCommentary": "数据资本主义将个人信息商品化，风险却由个人承担。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.C09_DATA_SURVEILLANCE",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": {
+          "red": 15
+        }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [],
+    "relatedEvents": [
+      "EVT_C07_MUGGING",
+      "EVT_C08_CAR_BREAK_IN"
+    ]
+  },
+  "image": "/assets/events/common/evt_credit_card.png"
+}

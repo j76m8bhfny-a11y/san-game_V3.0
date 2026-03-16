@@ -1,0 +1,65 @@
+{
+  "$schema": "job-rules-config",
+  "description": "工作系统配置 - 定义工作槽位、效率曲线和事故概率，被JobSystem使用",
+  "version": "1.0.0",
+  
+  "settings": {
+    "description": "工作槽位配置",
+    "maxSlotCapacity": 3,
+    "slotCosts": {
+      "FULL_TIME": 2,
+      "GIG": 1
+    }
+  },
+  
+  "classWeights": {
+    "description": "阶级对工作的影响权重",
+    "HOMELESS": 0,
+    "WORKER": 1,
+    "MIDDLE": 2,
+    "CAPITALIST": 3
+  },
+  
+  "efficiencyCurve": {
+    "description": "灵视-工作效率曲线，被JobSystem使用计算实际收入",
+    "calculation": "实际收入 = 基础薪资 × modifier × 其他倍率",
+    "curve": [
+      {
+        "minInsight": 85,
+        "modifier": 0.4,
+        "label": "通透",
+        "statusText": "通透 (40%)",
+        "description": "看透资本主义本质，无法全身心投入工作"
+      },
+      {
+        "minInsight": 70,
+        "modifier": 0.6,
+        "label": "觉醒",
+        "statusText": "觉醒 (60%)",
+        "description": "开始质疑系统，工作效率下降"
+      },
+      {
+        "minInsight": 30,
+        "modifier": 0.8,
+        "label": "初觉",
+        "statusText": "初觉 (80%)",
+        "description": "隐约感觉不对，但仍在努力工作"
+      },
+      {
+        "minInsight": 0,
+        "modifier": 1.0,
+        "label": "蒙昧",
+        "statusText": "蒙昧 (100%)",
+        "description": "完全沉浸在工作机器中，效率最高"
+      }
+    ]
+  },
+  
+  "accidents": {
+    "description": "工作事故配置",
+    "highInsightThreshold": 85,
+    "probability": 0.15,
+    "penaltyRate": 0.25,
+    "note": "灵视过高时，因注意力不集中导致工作事故"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "$schema": "system-rules-legacy",
+  "description": "【已弃用】请使用 config/system_rules.json - 保留此文件仅作向后兼容",
+  "redirectTo": "config/system_rules.json",
+  "_comment": "此文件已被合并到 config/system_rules.json，请勿直接引用此文件",
+  
+  "gameLoop": {
+    "maxTurns": 52,
+    "startTurn": 1
+  },
+  
+  "priorities": {
+    "housing": 100,
+    "bank": 90,
+    "job": 80,
+    "bill": 70,
+    "faith": 50,
+    "event": 10
+  }
+}

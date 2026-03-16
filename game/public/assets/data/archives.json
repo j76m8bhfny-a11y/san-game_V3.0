@@ -1,0 +1,1458 @@
+[
+  {
+    "id": "No.01_CAMDEN_BENCH",
+    "title": "卡姆登长椅 (The Camden Bench)",
+    "image": "/assets/archives/camden_bench_blueprint.png",
+    "flavorText": "【来源：CNN Style / Factory Furniture】这种长椅由特种混凝土制成，表面倾斜且粗糙。官方宣传语称其能“抵御22种不当使用行为”，包括睡觉、玩滑板甚至乱涂乱画。在伦敦和纽约安装后，流浪汉滞留率下降了60%以上——他们被赶去了更阴暗的角落。"
+  },
+  {
+    "id": "No.02_STARBUCKS_ARREST",
+    "title": "费城星巴克逮捕案",
+    "image": "/assets/archives/starbucks_police.png",
+    "flavorText": "【来源：NYT】2018年，两名黑人男子因“没点单坐着等人”被星巴克经理解释为非法入侵并报警逮捕。该事件揭露了“消费门槛”本质上是种族与阶级的筛选器：不花钱，就不配坐着。"
+  },
+  {
+    "id": "No.03_DUMPSTER_GUARD",
+    "title": "波特兰“垃圾箱守卫战”",
+    "image": "/assets/archives/dumpster_police.png",
+    "flavorText": "【来源：The Oregonian】2021年冰风暴期间，Fred Meyer超市因停电丢弃数千磅食物。当饥饿市民试图捡拾时，超市雇佣了12名持枪警察守卫垃圾箱，确保食物变质也不让人拿走。USDA（美国农业部）数据显示，美国每年有30-40%（约1330亿磅）的食物被浪费，总价值约1610亿美元。"
+  },
+  {
+    "id": "No.04_ANTI_HOMELESS_SPIKES",
+    "title": "防流浪汉尖刺 (Anti-homeless Spikes)",
+    "image": "/assets/archives/london_spikes.png",
+    "flavorText": "【来源：The Guardian】2014年伦敦一处豪宅在门廊安装金属尖刺，引发全英抗议。从西雅图的重型自行车架到旧金山的巨石，城市设计的核心逻辑变成：消除一切可以让穷人停留的平面。"
+  },
+  {
+    "id": "No.05_BUSSED_OUT",
+    "title": "大巴清洗计划 (Bussed Out)",
+    "image": "/assets/archives/one_way_ticket.png",
+    "flavorText": "【来源：The Guardian】2011-2017年间，美国城市购买了34,240张单程车票送走流浪汉。所谓的“家庭团聚计划”往往是谎言，目的地根本没有亲人，城市只是为了让本地贫困数据清零。"
+  },
+  {
+    "id": "No.06_PATIENT_DUMPING",
+    "title": "好莱坞长老会医院抛尸案",
+    "image": "/assets/archives/patient_dumping_cctv.png",
+    "flavorText": "【来源：LA Times】2007年监控拍到，医院将一名患严重截瘫的男子（穿着病号服挂着尿袋）直接推下车丢弃在Skid Row贫民窟路边。这在私立医院是潜规则：没钱治病，就是坏账，坏账需要被清理。"
+  },
+  {
+    "id": "No.07_HOUSING_NOT_HANDCUFFS",
+    "title": "住房不是手铐 (Housing Not Handcuffs)",
+    "image": "/assets/archives/arrest_record.png",
+    "flavorText": "【来源：NLCHP】2006-2019年，禁止乞讨和车内居住的法律暴增。无法支付罚款导致流浪汉入狱，形成死循环：失业->流浪->被抓->有了犯罪记录->更找不到工作。"
+  },
+  {
+    "id": "No.08_LIBRARY_SMELL_BAN",
+    "title": "克雷默诉警察局案",
+    "image": "/assets/archives/library_rules.png",
+    "flavorText": "【来源：Federal Court 1992】理查德·克雷默因体味被驱逐。上诉法院裁定：图书馆有权禁止“体味令人反感”的顾客。这一判例成为公共场所合法拒绝流浪汉的尚方宝剑。"
+  },
+  {
+    "id": "No.09_DETROIT_WATER_CUT",
+    "title": "底特律断水危机",
+    "image": "/assets/archives/water_cut_notice.png",
+    "flavorText": "【来源：UN OHCHR】2014年，底特律切断了3万户贫困家庭供水。联合国称此为侵犯人权，但在美国法律中，水是商品。没钱买？那就渴着。"
+  },
+  {
+    "id": "No.10_PLASMA_ECONOMY",
+    "title": "美国血浆经济",
+    "image": "/assets/archives/plasma_center_line.png",
+    "flavorText": "【来源：The Atlantic】美国是极少数允许有偿卖血的发达国家，供应了全球70%的血浆。血浆中心故意建在贫民窟，对于穷人，身体是唯一的ATM机。"
+  },
+  {
+    "id": "No.11_SNAP_HOT_FOOD_BAN",
+    "title": "SNAP热食禁令 (Hot Food Ban)",
+    "image": "/assets/archives/snap_hot_food.png",
+    "flavorText": "【来源：USDA】食品券（SNAP）通常禁止购买“在销售点食用的热食”。这是可口可乐和卡夫等食品巨头游说的结果，确保福利资金流向高糖饮料和冷冻食品。潜台词：穷人只配吃工业垃圾。"
+  },
+  {
+    "id": "No.12_PERIOD_POVERTY",
+    "title": "经期贫困 (Period Poverty)",
+    "image": "/assets/archives/period_poverty.png",
+    "flavorText": "【来源：ACLU】在全美30个州，卫生棉条被征收销售税（归类为非必需品），而伟哥和生发剂却常免税。如果你是穷人，还在流血，那是你自己的问题，请不要弄脏地面。"
+  },
+  {
+    "id": "No.13_THE_UNBANKED",
+    "title": "无银行账户者 (The Unbanked)",
+    "image": "/assets/archives/unbanked_map.png",
+    "flavorText": "【来源：FDIC】约5.4%的美国家庭（710万人）没有银行账户。随着“无现金商店”的蔓延，这群人实际上被禁止购买食物和水，被彻底排除在现代经济循环之外。"
+  },
+  {
+    "id": "No.14_SHELTER_PET_BAN",
+    "title": "收容所低门槛准入争议",
+    "image": "/assets/archives/homeless_pet.png",
+    "flavorText": "【来源：National Alliance to End Homelessness】约10-25%的流浪者拥有宠物，但大多数收容所严禁宠物。这导致大量流浪者宁愿冻死也不愿抛弃唯一的亲人。"
+  },
+  {
+    "id": "No.15_GOOD_SAMARITAN_LAW",
+    "title": "艾默生好撒玛利亚人法案 (1996)",
+    "image": "/assets/archives/locked_dumpster.png",
+    "flavorText": "【来源：HuffPost】商家常借口“有人吃坏了会告我”而锁住垃圾桶。事实上，1996年的联邦法案已经给予了捐赠者免责保护。锁住垃圾桶的真实动机是防止降低销量。"
+  },
+  {
+    "id": "No.16_ID_TRAP",
+    "title": "身份陷阱 (The ID Trap)",
+    "image": "/assets/archives/id_card_denied.png",
+    "flavorText": "【来源：Brennan Center】约11%的美国公民没有有效ID。死循环：没有ID -> 无法申请工作/住房 -> 没有住房 -> 无法验证地址办ID。政府精心设计的这道墙，至今无人打破。"
+  },
+  {
+    "id": "No.17_DEINSTITUTIONALIZATION",
+    "title": "去机构化运动 (Deinstitutionalization)",
+    "image": "/assets/archives/prison_cell.png",
+    "flavorText": "【来源：NPR】全美最大的精神病收容机构不是医院，而是库克县监狱和洛杉矶县监狱。自1960年代关闭精神病院以来，监狱中的精神病患人数是医院的10倍。"
+  },
+  {
+    "id": "No.18_POVERTY_PORN",
+    "title": "贫困色情片 (Poverty Porn)",
+    "image": "/assets/archives/bumfights.png",
+    "flavorText": "【来源：Wikipedia】从Bumfights到TikTok上的“慈善挑战”，利用无家可归者的绝望来制造内容，本质上是对他人的非人化剥削。"
+  },
+  {
+    "id": "No.19_OPIOID_CRISIS",
+    "title": "阿片类药物危机 (Opioid Crisis)",
+    "image": "/assets/archives/fentanyl_pills.png",
+    "flavorText": "【来源：CDC】2023年，美国有超过11万人死于药物过量。对于绝望的底层，芬太尼不仅是毒品，更是唯一的廉价止痛药和抗抑郁药。"
+  },
+  {
+    "id": "No.20_HART_ISLAND",
+    "title": "哈特岛 (Hart Island)",
+    "image": "/assets/archives/hart_island_trenches.png",
+    "flavorText": "【来源：NYT】纽约市东侧的一座孤岛。150年来，超过100万具无人认领的尸体被囚犯们像叠积木一样埋在巨大的壕沟里。穷人只配批量填埋。"
+  },
+  {
+    "id": "No.21_FEEDING_BAN",
+    "title": "奥兰多反喂食法",
+    "image": "/assets/archives/feeding_ban_arrest.png",
+    "flavorText": "【来源：Newsweek】在奥兰多、休斯顿等地，慈善组织因在公园向无家可归者提供食物而被捕。政府认为，如果不给流浪汉吃的，他们就会神奇地消失。"
+  },
+  {
+    "id": "No.22_POWER_REMOVAL",
+    "title": "公共插座移除行动",
+    "image": "/assets/archives/covered_outlet.png",
+    "flavorText": "【来源：Street Roots】纽约MTA和各大商场近年来大量拆除或封锁公共插座。潜台词：电力是给消费者准备的。如果你不消费，就不配拥有满格的电池。"
+  },
+  {
+    "id": "No.23_VEHICLE_BAN",
+    "title": "车辆居住禁令 (Vehicle Dwelling Bans)",
+    "image": "/assets/archives/no_parking_sign.png",
+    "flavorText": "【来源：NLCHP】全美禁止车内居住的法律暴增213%。潜台词：没房住？那我们就让你连车也没得住，彻底把你逼上绝路。"
+  },
+  {
+    "id": "No.24_LEAN_BARS",
+    "title": "坐骨支撑架 (Ischial Supports)",
+    "image": "/assets/archives/lean_bars.png",
+    "flavorText": "【来源：Bloomberg CityLab】这种设计被称为“Lean bars”，让你只能靠不能坐。潜台词：公共空间不欢迎停留。坐下是一种我们不想赋予你的权利。"
+  },
+  {
+    "id": "No.25_RECYCLING_LIMITS",
+    "title": "加州回收中心关闭潮",
+    "image": "/assets/archives/recycling_limit_sign.png",
+    "flavorText": "【来源：LA Times】RePlanet等大型回收中心倒闭，加上每日限额政策（Daily Load Limits），导致收集者无法变现。数亿美元的未兑现押金留在了政府和饮料公司的口袋里。"
+  },
+  {
+    "id": "No.26_ADDRESS_DISCRIMINATION",
+    "title": "就业地址歧视",
+    "image": "/assets/archives/job_application.png",
+    "flavorText": "【来源：Anti-Poverty Network】雇主软件通常会自动过滤掉收容所或PO Box的地址。潜台词：想工作？先买房。买不起房？那你就别工作。"
+  },
+  {
+    "id": "No.27_ECHO_PARK_SWEEP",
+    "title": "洛杉矶回声公园清场 (Echo Park Sweep)",
+    "image": "/assets/archives/camp_sweep.png",
+    "flavorText": "【来源：The Guardian】2021年3月，警方出动数百人，花费数百万美元清理流浪汉营地，却并未提供足够的永久安置房。潜台词：你在这里不受欢迎。"
+  },
+  {
+    "id": "No.28_INSULIN_RATIONING",
+    "title": "胰岛素配给致死 (Insulin Rationing)",
+    "image": "/assets/archives/insulin_prices.png",
+    "flavorText": "【来源：Yale Study】1/4的美国糖尿病患者因为太贵而减少胰岛素用量。潜台词：你的生存权取决于你的银行余额。没钱？那就烂掉吧。"
+  },
+  {
+    "id": "No.29_SHADE_EQUITY",
+    "title": "树荫公平 (Shade Equity)",
+    "image": "/assets/archives/heat_map.png",
+    "flavorText": "【来源：National Geographic】历史上的红线政策导致贫困社区缺乏绿化，温度比富人区高5-10度。潜台词：种树是为了保值房产。至于你，像蚂蚁一样被烤干吧。"
+  },
+  {
+    "id": "No.30_LAUNDRY_BAN",
+    "title": "洗衣店隔离史",
+    "image": "/assets/archives/laundromat_sign.png",
+    "flavorText": "【来源：Social Problems Journal】许多商家实行“外貌歧视”，拒绝服务看起来像流浪汉的人。潜台词：我们要你保持肮脏，这样我们才有理由继续歧视你。"
+  },
+  {
+    "id": "No.31_CPS_BIAS",
+    "title": "儿童福利系统的阶级偏见",
+    "image": "/assets/archives/cps_removal.png",
+    "flavorText": "【来源：The New Republic】美国CPS带走的孩子中，绝大多数是因为“贫困”而非真正的暴力虐待。潜台词：如果你穷，你的孩子就是国家的财产。"
+  },
+  {
+    "id": "No.32_SECURITY_ROBOTS",
+    "title": "Knightscope K5 保安机器人",
+    "image": "/assets/archives/robot_police.png",
+    "flavorText": "【来源：The Washington Post】旧金山SPCA曾雇佣这种机器人驱赶门口的流浪汉。它可以拍照、报警、发出警报噪音，租金仅需$7/小时。比雇人便宜，且绝无怜悯之心。"
+  },
+  {
+    "id": "No.33_SEX_OFFENDER_TRAP",
+    "title": "公厕匮乏与性犯罪登记",
+    "image": "/assets/archives/sex_offender_list.png",
+    "flavorText": "【来源：The Guardian】因随地小便被捕可能导致被列入“性犯罪者登记名册”，终身带有最恶劣的污点。而这一切的根源，只是因为城市没有提供足够的公厕。"
+  },
+  {
+    "id": "No.34_WAGE_THEFT",
+    "title": "工资盗窃 (Wage Theft)",
+    "image": "/assets/archives/unpaid_wages.png",
+    "flavorText": "【来源：Economic Policy Institute】美国每年工资盗窃金额（约150亿美元）超过了所有抢劫、盗窃案损失的总和。绝大多数受害者是无证移民和日结工流浪者。"
+  },
+  {
+    "id": "No.35_STAY_AWAY_ORDER",
+    "title": "驱逐令 (Stay Away Orders)",
+    "image": "/assets/archives/stay_away_order.png",
+    "flavorText": "【来源：Harvard Law Review】法院经常使用缓刑条件，禁止无家可归者进入特定的商业区或公园。后果：实际上将城市的公共空间私有化，只有消费能力的人才有权进入。"
+  },
+  {
+    "id": "No.36_TINY_HOME_SCAM",
+    "title": "微型屋村 (Tiny Home Villages)",
+    "image": "/assets/archives/tiny_sheds.png",
+    "flavorText": "【来源：NPR】许多所谓的“Tiny Homes”实际上是Tuff Shed（工具棚），面积不足6平米，没有独立卫浴，且实行监狱式管理（宵禁、搜身）。"
+  },
+  {
+    "id": "No.37_PROPERTY_CONFISCATION",
+    "title": "没收无人看管财产",
+    "image": "/assets/archives/crushed_cart.png",
+    "flavorText": "【来源：Municipal Codes】许多城市立法规定，留在人行道上的物品可被视为“遗弃物”立即销毁。潜台词：就是要让你无法积累任何资产，永远处于生存红线之下。"
+  },
+  {
+    "id": "No.38_BODY_BROKERING",
+    "title": "身体中介 (Body Brokering)",
+    "image": "/assets/archives/rehab_fraud.png",
+    "flavorText": "【来源：NBC News】黑心康复中心雇佣“猎头”招募有医保的流浪汉，通过虚假账单榨干保险额度，期间甚至提供毒品以留住“客户”。保险耗尽后，直接踢出门外。"
+  },
+  {
+    "id": "No.39_CLIMATE_APARTHEID",
+    "title": "气候种族隔离 (Climate Apartheid)",
+    "image": "/assets/archives/heat_wave_death.png",
+    "flavorText": "【来源：UN Human Rights Council】在极端热浪中，无家可归者的死亡率是常人的200倍。潜台词：如果你买不起空调，那你就只能充当全球变暖的牺牲品。"
+  },
+  {
+    "id": "No.40_GRANTS_PASS_RULING",
+    "title": "格兰茨帕斯诉约翰逊案",
+    "image": "/assets/archives/supreme_court_ruling.png",
+    "flavorText": "【来源：Supreme Court 2024】最高法院裁定，即便城市无法提供安置床位，通过法律惩罚（罚款/监禁）露宿街头的人不违反宪法。潜台词：这是对流浪汉的宣战书。"
+  },
+  {
+    "id": "No.41_LUXURY_BONES",
+    "title": "医疗补助 (Medicaid) 牙科缺口",
+    "image": "/assets/archives/rotting_teeth.png",
+    "flavorText": "【来源：The Washington Post】美国医疗体系将牙齿戏称为“奢侈的骨头 (Luxury Bones)”。大多数州的Medicaid不报销成人牙科，导致穷人只能靠拔牙止痛。"
+  },
+  {
+    "id": "No.42_REHAB_LABOR",
+    "title": "康复中心劳工丑闻",
+    "image": "/assets/archives/forced_labor.png",
+    "flavorText": "【来源：Reveal News】许多美国戒毒机构强迫参与者在大公司的供应链中无偿劳动，每天工作10小时以上，以此换取“治疗”。"
+  },
+  {
+    "id": "No.43_DIGITAL_DIVIDE",
+    "title": "数字鸿沟与福利获取",
+    "image": "/assets/archives/error_404.png",
+    "flavorText": "【来源：The Markup】在疫情期间，数百万无法上网的贫困人口因为无法完成复杂的在线人脸识别（如ID.me）而失去了唯一的救命钱。"
+  },
+  {
+    "id": "No.44_HUMAN_WASHING",
+    "title": "高压水枪驱赶事件",
+    "image": "/assets/archives/water_hosing.png",
+    "flavorText": "【来源：BBC】这种策略在巴黎和旧金山都曾出现。用冷水浸透流浪汉的被褥和身体，迫使他们离开，经常导致失温死亡。"
+  },
+  {
+    "id": "No.45_STORAGE_DWELLING",
+    "title": "仓储式居住 (Storage Unit Dwelling)",
+    "image": "/assets/archives/storage_unit_bed.png",
+    "flavorText": "【来源：New York Post】成千上万的“隐形流浪者”住在没有水电的储物柜里。一旦被发现，立即驱逐并没收所有财物。"
+  },
+  {
+    "id": "No.46_DISASTER_LEFTOVER",
+    "title": "卡特里娜飓风与哈维飓风",
+    "image": "/assets/archives/hurricane_refugee.png",
+    "flavorText": "【来源：The Intercept】灾难期间，无家可归者经常被拒绝进入避难所，或者因违反宵禁令（无处可去）而被捕，甚至被警察持枪驱赶至危险区域。"
+  },
+  {
+    "id": "No.47_MOTEL_FAMILIES",
+    "title": "奥兰多汽车旅馆家庭",
+    "image": "/assets/archives/motel_kids.png",
+    "flavorText": "【来源：HBO Documentary】在迪士尼周边，数千个家庭长期居住在廉价汽车旅馆。他们付不起公寓押金，陷入“日结房费”的贫困陷阱。"
+  },
+  {
+    "id": "No.48_DEFENSIVE_ARCH",
+    "title": "旧金山克林顿公园巨石",
+    "image": "/assets/archives/clinton_park_rocks.png",
+    "flavorText": "【来源：CNN】一群邻居众筹在人行道上放置了24块巨大的岩石，以此阻止流浪汉在人行道上搭帐篷。"
+  },
+  {
+    "id": "No.49_AMBULANCE_DEBT",
+    "title": "意外医疗债务",
+    "image": "/assets/archives/medical_bill.png",
+    "flavorText": "【来源：Kaiser Family Foundation】美国救护车服务大多私有化。一次短途运输可能花费$2000-$3000。对于流浪者，这是天文数字。"
+  },
+  {
+    "id": "No.50_WATER_LOCK",
+    "title": "公共水源私有化与封闭",
+    "image": "/assets/archives/locked_tap.png",
+    "flavorText": "【来源：The Guardian】许多城市为了防止流浪汉“滥用”水资源，给公共水龙头和消防栓上锁。这在热浪期间直接导致脱水死亡。"
+  },
+  {
+    "id": "No.67_INSTITUTIONAL_ABUSE",
+    "title": "机构化虐待 (Institutional Abuse)",
+    "image": "/assets/archives/orphanage_bed.png",
+    "flavorText": "【来源：Disability Rights International】公立儿童福利系统极其腐败。对于无法被“售卖”（领养）的特殊儿童，福利院往往只是一个等待死亡的仓库。"
+  },
+  {
+    "id": "No.52_NO_MANS_LAND",
+    "title": "底特律/费城“三不管”区域",
+    "image": "/assets/archives/gang_zone_map.png",
+    "flavorText": "【来源：Investigative Journalism】由于财政破产和警力不足，美国部分衰退城市出现了实际上由帮派或宗教团体接管的区域，911电话在这里常常无人接听。"
+  },
+  {
+    "id": "No.53_TRANQ_ZOMBIE",
+    "title": "Tranq (赛拉嗪) 僵尸潮",
+    "image": "/assets/archives/tranq_wounds.png",
+    "flavorText": "【来源：VICE News】新型毒品“Tranq”会导致使用者皮肤出现坏死性溃疡。吸毒者往往在意识模糊中看着自己的身体腐烂生蛆而无动于衷，甚至产生幻觉认为那是美好的事物。"
+  },
+  {
+    "id": "No.68_URBAN_SCAVENGERS",
+    "title": "城市食腐链",
+    "image": "/assets/archives/seagull_scavenger.png",
+    "flavorText": "【来源：Forensic Entomology】在被忽视的城市角落，流浪汉的死亡往往无人知晓。自然界的清道夫（海鸥、老鼠）成为了他们最后且唯一的“送葬者”。"
+  },
+  {
+    "id": "No.54_MOLE_PEOPLE",
+    "title": "拉斯维加斯“鼹鼠人” (Mole People)",
+    "image": "/assets/archives/las_vegas_tunnels.png",
+    "flavorText": "【来源：The Sun】在赌城的地下防洪隧道里，住着数千名无家可归者。近年来，越来越多失业的IT工程师、前中产阶级因为AI失业和破产加入了这个群体。"
+  },
+  {
+    "id": "No.55_CO_MEAT",
+    "title": "一氧化碳包装肉 (CO-Treated Meat)",
+    "image": "/assets/archives/red_meat_chem.png",
+    "flavorText": "【来源：Food Safety News】肉类加工厂使用一氧化碳处理变质的肉，使其保持鲜红的色泽长达数周。消费者无法通过颜色判断肉是否变质，因此经常买到“僵尸肉”。"
+  },
+  {
+    "id": "No.W01_PEE_BOTTLES",
+    "title": "亚马逊“尿瓶门” (Pee Bottles)",
+    "image": "/assets/archives/pee_bottle.png",
+    "flavorText": "【来源：The Intercept】由于极苛刻的配送指标（每天300+包裹），亚马逊司机根本没时间找厕所，被迫在车里排便。潜台词：我们不把你当人，我们只把你当成会开车的机械臂。"
+  },
+  {
+    "id": "No.W02_INJURY_SUPPRESSION",
+    "title": "工伤瞒报 (Workplace Injury Suppression)",
+    "image": "/assets/archives/uber_ambulance.png",
+    "flavorText": "【来源：OSHA Watch】为了避免职业安全局罚款和保费上涨，工厂常逼迫工人隐瞒工伤，用Uber代替救护车。潜台词：你的手指是耗材，老板的利润表才是器官。"
+  },
+  {
+    "id": "No.W03_POULTRY_WORKERS",
+    "title": "家禽业工人现状",
+    "image": "/assets/archives/diaper_worker.png",
+    "flavorText": "【来源：Oxfam Report】美国泰森（Tyson）等大厂的工人因被拒绝上厕所，普遍被迫穿戴纸尿裤工作。潜台词：由于你不拥有生产资料，所以你不拥有括约肌的控制权。"
+  },
+  {
+    "id": "No.W04_FLSA_SLAVERY",
+    "title": "公平劳动标准法 (FLSA) 之恶",
+    "image": "/assets/archives/paystub_213.png",
+    "flavorText": "【来源：One Fair Wage】联邦法律允许“小费抵扣工资”，雇主最低只需付$2.13。历史：这是美国内战后，白人雇主为了剥削刚被解放的黑人奴隶而保留的制度。"
+  },
+  {
+    "id": "No.W05_AMAZON_TOT",
+    "title": "亚马逊 TOT (Time Off Task) 系统",
+    "image": "/assets/archives/scanner_tot.png",
+    "flavorText": "【来源：The Verge】亚马逊的算法会精确计算每一秒的“非工作时间”。如果系统判定你效率低，甚至不需要人类经理介入，AI就能直接开除你。"
+  },
+  {
+    "id": "No.W06_PINKERTON_SPY",
+    "title": "平克顿与亚马逊 (Pinkerton & Amazon)",
+    "image": "/assets/archives/pinkerton_logo.png",
+    "flavorText": "【来源：Motherboard】泄露文件显示，亚马逊雇佣了臭名昭著的平克顿侦探社（历史上曾枪杀罢工工人）来监视工会组织者。潜台词：解决问题最快的方法是解决提出问题的人。"
+  },
+  {
+    "id": "No.W07_BLUE_COLLAR_OPIOID",
+    "title": "普渡制药与蓝领阶层",
+    "image": "/assets/archives/oxycontin_ad.png",
+    "flavorText": "【来源：Empire of Pain】普渡制药精准营销矿工和建筑工人，谎称阿片类药物不上瘾。后果：由于请不起假做手术，蓝领工人成为药物过量死亡的重灾区。"
+  },
+  {
+    "id": "No.W08_SANDWICH_CONTRACT",
+    "title": "吉米·约翰三明治竞业案",
+    "image": "/assets/archives/non_compete.png",
+    "flavorText": "【来源：HuffPost】Jimmy John's曾强制低薪员工签署竞业协议，禁止他们去任何其他做三明治的店工作。目的：压低工资，因为你无法去竞争对手那里获得更高的报价。"
+  },
+  {
+    "id": "No.W09_JUST_IN_TIME",
+    "title": "准时制排班 (Just-in-Time Scheduling)",
+    "image": "/assets/archives/on_call_schedule.png",
+    "flavorText": "【来源：The New York Times】星巴克、GAP等零售巨头利用算法根据客流实时排班。后果：工人无法做第二份工，无法照顾孩子，生活处于永久的不确定性中。"
+  },
+  {
+    "id": "No.W10_DEBT_TRAP",
+    "title": "发薪日贷款 (Payday Loans)",
+    "image": "/assets/archives/payday_loan_sign.png",
+    "flavorText": "【来源：CFPB】美国发薪日贷款网点比麦当劳还多。平均年利率高达391%。这是一种债务陷阱设计，目的就是让你还不清，然后反复借贷一直吸你的血。"
+  },
+  {
+    "id": "No.W11_UPS_HEAT",
+    "title": "UPS高温罢工危机",
+    "image": "/assets/archives/ups_heat.png",
+    "flavorText": "【来源：NBC News】几十年来，UPS送货车一直没有空调，车厢温度可达60摄氏度。每年都有司机中暑送医甚至死亡。潜台词：货物不能坏（冷链车有空调），但司机坏了可以换一个新的。"
+  },
+  {
+    "id": "No.W12_PSSI_CHILD_LABOR",
+    "title": "PSSI 童工丑闻 (2023)",
+    "image": "/assets/archives/child_labor_cleaners.png",
+    "flavorText": "【来源：Department of Labor】全美最大的食品卫生公司 PSSI 雇佣了100多名儿童（最小13岁）在JBS和泰森的屠宰场通宵使用腐蚀性化学品清洗锯骨机。罚款仅150万美元，对于百亿巨头来说只是零钱。"
+  },
+  {
+    "id": "No.W13_FORCED_ARBITRATION",
+    "title": "强制仲裁条款 (Forced Arbitration)",
+    "image": "/assets/archives/arbitration_clause.png",
+    "flavorText": "【来源：Economic Policy Institute】超过6000万美国工人签署了此条款。这意味着你放弃了宪法赋予的陪审团审判权。在仲裁中，员工胜诉率极低，且过程保密，外界永远不知道公司里发生了什么烂事。"
+  },
+  {
+    "id": "No.W14_PERMATEMP",
+    "title": "永久临时工 (Permatemp)",
+    "image": "/assets/archives/google_walkout.png",
+    "flavorText": "【来源：ProPublica】从亚马逊仓库到谷歌办公室，大量使用的是外包工（TVCs）。他们干着最累的活，却被禁止参加公司年会，甚至不能坐公司的班车。"
+  },
+  {
+    "id": "No.W15_HI_VIZ_POLICY",
+    "title": "Hi-Viz 考勤政策",
+    "image": "/assets/archives/rail_strike.png",
+    "flavorText": "【来源：BNSF Railway】美国铁路公司实施极其严苛的考勤制度。工人几乎没有病假，哪怕参加亲人葬礼或看病都会被扣分，最终导致了2022年的铁路大罢工危机。"
+  },
+  {
+    "id": "No.W16_TIME_ROUNDING",
+    "title": "时间取整诉讼 (Rounding Practices)",
+    "image": "/assets/archives/time_clock_rounding.png",
+    "flavorText": "【来源：Home Depot Class Actions】许多大公司利用打卡软件的“取整”功能，系统性地抹去工人的零头工时。Home Depot最近为此支付了7250万美元的和解金。"
+  },
+  {
+    "id": "No.W17_GIG_INSURANCE",
+    "title": "零工经济保险缺口",
+    "image": "/assets/archives/gig_crash.png",
+    "flavorText": "【来源：The New York Times】大多数私人车险不保“商业用途”（送外卖时），而平台提供的保险往往有极高的免赔额（如$2500）。车祸往往意味着破产。"
+  },
+  {
+    "id": "No.W18_RETALIATION",
+    "title": "特斯拉/亚马逊吹哨人报复案",
+    "image": "/assets/archives/fired_worker.png",
+    "flavorText": "【来源：Bloomberg】数据表明，报告工伤或安全隐患的工人，受到纪律处分或被解雇的概率远高于普通员工。这被称为“纪律处分型报复”。"
+  },
+  {
+    "id": "No.W19_ILLEGAL_DEDUCTIONS",
+    "title": "清洁/酒店行业扣款黑幕",
+    "image": "/assets/archives/janitor_deduction.png",
+    "flavorText": "【来源：Wage and Hour Division】许多外包清洁公司通过各种名目的非法扣款（制服费、背景调查费等），让工人的实际时薪远低于最低工资标准。这是直接的抢劫。"
+  },
+  {
+    "id": "No.W20_NDA_ABUSE",
+    "title": "#MeToo 与 NDA 滥用",
+    "image": "/assets/archives/nda_document.png",
+    "flavorText": "【来源：Harvard Business Review】保密协议 (NDA) 原本是保护商业机密的，现在被广泛用于掩盖工作场所的性骚扰和歧视。它让加害者可以逍遥法外，继续伤害下一个人。"
+  },
+  {
+    "id": "No.W21_CLOPENING",
+    "title": "地狱排班 (Clopening)",
+    "image": "/assets/archives/clopening_schedule.png",
+    "flavorText": "【来源：NYT】零售业普遍存在“Clopening”排班（昨晚关店，今早开店）。星巴克等公司曾承诺停止这种做法，但调查显示这依然是常态。睡眠不足导致工伤率飙升。"
+  },
+  {
+    "id": "No.W22_RIGHT_TO_SIT",
+    "title": "坐下的权利 (Right to Sit)",
+    "image": "/assets/archives/no_sitting_sign.png",
+    "flavorText": "【来源：Bloomberg】美国是极少数强迫收银员全天站立的国家。虽然加州有“Right to Sit”法律，但几乎所有零售商都想方设法绕过它，宁愿赔钱也不给椅子。"
+  },
+  {
+    "id": "No.W23_PIZZA_PARTY",
+    "title": "披萨派对 (Pizza Party)",
+    "image": "/assets/archives/sad_pizza.png",
+    "flavorText": "【来源：Reddit r/antiwork】已成为美国职场剥削的代名词。护士、教师、工人普遍反映，高层拿百万奖金，底层只配吃披萨。这是阶级羞辱。"
+  },
+  {
+    "id": "No.W24_AUTOMATION",
+    "title": "自动化替代 (Automation Displacement)",
+    "image": "/assets/archives/robot_arm_job.png",
+    "flavorText": "【来源：MIT Study】每增加一个机器人，就会减少3-6个工作岗位，并使当地工资降低0.42%。潜台词：老板眼里的完美员工，是不用吃饭的铁疙瘩。"
+  },
+  {
+    "id": "No.W25_TIP_THEFT",
+    "title": "小费盗窃 (Tip Theft)",
+    "image": "/assets/archives/tip_jar.png",
+    "flavorText": "【来源：Economic Policy Institute】工资盗窃中，非法没收或重新分配小费（Tip Pooling with managers）是重灾区。老板实际上是在偷员工和顾客的钱。"
+  },
+  {
+    "id": "No.W26_BATHROOM_TIMER",
+    "title": "厕所监控 (Bathroom Monitoring)",
+    "image": "/assets/archives/bathroom_timer.png",
+    "flavorText": "【来源：Waterbury Hospital】某医院曾要求护士上厕所必须打卡；亚马逊被曝出用算法监控“厕所时间”。潜台词：你的身体是公司的机器，排泄属于停机维护。"
+  },
+  {
+    "id": "No.W27_SILENCE_POLICY",
+    "title": "禁止交谈政策",
+    "image": "/assets/archives/no_talking_sign.png",
+    "flavorText": "【来源：NLRB Cases】虽然完全禁止交谈可能违反劳工法，但许多工厂通过“噪音”、“专注”为由实行事实上的禁言令，核心目的是防止工会组织的萌芽。"
+  },
+  {
+    "id": "No.W28_OSHA_VIOLATION",
+    "title": "OSHA 防护违规",
+    "image": "/assets/archives/broken_mask.png",
+    "flavorText": "【来源：Center for Public Integrity】在许多化工厂，让工人使用破损或过期的PPE（个人防护装备）是常态。原因很简单：罚款比买装备便宜。"
+  },
+  {
+    "id": "No.W29_MANDATORY_OVERTIME",
+    "title": "强制加班 (Mandatory Overtime)",
+    "image": "/assets/archives/locked_door.png",
+    "flavorText": "【来源：U.S. Nurses Survey】在美国，“强制加班”是合法的（只要支付加班费，除非有工会合同）。拒绝加班通常被视为“不服从管理”而直接开除。"
+  },
+  {
+    "id": "No.W30_PENSION_THEFT",
+    "title": "养老金洗劫 (Pension Raiding)",
+    "image": "/assets/archives/bankrupt_pension.png",
+    "flavorText": "【来源：WSJ】利用破产法（Chapter 11）甩掉养老金包袱是美国企业的常规操作。利润私有化，养老金社会化（丢给PBGC，只能拿一小部分）。"
+  },
+  {
+    "id": "No.W31_FAMILY_CULTURE",
+    "title": "“像家一样” (We are a Family)",
+    "image": "/assets/archives/family_poster.png",
+    "flavorText": "【来源：Harvard Business Review】心理学研究表明，鼓吹“家庭文化”的公司，解雇员工时更狠，且员工更容易遭受无偿加班和情绪崩溃。"
+  },
+  {
+    "id": "No.W32_HDHP_SCAM",
+    "title": "高免赔额健康计划 (HDHP)",
+    "image": "/assets/archives/insurance_bill.png",
+    "flavorText": "【来源：Kaiser Family Foundation】许多蓝领工作的医保免赔额极高（> $5000）。这意味着在你自己掏够5000美元之前，保险公司一分钱不赔。"
+  },
+  {
+    "id": "No.W33_PRISON_LABOR",
+    "title": "监狱工业复合体 (Prison Labor)",
+    "image": "/assets/archives/prison_worker.png",
+    "flavorText": "【来源：The Atlantic】美国宪法第13修正案废除了奴隶制，但留了个尾巴：“作为对犯罪的惩罚除外”。如今，囚犯为星巴克包装咖啡、为维密缝内衣，时薪几乎为零。"
+  },
+  {
+    "id": "No.W34_EMOTIONAL_LABOR",
+    "title": "呼叫中心情感耗竭",
+    "image": "/assets/archives/call_center_script.png",
+    "flavorText": "【来源：Cornell University Study】客服人员被禁止挂断辱骂性电话，必须严格执行“同理心剧本”。这种长期的情绪压抑导致了极高的抑郁症发病率。"
+  },
+  {
+    "id": "No.W35_OSHA_NEGLECT",
+    "title": "故意忽视安全隐患",
+    "image": "/assets/archives/forklift_crash.png",
+    "flavorText": "【来源：OSHA Records】许多工厂因“成本原因”拒绝维修关键安全设备，直到发生致死事故。因为OSHA的罚款往往只有几千美元，比停工修车便宜多了。"
+  },
+  {
+    "id": "No.W36_SKELETON_CREW",
+    "title": "一元店人员配置危机",
+    "image": "/assets/archives/dollar_store_robbery.png",
+    "flavorText": "【来源：ProPublica】Dollar General等折扣店普遍实行“单人轮班制”，导致针对员工的暴力袭击频发。员工不仅是收银员，还是廉价的保安。"
+  },
+  {
+    "id": "No.W37_MISCLASSIFICATION",
+    "title": "错误分类 (Misclassification)",
+    "image": "/assets/archives/fedex_contract.png",
+    "flavorText": "【来源：FedEx Class Action】通过将全职司机定义为“承包商”，公司可以省下30%的人力成本（社保、医保、加班费），把车辆维修费和油费甩给司机。"
+  },
+  {
+    "id": "No.W38_BIOMETRIC_DATA",
+    "title": "伊利诺伊州生物识别隐私法诉讼",
+    "image": "/assets/archives/fingerprint_leak.png",
+    "flavorText": "【来源：Chicago Tribune】许多公司非法收集员工生物数据且未加密。一旦泄露，你换不了指纹，你的身份将永久裸奔。"
+  },
+  {
+    "id": "No.W39_NO_POACH",
+    "title": "互不挖角协议 (No-Poach Agreements)",
+    "image": "/assets/archives/no_poach_email.png",
+    "flavorText": "【来源：DOJ Investigations】硅谷巨头和快餐连锁都曾签署非法协议，承诺不雇佣对方的跳槽员工，以此压低全行业的工资水平。"
+  },
+  {
+    "id": "No.W40_SEVERANCE_TRAP",
+    "title": "遣散费换弃权书 (Severance Release)",
+    "image": "/assets/archives/severance_agreement.png",
+    "flavorText": "【来源：EEOC Guidance】雇主常利用工人急需用钱的心理，将“发放最后薪资/遣散费”与“放弃所有法律追诉权”绑定。这是趁火打劫。"
+  },
+  {
+    "id": "No.W41_MATERNITY_LEAVE",
+    "title": "零带薪产假 (No Paid Leave)",
+    "image": "/assets/archives/pregnant_at_work.png",
+    "flavorText": "【来源：Pew Research Center】美国是唯一没有联邦带薪产假的发达国家。FMLA只保证12周“不被开除”（无薪），且只有大公司员工才有资格。"
+  },
+  {
+    "id": "No.W42_PAYROLL_FEES",
+    "title": "薪酬卡滥用 (Payroll Card Fees)",
+    "image": "/assets/archives/payroll_card_fees.png",
+    "flavorText": "【来源：CFPB】许多大公司（如麦当劳、沃尔玛）强制给无银行账户的工人发薪酬卡。这些卡充斥着隐藏费用：闲置费、查询费、甚至刷卡手续费。"
+  },
+  {
+    "id": "No.W43_RIGHT_TO_WORK",
+    "title": "工作权利法 (Right-to-Work Laws)",
+    "image": "/assets/archives/right_to_work_map.png",
+    "flavorText": "【来源：Economic Policy Institute】在实施该法律的州，工人平均工资比其他州低3.1%。该法律起源于种族隔离时期，最初目的是为了破坏白人和黑人工人的团结。"
+  },
+  {
+    "id": "No.W44_MOBILE_HOME_TRAP",
+    "title": "私募股权收购移动住房园",
+    "image": "/assets/archives/mobile_home_park.png",
+    "flavorText": "【来源：Last Week Tonight】黑石集团等巨头大量收购移动住房园区，因为这里的居民无法搬迁，是完美的“被俘虏的客户”，可以肆意涨租。"
+  },
+  {
+    "id": "No.W45_AT_WILL",
+    "title": "随意雇佣原则 (At-Will Employment)",
+    "image": "/assets/archives/fired_box.png",
+    "flavorText": "【来源：BLS】这意味着你没有“饭碗”。你的饭碗是老板借给你的，他随时可以收回，且无需解释。"
+  },
+  {
+    "id": "No.W46_CANCER_ALLEY",
+    "title": "路易斯安那州“癌症巷”",
+    "image": "/assets/archives/cancer_alley_map.png",
+    "flavorText": "【来源：ProPublica】在这条密西西比河沿岸的走廊，癌症患病率是全美平均水平的50倍。几乎所有的重污染工厂都故意建在低收入非裔社区。"
+  },
+  {
+    "id": "No.W47_VISA_BONDAGE",
+    "title": "H-2A/H-2B 签证剥削",
+    "image": "/assets/archives/passport_held.png",
+    "flavorText": "【来源：BuzzFeed News】客工签证将工人的合法身份与单一雇主绑定。这导致了猖獗的工资盗窃、甚至人口贩卖，因为工人一旦被解雇就会立即失去身份。"
+  },
+  {
+    "id": "No.W48_FOOD_DESERT",
+    "title": "一元店与食物荒漠",
+    "image": "/assets/archives/food_desert_map.png",
+    "flavorText": "【来源：ILSR】Dollar General等连锁店采取“饱和式开店”策略，挤垮了社区杂货店，导致低收入社区彻底失去获取新鲜生鲜的渠道。"
+  },
+  {
+    "id": "No.W49_LOTTERY_TAX",
+    "title": "彩票的累退性 (Regressivity)",
+    "image": "/assets/archives/lottery_line.png",
+    "flavorText": "【来源：The Atlantic】低收入人群的彩票支出占收入比例是富人的5倍。彩票本质上是一种由国家垄断的、专门从底层口袋里掏钱的税收机制。"
+  },
+  {
+    "id": "No.W50_SCABS",
+    "title": "麦凯原则 (MacKay Doctrine)",
+    "image": "/assets/archives/scab_rat.png",
+    "flavorText": "【来源：Supreme Court 1938】美国法律规定，虽然不能因罢工“解雇”工人，但可以雇佣“永久替代者”来顶替他们的位置。这实际上让罢工权名存实亡。"
+  },
+  {
+    "id": "No.W51_SEXUAL_COERCION",
+    "title": "职场性胁迫 (Workplace Sexual Coercion)",
+    "image": "/assets/archives/kitchen_shadow.png",
+    "flavorText": "【来源：National Domestic Workers Alliance】对于无证移民女性（尤其是家政和农业工人），性暴力常被作为一种“就业条件”。老板掌握着她们的去留权，实际上拥有了对她们身体的绝对支配权。"
+  },
+  {
+    "id": "No.W52_DRUG_CYCLE",
+    "title": "蓝领药物依赖链",
+    "image": "/assets/archives/arm_vein.png",
+    "flavorText": "【来源：Dreamland: The True Tale of America's Opiate Epidemic】在底层高强度工种中，兴奋剂（用于干活）和止痛药（用于下班）构成了工人的燃料。卖血买药是这个产业链末端最常见的生存方式。"
+  },
+  {
+    "id": "No.W53_DIY_ABORTION",
+    "title": "罗伊诉韦德案推翻后的现实",
+    "image": "/assets/archives/wire_hanger.png",
+    "flavorText": "【来源：The Guardian】在堕胎禁令生效的州，地下诊所和“DIY堕胎”激增。衣架（Coat Hanger）成为了绝望女性的象征符号，常导致大出血和感染死亡。"
+  },
+  {
+    "id": "No.W54_FLINT_WATER",
+    "title": "弗林特水危机 (Flint Water Crisis)",
+    "image": "/assets/archives/brown_water.png",
+    "flavorText": "【来源：NRDC / EPA】铅具有甜味（乙酸铅曾被称为“铅糖”）。政府为了省钱切换水源，导致数万儿童铅中毒，且铅中毒对智力的损害是不可逆的。"
+  },
+  {
+    "id": "No.W55_SUGAR_CRAVING",
+    "title": "阿片类药物与嗜甜",
+    "image": "/assets/archives/sugar_pile.png",
+    "flavorText": "【来源：Addiction Science & Clinical Practice】长期服用阿片类药物（如OxyContin）会扰乱胰岛素代谢并抑制味觉，导致使用者疯狂摄入高糖食物。这是底层蓝领药物滥用的典型体征。"
+  },
+  {
+    "id": "No.M01_HOA_TYRANNY",
+    "title": "草坪文化与HOA权力",
+    "image": "/assets/archives/hoa_fine_letter.png",
+    "flavorText": "【来源：The Atlantic】草坪起源于欧洲贵族炫耀。如今，HOA拥有法外权力，他们真的可以因为草坪颜色不对而拍卖你的房子。你不是房主，你是社区规则的租客。"
+  },
+  {
+    "id": "No.M02_ORTHODONTICS_SCAM",
+    "title": "正畸工业 (Orthodontics Industry)",
+    "image": "/assets/archives/perfect_teeth.png",
+    "flavorText": "【来源：The New York Times】美国正畸是全球最暴利的。通过文化输出，将“整齐洁白”定义为唯一正常的牙齿，制造了数千亿美元的焦虑市场。"
+  },
+  {
+    "id": "No.M03_INTUIT_LOBBYING",
+    "title": "Intuit 游说集团",
+    "image": "/assets/archives/lobbyist_money.png",
+    "flavorText": "【来源：ProPublica】TurboTax母公司每年花费数百万游说，从法律上禁止IRS推出自动报税系统，迫使美国人每年多花几十亿冤枉钱买软件。"
+  },
+  {
+    "id": "No.M04_DIAMOND_SCAM",
+    "title": "戴比尔斯营销 (De Beers)",
+    "image": "/assets/archives/diamond_ad.png",
+    "flavorText": "【来源：The Atlantic】1938年前没几个人用钻戒求婚。是戴比尔斯通过广告植入，凭空创造了“订婚必须买钻戒”的规则，并人为囤积钻石维持高价。"
+  },
+  {
+    "id": "No.M05_STUDENT_LOAN_TRAP",
+    "title": "2005年破产法案 (BAPCPA)",
+    "image": "/assets/archives/bankruptcy_court.png",
+    "flavorText": "【来源：The Guardian】银行游说国会修改了法律，规定学生贷款不可通过破产免除。这让你变成了银行永久的包身工，直到死亡。"
+  },
+  {
+    "id": "No.M06_SUV_ARMS_RACE",
+    "title": "CAFE 标准漏洞",
+    "image": "/assets/archives/suv_size_chart.png",
+    "flavorText": "【来源：The Detroit News】美国燃油标准对“轻型卡车”要求较低。车企故意诱导消费者买巨型SUV，因为利润更高且环保合规更易。后果是行人死亡率飙升。"
+  },
+  {
+    "id": "No.M07_SCHOOL_SEGREGATION",
+    "title": "公立学校资助体系",
+    "image": "/assets/archives/school_funding_gap.png",
+    "flavorText": "【来源：NPR】美国公立学校主要靠本地房产税养活。富人区的学校像宫殿，穷人区的学校像监狱。这是一种合法的代际贫富固化。"
+  },
+  {
+    "id": "No.M08_ORGANIC_MYTH",
+    "title": "有机食品营销",
+    "image": "/assets/archives/organic_label.png",
+    "flavorText": "【来源：Stanford Study】研究表明，有机食品在营养价值上与普通食品几乎无异。它更多是一种中产阶级图腾，用来区分“我们”和“吃垃圾食品的底层”。"
+  },
+  {
+    "id": "No.M09_FICO_SCORE",
+    "title": "FICO 信用分制度",
+    "image": "/assets/archives/fico_score_chart.png",
+    "flavorText": "【来源：Time Magazine】FICO评分直到1989年才推出，现在却控制了生活的一切。它衡量的是你为银行创造利润的能力（如背负债务的能力），而不是你的人品。"
+  },
+  {
+    "id": "No.M10_FUNERAL_SCAM",
+    "title": "美国殡葬业丑闻",
+    "image": "/assets/archives/embalming_fluid.png",
+    "flavorText": "【来源：The American Way of Death】美国是极少数推行“防腐+密封棺材”的国家。这完全是殡葬业为了卖高价产品而编造的伪卫生需求。"
+  },
+  {
+    "id": "No.M11_MLM_PYRAMID",
+    "title": "多层次营销 (MLM) 真相",
+    "image": "/assets/archives/pyramid_scheme.png",
+    "flavorText": "【来源：FTC Report】99%的MLM参与者最终是亏损的。这些公司贩卖的不是产品，而是“独立女性”的虚假梦想，收割的是家庭主妇的积蓄。"
+  },
+  {
+    "id": "No.M12_FAKE_SERVICE_DOG",
+    "title": "虚假服务犬产业",
+    "image": "/assets/archives/fake_vest.png",
+    "flavorText": "【来源：American Kennel Club】网上花30美元就能买到全套“服务犬证书”。这种滥用导致许多商家非法拒绝真正的盲人进入，因为他们分不清真假。"
+  },
+  {
+    "id": "No.M13_NIMBY_HYPOCRISY",
+    "title": "邻避主义 (NIMBY) 与伪善",
+    "image": "/assets/archives/nimby_protest.png",
+    "flavorText": "【来源：NYT Investigation】许多标榜“进步派”的富裕社区（如旧金山），是全美反对经济适用房最激烈的地区。这叫“表演式激进主义”。"
+  },
+  {
+    "id": "No.M14_SUMMER_CAMP_RACE",
+    "title": "付费夏令营产业",
+    "image": "/assets/archives/camp_brochure.png",
+    "flavorText": "【来源：Town & Country】许多号称“哈佛举办”的夏令营只是租用了场地。招生官很清楚：这只是一张昂贵的入场券收据，证明你付得起钱。"
+  },
+  {
+    "id": "No.M15_MOMMY_JUICE",
+    "title": "女性酗酒危机",
+    "image": "/assets/archives/wine_mom.png",
+    "flavorText": "【来源：JAMA Network Open】近年来，美国女性死于酒精相关疾病人数增长85%。营销号将红酒包装成“自我关爱”，掩盖了成瘾的本质。"
+  },
+  {
+    "id": "No.M16_OPEN_PLAN_PRISON",
+    "title": "开放式办公室的失败",
+    "image": "/assets/archives/open_plan_noise.png",
+    "flavorText": "【来源：Harvard Business School】开放式办公室实际上减少了70%的面对面交流（改发邮件），并显著增加了员工的焦虑感和病假率。"
+  },
+  {
+    "id": "No.M17_ADJUNCT_CRISIS",
+    "title": "兼职教授危机 (The Adjunct Crisis)",
+    "image": "/assets/archives/food_stamp_prof.png",
+    "flavorText": "【来源：AFT】近25%的兼职教授依赖政府救济生活。大学利用博士过剩，将终身教职替换为廉价临时工，而学费却连年上涨。"
+  },
+  {
+    "id": "No.M18_MEDICAL_CROWDFUNDING",
+    "title": "GoFundMe 医疗众筹",
+    "image": "/assets/archives/crowdfund_fail.png",
+    "flavorText": "【来源：Time Magazine】每年有数百万个医疗众筹项目，但90%都未达到目标。这是一种极其残酷且不公平的“社会保障”替代品。"
+  },
+  {
+    "id": "No.M19_TIMESHARE_TRAP",
+    "title": "分时度假陷阱",
+    "image": "/assets/archives/timeshare_contract.png",
+    "flavorText": "【来源：Dave Ramsey】分时度假在二级市场上的价值几乎为零。这是一个“只进不出”的金融黑洞，且维护费每年都在涨。"
+  },
+  {
+    "id": "No.M20_RING_POLICE",
+    "title": "亚马逊 Ring 与警方合作",
+    "image": "/assets/archives/police_ring_access.png",
+    "flavorText": "【来源：Washington Post】亚马逊与全美2000多个警察局有合作。警方可以绕过搜查令，直接向用户施压索要视频录像，构建私有化监控网络。"
+  },
+  {
+    "id": "No.M21_ADHD_OVERDIAGNOSIS",
+    "title": "ADHD 过度诊断",
+    "image": "/assets/archives/ritalin_bottle.png",
+    "flavorText": "【来源：CDC】美国儿童ADHD诊断率是法国的6倍。许多孩子只是天性活泼，但在高压教育体系下，药物成了让孩子“适应系统”的捷径。"
+  },
+  {
+    "id": "No.M22_SURPRISE_BILLING",
+    "title": "意外医疗账单 (Surprise Medical Bills)",
+    "image": "/assets/archives/hospital_bill.png",
+    "flavorText": "【来源：Kaiser Health News】这是美国医疗业的常规操作。私募股权公司收购医生集团后，故意退出医保网络，以收取天价费用，专挑你没法反抗的时候下手。"
+  },
+  {
+    "id": "No.M23_DOMESTIC_LABOR",
+    "title": "家政工人的地下经济",
+    "image": "/assets/archives/cash_payment.png",
+    "flavorText": "【来源：Domestic Workers Alliance】美国数百万中产家庭依赖无证移民提供廉价的家政服务。他们享受着低廉的人力成本，却反对给予这些人合法身份。"
+  },
+  {
+    "id": "No.M24_UNPAID_INTERNSHIPS",
+    "title": "无薪实习 (Unpaid Internships)",
+    "image": "/assets/archives/intern_coffee.png",
+    "flavorText": "【来源：ProPublica】无薪实习是阶级固化的加速器。它确保了只有富裕家庭的子女才能进入时尚、媒体、政治等“光鲜行业”，因为穷人孩子打不起白工。"
+  },
+  {
+    "id": "No.M25_SUBPRIME_AUTO",
+    "title": "次级汽车贷款泡沫",
+    "image": "/assets/archives/car_loan_84.png",
+    "flavorText": "【来源：CFPB】为了维持中产阶级的消费假象，车贷期限越来越长（甚至96个月）。数百万美国人陷入“负资产”，一旦违约，生活瞬间崩塌。"
+  },
+  {
+    "id": "No.M26_GENTRIFICATION",
+    "title": "士绅化与流离失所",
+    "image": "/assets/archives/hipster_cafe.png",
+    "flavorText": "【来源：Urban Studies】士绅化通常伴随着警力的增加和对原有居民的骚扰。它不是社区的复兴，而是社区的置换，用高消费驱逐低收入者。"
+  },
+  {
+    "id": "No.M27_ESG_HYPOCRISY",
+    "title": "ESG 投资的虚伪",
+    "image": "/assets/archives/war_stocks.png",
+    "flavorText": "【来源：Financial Times】绝大多数普通退休基金都自动配置了军工和化石能源股票。每一个美国中产阶级都在不知不觉中资助战争。"
+  },
+  {
+    "id": "No.M28_LEGACY_ADMISSION",
+    "title": "传承录取数据",
+    "image": "/assets/archives/legacy_admit.png",
+    "flavorText": "【来源：The Atlantic】哈佛大学的“传承生”录取率是普通人的5倍。43%的白人录取学生是传承生、运动员或捐赠者子女。这是合法的世袭制。"
+  },
+  {
+    "id": "No.M29_NURSING_HOME_ABUSE",
+    "title": "养老院过度用药",
+    "image": "/assets/archives/pills_cup.png",
+    "flavorText": "【来源：Human Rights Watch】为了方便管理（让老人安静），养老院普遍滥用抗精神病药物（化学束缚）。这不仅不是治病，反而是加速死亡。"
+  },
+  {
+    "id": "No.M30_OVERDRAFT_FEES",
+    "title": "透支费收入 (Overdraft Fees)",
+    "image": "/assets/archives/bank_fee.png",
+    "flavorText": "【来源：CFPB】美国银行业每年收取超过150亿美元的透支费。这笔收入几乎全部来自最贫穷的9%的客户。富人有“费用豁免”，穷人却要为没钱而付费。"
+  },
+  {
+    "id": "No.M31_WHITE_SAVIOR",
+    "title": "白人救世主综合症",
+    "image": "/assets/archives/white_savior_selfie.png",
+    "flavorText": "【来源：The Atlantic】这种“志愿旅游”不仅无效，反而破坏了当地经济。它只是为了满足西方人的自我感动，把贫困当成了背景板。"
+  },
+  {
+    "id": "No.M32_TAX_INEQUALITY",
+    "title": "ProPublica 秘密国税局档案",
+    "image": "/assets/archives/tax_rate_chart.png",
+    "flavorText": "【来源：ProPublica Leak】最富有的25名美国人缴纳的实际税率仅为3.4%。工薪阶层（W-2 earners）是唯一无法逃税的群体，承担了国家的主要税负。"
+  },
+  {
+    "id": "No.M33_TOXIC_POSITIVITY",
+    "title": "强制快乐文化",
+    "image": "/assets/archives/happy_worker.png",
+    "flavorText": "【来源：Barbara Ehrenreich】美国企业文化强迫员工表现出持续的乐观。这种文化将系统性问题（如低薪）归咎于个人态度（“你不够积极”），从而逃避责任。"
+  },
+  {
+    "id": "No.M34_WALDORF_SCHOOL",
+    "title": "硅谷华德福学校",
+    "image": "/assets/archives/no_tech_school.png",
+    "flavorText": "【来源：NYT】许多Google和Apple高管将孩子送到“无科技”学校。他们深知算法是如何被设计成让多巴胺成瘾的，所以他们让自己的孩子远离它。"
+  },
+  {
+    "id": "No.M35_DIVORCE_INDUSTRY",
+    "title": "离婚工业复合体",
+    "image": "/assets/archives/lawyer_bill.png",
+    "flavorText": "【来源：Divorce Corp】美国家事法庭系统的设计初衷就是拖延和激化矛盾。律师按小时收费，案件拖得越久，他们赚得越多，直到榨干中产阶级的积蓄。"
+  },
+  {
+    "id": "No.M36_TEACHER_PAY",
+    "title": "教师身兼多职 (Moonlighting)",
+    "image": "/assets/archives/teacher_uber.png",
+    "flavorText": "【来源：Time Magazine】近20%的美国公立学校教师在学期中有第二份工作。全职工作养不活人，这是教育系统崩塌的标志。"
+  },
+  {
+    "id": "No.M37_SUBURBAN_ADDICTION",
+    "title": "郊区女性药物成瘾",
+    "image": "/assets/archives/pill_cabinet.png",
+    "flavorText": "【来源：NYT】白人中产阶级女性是抗焦虑药物滥用的最大群体。制药公司专门针对这一群体营销，承诺“一片药就能让你做回完美的妈妈”。"
+  },
+  {
+    "id": "No.M38_CENTRAL_PARK_KAREN",
+    "title": "中央公园鸟类观察员事件",
+    "image": "/assets/archives/karen_phone.png",
+    "flavorText": "【来源：Viral Video】白人女性报警诬陷黑人男子威胁她，仅仅因为对方请她给狗拴绳。这揭示了白人中产如何利用警方暴力来维持社会等级。"
+  },
+  {
+    "id": "No.M39_GYM_CULTURE",
+    "title": "阿特拉斯耸耸肩与健身文化",
+    "image": "/assets/archives/gym_selfie.png",
+    "flavorText": "【来源：The Guardian】现代高端健身文化暗示：你的身体形态反映了你的道德水准。这是一种将系统性不平等转化为“个人懒惰”的叙事。"
+  },
+  {
+    "id": "No.M40_PRIOR_AUTHORIZATION",
+    "title": "事先授权 (Prior Authorization) 滥用",
+    "image": "/assets/archives/denial_letter.png",
+    "flavorText": "【来源：ProPublica】Cigna保险公司的医疗主管在1.2秒内就能拒绝一份索赔申请，根本不看病历。AI算法被用来批量拒绝救命的治疗，只为省钱。"
+  },
+  {
+    "id": "No.M41_BULLETPROOF_MARKET",
+    "title": "防弹背包市场",
+    "image": "/assets/archives/bulletproof_backpack.png",
+    "flavorText": "【来源：The New York Times】自桑迪胡克小学枪击案以来，针对儿童的防弹装备销量暴增。但这完全是贩卖恐惧，因为大多数板子根本防不住步枪子弹。"
+  },
+  {
+    "id": "No.M42_MEDICAID_RECOVERY",
+    "title": "医疗补助遗产追偿 (Medicaid Estate Recovery)",
+    "image": "/assets/archives/foreclosure_notice.png",
+    "flavorText": "【来源：The Atlantic】联邦法律规定，各州必须向使用过Medicaid（长期护理）的55岁以上死者追偿。这导致成千上万贫困家庭失去了祖传的房产。"
+  },
+  {
+    "id": "No.M43_VARSITY_BLUES",
+    "title": "校队蓝调丑闻 (Operation Varsity Blues)",
+    "image": "/assets/archives/fake_athlete_photo.png",
+    "flavorText": "【来源：FBI Investigation 2019】好莱坞明星和商业大亨通过贿赂教练、伪造体育证书，把子女送进耶鲁、斯坦福。这是美国历史上最大的招生舞弊案。"
+  },
+  {
+    "id": "No.M44_SUPER_COMMUTERS",
+    "title": "超级通勤者 (Super Commuters)",
+    "image": "/assets/archives/highway_jam.png",
+    "flavorText": "【来源：U.S. Census Bureau】全美有数百万“超级通勤者”每天通勤超过90分钟。研究表明，这类人群的离婚率、肥胖率和早死率显著高于常人。"
+  },
+  {
+    "id": "No.M45_CRYPTO_ANXIETY",
+    "title": "加密货币骗局与中产焦虑",
+    "image": "/assets/archives/crypto_crash_chart.png",
+    "flavorText": "【来源：Financial Times】加密货币市场的崩盘主要收割的是那些渴望快速致富的中产阶级。这是一场大规模的财富转移——从散户到做局者。"
+  },
+  {
+    "id": "No.M46_TROUBLED_TEEN",
+    "title": "问题少年产业黑幕",
+    "image": "/assets/archives/boot_camp.png",
+    "flavorText": "【来源：GAO Reports】这些收费昂贵的训练营普遍存在性侵、殴打和心理折磨。许多孩子进去时只是叛逆，出来时却患上了严重的PTSD。"
+  },
+  {
+    "id": "No.M47_PRIVATE_FIREFIGHTERS",
+    "title": "私人消防队 (Private Firefighters)",
+    "image": "/assets/archives/private_fire_truck.png",
+    "flavorText": "【来源：NBC News】AIG等保险公司为富豪客户提供私人消防服务。当公共基础设施崩溃时，生存变成了付费订阅服务。"
+  },
+  {
+    "id": "No.M48_BETTER_COM_FIRING",
+    "title": "Better.com 解雇事件",
+    "image": "/assets/archives/zoom_firing.png",
+    "flavorText": "【来源：Viral TikTok】2021年，Better.com CEO在一次3分钟的Zoom通话中解雇了900人。这展示了在现代企业中，劳资关系已经异化到了何种冰冷的地步。"
+  },
+  {
+    "id": "No.M49_OVERTIME_EXEMPTION",
+    "title": "加班费豁免漏洞 (Overtime Exemption)",
+    "image": "/assets/archives/fake_manager_title.png",
+    "flavorText": "【来源：NBER Study】企业通过将前台、洗碗工虚构成“经理”，每年从工人手中窃取了40亿美元的加班费。"
+  },
+  {
+    "id": "No.M50_400_EMERGENCY",
+    "title": "400美元应急金",
+    "image": "/assets/archives/empty_piggy_bank.png",
+    "flavorText": "【来源：Federal Reserve】37%的美国成年人拿不出400美元的应急现金。所谓的中产阶级，不过是“在悬崖边跳舞”。"
+  },
+  {
+    "id": "No.M58_TRASH_SCOUTING",
+    "title": "垃圾桶侦察 (Trash Can Scouting)",
+    "image": "/assets/archives/ps5_box_trash.png",
+    "flavorText": "【来源：Police Department Warnings】在治安恶化的地区，劫匪会巡视富人区的回收垃圾桶。如果你扔了昂贵电子产品的盒子，就等于在房子上画了个靶子。"
+  },
+  {
+    "id": "No.M59_CALCULATED_COMPLEXITY",
+    "title": "故意复杂化 (Calculated Complexity)",
+    "image": "/assets/archives/fine_print.png",
+    "flavorText": "【来源：The Atlantic】保险公司和律师故意使用晦涩难懂的术语，不仅是为了规避责任，更是为了制造阶级壁垒，让普通人无法反抗不合理的收费。"
+  },
+  {
+    "id": "No.C01_BUY_BORROW_DIE",
+    "title": "ProPublica 亿万富翁税收报告",
+    "image": "/assets/archives/billionaire_tax_leak.png",
+    "flavorText": "【来源：ProPublica Leak】这叫“Buy, Borrow, Die”策略。杰夫·贝佐斯、埃隆·马斯克等超级富豪经常利用此漏洞，实现实际税率接近于0，远低于他们的秘书。"
+  },
+  {
+    "id": "No.C02_ALEC_LOBBYING",
+    "title": "ALEC (美国立法交流委员会)",
+    "image": "/assets/archives/legislative_draft.png",
+    "flavorText": "【来源：USA Today】ALEC是一个让企业说客和政客坐在一起“私下”起草“模范法案”的组织。每年有约1000条由企业编写的法案被变成州法律。"
+  },
+  {
+    "id": "No.C03_TARP_BAILOUT",
+    "title": "TARP 救助计划",
+    "image": "/assets/archives/bailout_check.png",
+    "flavorText": "【来源：Rolling Stone】2008年政府花了7000亿美元救助华尔街。事后，各大银行高管不仅没坐牢，反而分了数十亿奖金。盈利归私有，亏损归纳税人。"
+  },
+  {
+    "id": "No.C04_REVOLVING_DOOR",
+    "title": "普渡制药与FDA旋转门",
+    "image": "/assets/archives/revolving_door_sign.png",
+    "flavorText": "【来源：Empire of Pain】批准奥施康定（OxyContin）的FDA审查员Curtis Wright，在批准该药后不久离职，加入了普渡制药，第一年薪酬包就是40万美元。"
+  },
+  {
+    "id": "No.C05_PHANTOM_CARBON",
+    "title": "虚假碳信用 (Phantom Carbon Credits)",
+    "image": "/assets/archives/forest_credits.png",
+    "flavorText": "【来源：The Guardian】调查显示，全球最大的碳认证机构认证的雨林碳信用中，90%以上是毫无价值的“幽灵信用”。这根本没有减少实际排放，只是富人的赎罪券。"
+  },
+  {
+    "id": "No.C06_STOCK_BUYBACKS",
+    "title": "股票回购浪潮",
+    "image": "/assets/archives/stock_buyback_chart.png",
+    "flavorText": "【来源：HBR】标普500公司将超过50%的利润用于回购股票，而不是投资研发或提高工人工资。这直接导致了贫富差距的极速扩大。1982年前这被视为非法操纵。"
+  },
+  {
+    "id": "No.C07_UGLAND_HOUSE",
+    "title": "乌克兰兰大厦 (Ugland House)",
+    "image": "/assets/archives/cayman_mailbox.png",
+    "flavorText": "【来源：GAO Report】这栋位于开曼群岛的5层小楼是著名的“避税地标”，是18,000家公司的注册总部。奥巴马曾称其为“世界上最大的税务骗局”。"
+  },
+  {
+    "id": "No.C08_FACEBOOK_FILES",
+    "title": "Facebook 档案 (The Facebook Files)",
+    "image": "/assets/archives/rage_algorithm.png",
+    "flavorText": "【来源：WSJ / Frances Haugen】内部文件显示，Facebook明知其算法会助长分裂、暴力和青少年的心理问题，但为了利润选择隐瞒并继续。愤怒是流量的燃料。"
+  },
+  {
+    "id": "No.C09_DAVOS_JETS",
+    "title": "达沃斯私人飞机排放",
+    "image": "/assets/archives/private_jets_row.png",
+    "flavorText": "【来源：Greenpeace】2022年达沃斯论坛期间，私人飞机产生的二氧化碳相当于35万辆汽车一周的排放量。富人教导穷人环保，自己却坐着喷气机。"
+  },
+  {
+    "id": "No.C10_CONGRESS_INSIDER",
+    "title": "2020年国会内幕交易丑闻",
+    "image": "/assets/archives/insider_trading.png",
+    "flavorText": "【来源：NYT】参议员Richard Burr等人在2020年初接到新冠疫情的秘密简报后，在大众知情前抛售了数百万美元的股票。利用国难发财，且未被定罪。"
+  },
+  {
+    "id": "No.C11_CORPORATE_WELFARE",
+    "title": "沃尔玛员工福利成本",
+    "image": "/assets/archives/snap_application.png",
+    "flavorText": "【来源：GAO Report】沃尔玛和麦当劳是拥有“依靠食品券生存的员工”最多的雇主。美国纳税人每年为这些低薪企业补贴数十亿美元。这叫企业福利。"
+  },
+  {
+    "id": "No.C12_PLANNED_OBSOLESCENCE",
+    "title": "计划性报废 (Planned Obsolescence)",
+    "image": "/assets/archives/lightbulb_conspiracy.png",
+    "flavorText": "【来源：IEEE Spectrum】从灯泡到iPhone，产品被故意设计成在保修期刚过时损坏。1924年的菲比斯卡特尔甚至对制造长寿灯泡的厂商进行罚款。"
+  },
+  {
+    "id": "No.C13_KIDS_FOR_CASH",
+    "title": "孩子换现金丑闻 (Kids for Cash)",
+    "image": "/assets/archives/kids_handcuffs.png",
+    "flavorText": "【来源：FBI Investigation】宾州两名法官收取私人监狱高达260万美元的贿赂，将数千名无辜或轻罪少年送入监狱，以保证监狱的“入住率”和利润。"
+  },
+  {
+    "id": "No.C14_PATENT_EVERGREENING",
+    "title": "药品专利常青化 (Patent Evergreening)",
+    "image": "/assets/archives/patent_wall.png",
+    "flavorText": "【来源：I-MAK Report】最畅销的12种药物平均每种有71项专利。药厂通过微调分子结构无限续杯专利，让仿制药无法上市，从而维持天价垄断。"
+  },
+  {
+    "id": "No.C15_PHILANTHRO_CAPITALISM",
+    "title": "盖茨/巴菲特模式的避税争议",
+    "image": "/assets/archives/charity_loophole.png",
+    "flavorText": "【来源：The Nation】富人每捐出1美元到私人基金会，纳税人就损失74美分的税收。而这些基金会每年只需花出5%，剩下的钱继续利滚利。这是避税和权力的游戏。"
+  },
+  {
+    "id": "No.C16_NESTLE_WATER",
+    "title": "雀巢加州抽水争议",
+    "image": "/assets/archives/water_pump.png",
+    "flavorText": "【来源：The Desert Sun】雀巢（现BlueTriton）在圣贝纳迪诺国家森林使用一份1988年就过期的许可证抽水，每年支付不到600美元，而转手获利数百万。"
+  },
+  {
+    "id": "No.C17_SINCLAIR_SCRIPT",
+    "title": "辛克莱广播集团 (Sinclair Script)",
+    "image": "/assets/archives/media_script.png",
+    "flavorText": "【来源：Deadspin】辛克莱集团控制着全美近200家地方电视台。他们强制要求所有主播朗读一字不差的“必播社论”，制造舆论共识。"
+  },
+  {
+    "id": "No.C18_MCKINSEY_DESTRUCTION",
+    "title": "麦肯锡与阿片类药物/裁员",
+    "image": "/assets/archives/mckinsey_slide.png",
+    "flavorText": "【来源：NYT】麦肯锡曾建议普渡制药“涡轮增压”阿片类药物销售；也曾建议迪士尼削减维护成本。他们的建议往往以牺牲安全和人命为代价换取短期利润。"
+  },
+  {
+    "id": "No.C19_FLAG_OF_CONVENIENCE",
+    "title": "方便旗制度 (Flag of Convenience)",
+    "image": "/assets/archives/liberia_flag_ship.png",
+    "flavorText": "【来源：ITF Global】全球90%的贸易船只挂着巴拿马或利比里亚的国旗。这种制度允许船东雇用廉价劳动力、逃避安全检查、隐瞒真实所有权。"
+  },
+  {
+    "id": "No.C20_REAL_TIME_BIDDING",
+    "title": "实时竞价广告 (Real-Time Bidding)",
+    "image": "/assets/archives/data_auction.png",
+    "flavorText": "【来源：ICCL Report】美国用户的在线行为数据平均每天被分享747次。这是一个在毫秒级内完成的巨大的人口贩卖市场，你的隐私是被拍卖的猪肉。"
+  },
+  {
+    "id": "No.C21_REALPAGE_CARTEL",
+    "title": "RealPage 垄断丑闻",
+    "image": "/assets/archives/rent_fixing_algo.png",
+    "flavorText": "【来源：ProPublica】RealPage软件让房东们共享非公开数据，并算法协同涨租。这实际上形成了非法的价格联盟，导致全美房租飙升，哪怕空置率很高，价格也不降。"
+  },
+  {
+    "id": "No.C22_TOYS_R_US_LBO",
+    "title": "玩具反斗城破产案 (LBO)",
+    "image": "/assets/archives/closed_toy_store.png",
+    "flavorText": "【来源：The Atlantic】Bain Capital等公司收购玩具反斗城时，只出了一点点钱，剩下的几十亿全是借的，并把债务挂在玩具反斗城账上。每年4亿美元的利息压垮了这家本来盈利的公司。"
+  },
+  {
+    "id": "No.C23_JOHNSON_BANKRUPTCY",
+    "title": "强生爽身粉案与得州两步法",
+    "image": "/assets/archives/baby_powder_court.png",
+    "flavorText": "【来源：Reuters】强生利用德克萨斯州法律，将致癌诉讼责任剥离给一家空壳公司，然后让其破产。这一策略旨在逃避对数万名癌症受害者的赔偿。"
+  },
+  {
+    "id": "No.C24_INSTITUTIONAL_BUYING",
+    "title": "机构投资者抢房",
+    "image": "/assets/archives/for_rent_sign.png",
+    "flavorText": "【来源：WSJ】在亚特兰大、凤凰城等城市，高达30%的待售房屋被黑石等投资机构买走。他们将这一代人变成了“租房一代”，因为普通人抢不过全款的机构。"
+  },
+  {
+    "id": "No.C25_DEFENSE_REVOLVING",
+    "title": "国防部旋转门",
+    "image": "/assets/archives/general_boardroom.png",
+    "flavorText": "【来源：POGO Report】2008-2018年间，超过380名高级官员和军官在退役后立即成为军火商的说客或高管。他们在位时审批订单，退役后领取回扣。"
+  },
+  {
+    "id": "No.C26_CITIZENS_UNITED",
+    "title": "联合公民诉FEC案 (2010)",
+    "image": "/assets/archives/money_speech_gavel.png",
+    "flavorText": "【来源：Supreme Court Ruling】该判决允许企业和工会无限制地花钱资助政治广告（超级PAC）。这彻底改变了美国政治，使其沦为富豪的游乐场。"
+  },
+  {
+    "id": "No.C27_ASTROTURFING",
+    "title": "人造草皮营销 (Astroturfing)",
+    "image": "/assets/archives/fake_protest.png",
+    "flavorText": "【来源：Center for Media and Democracy】许多所谓的“患者权益组织”其实是由药企全资资助的；“反对气候行动”的组织背后往往是石油巨头。这是伪造的民意。"
+  },
+  {
+    "id": "No.C28_WATER_FUTURES",
+    "title": "纳斯达克韦莱水务指数",
+    "image": "/assets/archives/water_ticker.png",
+    "flavorText": "【来源：Bloomberg】2020年，人类历史上首次将水作为期货进行交易。虽然声称是为了避险，但批评者担心这会导致水价被金融巨头操纵，让基本生存权商品化。"
+  },
+  {
+    "id": "No.C29_CLASS_ACTION_BAN",
+    "title": "集体诉讼豁免条款",
+    "image": "/assets/archives/terms_conditions.png",
+    "flavorText": "【来源：NYT Investigation】最高法院在2011年判决支持了这一条款。现在，几乎所有的银行、电信公司都在合同中剥夺了你抱团维权的权利，让你无法起诉。"
+  },
+  {
+    "id": "No.C30_ENERGY_MANIPULATION",
+    "title": "安然加州电网操纵案",
+    "image": "/assets/archives/enron_traders.png",
+    "flavorText": "【来源：The Smartest Guys in the Room】安然交易员曾故意关停电厂，人为制造短缺，让电价飙升。“Burn, baby, burn”是他们的名言。这是人为制造的匮乏。"
+  },
+  {
+    "id": "No.C31_SEED_PATENTS",
+    "title": "鲍曼诉孟山都案",
+    "image": "/assets/archives/terminator_seed.png",
+    "flavorText": "【来源：Supreme Court Case】最高法院支持孟山都，裁定农民不得利用收获的作物进行再种植。孟山都拥有一支“种子警察”队伍，专门起诉留种的农民。"
+  },
+  {
+    "id": "No.C32_BURNING_STOCK",
+    "title": "巴宝莉烧毁库存丑闻",
+    "image": "/assets/archives/burning_clothes.png",
+    "flavorText": "【来源：BBC News】2018年，Burberry承认在一年内烧毁了价值2860万英镑的未售出商品，以防止其流入“灰色市场”贬值。这是时尚圈维持稀缺性的潜规则。"
+  },
+  {
+    "id": "No.C33_SUGAR_LOBBY",
+    "title": "226号项目 (Project 226)",
+    "image": "/assets/archives/sugar_check.png",
+    "flavorText": "【来源：JAMA Internal Medicine】上世纪60年代，糖业研究基金会贿赂哈佛科学家，发文妖魔化脂肪，以此淡化糖的危害。这一谎言主导了50年的膳食指南。"
+  },
+  {
+    "id": "No.C34_COBALT_MINING",
+    "title": "刚果钴矿童工",
+    "image": "/assets/archives/cobalt_hand.png",
+    "flavorText": "【来源：Amnesty International】全球70%的钴来自刚果。调查显示，绝大多数钴都混入了残酷的童工劳动。你的高科技生活建立在他们的血汗之上。"
+  },
+  {
+    "id": "No.C35_BLACKWATER",
+    "title": "黑水公司尼苏尔广场惨案",
+    "image": "/assets/archives/mercenary_gun.png",
+    "flavorText": "【来源：NYT】2007年，黑水公司雇佣兵在巴格达射杀17名平民。由于法律漏洞，起诉这些“私人承包商”极其困难。战争变成了一种营利性商业活动。"
+  },
+  {
+    "id": "No.C36_RATING_FRAUD",
+    "title": "2008次贷危机中的评级机构",
+    "image": "/assets/archives/aaa_trash.png",
+    "flavorText": "【来源：The Big Short】穆迪和标普为了争夺银行的业务，竞相降低标准，给有毒资产最高评级。分析师称：“就算是一头牛设计出的债券，我们也会给它评级。”"
+  },
+  {
+    "id": "No.C37_KILLER_ACQUISITIONS",
+    "title": "科技巨头的“捕杀”策略",
+    "image": "/assets/archives/startup_grave.png",
+    "flavorText": "【来源：Yale Law Journal】Facebook收购Instagram，Google收购Waze，很多时候不是为了技术，而是为了消除潜在威胁。很多被收购的小公司产品被直接雪藏。"
+  },
+  {
+    "id": "No.C38_SWIPE_FEES",
+    "title": "刷卡手续费 (Swipe Fees)",
+    "image": "/assets/archives/visa_mastercard_logo.png",
+    "flavorText": "【来源：Merchants Payments Coalition】美国商家每年支付超过1000亿美元的刷卡费，这是仅次于人工的第二大成本。这些成本最终全部转嫁给了消费者。"
+  },
+  {
+    "id": "No.C39_NESTLE_FORMULA",
+    "title": "婴儿奶粉推销丑闻",
+    "image": "/assets/archives/nestle_boycott.png",
+    "flavorText": "【来源：The Lancet】上世纪70年代，雀巢在第三世界激进推销奶粉，导致无数婴儿因母乳干涸、被迫使用污水冲奶粉而死亡。这是为了利润的屠杀。"
+  },
+  {
+    "id": "No.C40_GENEVA_FREEPORT",
+    "title": "日结瓦自由港 (Geneva Freeport)",
+    "image": "/assets/archives/art_crate.png",
+    "flavorText": "【来源：NYT】这里储存了约120万件艺术品。它是超级富豪的影子银行系统，通过不记名的艺术品交易，实现财富的隐秘转移和避税。"
+  },
+  {
+    "id": "No.C41_DEAD_PEASANT",
+    "title": "死农保险 (Dead Peasant Insurance)",
+    "image": "/assets/archives/dead_peasant_policy.png",
+    "flavorText": "【来源：WSJ】许多大公司（如沃尔玛）秘密为底层员工购买人寿保险，受益人是公司。员工死得越早，公司赚得越多。这被称为“尸体红利”。"
+  },
+  {
+    "id": "No.C42_YOUNG_BLOOD",
+    "title": "彼得·蒂尔的输血传闻",
+    "image": "/assets/archives/blood_bag_rich.png",
+    "flavorText": "【来源：Vanity Fair】硅谷富豪对“异种共生”（输入年轻人血液抗衰老）表现出浓厚兴趣。初创公司Ambrosia曾以8000美元出售年轻人的血浆，虽然被叫停，但这在富豪圈是公开的秘密。"
+  },
+  {
+    "id": "No.C43_LAND_HOARDING",
+    "title": "亿万富翁囤地潮",
+    "image": "/assets/archives/bill_gates_land.png",
+    "flavorText": "【来源：The Land Report】比尔·盖茨拥有约27万英亩农田。在粮食危机背景下，超级富豪正在疯狂将纸面财富转化为实物土地，控制未来的粮食供应。"
+  },
+  {
+    "id": "No.C44_DISASTER_CAPITALISM",
+    "title": "毛伊岛大火土地掠夺",
+    "image": "/assets/archives/burnt_maui_sign.png",
+    "flavorText": "【来源：The Guardian】灾难过后，当地居民立即遭到房地产投机者的骚扰。这在卡特里娜飓风后也发生过：灾难清洗了穷人，富人低价接盘。"
+  },
+  {
+    "id": "No.C45_MARS_INDENTURED",
+    "title": "契约奴工殖民火星",
+    "image": "/assets/archives/mars_indenture.png",
+    "flavorText": "【来源：TechCrunch】马斯克曾提出，去火星的人如果付不起路费，可以签署“贷款协议”，在火星上工作偿还。这在历史上叫“契约奴 (Indentured Servitude)”。"
+  },
+  {
+    "id": "No.C46_DOOMSDAY_BUNKER",
+    "title": "新西兰亿万富翁地堡",
+    "image": "/assets/archives/bunker_plan.png",
+    "flavorText": "【来源：The Guardian】硅谷大佬都在新西兰购买了豪宅和“末日保险”。他们担心因贫富差距导致全球暴乱，并为此做好了跑路准备。"
+  },
+  {
+    "id": "No.C47_SEASTEADING",
+    "title": "海上家园研究所 (Seasteading)",
+    "image": "/assets/archives/sea_city_concept.png",
+    "flavorText": "【来源：Peter Thiel】由彼得·蒂尔资助，旨在建立不受任何政府管辖的海上社区。目标是摆脱“恼人”的民主制度和税收，实行纯粹的无政府资本主义。"
+  },
+  {
+    "id": "No.C48_OWN_NOTHING",
+    "title": "你将一无所有 (You'll own nothing)",
+    "image": "/assets/archives/wef_tweet.png",
+    "flavorText": "【来源：WEF】虽然声称是预测，但这反映了资本的终极愿景：终结私有制（针对穷人的），建立寻租垄断（针对富人的）。"
+  },
+  {
+    "id": "No.C49_THE_MINDSET",
+    "title": "富豪密会：如何控制保镖",
+    "image": "/assets/archives/security_collar.png",
+    "flavorText": "【来源：Douglas Rushkoff】超级富豪们害怕的不是气候变暖，而是“末日后如何控制安保人员”。他们讨论使用密码锁甚至爆炸项圈来维持忠诚。"
+  },
+  {
+    "id": "No.C50_DIGITAL_SLUM",
+    "title": "元宇宙与数字贫民窟",
+    "image": "/assets/archives/vr_slum.png",
+    "flavorText": "【来源：Ready Player One】当现实世界被资本毁得无法居住时，他们会建造一个虚拟天堂让你去打工和消费。现实是留给买得起门票的人的。"
+  },
+  {
+    "id": "No.C51_BODY_TRADE",
+    "title": "人体组织采购黑市",
+    "image": "/assets/archives/fetal_tissue_invoice.png",
+    "flavorText": "【来源：Reuters】虽然法律禁止买卖人体，但“科研样本”的采购处于灰色地带。贫困、吸毒母亲的胎儿或死婴常被以“捐赠”名义转手，涉及高额处理费。"
+  },
+  {
+    "id": "No.C52_FOR_PROFIT_BAIL",
+    "title": "营利性保释金产业",
+    "image": "/assets/archives/bail_bond_office.png",
+    "flavorText": "【来源：ACLU】美国是极少数允许营利性保释金的国家。这实际上是一个“人身所有权交易所”，穷人一旦签了字，就成为了保释金公司的私有财产。"
+  },
+  {
+    "id": "No.C53_AI_POWER_DRAIN",
+    "title": "数据中心与能源贫困",
+    "image": "/assets/archives/data_center_power.png",
+    "flavorText": "【来源：Washington Post】AI数据中心耗电量惊人，推高了当地能源价格。而在美国，因交不起电费被断电是儿童保护服务介入并剥夺抚养权的常见理由。"
+  },
+  {
+    "id": "No.C54_FOOD_FRAUD_CALC",
+    "title": "福特平托式计算 (Ford Pinto Memo)",
+    "image": "/assets/archives/pinto_memo.png",
+    "flavorText": "【来源：Legal Case Studies】这是一种经典的资本计算：如果召回或改进产品的成本 > 赔偿死人的成本，那么就让它死人。食品掺假是这种逻辑在食品工业的体现。"
+  },
+  {
+    "id": "No.TRASH_DIVER_REGRET",
+    "title": "拾荒者遗憾",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】拾荒者遗憾的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C01_CLIMATE_APARTHEID",
+    "title": "气候种族隔离",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】气候种族隔离的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C02_INFRASTRUCTURE_FAILURE",
+    "title": "基础设施崩溃",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】基础设施崩溃的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C03_PYROCAPITALISM",
+    "title": "火焰资本主义",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】火焰资本主义的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C04_FOOD_SYSTEM",
+    "title": "食品系统",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】食品系统的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C05_HEALTHCARE_FOR_PROFIT",
+    "title": "营利性医疗",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】营利性医疗的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C06_PUBLIC_HEALTH_CUTS",
+    "title": "公共卫生削减",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】公共卫生削减的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C07_CRIME_AND_POVERTY",
+    "title": "犯罪与贫困",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】犯罪与贫困的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C08_JUSTICE_GAP",
+    "title": "正义鸿沟",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】正义鸿沟的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C09_DATA_SURVEILLANCE",
+    "title": "数据监控",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】数据监控的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C10_PLANNED_OBSOLESCENCE",
+    "title": "计划性淘汰",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】计划性淘汰的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C11_DIGITAL_DIVIDE",
+    "title": "数字鸿沟",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】数字鸿沟的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C12_SURVEILLANCE_CAPITALISM",
+    "title": "监控资本主义",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】监控资本主义的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C13_CREDIT_APARTHEID",
+    "title": "信用种族隔离",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】信用种族隔离的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C14_POVERTY_TAX",
+    "title": "贫困税",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】贫困税的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C15_DEBT_PEONAGE",
+    "title": "债务奴役",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】债务奴役的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C16_DEATH_INDUSTRIAL_COMPLEX",
+    "title": "死亡工业复合体",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】死亡工业复合体的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C17_INTERGENERATIONAL_WEALTH",
+    "title": "代际财富",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】代际财富的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C18_MARRIAGE_AS_CONTRACT",
+    "title": "婚姻作为契约",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】婚姻作为契约的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C19_LOTTERY_AS_TAX",
+    "title": "彩票作为税收",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】彩票作为税收的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C20_GAMBLING_INDUSTRIAL_COMPLEX",
+    "title": "赌博工业复合体",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】赌博工业复合体的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  },
+  {
+    "id": "No.C21_TAX_COMPLEXITY_WEAPON",
+    "title": "税收复杂性武器",
+    "image": "/assets/archives/placeholder.png",
+    "flavorText": "【待补充】税收复杂性武器的相关档案资料。",
+    "_comment": "AUTO_GENERATED: 由验证脚本自动添加，请补充完整内容"
+  }
+]

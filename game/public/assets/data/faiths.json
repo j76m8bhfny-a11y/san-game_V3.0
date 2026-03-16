@@ -1,0 +1,63 @@
+[
+  {
+    "id": "CHURCH",
+    "name": "救赎教会",
+    "description": "富人的麻醉剂。只需一点奉献，主就宽恕你的罪。",
+    "color": "text-yellow-400",
+    "baseRegion": "SUBURBS",
+    "joinCost": { "gold": 100 },
+    "rite": {
+      "name": "缴纳什一税",
+      "description": "消耗10%现金(最少$50)换取理智清醒，洗掉你看透的太多真相",
+      "goldCostPercent": 0.1,
+      "minGoldCost": 50,
+      "baseInsightReward": -15,
+      "baseHpReward": 5
+    }
+  },
+  {
+    "id": "BROTHERHOOD",
+    "name": "互助兄弟会",
+    "description": "穷人的避难所。严守戒律，团结互助。",
+    "color": "text-green-500",
+    "baseRegion": "RUST_BELT",
+    "joinCost": { "cleanInventory": true },
+    "rite": {
+      "name": "参加聚礼",
+      "description": "需要带食物分享。恢复HP，降低灵视——抱团取暖让你暂时忘记苦难",
+      "baseInsightReward": -5,
+      "baseHpReward": 10,
+      "minGoldCost": 5
+    }
+  },
+  {
+    "id": "CULT",
+    "name": "血肉神教",
+    "description": "疯子的狂欢。理智是枷锁，痛苦是货币。",
+    "color": "text-purple-500",
+    "baseRegion": "SLUMS",
+    "joinCost": { "maxInsight": 40 },
+    "rite": {
+      "name": "进行血祭",
+      "description": "消耗10HP换取现金和灵视觉醒——出卖肉体让你看清吃人本质",
+      "hpCost": 10,
+      "goldReward": 120,
+      "baseInsightReward": 8
+    }
+  },
+  {
+    "id": "REVOLUTION",
+    "name": "星星之火",
+    "description": "觉醒者的道路。只有这里才有真正的未来。",
+    "color": "text-red-600",
+    "baseRegion": "DOWNTOWN",
+    "joinCost": { "minHp": 80, "minInsight": 80 },
+    "rite": {
+      "name": "理论学习",
+      "description": "消耗10HP换取灵视觉醒和红色倾向——阅读剥削理论让你痛苦但清醒",
+      "hpCost": 10,
+      "baseInsightReward": 15,
+      "redPointReward": 10
+    }
+  }
+]

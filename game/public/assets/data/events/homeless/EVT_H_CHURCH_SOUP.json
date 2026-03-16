@@ -1,0 +1,20 @@
+{
+  "id": "EVT_H_CHURCH_SOUP",
+  "title": "教会施粥",
+  "description": "救世军在街角发放热汤。你看到了熟悉的排队人群。",
+  "conditions": {
+    "requiredClass": ["HOMELESS"],
+    "weight": 15
+  },
+  "options": {
+    "A": {
+      "text": "排队领取",
+      "effects": {
+        "gold": 20,
+        "hp": 10,
+        "insightClear": 2
+      },
+      "flavorText": "热汤下肚，你短暂地感受到了温暖。还有$20的救济金。"
+    }
+  }
+}

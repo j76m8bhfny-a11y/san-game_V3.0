@@ -1,0 +1,102 @@
+{
+  "$schema": "game-event-v3",
+  "id": "EVT_H09_NO_WATER",
+  "title": "消失的水机",
+  "category": "HOMELESS",
+  "series": "基础生存",
+  "conditions": {
+    "requiredClass": [
+      "HOMELESS"
+    ],
+    "minSan": 0,
+    "maxSan": 100,
+    "weight": 10,
+    "minTurn": 1,
+    "maxTurn": 52
+  },
+  "text": "高温40度，你口渴难耐。发现路边免费直饮水机都拆了，只有卖3美元一瓶水的售货机。",
+  "historicalNote": "底特律等城市在经济危机期间曾因拖欠水费切断数万贫困家庭的供水。水权在美国仍然是一个争议性议题。",
+  "options": {
+    "A": {
+      "label": "瓶装水更卫生便捷",
+      "roast": "消费升级！渴死也是一种优胜劣汰，资本主义万岁。",
+      "flavorText": "你告诉自己瓶装水确实更好。至少不会有细菌。",
+      "ideology": "新自由主义/奋斗逼",
+      "archiveCommentary": "将基本人权商品化，让穷人相信付费是他们的'选择'。",
+      "effects": {
+        "scaling": "LEVERAGE",
+        "gold": 150,
+        "hp": -12,
+        "insightGain": 8,
+        "points": {
+          "old": 3
+        }
+      }
+    },
+    "B": {
+      "label": "去厕所接自来水喝",
+      "roast": "求生欲很强。哪怕水里有屎味，活着就行。",
+      "flavorText": "你知道这不体面，但至少能活下来。",
+      "ideology": "犬儒主义/摆烂",
+      "archiveCommentary": "在尊严和生存之间，穷人被迫做出'非理性'的选择。",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": 25,
+        "hp": -3,
+        "insightGain": 1,
+        "points": {}
+      }
+    },
+    "C": {
+      "label": "维护成本高，易染菌",
+      "roast": "水是商品，不是人权。没钱就旱死，懂吗？",
+      "flavorText": "你开始为拆除水机的决定辩护。毕竟维护确实需要钱。",
+      "ideology": "消费主义/岁静",
+      "archiveCommentary": "将公共服务的消亡合理化，让穷人接受'水是一种商品'的逻辑。",
+      "effects": {
+        "scaling": "INCOME",
+        "gold": -0.15,
+        "hp": 8,
+        "insight": -10,
+        "points": {
+          "wolf": 3
+        }
+      }
+    },
+    "D": {
+      "label": "喝水也要买门票",
+      "roast": "一语道破。你的口渴是雀巢公司的利润增长点。",
+      "flavorText": "你看到了那个可怕的真相：在这个国家，连喝水都要付钱。",
+      "ideology": "激进左翼/觉醒",
+      "archiveCommentary": "水私有化将生存必需品转化为利润来源，穷人被系统性排除。",
+      "sanLock": 40,
+      "isGlitched": true,
+      "glitchEffect": "chromatic_aberration",
+      "archiveId": "No.09_DETROIT_WATER_CUT",
+      "effects": {
+        "scaling": "FIXED",
+        "gold": -100,
+        "hp": -18,
+        "insight": -10,
+        "points": {
+          "red": 15
+        }
+      }
+    }
+  },
+  "metadata": {
+    "author": "Dark Web Echoes Team",
+    "version": "3.0",
+    "migratedFrom": "EVT_09_NO_WATER",
+    "createdAt": "2024-01-15",
+    "updatedAt": "2024-01-15",
+    "references": [
+      "https://www.npr.org/sections/thetwo-way/2014/07/22/333788222/detroit-residents-appeal-to-un-over-water-shutoffs"
+    ],
+    "relatedEvents": [
+      "EVT_H50_LOCKED_HYDRANT",
+      "EVT_H08_LIBRARY"
+    ]
+  },
+  "image": "/assets/events/homeless/evt_dry_fountain.png"
+}

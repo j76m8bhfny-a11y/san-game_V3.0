@@ -1,0 +1,184 @@
+{
+  "$schema": "survival-model-config",
+  "description": "存活概率计算模型参数配置 - 修改此文件来调整游戏难度曲线，被SurvivalSystem使用",
+  "version": "1.0.0",
+  
+  "difficultyPresets": {
+    "description": "难度预设配置",
+    "easy": {
+      "description": "简单模式 - 适合新手",
+      "weights": {
+        "hp": 0.35,
+        "san": 0.25,
+        "hunger": 0.20,
+        "gold": 0.20
+      },
+      "thresholds": {
+        "hpCritical": 0.20,
+        "hpSafe": 0.65,
+        "sanCritical": 0.15,
+        "sanSafe": 0.55,
+        "hungerCritical": 0.15
+      },
+      "diseasePenalty": 0.03,
+      "acuteDiseasePenalty": 0.10,
+      "variance": {
+        "baseRange": 0.08,
+        "eventImpact": 0.10
+      }
+    },
+    "normal": {
+      "description": "标准模式 - 平衡体验",
+      "weights": {
+        "hp": 0.40,
+        "san": 0.25,
+        "hunger": 0.20,
+        "gold": 0.15
+      },
+      "thresholds": {
+        "hpCritical": 0.25,
+        "hpSafe": 0.70,
+        "sanCritical": 0.20,
+        "sanSafe": 0.60,
+        "hungerCritical": 0.20
+      },
+      "diseasePenalty": 0.05,
+      "acuteDiseasePenalty": 0.15,
+      "variance": {
+        "baseRange": 0.10,
+        "eventImpact": 0.15
+      }
+    },
+    "hard": {
+      "description": "困难模式 - 挑战极限",
+      "weights": {
+        "hp": 0.45,
+        "san": 0.30,
+        "hunger": 0.15,
+        "gold": 0.10
+      },
+      "thresholds": {
+        "hpCritical": 0.30,
+        "hpSafe": 0.75,
+        "sanCritical": 0.25,
+        "sanSafe": 0.65,
+        "hungerCritical": 0.25
+      },
+      "diseasePenalty": 0.07,
+      "acuteDiseasePenalty": 0.20,
+      "variance": {
+        "baseRange": 0.12,
+        "eventImpact": 0.18
+      }
+    },
+    "nightmare": {
+      "description": "噩梦模式 - 九死一生",
+      "weights": {
+        "hp": 0.50,
+        "san": 0.30,
+        "hunger": 0.15,
+        "gold": 0.05
+      },
+      "thresholds": {
+        "hpCritical": 0.35,
+        "hpSafe": 0.80,
+        "sanCritical": 0.30,
+        "sanSafe": 0.70,
+        "hungerCritical": 0.30
+      },
+      "diseasePenalty": 0.10,
+      "acuteDiseasePenalty": 0.30,
+      "variance": {
+        "baseRange": 0.15,
+        "eventImpact": 0.25
+      }
+    }
+  },
+  
+  "currentPreset": "normal",
+  
+  "regionModifiers": {
+    "description": "区域生存率修正",
+    "SLUMS": {
+      "description": "贫民窟 - 环境恶劣",
+      "modifier": 0.85,
+      "flavor": "这里疾病横行，暴力随处可见"
+    },
+    "RUST_BELT": {
+      "description": "铁锈工业区 - 污染严重",
+      "modifier": 0.90,
+      "flavor": "废弃工厂中弥漫着有毒的空气"
+    },
+    "SUBURBS": {
+      "description": "郊区 - 相对安全",
+      "modifier": 1.05,
+      "flavor": "中产社区有着基本的安全保障"
+    },
+    "DOWNTOWN": {
+      "description": "金融核心区 - 最安全",
+      "modifier": 1.10,
+      "flavor": "富人的天堂，精英的堡垒"
+    }
+  },
+  
+  "classModifiers": {
+    "description": "阶级生存率修正",
+    "HOMELESS": {
+      "description": "流浪者",
+      "modifier": 0.80,
+      "flavor": "居无定所，每天都在为生存挣扎"
+    },
+    "WORKER": {
+      "description": "工人阶级",
+      "modifier": 0.95,
+      "flavor": "勉强维持体面，但经不起风浪"
+    },
+    "MIDDLE": {
+      "description": "中产阶级",
+      "modifier": 1.05,
+      "flavor": "有资产有资源，抗压能力较强"
+    },
+    "CAPITALIST": {
+      "description": "资本家",
+      "modifier": 1.15,
+      "flavor": "金钱就是你的护盾"
+    }
+  },
+  
+  "housing": {
+    "description": "住房对生存率的影响",
+    "bonus": {
+      "value": 1.10,
+      "description": "有房产时获得10%加成"
+    },
+    "penalty": {
+      "value": 0.85,
+      "description": "无家可归时受到15%惩罚"
+    }
+  },
+  
+  "buffs": {
+    "description": "Buff对生存率的修正",
+    "healthyDiet": {
+      "description": "健康饮食",
+      "modifier": 1.05
+    },
+    "insured": {
+      "description": "有医疗保险",
+      "modifier": 1.03
+    },
+    "blessed": {
+      "description": "受到祝福",
+      "modifier": 1.08
+    }
+  },
+  
+  "debugMode": {
+    "description": "调试模式配置",
+    "enabled": false,
+    "logCalculations": true,
+    "showBreakdown": true
+  },
+  
+  "version": "1.0.0"
+}

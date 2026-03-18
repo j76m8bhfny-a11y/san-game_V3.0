@@ -160,7 +160,7 @@ const PlayerSprite: React.FC<{
     <motion.div
       initial={{ opacity: 0, x: -50 }}
       animate={isFocusMode ? { opacity: 0, x: -200 } : { opacity: isTransitioning ? 0 : 1, x: 0 }}
-      transition={{ duration: SPRITE_CONFIG?.transitionDuration || 0.5, delay: 0.3 }}
+      transition={{ duration: SPRITE_CONFIG?.transitionDuration || 0.5 }}
       className="absolute bottom-0 left-0 md:left-10 z-40 w-[32%] md:w-[22%] pointer-events-none"
     >
       <img 
@@ -747,12 +747,12 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
         className="absolute inset-0 z-0 bg-black/40" 
       />
 
-      {/* 事件插图 - 屏幕中间偏下，人物看到事件后出现 */}
+      {/* 事件插图 - 屏幕中间偏下 */}
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.2, delay: 1.0 }}
-        className="fixed inset-0 z-10 flex items-center justify-start pointer-events-none pl-[15vw]"
+        transition={{ duration: 1.2, delay: 0.3 }}
+        className="fixed inset-0 z-10 flex items-center justify-center pointer-events-none"
         style={{ paddingTop: '30vh' }}
       >
         <div className="relative flex items-center justify-center" style={{ width: '66.67vw', maxWidth: '800px', height: '55vh' }}>
@@ -833,21 +833,12 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
 
       {/* [REMOVED] 专注模式点击层 - 该层会挡住所有点击，已移除 */}
 
-      {/* 左下角人物 - 最先出现 */}
-      <PlayerSprite 
-        key={vitality.identity.currentClass}
-        currentClass={vitality.identity.currentClass}
-        insight={vitality.metrics.insight}
-        maxInsight={vitality.metrics.maxInsight}
-        isFocusMode={isFocusMode}
-      />
-
       {/* 顶部标题框 - 靠左，避免被手机遮挡 */}
       <motion.div 
         initial={{ y: -100, x: 0, opacity: 0 }}
         animate={shouldHideTitle === true ? { y: -200, x: 0, opacity: 0 } : { y: 0, x: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut", delay: 1.2 }}
-        className="absolute top-[15%] left-40 md:left-40 w-[80%] md:w-[75%] max-w-[900px] z-40 pointer-events-none" 
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className="absolute top-[15%] left-40 md:left-40 w-[66%] md:w-[60%] max-w-[700px] z-40 pointer-events-none" 
       >
         <div 
           className={`bg-black/90 border-2 border-white p-6 shadow-[8px_8px_0px_rgba(0,0,0,0.5)] transition-all ${isFocusMode === true ? 'pointer-events-none' : 'pointer-events-auto'}`}
@@ -965,6 +956,15 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
       <AnimatePresence mode="wait">
         {stage === 'INTERACTIVE' && (
           <>
+            {/* [UPDATED] 左下角人物 - 根据阶级和灵视切换 */}
+            <PlayerSprite 
+              key={vitality.identity.currentClass}
+              currentClass={vitality.identity.currentClass}
+              insight={vitality.metrics.insight}
+              maxInsight={vitality.metrics.maxInsight}
+              isFocusMode={isFocusMode}
+            />
+
             {/* 🌟 能看到D选项时的引导提示（只显示一次） */}
             {canSeeDOption && !selectedOptId && stage === 'INTERACTIVE' && !hasSeenDOptionGuide && (
               <motion.div
@@ -1019,11 +1019,11 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
               </div>
             </motion.div>
 
-            {/* 右下角手机 - 从右侧滑入 */}
+            {/* 右下角手机 */}
             <motion.div
-              initial={{ x: 500, opacity: 0, rotate: 5 }}
+              initial={false}
               animate={isFocusMode ? { x: 100, y: 300, rotate: 10, opacity: 0 } : { x: 0, y: 0, rotate: 0, opacity: 1 }}
-              transition={{ type: "spring", damping: 25, stiffness: 80, delay: 0.5 }}
+              transition={{ type: "spring", damping: 20, stiffness: 100 }}
               className="absolute bottom-[-100px] right-[0px] z-50 pointer-events-auto origin-bottom-right"
               style={{ pointerEvents: isFocusMode ? 'none' : 'auto' }}
             >

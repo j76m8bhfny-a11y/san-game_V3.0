@@ -175,7 +175,9 @@
     "categories": { "income": "收入", "housing": "住房", "food": "食物", "medical": "医疗", "bill": "账单", "bank": "银行", "tax": "税务", "misc": "其他" },
     "week": "周",
     "statement": "每周结算单",
-    "weekLabel": "第 {turn} / {max} 周"
+    "weekLabel": "第 {turn} / {max} 周",
+    "noTransaction": "暂无交易",
+    "nextWeek": "下周"
   },
   "messageWindow": { "continue": "点击继续..." },
   "classSelector": { "title": "选择你的阶级", "subtitle": "这决定了你的起点，但不决定你的终点", "select": "选择", "stats": { "initial": "初始资金", "hp": "生命值", "insight": "灵视值" } },

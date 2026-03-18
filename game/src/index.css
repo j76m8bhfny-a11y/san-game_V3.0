@@ -1,21 +1,55 @@
-@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Permanent+Marker&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* --- 1. 核心修复：引入 Zpix 像素字体 (多CDN备选) --- */
+/* ========================================
+   字体配置：本地优先，CDN 兜底
+   ======================================== */
 
-/* 主字体: Zpix (中文像素字体) */
+/* --- 1. 主字体: Zpix (中文像素字体) --- */
+/* 本地优先，CDN 备用 */
 @font-face {
   font-family: 'PixelFont';
-  src: url('https://cdn.jsdelivr.net/gh/SolidZORO/zpix-pixel-font@v3.1.10/dist/zpix.ttf') format('truetype');
+  src: 
+    url('/assets/fonts/pixel.ttf') format('truetype'),
+    url('https://cdn.jsdelivr.net/gh/SolidZORO/zpix-pixel-font@v3.1.10/dist/zpix.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
 }
 
-/* 备选1: 文泉驿点阵宋体 (中文字体备选) */
+/* --- 2. Google Fonts: 本地优先 --- */
+@font-face {
+  font-family: 'Caveat';
+  src: 
+    url('/assets/fonts/Caveat.ttf') format('truetype'),
+    url('https://fonts.gstatic.com/s/caveat/v18/Wnz6HAc5bAfYB2Q7azYYiAzcPDKoLQ.woff2') format('woff2');
+  font-weight: 400 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Permanent Marker';
+  src: 
+    url('/assets/fonts/PermanentMarker.ttf') format('truetype'),
+    url('https://fonts.gstatic.com/s/permanentmarker/v16/Fh4uPib9Iyb2Gu8l6QTzKmkKVIE0oHiE.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Press Start 2P';
+  src: 
+    url('/assets/fonts/PressStart2P.ttf') format('truetype'),
+    url('https://fonts.gstatic.com/s/pressstart2p/v15/e3t4euO8T-267oIAQAu6jDQyK0nS.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* --- 3. 系统备选字体 --- */
 @font-face {
   font-family: 'WenQuanYi';
   src: local('WenQuanYi Bitmap Song'), local('文泉驿点阵宋体');
@@ -24,10 +58,9 @@
   font-display: swap;
 }
 
-/* 备选2: Unifont (等宽像素字体) */
 @font-face {
   font-family: 'Unifont';
-  src: local('Unifont'), url('https://unifoundry.com/pub/unifont/unifont-15.0.01/font-builds/unifont-15.0.01.ttf') format('truetype');
+  src: local('Unifont');
   font-weight: normal;
   font-style: normal;
   font-display: swap;

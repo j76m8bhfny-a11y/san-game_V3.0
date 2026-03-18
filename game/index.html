@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>American Insight - 异化生存</title>
     
-    <!-- 预加载像素字体，确保优先加载 -->
+    <!-- 预加载本地字体（如果存在） -->
+    <link rel="preload" href="/assets/fonts/pixel.ttf" as="font" type="font/ttf" crossorigin />
+    
+    <!-- CDN 字体备用 -->
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-    <link rel="preload" href="https://cdn.jsdelivr.net/gh/SolidZORO/zpix-pixel-font@v3.1.10/dist/zpix.ttf" as="font" type="font/ttf" crossorigin />
-    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" as="style" />
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   </head>
 
   <body>

@@ -328,25 +328,27 @@ const App: React.FC = () => {
         }}
       />
       
-      {/* [NEW] 危险状态文字提示 */}
-      <DangerHints
-        hpPercent={vitality.metrics.hp / vitality.metrics.maxHp}
-        insightPercent={vitality.metrics.insight / vitality.metrics.maxInsight}
-        hungerPercent={vitality.metrics.hunger / vitality.metrics.maxHunger}
-        hasHousing={!!activeHousing}
-        hasInsurance={vitality.activeInsurances.length > 0}
-        activeDiseases={vitality.activeDiseases}
-        isNewPlayer={vitality.time.currentTurn <= 3}
-      />
+      {/* [NEW] 危险状态文字提示 - 只在游戏主界面显示 */}
+      {viewState === 'GAME' && (
+        <DangerHints
+          hpPercent={vitality.metrics.hp / vitality.metrics.maxHp}
+          insightPercent={vitality.metrics.insight / vitality.metrics.maxInsight}
+          hungerPercent={vitality.metrics.hunger / vitality.metrics.maxHunger}
+          hasHousing={!!activeHousing}
+          hasInsurance={vitality.activeInsurances.length > 0}
+          activeDiseases={vitality.activeDiseases}
+          isNewPlayer={vitality.time.currentTurn <= 3}
+        />
+      )}
       
-      {/* [NEW] 守护灵新手提示 */}
-      <GuardianHints />
+      {/* [NEW] 守护灵新手提示 - 只在游戏主界面显示 */}
+      {viewState === 'GAME' && <GuardianHints />}
       
-      {/* [NEW] 灵视里程碑提示 */}
-      <InsightMilestones />
+      {/* [NEW] 灵视里程碑提示 - 只在游戏主界面显示 */}
+      {viewState === 'GAME' && <InsightMilestones />}
       
-      {/* [NEW] 渐进式机制解锁 */}
-      <ProgressiveUnlock />
+      {/* [NEW] 渐进式机制解锁 - 只在游戏主界面显示 */}
+      {viewState === 'GAME' && <ProgressiveUnlock />}
       
       <GlobalAtmosphere />
 

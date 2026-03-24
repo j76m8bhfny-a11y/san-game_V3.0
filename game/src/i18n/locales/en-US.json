@@ -114,7 +114,9 @@
     "categories": { "income": "Income", "housing": "Housing", "food": "Food", "medical": "Medical", "bill": "Bill", "bank": "Bank", "tax": "Tax", "misc": "Misc" },
     "week": "Week",
     "statement": "WEEKLY STATEMENT",
-    "weekLabel": "WEEK {turn} / {max}"
+    "weekLabel": "WEEK {turn} / {max}",
+    "noTransaction": "No transactions",
+    "nextWeek": "Next Week"
   },
   "messageWindow": { "continue": "Click to continue..." },
   "classSelector": { "title": "Choose Your Class", "subtitle": "This determines your starting point, but not your destination", "select": "Select", "stats": { "initial": "Initial Funds", "hp": "Health", "insight": "Insight" } },

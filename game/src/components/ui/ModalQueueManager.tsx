@@ -16,6 +16,7 @@ export type ModalType =
   | 'progressiveUnlock' // 机制解锁
   | 'guardianHint'      // 守护灵提示
   | 'insightMilestone'  // 灵视里程碑
+  | 'event'             // 事件弹窗
   | 'dOptionConfirm'    // D选项确认
   | 'weeklySettlement'  // 周结算
   | 'billOverlay'       // 账单
@@ -29,8 +30,9 @@ const MODAL_PRIORITIES: Record<ModalType, number> = {
   'progressiveUnlock': 100,   // 机制解锁重要
   'guardianHint': 95,         // 守护灵提示
   'insightMilestone': 90,     // 灵视里程碑
-  'dOptionConfirm': 85,       // D选项确认
-  'archiveMilestone': 80,     // 档案里程碑
+  'event': 80,                // 事件弹窗（在提示之后）
+  'dOptionConfirm': 75,       // D选项确认
+  'archiveMilestone': 70,     // 档案里程碑
   'weeklySettlement': 50,     // 周结算
   'billOverlay': 40,          // 账单
   'roastModal': 30,           // 嘲讽

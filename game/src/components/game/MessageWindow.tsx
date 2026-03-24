@@ -546,9 +546,10 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
   useEffect(() => {
     setStage('INIT');
     setModifiers([]);
+    // 框 0.5s 出现，0.4s 过渡，0.9s 完全显示后再开始打字
     const timer = setTimeout(() => {
       setStage('TYPING_TITLE');
-    }, pacing.delayTitleToBodyMs);
+    }, 900);
     return () => clearTimeout(timer);
   }, [event.id]);
   
@@ -796,10 +797,11 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="absolute inset-0 z-50 pointer-events-none bg-black"
         style={{ pointerEvents: 'none' }}
-        onAnimationComplete={(e) => {
-          // 动画完成后隐藏元素
-          if (e?.target) {
-            (e.target as HTMLElement).style.display = 'none';
+        onAnimationComplete={() => {
+          // 动画完成后通过 ref 隐藏元素
+          const el = document.querySelector('.eye-animation');
+          if (el) {
+            (el as HTMLElement).style.display = 'none';
           }
         }}
       />
@@ -842,11 +844,11 @@ export const MessageWindow: React.FC<MessageWindowProps> = React.memo(({ event }
         isFocusMode={isFocusMode}
       />
 
-      {/* 顶部标题框 - 靠左，避免被手机遮挡 */}
+      {/* 顶部标题框 - 先出现框，再打字 */}
       <motion.div 
         initial={{ y: -100, x: 0, opacity: 0 }}
         animate={shouldHideTitle === true ? { y: -200, x: 0, opacity: 0 } : { y: 0, x: 0, opacity: 1 }}
-        transition={{ duration: 0.5, ease: "easeOut", delay: 1.2 }}
+        transition={{ duration: 0.4, ease: "easeOut", delay: 0.5 }}
         className="absolute top-[15%] left-40 md:left-40 w-[80%] md:w-[75%] max-w-[900px] z-40 pointer-events-none" 
       >
         <div 

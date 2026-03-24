@@ -55,6 +55,7 @@ import { GuardianHints } from './components/ui/GuardianHints';
 import { InsightMilestones } from './components/ui/InsightMilestones';
 import { ProgressiveUnlock } from './components/ui/ProgressiveUnlock';
 import { DangerHints } from './components/ui/DangerHints';
+import { EventQueueManager, useEventQueue } from './components/game/EventQueueManager';
 import { ModalQueueProvider } from './components/ui/ModalQueueManager';
 import { DeathEffectProvider } from './components/ui/DeathEffectPause';
 import { ScreenReaderAnnouncer, AriaLabels } from './components/ui/ScreenReaderAnnouncer';
@@ -167,6 +168,16 @@ const App: React.FC = () => {
     setBankOpen,   // [NEW] 银行弹窗控制
     currentRegion  // [NEW] 当前区域
   } = useGameStore();
+  
+  // [NEW] 事件队列系统 - 确保事件在提示之后显示（必须在 useGameStore 之后）
+  const { canShowEvent, isEventQueued, queueEvent, queuedEvent } = useEventQueue();
+  
+  // 自动将事件加入队列
+  useEffect(() => {
+    if (currentEvent && !isEventQueued) {
+      queueEvent();
+    }
+  }, [currentEvent, isEventQueued, queueEvent]);
 
   const [viewState, setViewState] = useState<'TITLE' | 'SELECT_CLASS' | 'GAME'>('TITLE');
 
@@ -350,6 +361,9 @@ const App: React.FC = () => {
       {/* [NEW] 渐进式机制解锁 - 只在游戏主界面显示 */}
       {viewState === 'GAME' && <ProgressiveUnlock />}
       
+      {/* [NEW] 事件队列管理 - 确保事件在提示之后显示 */}
+      {viewState === 'GAME' && <EventQueueManager />}
+      
       <GlobalAtmosphere />
 
       {ending ? (
@@ -381,21 +395,22 @@ const App: React.FC = () => {
           )}
 
           <MiniHUD />
-          {/* [FIX] 添加事件数据完整性检查 - 使用 try-catch 包装 */}
+          {/* [FIX] 事件队列系统：只有轮到事件时才显示 */}
           {(() => {
             try {
-              if (currentEvent && 
-                  typeof currentEvent === 'object' &&
-                  currentEvent.id && 
-                  currentEvent.title && 
-                  currentEvent.text && 
-                  currentEvent.options &&
-                  typeof currentEvent.title === 'string' &&
-                  typeof currentEvent.text === 'string') {
-                return <MessageWindow event={currentEvent} />;
+              // 使用队列系统控制事件显示
+              if (canShowEvent && queuedEvent && 
+                  typeof queuedEvent === 'object' &&
+                  queuedEvent.id && 
+                  queuedEvent.title && 
+                  queuedEvent.text && 
+                  queuedEvent.options &&
+                  typeof queuedEvent.title === 'string' &&
+                  typeof queuedEvent.text === 'string') {
+                return <MessageWindow event={queuedEvent} />;
               }
             } catch (e) {
-              console.error('[App] 事件渲染错误:', e, currentEvent);
+              console.error('[App] 事件渲染错误:', e, queuedEvent);
             }
             return null;
           })()}
